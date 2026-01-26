@@ -1,0 +1,101 @@
+---
+title: 'Node.js Event Loop Deep Dive'
+description: 'Understanding how the Node.js event loop works under the hood for better async programming'
+pubDate: '2024-02-05'
+tags: ['nodejs', 'event-loop', 'async', 'performance']
+---
+
+The Node.js event loop is the heart of its asynchronous, non-blocking I/O model. Understanding it is crucial for writing efficient Node.js applications.
+
+## Event Loop Phases
+
+The event loop operates in phases, each handling specific types of callbacks:
+
+1. **Timers** - `setTimeout()` and `setInterval()` callbacks
+2. **Pending callbacks** - I/O callbacks deferred to the next loop iteration
+3. **Idle, prepare** - Internal use only
+4. **Poll** - Retrieve new I/O events
+5. **Check** - `setImmediate()` callbacks
+6. **Close callbacks** - Close event callbacks
+
+## Process.nextTick() vs setImmediate()
+
+```javascript
+console.log('start');
+
+setImmediate(() => {
+  console.log('setImmediate');
+});
+
+process.nextTick(() => {
+  console.log('nextTick');
+});
+
+console.log('end');
+
+// Output:
+// start
+// end
+// nextTick
+// setImmediate
+```
+
+`process.nextTick()` fires before the event loop continues, while `setImmediate()` fires in the check phase.
+
+## Microtasks vs Macrotasks
+
+```javascript
+console.log('Script start');
+
+setTimeout(() => {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve()
+  .then(() => console.log('Promise 1'))
+  .then(() => console.log('Promise 2'));
+
+console.log('Script end');
+
+// Output:
+// Script start
+// Script end
+// Promise 1
+// Promise 2
+// setTimeout
+```
+
+Microtasks (Promises, process.nextTick) execute before macrotasks (setTimeout, setImmediate).
+
+## Blocking the Event Loop
+
+```javascript
+// BAD - Blocks the event loop
+function blockingOperation() {
+  const start = Date.now();
+  while (Date.now() - start < 5000) {
+    // CPU-intensive work
+  }
+}
+
+// GOOD - Use worker threads for CPU-intensive tasks
+const { Worker } = require('worker_threads');
+
+function nonBlockingOperation() {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker('./heavy-task.js');
+    worker.on('message', resolve);
+    worker.on('error', reject);
+  });
+}
+```
+
+## Performance Tips
+
+1. **Avoid synchronous I/O** - Use async methods
+2. **Break up long operations** - Use `setImmediate()` to yield
+3. **Use worker threads** - For CPU-intensive tasks
+4. **Monitor event loop lag** - Track when the loop is slow
+5. **Batch operations** - Reduce overhead of context switching
+
+Understanding the event loop helps you write more performant Node.js applications and debug tricky async issues.

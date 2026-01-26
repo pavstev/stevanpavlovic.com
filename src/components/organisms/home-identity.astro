@@ -1,0 +1,81 @@
+---
+import { SITE_CONFIG } from '../../lib/config';
+import GradientText from '../atoms/gradient-text.astro';
+import Heading from '../atoms/heading.astro';
+import Text from '../atoms/text.astro';
+import Diamond3D from '../molecules/diamond-3d';
+import Stack from '../molecules/stack.astro';
+---
+
+<section class="relative size-full">
+  {/* Decorative Background Glows - High Intensity */}
+  <div class="pointer-events-none absolute -top-32 -left-32 size-[500px] rounded-full bg-accent/20 blur-[140px]"></div>
+  <div class="pointer-events-none absolute -right-32 bottom-0 size-[500px] rounded-full bg-destructive/20 blur-[140px]"></div>
+  <div class="pointer-events-none absolute top-1/2 left-1/2 size-96 -translate-1/2 rounded-full bg-secondary/20 blur-[120px]"></div>
+
+  <div class="group/hero relative flex size-full min-h-[600px] flex-col overflow-hidden rounded-lg border border-border bg-black/40 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-3xl transition-all duration-700 hover:border-border/50 hover:shadow-[0_0_60px_-12px_rgba(var(--primary)/0.15)]" id="hero-container">
+    {/* Background Animation Container */}
+    <div class="pointer-events-none absolute inset-0 -z-10 opacity-40">
+      <canvas class="size-full" id="hero-canvas"></canvas>
+      <div class="bg-radial-gradient absolute inset-0 from-transparent to-black/60"></div>
+    </div>
+
+    {/* Content Wrapper */}
+    <div class="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center md:py-20 lg:px-12">
+
+      <Stack align="center" gap={8}>
+        {/* 8-Headed 3D Cluster */}
+        <div class="h-[350px] w-full max-w-[500px] transition-transform duration-700 group-hover/hero:scale-105">
+          <Diamond3D client:only="react" />
+        </div>
+
+        <Stack class="items-center" gap={4}>
+          <Heading
+            class="text-5xl leading-[1.1] font-black tracking-tighter sm:text-6xl md:text-7xl"
+            level={1}
+          >
+            <GradientText variant="primary">
+              {SITE_CONFIG.hero.title.main}
+            </GradientText>
+            <br class="hidden sm:block" />
+            <GradientText class="italic" variant="primary">
+              {SITE_CONFIG.hero.title.highlight}
+            </GradientText>
+          </Heading>
+
+          <Text
+            class="max-w-2xl text-xl font-light text-balance text-muted-foreground sm:text-2xl"
+            size="lg"
+          >
+            I'm <span class="font-bold text-foreground drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">Stevan</span>, {SITE_CONFIG.hero.tagline}.
+          </Text>
+        </Stack>
+      </Stack>
+
+      {/* Decorative Corner Lines - Glossy */}
+      <div class="absolute top-0 left-0 size-16 rounded-tl-lg border-t-2 border-l-2 border-primary/30 shadow-[0_0_15px_rgba(var(--primary)/0.2)]"></div>
+      <div class="absolute right-0 bottom-0 size-16 rounded-br-lg border-r-2 border-b-2 border-secondary/30 shadow-[0_0_15px_rgba(var(--secondary)/0.2)]"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initHeroAnimation } from '../../lib/hero-animation';
+
+  function setupHeroInteractions() {
+    initHeroAnimation();
+
+    const heroContainer = document.getElementById('hero-container');
+    if (!heroContainer) return;
+
+    const setIntensity = (level: number) => {
+        window.dispatchEvent(new CustomEvent('hero:intensity', { detail: level }));
+    };
+
+    heroContainer.addEventListener('mouseenter', () => setIntensity(1.3));
+    heroContainer.addEventListener('mouseleave', () => setIntensity(1.0));
+  }
+
+  setupHeroInteractions();
+  document.addEventListener('astro:after-swap', setupHeroInteractions);
+</script>

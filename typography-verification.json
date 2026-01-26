@@ -1,0 +1,85 @@
+[
+  {
+    "url": "http://localhost:4321/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": []
+  },
+  {
+    "url": "http://localhost:4321/expertise/spark451/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": [
+      "Console Error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Console Error: JSHandle@error"
+    ]
+  },
+  {
+    "url": "http://localhost:4321/playground/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": [
+      "Console Error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ]
+  },
+  {
+    "url": "http://localhost:4321/playground/card-hover-effects/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": [
+      "Console Error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ]
+  },
+  {
+    "url": "http://localhost:4321/projects/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": [
+      "Console Error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ]
+  },
+  {
+    "url": "http://localhost:4321/projects/telemetry/",
+    "styles": {
+      "backgroundColor": "rgb(17, 17, 17)",
+      "color": "rgb(237, 237, 237)",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+      "h1FontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+    },
+    "remoteFonts": [],
+    "localFontCount": 0,
+    "errors": [
+      "Console Error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ]
+  }
+]

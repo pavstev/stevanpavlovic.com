@@ -1,0 +1,72 @@
+---
+import '../../styles/global.css';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import { ClientRouter } from 'astro:transitions';
+
+import ScrollToTop from '../atoms/scroll-to-top.astro';
+import Chatbot from '../molecules/chatbot.astro';
+import Container from '../molecules/container.astro';
+import Footer from './footer.astro';
+import Head from "./head.astro";
+import Header from './header.astro';
+
+interface Props {
+  description: string;
+  includeFooter?: boolean;
+  includeHeader?: boolean;
+  title: string;
+}
+
+const {
+  description,
+  includeFooter = true,
+  includeHeader = true,
+  title,
+} = Astro.props;
+---
+
+<!doctype html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <Head description={description} title={title} />
+    <ClientRouter />
+  </head>
+  <body
+    class="bg-background font-body text-foreground antialiased selection:bg-primary/20 selection:text-primary"
+  >
+    {/* Grid Pattern Background */}
+    <div
+      class="pointer-events-none fixed inset-0 opacity-[0.03]"
+      style={{
+        backgroundImage:
+          'linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}
+    >
+    </div>
+
+    {/* Ambient Spotlight */}
+    <div
+      class="bg-radial-gradient pointer-events-none fixed inset-0 z-0 from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 sm:opacity-100"
+      style="background: radial-gradient(circle at 50% 0%, rgba(var(--primary), 0.08) 0%, transparent 60%);"
+    >
+    </div>
+
+    {includeHeader && <Header data-pagefind-ignore />}
+
+    <Container
+      as="main"
+      class="relative z-10"
+      data-pagefind-body
+      transition:name="main"
+    >
+      <slot />
+    </Container>
+
+    {includeFooter && <Footer data-pagefind-ignore />}
+    <ScrollToTop />
+    <Chatbot />
+  </body>
+</html>

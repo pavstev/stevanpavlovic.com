@@ -1,0 +1,186 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div class="fixed right-6 bottom-6 z-[100] flex flex-col items-end gap-4 print:hidden" id="chatbot-widget">
+  {/* Chat Window */}
+  <div
+    class="pointer-events-none mb-2 flex w-[320px] max-w-[calc(100vw-3rem)] translate-y-4 flex-col overflow-hidden rounded-2xl border border-border bg-background/95 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-300 data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100 sm:w-[380px]"
+    id="chat-window"
+  >
+    {/* Header */}
+    <div class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3">
+      <div class="flex items-center gap-2">
+        <div class="flex size-6 items-center justify-center rounded-full bg-primary/20 text-primary">
+          <Icon name="mdi:robot-outline" size={14} />
+        </div>
+        <span class="text-xs font-bold tracking-tight text-foreground uppercase">Resume Assistant</span>
+      </div>
+      <button class="text-muted-foreground hover:text-foreground" id="close-chat">
+        <Icon name="mdi:close" size={18} />
+      </button>
+    </div>
+
+    {/* Messages Area */}
+    <div class="scrollbar-thin scrollbar-thumb-border flex h-[350px] flex-col gap-4 overflow-y-auto p-4 text-sm" id="chat-messages">
+      <div class="flex flex-col gap-1">
+        <div class="w-fit max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-3 py-2 text-foreground/80">
+          Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
+        </div>
+      </div>
+    </div>
+
+    {/* Status / Loading */}
+    <div class="hidden px-4 py-2 text-[10px] text-muted-foreground italic" id="chat-status">
+      Initializing model...
+    </div>
+
+    {/* Input Area */}
+    <div class="border-t border-border p-3">
+      <form class="flex gap-2" id="chat-form">
+        <input
+          class="flex-1 rounded-full border border-border bg-muted/50 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
+          id="chat-input"
+          placeholder="Ask a question..."
+          type="text"
+        />
+        <button
+          class="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+          id="send-button"
+          type="submit"
+        >
+          <Icon name="mdi:send" size={16} />
+        </button>
+      </form>
+    </div>
+  </div>
+
+  {/* Toggle Button */}
+  <button
+    aria-label="Toggle Chatbot"
+    class="group flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 sm:size-14"
+    id="chat-toggle"
+  >
+    <Icon class="transition-transform duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90" name="mdi:robot-outline" size={24} />
+    <Icon class="absolute scale-0 transition-transform duration-300 group-data-[open=true]:scale-100" name="mdi:close" size={24} />
+  </button>
+</div>
+
+<script>
+  import { pipeline } from '@xenova/transformers';
+
+  const RESUME_CONTEXT = `
+    Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
+    Expert in Node.js, NestJS, TypeScript, Microservices, and Software Architecture.
+    Key skills: Domain-Driven Design (DDD), Apache Kafka, PostgreSQL, Redis, MongoDB, AWS, CI/CD, REST APIs, PHP, Symfony, Laravel, React.js.
+    Professional Experience:
+    - 167Pluto (2024-2025): Senior Software Engineer. Architected high-throughput betting platform with NestJS and Kafka.
+    - Safety Real Time (2022-2024): CTO. Directed strategy for fleet telemetry system, optimized microservices for vehicle data.
+    - Apoddo (2021-2022): Back-end Developer. Built BFF middleware for Humanity.com using Redis caching.
+    - Evermed (2021): Back-end Developer. Engineered serverless video transcoding on AWS for healthcare.
+    - Pannovate (2020): Lead Back-end Developer. Architected 'Syllo' secure fintech ecosystem using NestJS.
+    - Quantox Technology (2018-2020): Back-end Developer. Led modernization of AskGamblers.com, reducing resource consumption by 90%.
+    - Spark451 (2017-2018): Back-end Developer. Designed automated student record scoring CRM.
+    - CreITive (2016-2017): Back-end Developer. Developed automation tooling and CI/CD workflows.
+    Stevan is based in Belgrade, Serbia and is open to new opportunities.
+  `.trim();
+
+  let qaPipeline: any = null;
+  let isInitializing = false;
+
+  const toggle = document.getElementById('chat-toggle');
+  const window_ = document.getElementById('chat-window');
+  const messages = document.getElementById('chat-messages');
+  const form = document.getElementById('chat-form') as HTMLFormElement;
+  const input = document.getElementById('chat-input') as HTMLInputElement;
+  const status = document.getElementById('chat-status');
+
+  function addMessage(text: string, isAi: boolean) {
+    const div = document.createElement('div');
+    div.className = 'flex flex-col gap-1' + (isAi ? '' : ' items-end');
+    div.innerHTML = `
+      <div class="w-fit max-w-[85%] rounded-2xl ${isAi ? 'rounded-tl-none bg-muted text-foreground/80' : 'rounded-tr-none bg-primary text-foreground'} px-3 py-2">
+        ${text}
+      </div>
+    `;
+    messages?.appendChild(div);
+    messages?.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+  }
+
+  async function initModel() {
+    if (qaPipeline || isInitializing) return;
+    isInitializing = true;
+    if (status) status.classList.remove('hidden');
+
+    try {
+      // Use a very small, efficient model for QA
+      qaPipeline = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
+      if (status) status.innerText = 'Model ready.';
+      setTimeout(() => status?.classList.add('hidden'), 2000);
+    } catch (err) {
+      console.error('Failed to load model:', err);
+      if (status) status.innerText = 'Error loading model.';
+    } finally {
+      isInitializing = false;
+    }
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = window_?.dataset.open === 'true';
+    const newState = !isOpen;
+    window_?.setAttribute('data-open', String(newState));
+    toggle?.setAttribute('data-open', String(newState));
+    if (newState) {
+      initModel();
+      setTimeout(() => input?.focus(), 300);
+    }
+  });
+
+  document.getElementById('close-chat')?.addEventListener('click', () => {
+    window_?.setAttribute('data-open', 'false');
+    toggle?.setAttribute('data-open', 'false');
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const question = input.value.trim();
+    if (!question) return;
+
+    input.value = '';
+    addMessage(question, false);
+
+    if (!qaPipeline) {
+      addMessage("I'm still waking up... Give me a second to load the AI model.", true);
+      await initModel();
+    }
+
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'text-[10px] text-muted-foreground animate-pulse px-2';
+    typingDiv.innerText = 'Thinking...';
+    messages?.appendChild(typingDiv);
+    messages?.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+
+    try {
+      const result = await qaPipeline(question, RESUME_CONTEXT);
+      messages?.removeChild(typingDiv);
+      addMessage(result.answer || "I'm not sure about that. You might want to check Stevan's full profile!", true);
+    } catch (err) {
+      messages?.removeChild(typingDiv);
+      addMessage("Sorry, I encountered an error while processing your request.", true);
+    }
+  });
+</script>
+
+<style is:global>
+  /* Custom scrollbar for chat */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+</style>

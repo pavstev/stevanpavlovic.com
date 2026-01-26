@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import { SOCIALS } from '../../lib/config';
+
+interface Props {
+  class?: string;
+  itemClass?: string;
+}
+
+const { class: className, itemClass } = Astro.props;
+---
+
+<div class:list={["flex items-center gap-2 border-l border-border pl-4", className]}>
+  {
+    SOCIALS.map((social) => (
+      <a
+        aria-label={social.name}
+        class:list={["group relative flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground", itemClass]}
+        href={social.href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Icon class="size-4 transition-transform duration-300 group-hover:scale-110" name={social.icon} />
+      </a>
+    ))
+  }
+</div>

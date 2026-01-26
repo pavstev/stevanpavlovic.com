@@ -1,0 +1,214 @@
+---
+import { Icon } from 'astro-icon/components';
+import Pagefind from "astro-pagefind/components/Search";
+---
+
+<div class="search-wrapper group relative flex items-center" id="search-container">
+  {/* Search Trigger */}
+  <button
+    aria-controls="search-modal"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    aria-label="Search"
+    class="search-trigger flex h-6 w-full min-w-[120px] items-center justify-center gap-2 rounded-full bg-muted/50 px-3 text-xs text-muted-foreground transition-all duration-300 hover:bg-accent/50 hover:text-foreground"
+    id="search-trigger"
+    type="button"
+  >
+    <Icon name="mdi:magnify" size={14} />
+    <span>Search...</span>
+  </button>
+
+  {/* Search UI Container */}
+  <div class="search-ui-container pointer-events-none fixed inset-0 z-50 flex items-start justify-center p-4 pt-[15vh] opacity-0 backdrop-blur-sm transition-all duration-300 sm:p-6" id="search-ui">
+    {/* Backdrop Overlay */}
+    <div class="absolute inset-0 bg-black/60 transition-opacity" id="search-backdrop"></div>
+
+    {/* Search Modal */}
+    <div class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl border border-border bg-background/90 shadow-2xl transition-all duration-300" id="search-modal">
+      <div class="p-4 sm:p-6">
+        <Pagefind
+          className="pagefind-ui"
+          id="search"
+          uiOptions={{
+            showImages: false,
+            translations: {
+              placeholder: "Search documentation, posts, projects..."
+            }
+          }}
+        />
+      </div>
+
+      <div class="flex items-center justify-between border-t border-border/50 bg-background/50 px-4 py-3 sm:px-6">
+        <div class="flex items-center gap-4 text-[10px] font-medium text-muted-foreground">
+          <span class="flex items-center gap-1"><kbd class="rounded bg-muted px-1 py-0.5 font-sans text-muted-foreground">ESC</kbd> to close</span>
+          <span class="flex items-center gap-1"><kbd class="rounded bg-muted px-1 py-0.5 font-sans text-muted-foreground">↑↓</kbd> to navigate</span>
+          <span class="flex items-center gap-1"><kbd class="rounded bg-muted px-1 py-0.5 font-sans text-muted-foreground">↵</kbd> to select</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function initSearch() {
+        const trigger = document.getElementById('search-trigger');
+        const ui = document.getElementById('search-ui');
+        const backdrop = document.getElementById('search-backdrop');
+        const modal = document.getElementById('search-modal');
+        let isOpen = false;
+
+        function openSearch() {
+            if (isOpen) return;
+            isOpen = true;
+            ui?.classList.remove('pointer-events-none', 'opacity-0');
+            ui?.classList.add('opacity-100');
+            modal?.classList.remove('scale-95', 'opacity-0');
+            modal?.classList.add('scale-100', 'opacity-100');
+            trigger?.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+
+            // Auto-focus the input
+            setTimeout(() => {
+                const input = ui?.querySelector('input');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function closeSearch() {
+            if (!isOpen) return;
+            isOpen = false;
+            ui?.classList.add('pointer-events-none', 'opacity-0');
+            ui?.classList.remove('opacity-100');
+            modal?.classList.add('scale-95', 'opacity-0');
+            modal?.classList.remove('scale-100', 'opacity-100');
+            trigger?.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        trigger?.addEventListener('click', openSearch);
+        backdrop?.addEventListener('click', closeSearch);
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !isOpen && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement)) {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                isOpen ? closeSearch() : openSearch();
+            }
+            if (e.key === 'Escape' && isOpen) {
+                closeSearch();
+            }
+        });
+
+        // Close on navigation
+        document.addEventListener('astro:after-swap', closeSearch);
+    }
+
+    // Initialize
+    initSearch();
+    document.addEventListener('astro:page-load', initSearch);
+</script>
+
+<style is:global>
+  /* Improved Search UI Styles */
+  .pagefind-ui {
+    --pagefind-ui-primary: #10b981;
+    --pagefind-ui-text: #e4e4e7;
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: transparent;
+    --pagefind-ui-tag: #10b981;
+    width: 100%;
+  }
+
+  .pagefind-ui .pagefind-ui__form::before {
+    background-color: #52525b !important;
+    left: 1.25rem !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z' /%3E%3C/svg%3E") !important;
+  }
+
+  .pagefind-ui .pagefind-ui__search-input {
+    background: rgba(24, 24, 27, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.75rem !important;
+    font-size: 1rem !important;
+    padding: 0.75rem 1rem 0.75rem 3rem !important;
+    color: white !important;
+    font-weight: 500 !important;
+  }
+
+  .pagefind-ui .pagefind-ui__search-input:focus {
+    background: rgba(24, 24, 27, 0.8) !important;
+    border-color: #10b981 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1) !important;
+  }
+
+  .pagefind-ui .pagefind-ui__drawer {
+    margin-top: 1.5rem !important;
+    max-height: 50vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .pagefind-ui .pagefind-ui__results-area {
+    margin-top: 0 !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result {
+    border: none !important;
+    padding: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.2s ease !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result:hover {
+    background: rgba(16, 185, 129, 0.05) !important;
+    transform: translateX(4px);
+  }
+
+  .pagefind-ui .pagefind-ui__result-link {
+    color: #e4e4e7 !important;
+    font-weight: 600 !important;
+    font-size: 0.9375rem !important;
+    text-decoration: none !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result-excerpt {
+    color: #a1a1aa !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.5 !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result-excerpt mark {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #34d399 !important;
+    border-radius: 2px !important;
+    padding: 0 2px !important;
+  }
+
+  .pagefind-ui .pagefind-ui__message {
+    padding: 1rem 0.75rem !important;
+    color: #71717a !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+  }
+
+  .pagefind-ui .pagefind-ui__search-clear {
+    background-color: #3f3f46 !important;
+    color: white !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 0.75rem !important;
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+  }
+</style>

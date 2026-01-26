@@ -1,0 +1,152 @@
+---
+title: 'Microservices Architecture Best Practices'
+description: 'Essential patterns and principles for building scalable microservices systems'
+pubDate: '2024-02-15'
+tags: ['microservices', 'architecture', 'distributed-systems']
+---
+
+Microservices offer flexibility and scalability, but they come with complexity. Here are battle-tested practices for success.
+
+## Service Boundaries
+
+Define clear boundaries using Domain-Driven Design:
+
+```typescript
+// User Service
+interface UserService {
+  createUser(data: CreateUserDTO): Promise<User>;
+  getUser(id: string): Promise<User>;
+  updateUser(id: string, data: UpdateUserDTO): Promise<User>;
+}
+
+// Order Service
+interface OrderService {
+  createOrder(userId: string, items: OrderItem[]): Promise<Order>;
+  getOrder(id: string): Promise<Order>;
+  updateOrderStatus(id: string, status: OrderStatus): Promise<Order>;
+}
+```
+
+## Communication Patterns
+
+### Synchronous (REST/gRPC)
+
+```typescript
+// HTTP REST
+class OrderController {
+  async createOrder(req: Request, res: Response) {
+    const user = await this.userClient.get(`/users/${req.userId}`);
+    const order = await this.orderService.create({
+      userId: user.id,
+      items: req.body.items
+    });
+    res.json(order);
+  }
+}
+```
+
+### Asynchronous (Message Queue)
+
+```typescript
+// Event-driven with RabbitMQ
+class OrderCreatedHandler {
+  async handle(event: OrderCreatedEvent) {
+    await this.emailQueue.publish('send-confirmation', {
+      userId: event.userId,
+      orderId: event.orderId
+    });
+
+    await this.inventoryQueue.publish('reserve-items', {
+      orderId: event.orderId,
+      items: event.items
+    });
+  }
+}
+```
+
+## Data Management
+
+Each service owns its data:
+
+```typescript
+// ❌ BAD - Sharing database
+class UserService {
+  getOrders(userId: string) {
+    return db.orders.find({ userId }); // Accessing Order DB
+  }
+}
+
+// ✅ GOOD - Use API calls
+class UserService {
+  async getUserWithOrders(userId: string) {
+    const user = await this.getUser(userId);
+    const orders = await this.orderClient.get(`/orders?userId=${userId}`);
+    return { ...user, orders };
+  }
+}
+```
+
+## Service Discovery
+
+```typescript
+interface ServiceRegistry {
+  register(name: string, url: string): Promise<void>;
+  discover(name: string): Promise<string[]>;
+  heartbeat(name: string): Promise<void>;
+}
+
+// Using Consul
+class OrderService {
+  async start() {
+    await this.registry.register('order-service', process.env.SERVICE_URL);
+    setInterval(() => this.registry.heartbeat('order-service'), 10000);
+  }
+}
+```
+
+## Circuit Breaker Pattern
+
+```typescript
+class CircuitBreaker {
+  private failures = 0;
+  private state: 'closed' | 'open' | 'half-open' = 'closed';
+
+  async execute<T>(fn: () => Promise<T>): Promise<T> {
+    if (this.state === 'open') {
+      throw new Error('Circuit breaker is open');
+    }
+
+    try {
+      const result = await fn();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+
+  private onSuccess() {
+    this.failures = 0;
+    this.state = 'closed';
+  }
+
+  private onFailure() {
+    this.failures++;
+    if (this.failures >= 5) {
+      this.state = 'open';
+      setTimeout(() => this.state = 'half-open', 30000);
+    }
+  }
+}
+```
+
+## Key Principles
+
+1. **Design for failure** - Services will fail, plan for it
+2. **Observable** - Comprehensive logging, metrics, tracing
+3. **Independent deployment** - Each service deploys separately
+4. **Data ownership** - One service, one database
+5. **API versioning** - Support backward compatibility
+
+Microservices aren't a silver bullet. Start with a monolith, split when you need to scale.

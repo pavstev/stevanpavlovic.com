@@ -1,0 +1,142 @@
+---
+title: 'React Performance Optimization Techniques'
+description: 'Master React performance with memo, useMemo, useCallback, and code splitting strategies'
+pubDate: '2024-02-10'
+tags: ['react', 'performance', 'optimization']
+---
+
+React apps can become slow as they grow. Here are proven techniques to keep your app fast and responsive.
+
+## React.memo for Component Memoization
+
+```typescript
+import { memo } from 'react';
+
+interface Props {
+  user: User;
+  onUpdate: (id: string) => void;
+}
+
+const UserCard = memo(({ user, onUpdate }: Props) => {
+  return (
+    <div onClick={() => onUpdate(user.id)}>
+      {user.name}
+    </div>
+  );
+});
+
+// Custom comparison function
+const UserCardOptimized = memo(
+  UserCard,
+  (prevProps, nextProps) => {
+    return prevProps.user.id === nextProps.user.id;
+  }
+);
+```
+
+## useMemo for Expensive Calculations
+
+```typescript
+import { useMemo } from 'react';
+
+function DataTable({ data, filter }: Props) {
+  const filteredData = useMemo(() => {
+    return data.filter(item =>
+      item.name.includes(filter)
+    ).sort((a, b) => a.name.localeCompare(b.name));
+  }, [data, filter]);
+
+  return (
+    <table>
+      {filteredData.map(item => (
+        <Row key={item.id} data={item} />
+      ))}
+    </table>
+  );
+}
+```
+
+## useCallback for Function Stability
+
+```typescript
+import { useCallback, useState } from 'react';
+
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+  const [items, setItems] = useState<string[]>([]);
+
+  // Without useCallback, this creates a new function on every render
+  const handleAddItem = useCallback((item: string) => {
+    setItems(prev => [...prev, item]);
+  }, []);
+
+  return (
+    <div>
+      <button onClick={() => setCount(c => c + 1)}>
+        Count: {count}
+      </button>
+      <ChildComponent onAddItem={handleAddItem} />
+    </div>
+  );
+}
+```
+
+## Code Splitting with Lazy Loading
+
+```typescript
+import { lazy, Suspense } from 'react';
+
+const HeavyComponent = lazy(() => import('./HeavyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+## Virtualization for Long Lists
+
+```typescript
+import { FixedSizeList } from 'react-window';
+
+function VirtualizedList({ items }: Props) {
+  const Row = ({ index, style }: any) => (
+    <div style={style}>
+      {items[index].name}
+    </div>
+  );
+
+  return (
+    <FixedSizeList
+      height={600}
+      itemCount={items.length}
+      itemSize={50}
+      width="100%"
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+```
+
+## Performance Profiling
+
+Use React DevTools Profiler to identify bottlenecks:
+
+1. **Record a session** while interacting with your app
+2. **Analyze commit phases** to see what renders
+3. **Identify expensive components** that render frequently
+4. **Optimize** using the techniques above
+
+## Best Practices
+
+- Don't optimize prematurely - measure first
+- Use React DevTools Profiler regularly
+- Memoize only when necessary (not everything!)
+- Consider component architecture - sometimes splitting is better
+- Monitor bundle size with tools like webpack-bundle-analyzer
+
+Remember: Profile, measure, optimize. Don't guess!

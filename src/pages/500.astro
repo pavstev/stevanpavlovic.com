@@ -1,0 +1,26 @@
+---
+import LayoutRoot from '../components/layout/layout-root.astro';
+import Empty from '../components/molecules/empty.astro';
+import Section from '../components/organisms/section.astro';
+
+interface Props {
+  error: unknown;
+}
+
+const { error } = Astro.props;
+
+const title = '500 - System Error';
+const description = 'An unexpected error occurred while processing your request.';
+const errorMessage = error instanceof Error ? error.message : "Unknown system exception";
+---
+
+<LayoutRoot description={description} title={title}>
+  <Section>
+    <Empty
+      action={{ href: '/', label: 'Restart Session' }}
+      description={`${description} (${errorMessage})`}
+      icon="mdi:alert-octagon-outline"
+      title="System Error"
+    />
+  </Section>
+</LayoutRoot>

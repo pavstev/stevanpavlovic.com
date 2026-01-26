@@ -1,0 +1,480 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { CollectionEntry } from 'astro:content';
+
+import { Icon } from 'astro-icon/components';
+import { type VariantProps } from 'class-variance-authority';
+
+import type { PortfolioItem } from '../../lib/portfolio';
+
+import { cardVariants, getCardData } from '../../lib/card-helpers';
+import { cn } from '../../lib/cn';
+import Badge from '../atoms/badge.astro';
+import Button from '../atoms/button.astro';
+import Heading from '../atoms/heading.astro';
+import IconBox from '../atoms/icon-box.astro';
+import Text from '../atoms/text.astro';
+import FormattedDate from '../molecules/formatted-date.astro';
+import Stack from '../molecules/stack.astro';
+import Tags from '../molecules/tags.astro';
+import ZoomableImage from './zoomable-image.astro';
+
+
+// Use imported variant instead of defining it locally
+const card = cardVariants;
+
+// Base props for the card container
+interface BaseCardProps
+  extends HTMLAttributes<'div'>,
+    VariantProps<typeof card> {
+  as?: string;
+  glowColor?: string;
+  href?: string;
+  rel?: string;
+  style?: 'default' | 'navigation';
+  target?: string;
+}
+
+// Unified Card Variant Props
+
+interface ContentVariantProps extends UnifiedBaseProps {
+  actionIcon?: string;
+  actionLabel?: string;
+  collection?: 'blog' | 'projects' | 'toys';
+  loading?: 'eager' | 'lazy';
+  post: CollectionEntry<'blog'> | CollectionEntry<'projects'> | CollectionEntry<'toys'>;
+  variant: 'content';
+}
+
+interface IconVariantProps extends UnifiedBaseProps {
+  align?: 'center' | 'start';
+  icon: string;
+  newTab?: boolean;
+  subtitle?: string;
+  title: string;
+  variant: 'icon';
+}
+
+interface PortfolioVariantProps extends UnifiedBaseProps {
+  headingLevel: number;
+  itemClass?: string;
+  portfolioItem: PortfolioItem;
+  variant: 'portfolio';
+}
+
+// Combined Props: Either it's a Unified Card (with a specific variant) OR a generic Card
+type Props =
+  | (BaseCardProps & {
+      variant?: 'default';
+    })
+  | UnifiedProps;
+
+interface UnifiedBaseProps {
+  animate?: boolean;
+  class?: string;
+  delay?: number;
+  glowColor?: string;
+  href?: string;
+  interactive?: boolean;
+  style?: 'default' | 'navigation';
+}
+
+type UnifiedProps = ContentVariantProps | IconVariantProps | PortfolioVariantProps;
+
+const props = Astro.props;
+
+// Helper to determine if we are rendering a unified variant
+const isUnified =
+  props.variant === 'content' ||
+  props.variant === 'icon' ||
+  props.variant === 'portfolio';
+
+/**
+ * Renders the INNER content of the generic card wrapper.
+ * This function returns the JSX for the content, but since we are inside an Astro file frontmatter,
+ * we can't easily return JSX to render later.
+ * Instead, we'll handle the logic in the template status.
+ */
+
+// Initialize variables for 'icon' variant
+let Element: any = 'div';
+let elementProps: any = { class: 'group block h-full' };
+let alignClass = '';
+let animate = false;
+let delay = 0;
+let className = '';
+let interactive = true;
+let icon = '';
+let itemTitle = '';
+let subtitle: string | undefined = undefined;
+let href: string | undefined = undefined;
+
+if (props.variant === 'icon') {
+  const {
+    align = 'start',
+    animate: anim = false,
+    class: clName,
+    delay: dly = 0,
+    href: link,
+    icon: icn,
+    interactive: inter = true,
+    newTab = false,
+    subtitle: sub,
+    title: ttl,
+  } = props;
+
+  animate = anim;
+  className = clName || '';
+  delay = dly;
+  href = link;
+  icon = icn;
+  interactive = inter;
+  subtitle = sub;
+  itemTitle = ttl;
+
+  Element = href ? 'a' : 'div';
+  elementProps = href
+    ? {
+      class: 'group block h-full',
+      href,
+      rel: newTab ? 'noopener noreferrer' : undefined,
+      target: newTab ? '_blank' : undefined,
+    }
+    : { class: 'group block h-full' };
+  alignClass =
+    align === 'center' ? 'items-center text-center' : 'items-start text-left';
+}
+---
+
+{
+  !isUnified && (() => {
+    // Generic Card Render
+    const {
+      as: TagName = 'div',
+      class: className,
+      glowColor,
+      interactive = false,
+      style: cardStyle = 'default',
+      // eslint-disable-next-line no-unused-vars
+      variant: _variant,
+      ...rest
+    } = props as BaseCardProps & { variant?: string };
+
+    const Tag = TagName as any;
+
+    return (
+      <Tag
+        class:list={card({ class: className, interactive, style: cardStyle })}
+        style={{
+          '--glow-color': glowColor || 'var(--color-primary)',
+        }}
+        {...rest}
+      >
+        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);">
+        </div>
+        <slot />
+      </Tag>
+    );
+  })()
+}
+
+{
+  props.variant === 'icon' && (
+    <Element {...elementProps}>
+      <div
+        class:list={card({
+          class: cn(
+            'flex h-full flex-col gap-4 transition-all duration-500',
+            alignClass,
+            animate && 'animate-in fade-in slide-in-from-bottom-4',
+            className,
+          ),
+          interactive,
+          style: (props as any).style || 'default',
+        })}
+        style={{
+          ...(animate ? { 'animation-delay': `${delay}ms` } : {}),
+          '--glow-color': (props as any).glowColor || 'var(--color-primary)',
+        }}
+      >
+        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);">
+        </div>
+
+        {((props as any).style === 'navigation') && (
+          <>
+            <div class="absolute inset-0 -z-20 bg-linear-to-b from-(--glow-color)/10 to-transparent opacity-40 transition-opacity duration-500 group-hover:opacity-60"></div>
+
+            {/* Animated Glossy Border matching header */}
+            <div class="absolute inset-0 -z-10 bg-linear-to-r from-primary/10 via-accent/10 to-destructive/10 opacity-0 blur-sm transition-opacity duration-500 group-hover:opacity-30"></div>
+
+            {/* Decorative Corner Lines - Unified Pattern */}
+            <div class="absolute top-0 left-0 size-8 rounded-tl-lg border-t border-l border-(--glow-color)/30 transition-all duration-500 group-hover:size-12 group-hover:border-(--glow-color)/60"></div>
+            <div class="absolute right-0 bottom-0 size-8 rounded-br-lg border-r border-b border-(--glow-color)/30 transition-all duration-500 group-hover:size-12 group-hover:border-(--glow-color)/60"></div>
+          </>
+        )}
+        <div class:list={[
+          "flex w-full flex-1 flex-col transition-transform duration-500 ease-out",
+          {"gap-4": (props as any).style !== 'navigation', "justify-between p-2": (props as any).style === 'navigation'}
+        ]}>
+          <IconBox
+            class="transition-all duration-500 group-hover:scale-110 group-hover:bg-foreground group-hover:text-background group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+            size="md"
+            variant="dimmed"
+          >
+            <Icon height={20} name={icon} width={20} />
+          </IconBox>
+
+          <Stack align="start" class="w-full" gap={1}>
+            <Heading
+              class="transition-colors group-hover:text-foreground"
+              level={3}
+              size="item"
+            >
+              {itemTitle}
+            </Heading>
+            {subtitle && (
+              <Text
+                class="group-hover:text-muted-foreground/80"
+                size="sm"
+                variant="secondary"
+              >
+                {subtitle}
+              </Text>
+            )}
+          </Stack>
+        </div>
+
+        {href && (
+          <div class="absolute top-4 right-4 opacity-0 transition-opacity group-hover:opacity-100">
+            <Icon class="size-5 text-muted-foreground" name="mdi:arrow-top-right" />
+          </div>
+        )}
+
+        <slot />
+      </div>
+    </Element>
+  )
+}
+
+<script>
+  function initInteractiveCards() {
+    const cards = document.querySelectorAll('.group\\/card');
+
+    cards.forEach((card) => {
+      if (!(card instanceof HTMLElement)) return;
+
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Spotlight
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      };
+
+      const handleMouseLeave = () => {
+        // No reset needed for spotlight as it fades via CSS
+      };
+
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+    });
+  }
+
+  // Initialize on load and after transitions
+  initInteractiveCards();
+  document.addEventListener('astro:after-swap', initInteractiveCards);
+</script>
+
+{
+  props.variant === 'portfolio' &&
+    (() => {
+      const { glowColor, headingLevel, itemClass, portfolioItem: item } = props;
+
+      const Element = item.href ? 'a' : 'div';
+      const elementProps = item.href
+        ? { class: 'group block', href: item.href }
+        : { class: 'group block' };
+
+      return (
+        <Element {...elementProps}>
+          <div
+            class:list={card({
+              class: cn(
+                itemClass,
+                'animate-in fade-in slide-in-from-bottom-2 h-full',
+              ),
+              interactive: !!item.href,
+            })}
+            style={{
+              '--glow-color': glowColor || 'var(--color-primary)',
+            }}
+          >
+            <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+              style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);">
+            </div>
+
+            <Stack
+              align={{ base: 'start', sm: 'start' }}
+              class="mb-4"
+              direction={{ base: 'col', sm: 'row' }}
+              gap={3}
+              justify="between"
+            >
+              <div class="min-w-0">
+                <Heading
+                  class="transition-colors group-hover:text-foreground"
+                  level={
+                    headingLevel + 1 <= 6 ? ((headingLevel + 1) as any) : 6
+                  }
+                  size="lg"
+                >
+                  {item.title}
+                </Heading>
+                <Text
+                  class="mt-1 font-mono text-[11px] font-semibold tracking-wide text-muted-foreground uppercase"
+                  variant="muted"
+                >
+                  {item.subtitle}
+                </Text>
+              </div>
+              <Stack
+                align="center"
+                class="mt-1 w-full sm:mt-0 sm:w-auto"
+                direction="row"
+                gap={3}
+                justify={{ base: 'between', sm: 'end' }}
+              >
+                <Badge variant="default">{item.meta}</Badge>
+
+                {item.href && (
+                  <Button
+                    as="div"
+                    class="h-auto rounded-full px-3 py-1.5 text-[9px] font-bold tracking-widest text-muted-foreground uppercase transition-all duration-500 group-hover:border-primary/30 group-hover:bg-primary/10 group-hover:text-primary hover:border-primary/30 hover:bg-primary/10 hover:text-primary"
+                    size="sm"
+                    variant="outline"
+                  >
+                    View
+                    <Icon
+                      class="ml-1"
+                      height={12}
+                      name="mdi:arrow-top-right"
+                      width={12}
+                    />
+                  </Button>
+                )}
+              </Stack>
+            </Stack>
+
+            <div class="mb-6">
+              <Text
+                class="line-clamp-2 leading-relaxed transition-colors group-hover:text-muted-foreground/80"
+                size="sm"
+              >
+                {item.desc}
+              </Text>
+            </div>
+
+            <Tags class="mt-auto" limit={3} tags={item.tags} />
+          </div>
+        </Element>
+      );
+    })()
+}
+
+{
+  props.variant === 'content' &&
+    (() => {
+      const {
+        actionIcon = 'mdi:arrow-right',
+        actionLabel = 'Read Post',
+        glowColor,
+        loading = 'lazy',
+        post,
+      } = props;
+
+      // Use helper to normalize data
+      const { description, heroImage, postUrl, pubDate, subtitle, title } = getCardData(post);
+
+      return (
+        <a class="group" href={postUrl}>
+          <div class:list={cardVariants({ class: 'h-full', interactive: true })}
+            style={{
+              '--glow-color': glowColor || 'var(--color-primary)',
+            }}
+          >
+            <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+              style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);">
+            </div>
+
+            {heroImage && (
+              <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-border">
+                <ZoomableImage
+                  alt={title}
+                  class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  height={360}
+                  loading={loading}
+                  src={heroImage}
+                  uploadDate={pubDate}
+                  width={720}
+                />
+                <div class="absolute inset-0 bg-linear-to-t from-background/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+              </div>
+            )}
+            <Stack gap={2}>
+              <div class="flex items-center justify-between">
+                {pubDate && (
+                  <Text
+                    as="span"
+                    class="font-mono text-[10px] tracking-widest text-muted-foreground uppercase"
+                  >
+                    <FormattedDate date={pubDate} />
+                  </Text>
+                )}
+                {subtitle && (
+                  <Text
+                    as="span"
+                    class="font-mono text-[10px] tracking-widest text-primary uppercase"
+                  >
+                    {subtitle}
+                  </Text>
+                )}
+              </div>
+              <Heading
+                class="transition-colors group-hover:text-primary"
+                level={4}
+                size="lg"
+              >
+                {title}
+              </Heading>
+              {description && (
+                <Text class="line-clamp-2" size="sm">
+                  {description}
+                </Text>
+              )}
+            </Stack>
+
+            <div class="mt-auto pt-6">
+              <Stack
+                align="center"
+                class="w-fit rounded-full border border-border bg-background/50 px-3 py-1.5 text-muted-foreground transition-all duration-500 group-hover:border-primary/30 group-hover:bg-primary/10 group-hover:pr-2 group-hover:pl-4 group-hover:text-primary"
+                direction="row"
+                gap={2}
+              >
+                <Text
+                  as="span"
+                  class="font-mono text-[9px] font-bold tracking-widest uppercase"
+                >
+                  {actionLabel}
+                </Text>
+                <Icon class="transition-transform duration-300 group-hover:translate-x-1" height={12} name={actionIcon} width={12} />
+              </Stack>
+            </div>
+          </div>
+        </a>
+      );
+    })()
+}

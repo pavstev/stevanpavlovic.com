@@ -1,0 +1,12 @@
+---
+import GiscusWidget from '../atoms/giscus-widget.astro';
+---
+
+<GiscusWidget />
+
+<script>
+  import { initGiscus } from '../../lib/giscus-client';
+
+  initGiscus();
+  document.addEventListener('astro:page-load', initGiscus);
+</script>

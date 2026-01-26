@@ -1,0 +1,122 @@
+---
+title: 'TypeScript Design Patterns: Builder, Factory, and Singleton'
+description: 'Deep dive into essential TypeScript design patterns with practical examples and best practices'
+pubDate: '2024-02-01'
+tags: ['typescript', 'design-patterns', 'architecture']
+---
+
+Design patterns are proven solutions to common programming challenges. In TypeScript, these patterns become even more powerful with strong typing and modern language features.
+
+## The Builder Pattern
+
+The Builder pattern separates object construction from its representation, allowing step-by-step creation of complex objects.
+
+```typescript
+class UserBuilder {
+  private user: Partial<User> = {};
+
+  setName(name: string): this {
+    this.user.name = name;
+    return this;
+  }
+
+  setEmail(email: string): this {
+    this.user.email = email;
+    return this;
+  }
+
+  setRole(role: 'admin' | 'user'): this {
+    this.user.role = role;
+    return this;
+  }
+
+  build(): User {
+    if (!this.user.name || !this.user.email) {
+      throw new Error('Name and email are required');
+    }
+    return this.user as User;
+  }
+}
+
+// Usage
+const user = new UserBuilder()
+  .setName('John Doe')
+  .setEmail('john@example.com')
+  .setRole('admin')
+  .build();
+```
+
+## Factory Pattern
+
+Factories encapsulate object creation logic, making your code more maintainable and testable.
+
+```typescript
+interface Logger {
+  log(message: string): void;
+}
+
+class ConsoleLogger implements Logger {
+  log(message: string): void {
+    console.log(`[Console] ${message}`);
+  }
+}
+
+class FileLogger implements Logger {
+  log(message: string): void {
+    // Write to file
+    console.log(`[File] ${message}`);
+  }
+}
+
+class LoggerFactory {
+  static create(type: 'console' | 'file'): Logger {
+    switch (type) {
+      case 'console':
+        return new ConsoleLogger();
+      case 'file':
+        return new FileLogger();
+      default:
+        throw new Error(`Unknown logger type: ${type}`);
+    }
+  }
+}
+```
+
+## Singleton Pattern
+
+Ensure a class has only one instance and provide global access to it.
+
+```typescript
+class DatabaseConnection {
+  private static instance: DatabaseConnection;
+  private constructor() {
+    // Private constructor prevents external instantiation
+  }
+
+  static getInstance(): DatabaseConnection {
+    if (!DatabaseConnection.instance) {
+      DatabaseConnection.instance = new DatabaseConnection();
+    }
+    return DatabaseConnection.instance;
+  }
+
+  query(sql: string): void {
+    console.log(`Executing: ${sql}`);
+  }
+}
+
+// Usage
+const db1 = DatabaseConnection.getInstance();
+const db2 = DatabaseConnection.getInstance();
+console.log(db1 === db2); // true
+```
+
+## Best Practices
+
+1. **Use interfaces** - Define contracts for flexibility
+2. **Leverage TypeScript's type system** - Catch errors at compile time
+3. **Keep it simple** - Don't over-engineer with patterns
+4. **Consider composition** - Favor composition over inheritance
+5. **Document intent** - Make pattern usage clear to other developers
+
+Design patterns are tools, not rules. Use them when they genuinely improve your code's maintainability and clarity.

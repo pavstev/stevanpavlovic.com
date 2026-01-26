@@ -1,0 +1,38 @@
+---
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
+
+import Separator from '../atoms/separator.astro';
+import Stack from '../molecules/stack.astro';
+
+interface Props {
+  endDate?: Date;
+  startDate: Date;
+}
+
+const { endDate, startDate } = Astro.props;
+
+const start = dayjs(startDate);
+const end = endDate ? dayjs(endDate) : dayjs();
+const diff = end.diff(start);
+const dur = dayjs.duration(diff);
+
+const years = dur.years();
+const months = dur.months();
+---
+
+<Stack align="center" class="text-muted-foreground" direction="row" gap={2}>
+  <span>
+    {start.format('MMM YYYY')} - {endDate ? dayjs(endDate).format('MMM YYYY') : 'Present'}
+  </span>
+  <Separator />
+  <span>
+    {years > 0 ? `${years} yr${years > 1 ? 's' : ''}` : ''}
+    {months > 0 ? ` ${months} mo${months > 1 ? 's' : ''}` : ''}
+    {years === 0 && months === 0 ? 'Less than a month' : ''}
+  </span>
+</Stack>

@@ -1,0 +1,57 @@
+---
+import type { PortfolioItem } from '../../lib/portfolio';
+
+import Card from '../molecules/card.astro';
+import Empty from '../molecules/empty.astro';
+import MasonryGrid from '../molecules/masonry-grid.astro';
+
+interface Props {
+  emptyAction?: {
+    href: string;
+    label: string;
+    onClick?: string;
+  };
+  emptyDescription?: string;
+  emptyIcon?: string;
+  emptyTitle?: string;
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  itemClass?: string;
+  items: PortfolioItem[];
+}
+
+const {
+  emptyAction,
+  emptyDescription = "We couldn't find any items at the moment.",
+  emptyIcon = 'mdi:alert-circle-outline',
+  emptyTitle = 'No items found',
+  headingLevel = 2,
+  itemClass = 'portfolio-item',
+  items,
+} = Astro.props;
+---
+
+{
+  items.length > 0 ? (
+    <MasonryGrid columns={2}>
+      {
+        items.map((item) => (
+          <div class="masonry-item">
+            <Card
+              headingLevel={headingLevel}
+              itemClass={itemClass}
+              portfolioItem={item}
+              variant="portfolio"
+            />
+          </div>
+        ))
+      }
+    </MasonryGrid>
+  ) : (
+    <Empty
+      action={emptyAction}
+      description={emptyDescription}
+      icon={emptyIcon}
+      title={emptyTitle}
+    />
+  )
+}

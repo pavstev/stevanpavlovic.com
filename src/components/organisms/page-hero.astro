@@ -1,0 +1,47 @@
+---
+
+import GlowEffect from '../atoms/glow-effect.astro';
+import Heading from '../atoms/heading.astro';
+import Text from '../atoms/text.astro';
+import Stack from '../molecules/stack.astro';
+
+interface Props {
+  class?: string;
+  description?: string;
+  id?: string;
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  title: string;
+}
+
+const {
+  class: className,
+  description,
+  id,
+  level = 1,
+  title,
+} = Astro.props;
+---
+
+<div class:list={["relative", className]} id={id}>
+  <GlowEffect variant="page-left" />
+  <GlowEffect variant="page-right" />
+
+  <Stack class="relative mb-8 max-w-4xl" gap={4}>
+    <slot name="eyebrow" />
+    <Heading
+      class="bg-linear-to-b from-foreground via-foreground to-muted-foreground bg-clip-text leading-tight text-balance text-transparent drop-shadow-sm"
+      level={level}
+      size="4xl"
+    >
+      {title}
+    </Heading>
+    <slot name="aux" />
+    {description && (
+      <Text class="leading-normal font-light text-pretty" size="lg" variant="secondary">
+        {description}
+      </Text>
+    )}
+    <slot name="actions" />
+    <slot />
+  </Stack>
+</div>

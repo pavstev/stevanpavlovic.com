@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'hero' | 'page-left' | 'page-right';
+}
+
+const { class: className, variant = 'hero' } = Astro.props;
+
+const variants = {
+  hero: "absolute inset-0 -z-10 animate-pulse rounded-full bg-primary/30 blur-2xl",
+  'page-left': "pointer-events-none absolute -top-20 -left-20 -z-10 size-64 rounded-full bg-primary/10 blur-3xl filter transition-all duration-700 md:size-96 md:bg-primary/5",
+  'page-right': "pointer-events-none absolute -top-10 -right-10 -z-10 size-48 rounded-full bg-secondary/10 blur-3xl filter transition-all duration-700 md:size-64 md:bg-secondary/5"
+};
+---
+<div class:list={[variants[variant], className]}></div>

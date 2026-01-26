@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  class?: string;
+  columns?: number;
+}
+
+const { class: className, columns = 2, ...rest } = Astro.props;
+---
+
+<div
+  class:list={[
+    'w-full gap-x-6 [column-count:1] md:[column-count:var(--masonry-cols)]',
+    className,
+  ]}
+  style={{ '--masonry-cols': columns }}
+  {...rest}
+>
+  <slot />
+</div>
+
+<style is:global>
+  /* Ensure children don't break across columns */
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+</style>

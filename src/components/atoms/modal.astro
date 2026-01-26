@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  class?: string;
+  id: string;
+}
+
+const { class: className, id } = Astro.props;
+---
+
+<dialog
+  class:list={[
+    "backdrop:animate-fade-in m-auto bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm open:flex open:animate-[zoom-in_0.3s_cubic-bezier(0.34,1.56,0.64,1)] open:flex-col open:items-center open:justify-center",
+    className
+  ]}
+  id={id}
+>
+  <div class="relative overflow-hidden rounded-md border border-border bg-background p-4 shadow-2xl sm:p-6">
+    <form class="absolute top-2 right-2 z-10" method="dialog">
+      <button class="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground">
+        <Icon name="mdi:close" size={24} />
+        <span class="sr-only">Close</span>
+      </button>
+    </form>
+    <slot />
+  </div>
+</dialog>
+
+<script>
+  import { initModals } from '../../lib/modal';
+
+  initModals();
+  document.addEventListener('astro:page-load', initModals);
+</script>
+
+<style>
+  dialog {
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+  }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    animation: fade-in 0.3s ease-out;
+  }
+
+  @keyframes zoom-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

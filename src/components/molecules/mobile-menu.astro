@@ -1,0 +1,36 @@
+---
+interface Props {
+  navItems: readonly { href: string; label: string }[];
+}
+
+import { isActivePath } from '../../lib/nav';
+
+const { navItems } = Astro.props;
+const { pathname } = Astro.url;
+
+const isActive = (href: string) => isActivePath(pathname, href);
+---
+
+<div
+  class="pointer-events-none fixed inset-0 z-40 flex -translate-x-full flex-col items-start justify-center bg-background/95 pl-8 opacity-0 backdrop-blur-2xl transition-all duration-500 data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
+  id="mobile-menu"
+>
+  <nav class="flex flex-col items-start gap-6">
+    {
+      navItems.map((item, idx) => (
+        <a
+          class:list={[
+            "text-2xl font-bold tracking-tight transition-all duration-300 hover:translate-x-2",
+            "data-[active=true]:text-primary",
+            "data-[active=false]:text-muted-foreground data-[active=false]:hover:text-foreground"
+          ]}
+          data-active={String(isActive(item.href))}
+          href={item.href}
+          style={`transition-delay: ${idx * 50}ms`}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+</div>

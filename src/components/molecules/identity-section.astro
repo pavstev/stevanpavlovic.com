@@ -3,14 +3,12 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cn } from '../../lib/cn';
 
-interface Props extends HTMLAttributes<'div'> {
-  size?: 'lg' | 'md' | 'sm';
-}
+interface Props extends HTMLAttributes<'div'> {}
 
-const { class: className, size = 'sm', ...rest } = Astro.props;
+const { class: className, ...rest } = Astro.props;
 ---
 
-<div class={cn("flex items-center gap-3", className)} {...rest}>
+<div class:list={cn("flex items-center gap-3", className)} {...rest}>
   <slot name="avatar" />
   <div class="hidden sm:block">
     <slot name="name" />

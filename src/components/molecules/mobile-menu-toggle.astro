@@ -1,6 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components';
 import type { HTMLAttributes } from 'astro/types';
+
+import { Icon } from 'astro-icon/components';
 
 import { cn } from '../../lib/cn';
 
@@ -11,15 +12,15 @@ interface Props extends HTMLAttributes<'button'> {
 const { class: className, size = 'md', ...rest } = Astro.props;
 
 const sizeClasses = {
-  sm: 'size-8',
-  md: 'size-9',
   lg: 'size-10',
+  md: 'size-9',
+  sm: 'size-8',
 };
 ---
 
 <button
   aria-label="Menu"
-  class={cn(
+  class:list={cn(
     "group/toggle relative flex items-center justify-center rounded-full bg-muted/80 text-muted-foreground ring-1 ring-border/50 transition-colors hover:bg-muted hover:text-foreground md:hidden",
     sizeClasses[size],
     className

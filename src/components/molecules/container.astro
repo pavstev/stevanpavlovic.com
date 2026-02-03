@@ -22,12 +22,11 @@ const {
 
 const maxWidthValue =
   typeof maxWidth === 'number' ? `${String(maxWidth)}px` : maxWidth;
-const maxWidthStyle = `max-width: ${maxWidthValue};`;
 ---
 
 <Tag
   class:list={cn(container(), className)}
-  style={maxWidthStyle}
+  style={`max-width: ${maxWidthValue};`}
   {...rest}
 >
   <slot />

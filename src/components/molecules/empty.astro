@@ -4,12 +4,12 @@ import { Icon } from 'astro-icon/components';
 import Button from '../atoms/button.astro';
 import Heading from '../atoms/heading.astro';
 import Text from '../atoms/text.astro';
+import Stack from './stack.astro';
 
 interface Props {
   action?: {
     href: string;
     label: string;
-    onClick?: string;
   };
   description?: string;
   icon?: string;
@@ -24,21 +24,30 @@ const {
 } = Astro.props;
 ---
 
-<div class="animate-in fade-in zoom-in flex flex-col items-center justify-center py-20 text-center duration-500">
-  <div class="mb-6 rounded-full bg-secondary p-6 ring-1 ring-border">
-    <Icon class="text-muted-foreground" name={icon} size={48} />
-  </div>
-  <Heading class="mb-2" level={3} size="item">
-    {title}
-  </Heading>
-  <Text class="max-w-md" variant="secondary">
-    {description}
-  </Text>
-  {
-    action && (
-      <Button as="a" class="mt-8" href={action.href} variant="default">
-        {action.label}
-      </Button>
-    )
-  }
+<div
+  aria-label={title}
+  class="flex flex-col items-center justify-center py-16 text-center"
+  role="region"
+>
+  <Stack align="center" gap={4}>
+    <div class="flex items-center justify-center rounded-full bg-muted/30 p-4 ring-1 ring-border/50">
+      <Icon class="text-muted-foreground" name={icon} size={32} />
+    </div>
+
+    <Heading level={3} size="lg">
+      {title}
+    </Heading>
+
+    <Text class="max-w-md" variant="muted">
+      {description}
+    </Text>
+
+    {
+      action && (
+        <Button as="a" href={action.href} variant="primary">
+          {action.label}
+        </Button>
+      )
+    }
+  </Stack>
 </div>

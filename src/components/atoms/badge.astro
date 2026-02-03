@@ -3,43 +3,63 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const badge = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
+import { cn } from '../../lib/cn';
+
+/**
+ * Badge Component - Minimalistic, modern design
+ */
+const badgeVariants = cva(
+  // Base styles
+  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+  // Transitions
+  'transition-colors duration-200 ease-out',
+  // Focus states
+  'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
   {
     defaultVariants: {
-      animation: 'none',
       variant: 'default',
     },
     variants: {
-      animation: {
-        none: '',
-        pulse: 'animate-pulse',
-      },
       variant: {
+        // Accent - Cyan tones
+        accent:
+          'border border-accent/20 bg-accent/15 text-accent',
+        // Primary - Solid accent
         default:
-          'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
+          'border border-primary/20 bg-primary/15 text-primary',
+        // Destructive - Red tones
         destructive:
-          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        neutral: 'border-border text-muted-foreground',
-        outline: 'text-foreground',
+          'border border-destructive/20 bg-destructive/15 text-destructive',
+        // Muted - Minimal
+        muted:
+          'bg-muted/50 text-muted-foreground',
+        // Outline - Border only
+        outline:
+          'border border-border text-foreground/80',
+        // Secondary - Muted blue
         secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        surface: 'border-border bg-muted text-muted-foreground',
+          'border border-secondary/20 bg-secondary/15 text-secondary',
+        // Success - Green tones
+        success:
+          'border border-emerald-500/20 bg-emerald-500/15 text-emerald-400',
       }
     },
-  },
+  }
 );
 
-interface Props
-  extends HTMLAttributes<'span'>, VariantProps<typeof badge> {}
+interface Props extends HTMLAttributes<'span'>, VariantProps<typeof badgeVariants> {
+  as?: 'div' | 'span';
+  class?: string;
+}
 
 const {
+  as: Tag = 'span',
   class: className,
-  variant = 'default',
+  variant,
   ...props
 } = Astro.props;
 ---
 
-<span class:list={badge({ class: className, variant })} {...props}>
+<Tag class:list={cn(badgeVariants({ className, variant }))} {...props}>
   <slot />
-</span>
+</Tag>

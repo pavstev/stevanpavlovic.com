@@ -9,7 +9,11 @@ interface Props extends HTMLAttributes<'button'> {
   size?: 'lg' | 'md' | 'sm';
 }
 
-const { class: className, size = 'md', ...rest } = Astro.props;
+const {
+  class: className,
+  size = 'md',
+  ...props
+} = Astro.props;
 
 const sizeClasses = {
   lg: 'size-10',
@@ -19,21 +23,38 @@ const sizeClasses = {
 ---
 
 <button
-  aria-label="Menu"
+  aria-label="Toggle menu"
   class:list={cn(
-    "group/toggle relative flex items-center justify-center rounded-full bg-muted/80 text-muted-foreground ring-1 ring-border/50 transition-colors hover:bg-muted hover:text-foreground md:hidden",
+    // Base styles
+    'group/toggle relative flex items-center justify-center rounded-full',
+    'bg-muted/50 text-muted-foreground',
+    'border border-border/50',
+    'transition-all duration-200 ease-out',
+    'hover:bg-muted hover:text-foreground',
+    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
+    // Hidden on desktop
+    'md:hidden',
+    // Size
     sizeClasses[size],
     className
   )}
-  {...rest}
+  {...props}
 >
   <Icon
-    class="transition-transform duration-300 group-[.open]/toggle:scale-0"
+    class:list={cn(
+      'transition-all duration-200 ease-out',
+      'group-[.open]/toggle:rotate-90 group-[.open]/toggle:opacity-0',
+      'group-hover/toggle:scale-105'
+    )}
     name="mdi:menu"
     size={20}
   />
   <Icon
-    class="absolute scale-0 transition-transform duration-300 group-[.open]/toggle:scale-100"
+    class:list={cn(
+      'absolute transition-all duration-200 ease-out',
+      'rotate-90 opacity-0',
+      'group-[.open]/toggle:rotate-0 group-[.open]/toggle:opacity-100'
+    )}
     name="mdi:close"
     size={20}
   />

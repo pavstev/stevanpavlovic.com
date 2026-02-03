@@ -3,39 +3,73 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const text = cva('leading-relaxed transition-colors duration-300', {
-  variants: {
-    size: {
-      '2xl': 'text-2xl', // Added for larger copy
-      base: 'text-base',
-      lg: 'text-lg',
-      sm: 'text-sm',
-      xl: 'text-xl',
-      xs: 'text-xs',
-    },
-    variant: {
-      gradient: 'bg-linear-to-r from-foreground/80 to-muted-foreground bg-clip-text text-transparent',
-      highlight: 'font-medium text-foreground', // Important text
-      muted: 'text-muted-foreground',
-      primary: 'text-foreground/90', // Standard body text
-      secondary: 'text-muted-foreground', // Subtitles/descriptions
-    },
-  },
-});
+import { cn } from '../../lib/cn';
 
-interface Props extends HTMLAttributes<any>, VariantProps<typeof text> {
-  as?: any;
+/**
+ * Text Component - Modern body text with hierarchy
+ */
+const textVariants = cva(
+  // Base styles
+  'leading-relaxed transition-colors duration-200 ease-out',
+  {
+    defaultVariants: {
+      size: 'base',
+      variant: 'default',
+    },
+    variants: {
+      size: {
+        // 2XL - Large display
+        '2xl': 'text-2xl leading-tight',
+        // Base - Default body text
+        base: 'text-base leading-relaxed',
+        // Large - Prominent body text
+        lg: 'text-lg leading-relaxed',
+        // Small - Secondary text
+        sm: 'text-sm leading-normal',
+        // Extra large - Display text
+        xl: 'text-xl leading-relaxed',
+        // Extra small - Labels, captions
+        xs: 'text-xs leading-normal',
+      },
+      variant: {
+        // Default - Standard body text
+        default: 'text-foreground/90',
+        // Destructive - Error messages
+        destructive: 'text-destructive',
+        // Disabled - Low emphasis
+        disabled: 'text-muted-foreground/50',
+        // Gradient - Text gradient
+        gradient:
+          'text-gradient bg-linear-to-r from-foreground/90 to-muted-foreground bg-clip-text',
+        // Muted - Secondary information
+        muted: 'text-muted-foreground',
+        // Primary - Accent text
+        primary: 'text-primary',
+        // Secondary - Subtitles
+        secondary: 'text-muted-foreground/80',
+        // Success - Success messages
+        success: 'text-emerald-400',
+        // Warning - Caution messages
+        warning: 'text-amber-400',
+      }
+    },
+  }
+);
+
+interface Props extends HTMLAttributes<'p'>, VariantProps<typeof textVariants> {
+  as?: 'div' | 'em' | 'p' | 'small' | 'span' | 'strong';
+  class?: string;
 }
 
 const {
   as: Tag = 'p',
   class: className,
-  size = 'base',
-  variant = 'secondary',
+  size,
+  variant,
   ...props
 } = Astro.props;
 ---
 
-<Tag class:list={text({ class: className, size, variant })} {...props}>
+<Tag class:list={cn(textVariants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

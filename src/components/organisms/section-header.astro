@@ -1,9 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import GradientDivider from '../atoms/gradient-divider.astro';
 import Heading from '../atoms/heading.astro';
 import Text from '../atoms/text.astro';
+import Container from '../molecules/container.astro';
 import Stack from '../molecules/stack.astro';
 
 interface Props {
@@ -27,30 +27,25 @@ const {
 } = Astro.props;
 ---
 
-<div class:list={["relative mb-10 sm:mb-12", className]} id={id}>
-  <Stack
-    align={{ base: 'start', sm: 'center' } as any}
-    direction={{ base: 'col', sm: 'row' } as any}
-    gap={4}
-    justify="between"
-  >
-    <Stack align="center" class="min-w-0" direction="row" gap={4}>
+<Container class:list={className} id={id}>
+  <Stack align={{ base: 'start', sm: 'center' }} direction={{ base: 'col', sm: 'row' }} gap={4} justify="between">
+    <Stack align="center" class="min-w-0" direction="row" gap={3}>
       {icon && (
-        <div class="flex size-10 items-center justify-center rounded-xl bg-linear-to-br from-border to-muted shadow-md ring-1 ring-border">
+        <div class="flex size-10 items-center justify-center rounded-lg bg-muted">
           <Icon class="text-muted-foreground" height={20} name={icon} width={20} />
         </div>
       )}
       <div class="min-w-0">
-        <Heading class="truncate bg-linear-to-br from-foreground to-muted-foreground bg-clip-text font-bold tracking-tight text-transparent sm:text-3xl" level={level} size="2xl">
+        <Heading level={level} size="xl">
           {title}
         </Heading>
         {subtitle && (
-          <Text class="mt-1 truncate font-sans text-sm font-medium tracking-widest text-muted-foreground uppercase">
+          <Text class="mt-1" size="sm" variant="muted">
             {subtitle}
           </Text>
         )}
         {description && (
-          <Text class="mt-2 text-sm text-muted-foreground" variant="secondary">
+          <Text class="mt-2" size="sm" variant="secondary">
             {description}
           </Text>
         )}
@@ -58,5 +53,4 @@ const {
     </Stack>
     <slot name="action" />
   </Stack>
-  <GradientDivider variant="section" />
-</div>
+</Container>

@@ -1,19 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import { Icon } from 'astro-icon/components';
-
 import { PROFILE } from '../../lib/config';
 import Avatar from '../atoms/avatar.astro';
 import Button from '../atoms/button.astro';
-import Separator from '../atoms/separator.astro';
+import Text from '../atoms/text.astro';
 import LayoutContent from "../layout/layout-content.astro";
 import FormattedDate from '../molecules/formatted-date.astro';
-import FormattedDuration from '../molecules/formatted-duration.astro';
 import Stack from '../molecules/stack.astro';
 import Tags from '../molecules/tags.astro';
-import ZoomableImage from '../molecules/zoomable-image.astro';
-import GiscusComments from './giscus-comments.astro';
 import PageHero from './page-hero.astro';
 
 type PostType = 'blog' | 'experience' | 'playground' | 'project';
@@ -32,29 +27,24 @@ const {
   type,
 } = Astro.props;
 
-// Determine defaults based on type
-const defaultBackLabel =
-  type === 'blog' ? 'BACK TO BLOG' :
-    type === 'project' ? 'BACK TO PROJECTS' :
-      type === 'playground' ? 'BACK TO PLAYGROUND' :
-        'BACK TO EXPERIENCE';
+const defaultBackLabel = type === 'blog' ? 'Back to Blog' :
+  type === 'project' ? 'Back to Projects' :
+    type === 'playground' ? 'Back to Playground' :
+      'Back to Experience';
 
-const defaultBackLink =
-  type === 'blog' ? '/blog' :
-    type === 'project' ? '/projects' :
-      type === 'playground' ? '/playground' :
-        '/experience';
+const defaultBackLink = type === 'blog' ? '/blog' :
+  type === 'project' ? '/projects' :
+    type === 'playground' ? '/playground' :
+      '/experience';
 
 const finalBackLabel = backLabel || defaultBackLabel;
 const finalBackLink = backLink || defaultBackLink;
 
-// Type-specific data extraction with type guards
 const title = type === 'experience' && 'role' in data && 'company' in data
   ? `${data.role} at ${data.company}`
   : ('title' in data ? data.title : '');
 
 const description = 'description' in data ? data.description : ('desc' in data ? data.desc : '');
-const heroImage = 'heroImage' in data ? data.heroImage : ('image' in data ? data.image : undefined);
 ---
 
 <LayoutContent
@@ -64,144 +54,53 @@ const heroImage = 'heroImage' in data ? data.heroImage : ('image' in data ? data
   title={title}
 >
   <PageHero description={description} slot="header" title={title}>
-    {/* Eyebrow slot - varies by type */}
-    <Stack
-      align="center"
-      class="font-mono text-xs font-medium tracking-wide text-muted-foreground uppercase"
-      direction="row"
-      gap={3}
-      slot="eyebrow"
-    >
+    <Stack align="center" class="font-mono text-xs tracking-wider uppercase" direction="row" gap={3} slot="eyebrow">
       {type === 'blog' && 'pubDate' in data && data.pubDate && (
-        <>
-          <FormattedDate date={data.pubDate} />
-          {'updatedDate' in data && data.updatedDate && (
-            <>
-              <Separator />
-              <span class="text-primary/80">
-                Updated <FormattedDate date={data.updatedDate} />
-              </span>
-            </>
-          )}
-        </>
+        <FormattedDate date={data.pubDate} />
       )}
-
       {type === 'project' && 'subtitle' in data && data.subtitle && (
-        <span class="text-primary/80">{data.subtitle}</span>
+        <Text variant="primary">{data.subtitle}</Text>
       )}
-
       {type === 'experience' && 'company' in data && (
         <>
-          <span class="text-primary/80">{data.company}</span>
-          {'location' in data && data.location && (
-            <>
-              <Separator />
-              <span class="text-muted-foreground">{data.location}</span>
-            </>
-          )}
-          {'type' in data && data.type && (
-            <>
-              <Separator />
-              <span class="text-muted-foreground">{data.type}</span>
-            </>
-          )}
+          <Text variant="primary">{data.company}</Text>
+          {'location' in data && data.location && <Text variant="muted">{data.location}</Text>}
         </>
-      )}
-
-      {type === 'playground' && 'pubDate' in data && data.pubDate && (
-        <FormattedDate date={data.pubDate} />
       )}
     </Stack>
 
-    {/* Aux slot - for experience duration */}
-    {type === 'experience' && 'startDate' in data && data.startDate && (
-      <Stack align="center" class="text-muted-foreground" direction="row" gap={2} slot="aux">
-        <Icon class="size-5 text-primary/80" name="mdi:calendar-range" />
-        <FormattedDuration endDate={'endDate' in data ? data.endDate : undefined} startDate={data.startDate} />
+    {type === 'blog' && (
+      <Stack align="center" direction="row" gap={3} slot="actions">
+        <Avatar alt={PROFILE.name} size="sm" src={PROFILE.avatar} />
+        <Stack gap={0}>
+          <Text class="font-medium">{PROFILE.name}</Text>
+          <Text class="text-xs" variant="muted">{PROFILE.role}</Text>
+        </Stack>
       </Stack>
     )}
 
-    {/* Actions slot - varies by type */}
-    <slot name="actions" slot="actions">
-      {type === 'blog' && (
-        <Stack align="center" direction="row" gap={4}>
-          <Avatar alt={PROFILE.name} src={PROFILE.avatar} />
-          <Stack gap={0}>
-            <span class="text-sm font-semibold text-foreground">{PROFILE.name}</span>
-            <span class="text-xs text-muted-foreground">{PROFILE.role}</span>
-          </Stack>
-        </Stack>
-      )}
-
-      {type === 'project' && (
-        <Stack align="center" class="flex-wrap" direction="row" gap={4}>
-          {'demoUrl' in data && data.demoUrl && (
-            <Button
-              as="a"
-              class="rounded-full"
-              href={data.demoUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-              variant="primary"
-            >
-              <Icon class="size-4" name="mdi:web" />
-              Live Demo
-            </Button>
-          )}
-          {'repoUrl' in data && data.repoUrl && (
-            <Button
-              as="a"
-              class="rounded-full bg-secondary/50"
-              href={data.repoUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-              variant="outline"
-            >
-              <Icon class="size-4" name="mdi:github" />
-              Source Code
-            </Button>
-          )}
-        </Stack>
-      )}
-
-      {type === 'experience' && 'skills' in data && data.skills && (
-        <div>
-          <Tags class="mt-2" tags={data.skills ?? []} />
-        </div>
-      )}
-    </slot>
+    {type === 'project' && (
+      <Stack align="center" direction="row" gap={3} slot="actions">
+        {'demoUrl' in data && data.demoUrl && (
+          <Button as="a" href={data.demoUrl} variant="primary">
+            Live Demo
+          </Button>
+        )}
+        {'repoUrl' in data && data.repoUrl && (
+          <Button as="a" href={data.repoUrl} variant="outline">
+            Source
+          </Button>
+        )}
+      </Stack>
+    )}
   </PageHero>
 
-  {/* Hero image */}
-  <slot name="hero-image" slot="hero-image">
-    {heroImage && (
-      <div class="mb-20 overflow-hidden rounded-md border border-border/50 bg-muted shadow-2xl shadow-black/50">
-        <ZoomableImage
-          alt={title || ""}
-          class="h-auto w-full object-cover"
-          height={600}
-          loading="eager"
-          src={heroImage}
-          uploadDate={'pubDate' in data ? data.pubDate : undefined}
-          width={1200}
-        />
-      </div>
-    )}
-  </slot>
-
-  {/* Additional metadata slot for projects */}
-  {type === 'project' && 'tags' in data && data.tags && (
-    <div class="mb-8">
-      <Tags tags={data.tags} />
-    </div>
+  {type === 'experience' && 'skills' in data && data.skills && (
+    <Stack gap={2}>
+      <Text class="text-sm font-medium">Skills</Text>
+      <Tags tags={data.skills ?? []} />
+    </Stack>
   )}
 
-  {/* Main content */}
   <slot />
-
-  {type === 'blog' && (
-    <div class="mt-20">
-      <GiscusComments />
-    </div>
-  )}
 </LayoutContent>

@@ -1,28 +1,67 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import { cn } from '../../lib/cn';
 import { SOCIALS } from '../../lib/config';
 
 interface Props {
   class?: string;
   itemClass?: string;
+  size?: 'lg' | 'md' | 'sm';
 }
 
-const { class: className, itemClass } = Astro.props;
+const {
+  class: className,
+  itemClass,
+  size = 'md',
+} = Astro.props;
+
+const sizeClasses = {
+  lg: 'size-10',
+  md: 'size-8',
+  sm: 'size-7',
+};
+
+const iconSizes = {
+  lg: 'size-5',
+  md: 'size-4',
+  sm: 'size-3.5',
+};
 ---
 
-<div class:list={["flex items-center gap-2 border-l border-border pl-4", className]}>
+<nav
+  aria-label="Social links"
+  class:list={cn(
+    'flex items-center gap-1',
+    className
+  )}
+>
   {
     SOCIALS.map((social) => (
       <a
         aria-label={social.name}
-        class:list={["group relative flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground", itemClass]}
+        class:list={cn(
+          // Base styles
+          'group relative flex items-center justify-center rounded-full',
+          'text-muted-foreground transition-all duration-200 ease-out',
+          'hover:bg-muted/50 hover:text-foreground',
+          // Size
+          sizeClasses[size],
+          itemClass
+        )}
         href={social.href}
         rel="noopener noreferrer"
         target="_blank"
       >
-        <Icon class="size-4 transition-transform duration-300 group-hover:scale-110" name={social.icon} />
+        <Icon
+          class:list={cn(
+            'transition-transform duration-300 ease-out',
+            'group-hover:scale-110',
+            iconSizes[size]
+          )}
+          name={social.icon}
+        />
       </a>
     ))
   }
-</div>
+</nav>

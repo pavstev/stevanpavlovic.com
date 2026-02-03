@@ -2,15 +2,16 @@
 import type { HTMLAttributes } from 'astro/types';
 
 import { cn } from '../../lib/cn';
+import Stack from './stack.astro';
 
 interface Props extends HTMLAttributes<'div'> {}
 
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class:list={cn("flex items-center gap-3", className)} {...rest}>
+<Stack align="center" class:list={cn("flex-row gap-3", className)} {...rest}>
   <slot name="avatar" />
   <div class="hidden sm:block">
     <slot name="name" />
   </div>
-</div>
+</Stack>

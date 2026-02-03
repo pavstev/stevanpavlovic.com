@@ -3,39 +3,74 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const heading = cva('font-bold tracking-tight text-foreground', {
-  defaultVariants: {
-    size: 'default',
-    variant: 'default',
-  },
-  variants: {
-    size: {
-      '2xl': 'text-2xl sm:text-3xl md:text-4xl',
-      '4xl': 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl', // Hero
-      default: 'text-3xl sm:text-4xl',
-      item: 'text-xl sm:text-2xl',
-      lg: 'text-lg sm:text-xl',
-      section: 'text-2xl sm:text-3xl',
-      xs: 'text-lg',
-    },
-    variant: {
-      default: 'text-foreground',
-      gradient: 'bg-linear-to-r from-foreground to-muted-foreground bg-clip-text text-transparent',
-      muted: 'text-muted-foreground',
-    }
-  }
-});
+import { cn } from '../../lib/cn';
 
-interface Props
-  extends HTMLAttributes<'h1'>, VariantProps<typeof heading> {
+/**
+ * Heading Component - Modern typography hierarchy
+ * Following Vercel/Geist design with tight tracking and proper scaling
+ */
+const headingVariants = cva(
+  // Base styles
+  'font-bold tracking-tight text-foreground',
+  // Letter spacing for headings
+  'tracking-tight',
+  {
+    defaultVariants: {
+      size: 'xl',
+      variant: 'default',
+    },
+    variants: {
+      size: {
+        // Display - Hero text
+        display: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
+        // Hero - Large section headers
+        hero: 'text-3xl sm:text-4xl md:text-5xl',
+        // LG - Section headings
+        lg: 'text-xl sm:text-2xl',
+        // MD - Subsection headings
+        md: 'text-lg sm:text-xl',
+        // SM - Card titles
+        sm: 'text-base sm:text-lg',
+        // XL - Main headings
+        xl: 'text-2xl sm:text-3xl md:text-4xl',
+        // XS - Small labels
+        xs: 'text-sm sm:text-base',
+      },
+      variant: {
+        // Default - Standard text
+        default: 'text-foreground',
+        // Gradient - Text gradient effect
+        gradient:
+          'text-gradient bg-linear-to-r from-foreground to-muted-foreground bg-clip-text',
+        // Gradient primary - Primary color gradient
+        'gradient-primary':
+          'text-gradient-primary bg-linear-to-r from-primary to-accent bg-clip-text',
+        // Muted - Subtle text
+        muted: 'text-muted-foreground',
+        // Primary - Accent text color
+        primary: 'text-primary',
+      }
+    },
+  }
+);
+
+interface Props extends HTMLAttributes<'h1'>, VariantProps<typeof headingVariants> {
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  class?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-const { class: className, level = 1, size = '2xl', ...props } = Astro.props;
+const {
+  class: className,
+  level = 1,
+  size,
+  variant,
+  ...props
+} = Astro.props;
 
 const Tag = `h${String(level)}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 ---
 
-<Tag class:list={heading({ class: className, size })} {...props}>
+<Tag class:list={cn(headingVariants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

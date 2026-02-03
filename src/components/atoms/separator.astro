@@ -3,9 +3,31 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cn } from '../../lib/cn';
 
-type Props = HTMLAttributes<'span'>;
+interface Props extends HTMLAttributes<'div'> {
+  class?: string;
+  decorative?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+}
 
-const { class: className, ...props } = Astro.props;
+const {
+  class: className,
+  decorative = true,
+  orientation = 'horizontal',
+  ...props
+} = Astro.props;
 ---
 
-<span class:list={cn("text-muted-foreground/50", className)} {...props}>•</span>
+<div
+  aria-orientation={decorative ? undefined : orientation}
+  class:list={cn(
+    // Base styles
+    'bg-border/50',
+    // Orientation
+    orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
+    // Spacing
+    'my-4',
+    className
+  )}
+  role={decorative ? 'none' : 'separator'}
+  {...props}
+/>

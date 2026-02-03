@@ -6,14 +6,14 @@ interface Props {
 
 const { class: className, variant = 'footer' } = Astro.props;
 
-const gradients = {
-  footer: "bg-linear-to-r from-transparent via-primary/10 to-transparent",
-  section: "bg-linear-to-r from-primary/50 via-border to-transparent opacity-50"
+const styles = {
+  footer: "bg-linear-to-r from-transparent via-primary/20 to-transparent",
+  section: "bg-linear-to-r from-border via-primary/30 to-border"
 };
-
-const baseClasses = variant === 'footer'
-  ? "absolute inset-x-0 top-0 h-px"
-  : "mt-6 h-px w-full";
 ---
 
-<div class:list={[baseClasses, gradients[variant], className]}></div>
+<div class:list={[
+  {"absolute inset-x-0 top-0 h-px": variant === 'footer', "mt-6 h-px w-full": variant !== 'footer'},
+  styles[variant],
+  className
+]}></div>

@@ -6,8 +6,11 @@ import { isActivePath } from "../../lib/nav";
 import Spacer from "../atoms/spacer.astro";
 import Text from "../atoms/text.astro";
 import Container from "../molecules/container.astro";
+import IdentitySection from "../molecules/identity-section.astro";
 import InteractiveAvatar from "../molecules/interactive-avatar.astro";
+import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
+import SearchBar from "../molecules/search-bar.astro";
 import Search from "../molecules/search.astro";
 import SocialIcons from "../molecules/social-icons.astro";
 
@@ -30,25 +33,24 @@ const activeColor = currentNavItem ? currentNavItem.color : NAV_ITEMS.find(i => 
   <Container>
     <div class="relative flex flex-col items-center">
       {/* Main Header Bar */}
-      <div class="pointer-events-auto relative z-20 flex h-12 w-full items-center justify-between gap-4 rounded-full border border-border/10 bg-background/80 px-2 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl transition-all duration-500 hover:ring-border" style="box-shadow: 0 10px 40px -10px var(--page-accent-color)">
+      <div class="glassmorphism-strong pointer-events-auto relative z-20 flex h-12 w-full items-center justify-between gap-4 rounded-full border border-border/10 bg-background/80 px-2 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl transition-all duration-500 hover:ring-border" style={`box-shadow: 0 10px 40px -10px ${activeColor}`}>
         <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-b from-(--page-accent-color)/10 to-transparent opacity-80"></div>
 
         {/* Animated Glossy Border */}
         <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-r from-primary/20 via-accent/20 to-destructive/20 opacity-30 blur-sm"></div>
 
         {/* Identity Section */}
-        <div class="flex items-center gap-3">
-          <InteractiveAvatar class="shrink-0 ring-2 ring-border/50" size="sm" />
-          <div class="hidden sm:block">
-            <Text
-              as="span"
-              class="cursor-default text-sm font-black tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary"
-              variant="primary"
-            >
-              {PROFILE.name}
-            </Text>
-          </div>
-        </div>
+        <IdentitySection size="sm">
+          <InteractiveAvatar class="shrink-0 ring-2 ring-border/50" size="sm" slot="avatar" />
+          <Text
+            as="span"
+            class="cursor-default text-sm font-black tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary"
+            slot="name"
+            variant="primary"
+          >
+            {PROFILE.name}
+          </Text>
+        </IdentitySection>
 
         <Spacer />
 
@@ -79,28 +81,21 @@ const activeColor = currentNavItem ? currentNavItem.color : NAV_ITEMS.find(i => 
                     {item.label}
                   </span>
                 </a>
-              )})
+              )
+            })
           }
         </nav>
 
         <SocialIcons class="hidden md:flex" />
 
         {/* Mobile Menu Toggle */}
-        <button
-          aria-label="Menu"
-          class="group/toggle relative flex size-9 items-center justify-center rounded-full bg-muted/80 text-muted-foreground ring-1 ring-border/50 transition-colors hover:bg-muted hover:text-foreground md:hidden"
-          id="mobile-menu-toggle"
-        >
-          <Icon class="transition-transform duration-300 group-[.open]/toggle:scale-0" name="mdi:menu" size={20} />
-          <Icon class="absolute scale-0 transition-transform duration-300 group-[.open]/toggle:scale-100" name="mdi:close" size={20} />
-        </button>
+        <MobileMenuToggle size="sm" />
       </div>
 
       {/* Attached Search Bar - More Glossy */}
-      <div class="pointer-events-auto absolute -bottom-10 z-10 flex h-10 items-center justify-center rounded-b-2xl border-x border-b border-border/50 bg-background/80 px-4 pt-2 pb-1 shadow-2xl ring-1 ring-border/20 backdrop-blur-2xl transition-all duration-300 hover:pt-3">
-        <div class="absolute inset-0 -z-10 rounded-b-2xl bg-linear-to-b from-(--page-accent-color)/10 to-transparent opacity-50"></div>
+      <SearchBar>
         <Search />
-      </div>
+      </SearchBar>
     </div>
   </Container>
 </header>

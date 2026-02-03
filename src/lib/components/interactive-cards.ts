@@ -11,7 +11,9 @@ export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group/card");
 
   for (const card of cards) {
-    if (!(card instanceof HTMLElement)) { continue; }
+    if (!(card instanceof HTMLElement)) {
+      continue;
+    }
 
     const handleMouseMove = (e: MouseEvent): void => {
       const rect = card.getBoundingClientRect();

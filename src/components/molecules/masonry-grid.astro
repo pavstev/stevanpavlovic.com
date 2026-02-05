@@ -10,30 +10,97 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 ---
 
 <div
-  class:list={[
-    'masonry-grid w-full [column-count:1] md:[column-count:var(--masonry-cols)]',
-    className,
-  ]}
-  style={{ '--masonry-cols': columns }}
+  class:list={['masonry-grid', className]}
+  data-masonry-columns={columns}
   {...rest}
 >
   <slot />
 </div>
 
 <style is:global>
-  /* Horizontal gap between columns */
   .masonry-grid {
-    column-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  /* Vertical spacing between items and prevent breaking */
+  @media (min-width: 768px) {
+    .masonry-grid {
+      grid-template-columns: repeat(var(--masonry-cols), 1fr);
+    }
+  }
+
+  .masonry-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
   .masonry-item {
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Remove bottom margin from last item in each column */
-  .masonry-item:last-child {
-    margin-bottom: 0;
+    width: 100%;
   }
 </style>
+
+<script>
+  /**
+   * Initializes masonry grid by distributing items across columns
+   */
+  const initMasonry = (): void => {
+    const grids = document.querySelectorAll<HTMLElement>('.masonry-grid');
+
+    for (const grid of grids) {
+      const columnsCount = parseInt(grid.dataset.masonryColumns || '2', 10);
+
+      // Only apply masonry on desktop
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      if (isMobile) {
+        // On mobile, just ensure items are direct children
+        const items = Array.from(grid.querySelectorAll('.masonry-item'));
+        for (const item of items) {
+          if (item.parentElement !== grid) {
+            grid.appendChild(item);
+          }
+        }
+        grid.style.setProperty('--masonry-cols', '1');
+        continue;
+      }
+
+      // Get all items
+      const items = Array.from(grid.querySelectorAll('.masonry-item'));
+
+      // Remove existing columns if any
+      const existingColumns = grid.querySelectorAll('.masonry-column');
+      for (const col of existingColumns) {
+        col.remove();
+      }
+
+      // Create columns
+      const columns: HTMLDivElement[] = [];
+      for (let i = 0; i < columnsCount; i++) {
+        const column = document.createElement('div');
+        column.className = 'masonry-column';
+        columns.push(column);
+        grid.appendChild(column);
+      }
+
+      // Distribute items across columns in order (left-to-right)
+      for (let i = 0; i < items.length; i++) {
+        const columnIndex = i % columnsCount;
+        columns[columnIndex].appendChild(items[i]);
+      }
+
+      grid.style.setProperty('--masonry-cols', String(columnsCount));
+    }
+  };
+
+  // Initialize
+  initMasonry();
+  document.addEventListener('astro:page-load', initMasonry);
+
+  // Re-initialize on resize with debouncing
+  let resizeTimeout: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(initMasonry, 150);
+  });
+</script>

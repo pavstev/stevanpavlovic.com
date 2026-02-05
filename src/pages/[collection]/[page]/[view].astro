@@ -19,7 +19,7 @@ const paramsSchema = z.object({
 const searchSchema = z.object({
   filter: z.string().optional(),
   limit: z.coerce.number().int().positive().optional(),
-  sort: z.enum(['newest', 'oldest', 'a-z']).optional().default('newest'),
+  sort: z.enum(['newest', 'oldest', 'a-z', 'z-a']).optional().default('newest'),
 });
 
 // Validate Params
@@ -76,6 +76,12 @@ if (sortParam === 'a-z') {
     const titleA = (a.data.title || a.data.company || '').toLowerCase();
     const titleB = (b.data.title || b.data.company || '').toLowerCase();
     return titleA.localeCompare(titleB);
+  });
+} else if (sortParam === 'z-a') {
+  filteredItems.sort((a, b) => {
+    const titleA = (a.data.title || a.data.company || '').toLowerCase();
+    const titleB = (b.data.title || b.data.company || '').toLowerCase();
+    return titleB.localeCompare(titleA);
   });
 } else if (sortParam === 'oldest') {
   filteredItems.sort((a, b) => {
@@ -147,6 +153,7 @@ const sortOptions = [
   { href: `/${collection}/${pageNum}/${view}?sort=newest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Newest First', value: 'newest' },
   ...(collection === 'blog' ? [{ href: `/${collection}/${pageNum}/${view}?sort=oldest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Oldest First', value: 'oldest' }] : []),
   { href: `/${collection}/${pageNum}/${view}?sort=a-z${filterParam ? `&filter=${filterParam}` : ''}`, label: 'A-Z', value: 'a-z' },
+  { href: `/${collection}/${pageNum}/${view}?sort=z-a${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Z-A', value: 'z-a' },
 ];
 
 const tagOptions = [

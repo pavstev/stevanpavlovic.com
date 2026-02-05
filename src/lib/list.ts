@@ -22,13 +22,6 @@ export const VIEW_MODES: { icon: string; label: string; mode: ViewMode }[] = [
   { icon: "mdi:view-column", label: "Grid", mode: "grid" },
 ];
 
-export const ITEMS_PER_PAGE_OPTIONS = [
-  { label: "6", value: "6" },
-  { label: "9", value: "9" },
-  { label: "12", value: "12" },
-  { label: "24", value: "24" },
-];
-
 /**
  * Helper to build a URL by merging a base path with current query params and overrides.
  */

@@ -61,10 +61,9 @@ export const initDropdowns = (): void => {
 
       if (isOpen) {
         closeDropdown();
+        return;
       }
-      else {
-        openDropdown();
-      }
+      openDropdown();
     };
 
     // Toggle on click
@@ -102,19 +101,18 @@ export const initDropdowns = (): void => {
         e.preventDefault();
         if (!isOpen) {
           toggleDropdown();
+          return;
         }
-        else {
-          getFirstItem()?.focus();
-        }
+        getFirstItem()?.focus();
+        return;
       }
-      else if (e.key === "ArrowUp") {
+      if (e.key === "ArrowUp") {
         e.preventDefault();
         if (!isOpen) {
           toggleDropdown();
+          return;
         }
-        else {
-          getLastItem()?.focus();
-        }
+        getLastItem()?.focus();
       }
     });
 
@@ -128,25 +126,30 @@ export const initDropdowns = (): void => {
         e.preventDefault();
         const nextIndex = currentIndex < itemsArray.length - 1 ? currentIndex + 1 : 0;
         itemsArray[nextIndex]?.focus();
+        return;
       }
-      else if (e.key === "ArrowUp") {
+      if (e.key === "ArrowUp") {
         e.preventDefault();
         const prevIndex = currentIndex > 0 ? currentIndex - 1 : itemsArray.length - 1;
         itemsArray[prevIndex]?.focus();
+        return;
       }
-      else if (e.key === "Home") {
+      if (e.key === "Home") {
         e.preventDefault();
         getFirstItem()?.focus();
+        return;
       }
-      else if (e.key === "End") {
+      if (e.key === "End") {
         e.preventDefault();
         getLastItem()?.focus();
+        return;
       }
-      else if (e.key === "Escape") {
+      if (e.key === "Escape") {
         e.preventDefault();
         closeDropdown();
+        return;
       }
-      else if (e.key === "Tab") {
+      if (e.key === "Tab") {
         // Allow tab to close dropdown normally
         closeDropdown();
       }

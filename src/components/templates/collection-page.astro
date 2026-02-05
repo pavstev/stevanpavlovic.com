@@ -1,5 +1,6 @@
 ---
 import type { FilterConfig, ViewMode } from '../../lib/list';
+
 import Stack from '../atoms/stack.astro';
 import LayoutRoot from '../layout/layout-root.astro';
 import ListActions from '../molecules/list-actions.astro';
@@ -80,12 +81,10 @@ const isGrid = viewMode === 'grid';
         filters={filters}
         getPageUrl={(p: number) => `${baseUrl}/${p}/${viewMode}`}
         itemCountLabel="items"
-        itemsPerPage={initialPageSize}
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
         showItemCount
-        showItemsPerPage={true}
         showViewToggle
         totalItems={totalItems}
         totalPages={totalPages}

@@ -37,8 +37,8 @@ export const getCardData = (post: CardPost): {
   const collection = post.collection;
   const postUrl
     = collection === "blog"
-      ? `/blog/view/${post.id}/`
-      : `/projects/view/${post.id}/`;
+      ? `/blog/view/${post.id}`
+      : `/projects/view/${post.id}`;
 
   const data = post.data;
   const heroImage

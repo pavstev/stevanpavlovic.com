@@ -70,6 +70,7 @@
   --animate-slide-in-from-bottom: slide-in-from-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-meteor: meteor 5s linear infinite;
 
   @keyframes fade-in {
     from { opacity: 0; }
@@ -94,6 +95,19 @@
   @keyframes accordion-up {
     from { height: var(--radix-accordion-content-height); }
     to { height: 0; }
+  }
+  @keyframes meteor {
+    0% {
+      transform: rotate(var(--angle)) translateX(0);
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(var(--angle)) translateX(-500px);
+      opacity: 0;
+    }
   }
 }
 
@@ -238,6 +252,39 @@
   .avatar-stamp:hover {
     transform: rotate(0deg) scale(1.05);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+
+  /* Meteor Effect */
+  .meteor-container {
+    position: relative;
+    overflow: hidden;
+    width: var(--size);
+    height: 2px;
+  }
+
+  .meteor {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--color), white);
+    border-radius: 50%;
+    opacity: 0;
+    animation: meteor var(--duration) linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes meteor {
+    0% {
+      transform: rotate(var(--angle)) translateX(0);
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(var(--angle)) translateX(-500px);
+      opacity: 0;
+    }
   }
 }
 

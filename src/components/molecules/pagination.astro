@@ -1,0 +1,83 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import { getPaginationLinks, type PaginationType } from '../../lib/list';
+import Button from '../atoms/button.astro';
+
+interface Props {
+  baseUrl: string;
+  currentPage: number;
+  /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
+  // eslint-disable-next-line no-unused-vars
+  getPageUrl?: (_page: number) => string;
+  /** Optional: Direct URL for next page (overrides auto-generation) */
+  nextUrl?: string;
+  paginationType?: PaginationType;
+  /** Optional: Direct URL for previous page (overrides auto-generation) */
+  prevUrl?: string;
+  totalPages: number;
+}
+
+const {
+  baseUrl,
+  currentPage,
+  getPageUrl: customGetPageUrl,
+  nextUrl,
+  paginationType = 'path',
+  prevUrl,
+  totalPages,
+} = Astro.props as Props;
+
+const { nextLink, prevLink } = getPaginationLinks({
+  baseUrl,
+  currentPage,
+  currentUrl: Astro.url,
+  customGetPageUrl,
+  nextUrl,
+  paginationType,
+  prevUrl,
+  totalPages,
+});
+---
+
+{totalPages > 1 && (
+  <nav aria-label="Pagination" class="pagination">
+    <div class="flex items-center justify-center gap-1 rounded-lg bg-muted/50 p-1">
+      <Button
+        as="a"
+        class="size-8"
+        disabled={!prevLink}
+        href={prevLink}
+        size="icon"
+        variant="ghost"
+      >
+        <Icon class="size-4" name="mdi:chevron-left" />
+        <span class="sr-only">Previous page</span>
+      </Button>
+
+      <div class="flex items-center px-3">
+        <span class="text-sm font-medium text-foreground tabular-nums">
+          {currentPage}
+        </span>
+        <span class="mx-1.5 text-sm text-muted-foreground">
+          /
+        </span>
+        <span class="text-sm text-muted-foreground tabular-nums">
+          {totalPages}
+        </span>
+      </div>
+
+      <Button
+        as="a"
+        class="size-8"
+        disabled={!nextLink}
+        href={nextLink}
+        size="icon"
+        variant="ghost"
+      >
+        <Icon class="size-4" name="mdi:chevron-right" />
+        <span class="sr-only">Next page</span>
+      </Button>
+    </div>
+  </nav>
+)}

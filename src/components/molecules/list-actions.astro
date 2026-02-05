@@ -1,189 +1,69 @@
 ---
-import { Icon } from 'astro-icon/components';
+import type { ViewUrls } from '../../lib/list';
 
-import {
-  buildListUrl,
-  type FilterConfig,
-  getPaginationLinks,
-  type PaginationType,
-  VIEW_MODES,
-  type ViewMode,
-  type ViewUrls,
-} from '../../lib/list';
-import Button from '../atoms/button.astro';
-import Dropdown from '../atoms/dropdown.astro';
+import DisplayMenu from './display-menu.astro';
+import ItemCount from './item-count.astro';
+import Pagination from './pagination.astro';
 
-// @ts-expect-error "We need this one"
 interface Props {
   baseUrl: string;
   currentPage: number;
-  filters?: FilterConfig[];
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
   // eslint-disable-next-line no-unused-vars
   getPageUrl?: (_page: number) => string;
   itemCountLabel?: string;
   /** Optional: Direct URL for next page (overrides auto-generation) */
   nextUrl?: string;
-  paginationType?: PaginationType;
+  paginationType?: 'path' | 'query';
   /** Optional: Direct URL for previous page (overrides auto-generation) */
   prevUrl?: string;
-  resetHref?: string;
   showItemCount?: boolean;
   showViewToggle?: boolean;
   totalItems?: number;
   totalPages: number;
-  viewMode?: ViewMode;
+  viewMode?: 'grid' | 'list';
   /** Optional: Explicit URLs for view toggles */
-  viewUrls?: ViewUrls;
+  viewUrls?: ViewUrls
 }
 
 const {
   baseUrl,
   currentPage,
-  filters = [],
   getPageUrl: customGetPageUrl,
   itemCountLabel,
   nextUrl,
   paginationType = 'path',
   prevUrl,
-  resetHref,
-  showItemCount = false,
+  showItemCount = true,
   showViewToggle = true,
   totalItems,
   totalPages,
   viewMode = 'list',
   viewUrls,
 } = Astro.props;
-
-const { nextLink, prevLink } = getPaginationLinks({
-  baseUrl,
-  currentPage,
-  currentUrl: Astro.url,
-  customGetPageUrl,
-  nextUrl,
-  paginationType,
-  prevUrl,
-  totalPages,
-});
-
-/**
- * Helper to build a URL by merging a base path with current query params and overrides.
- * Kept locally for compatibility with the markup calls.
- */
-const buildUrl = (path: string, paramsToSet: Record<string, number | string | undefined> = {}) =>
-  buildListUrl(Astro.url, paginationType, path, paramsToSet);
 ---
 
 <div class="list-actions w-full">
-  {/* Single row - filters left, pagination center, view toggle right */}
-  <div class="flex flex-wrap items-center gap-2 border-b border-border pb-4 sm:gap-3">
-    {/* Left: Filters */}
-    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-      {filters.map((filter: FilterConfig) => (
-        <Dropdown
-          align="left"
-          id={`filter-${filter.id}`}
-          label={filter.label}
-          options={filter.options}
-          selectedValue={filter.selectedValue}
-          size="sm"
-          variant="outline"
-        />
-      ))}
-
-      {resetHref && (
-        <Button
-          as="a"
-          class="h-7 px-2 text-xs"
-          href={resetHref}
-          size="sm"
-          variant="ghost"
-        >
-          <Icon class="mr-1 size-3.5" name="mdi:refresh" />
-          Reset
-        </Button>
-      )}
-    </div>
-
-    {/* Spacer */}
-    <div class="min-w-4 flex-1"></div>
+  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+    {/* Left: Item Count */}
+    {showItemCount && (
+      <ItemCount itemCountLabel={itemCountLabel} totalItems={totalItems} />
+    )}
 
     {/* Right: Controls */}
-    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-      {/* Total Count */}
-      {showItemCount && totalItems !== undefined && (
-        <span class="mr-2 hidden text-xs text-muted-foreground sm:inline-block" id="total-items-count">
-          {totalItems} {itemCountLabel || 'items'}
-        </span>
-      )}
-
-
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <nav aria-label="Pagination">
-          <div class="flex items-center justify-center gap-0.5 rounded-lg bg-muted/50 p-0.5 sm:gap-1 sm:p-1">
-            <Button
-              as="a"
-              class="size-7 rounded-md p-0 sm:size-8"
-              disabled={!prevLink}
-              href={prevLink}
-              size="icon"
-              variant="ghost"
-            >
-              <Icon class="size-3.5 sm:size-4" name="mdi:chevron-left" />
-              <span class="sr-only">Previous page</span>
-            </Button>
-
-            <div class="flex items-center px-2 sm:px-3">
-              <span class="text-xs font-medium text-foreground tabular-nums sm:text-sm">
-                {currentPage}
-              </span>
-              <span class="mx-1 text-xs text-muted-foreground sm:text-sm">
-                /
-              </span>
-              <span class="text-xs text-muted-foreground tabular-nums sm:text-sm">
-                {totalPages}
-              </span>
-            </div>
-
-            <Button
-              as="a"
-              class="size-7 rounded-md p-0 sm:size-8"
-              disabled={!nextLink}
-              href={nextLink}
-              size="icon"
-              variant="ghost"
-            >
-              <Icon class="size-3.5 sm:size-4" name="mdi:chevron-right" />
-              <span class="sr-only">Next page</span>
-            </Button>
-          </div>
-        </nav>
-      )}
-
-      {/* View toggle */}
+    <div class="flex flex-wrap items-center gap-3">
       {showViewToggle && (
-        <div class="flex items-center rounded-lg border border-border bg-background p-0.5 shadow-sm sm:p-1">
-          {VIEW_MODES.map(({ icon, label, mode }) => (
-            <Button
-              aria-pressed={viewMode === mode}
-              as="a"
-              class:list={[`size-7 rounded-md p-0 transition-all sm:size-8`, {
-                'bg-accent text-accent-foreground shadow-sm': viewMode === mode,
-                'text-muted-foreground hover:bg-muted hover:text-foreground': viewMode !== mode,
-              }]}
-              href={viewUrls ? buildUrl(viewUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
-              size="icon"
-              title={label}
-              variant="ghost"
-            >
-              <Icon class="size-3.5 sm:size-4" name={icon} />
-              <span class="sr-only">{label} view</span>
-            </Button>
-          ))}
-        </div>
+        <DisplayMenu showLabels viewMode={viewMode} viewUrls={viewUrls} />
       )}
+      <Pagination
+        baseUrl={baseUrl}
+        currentPage={currentPage}
+        getPageUrl={customGetPageUrl}
+        nextUrl={nextUrl}
+        paginationType={paginationType}
+        prevUrl={prevUrl}
+        totalPages={totalPages}
+      />
     </div>
   </div>
 </div>

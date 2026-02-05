@@ -6,11 +6,8 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/cn';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
+  'inline-flex max-w-full items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
   {
-    defaultVariants: {
-      variant: 'default',
-    },
     variants: {
       variant: {
         accent: 'border-transparent bg-accent text-accent-foreground hover:bg-accent/80',
@@ -29,8 +26,17 @@ interface Props extends HTMLAttributes<'span'>, VariantProps<typeof badgeVariant
 }
 
 const { as: Tag = 'span', class: className, variant, ...props } = Astro.props;
+
+const slotContent = await Astro.slots.render('default');
+const hasContent = slotContent.trim().length > 0;
 ---
 
-<Tag class:list={cn(badgeVariants({ className, variant }))} {...props}>
-  <slot />
-</Tag>
+{hasContent && (
+  <Tag
+    class:list={cn(badgeVariants({ className, variant }))}
+    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+    {...props}
+  >
+    <slot />
+  </Tag>
+)}

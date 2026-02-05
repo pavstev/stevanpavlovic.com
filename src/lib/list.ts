@@ -1,13 +1,3 @@
-import type { DropdownOption } from "../components/atoms/dropdown.astro";
-
-export interface FilterConfig {
-  id: string;
-  label: string;
-  options: DropdownOption[];
-  selectedValue?: string;
-  selectedValues?: string[];
-}
-
 export type PaginationType = "path" | "query";
 
 export type ViewMode = "grid" | "list";

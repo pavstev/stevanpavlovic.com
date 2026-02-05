@@ -17,17 +17,17 @@ const initials = PROFILE.name
 ---
 
 <Link
-  class:list={cn("group flex items-center gap-3 pl-2 no-underline", className)}
+  class:list={cn("group inline-flex items-center no-underline", className)}
   href="/"
   variant="unstyled"
 >
-  <div class="group-hover:shadow-glow-primary flex size-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold tracking-tighter text-primary ring-1 ring-primary/20 transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/20 group-hover:ring-primary/40">
-    {initials}
+  <div class="group-hover:shadow-glow-primary flex h-9 items-center gap-2 rounded-full bg-muted/30 px-3 text-sm font-bold tracking-tighter ring-1 ring-border/50 transition-all duration-500 group-hover:scale-105">
+    <span class="text-primary">{initials}</span>
+    <Text
+      as="span"
+      class="hidden text-muted-foreground transition-all duration-500 sm:inline"
+    >
+      {PROFILE.name}
+    </Text>
   </div>
-  <Text
-    as="span"
-    class="group-hover:text-gradient-primary text-sm font-bold tracking-tight text-foreground transition-all duration-500 group-hover:translate-x-1 sm:block"
-  >
-    {PROFILE.name}
-  </Text>
 </Link>

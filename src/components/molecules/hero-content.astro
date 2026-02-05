@@ -1,0 +1,63 @@
+---
+import { cn } from '../../lib/cn';
+import { SITE_CONFIG } from '../../lib/config';
+import Heading from '../atoms/heading.astro';
+import Text from '../atoms/text.astro';
+import { Meteors } from '../meteor';
+import Stat from './stat.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// New utility function for formatting numbers nicely
+const formatCompactNumber = (number: number) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    compactDisplay: "short",
+    maximumFractionDigits: 1,
+    notation: "compact",
+  });
+  return formatter.format(number);
+};
+
+// Expanded stats for a more professional overview
+const stats = [
+  { icon: 'mdi:clock-time-eight-outline', label: 'Years Exp.', value: 12 },
+  { icon: 'mdi:server-network', label: 'Systems', value: 24 },
+  { icon: 'mdi:account-group-outline', label: 'Users', value: 120000 },
+  { icon: 'mdi:earth', label: 'Countries', value: 15 },
+  { icon: 'mdi:check-decagram-outline', label: 'Uptime', value: "99.9%" },
+];
+---
+
+<div class:list={cn("relative space-y-6 overflow-hidden py-12 md:py-20 -mt-12", className)}>
+  <Meteors client:load number={30} />
+
+  <div class="relative z-10 space-y-1">
+    <Text class="font-mono tracking-tight text-white/50" size="lg">
+      Hi, I'm
+    </Text>
+    <Heading class="leading-[1.1]" size="display">
+      <span class="animate-shiny-text block">
+        {SITE_CONFIG.hero.title.main} {SITE_CONFIG.hero.title.highlight}
+      </span>
+    </Heading>
+    <Text class="max-w-xl font-mono tracking-tight text-white/50" size="lg">
+      {SITE_CONFIG.hero.tagline}
+    </Text>
+  </div>
+
+  {/* Statistics */}
+  <div class="flex flex-wrap justify-start gap-4 pt-4 md:gap-6">
+    {stats.map((stat) => (
+      <Stat
+        class="origin-left scale-95 md:scale-100"
+        icon={stat.icon}
+        label={stat.label}
+        value={typeof stat.value === 'number' ? `${formatCompactNumber(stat.value)}+` : stat.value}
+      />
+    ))}
+  </div>
+</div>

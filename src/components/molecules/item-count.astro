@@ -1,0 +1,15 @@
+---
+interface Props {
+  itemCountLabel?: string;
+  totalItems?: number;
+}
+
+const { itemCountLabel = 'items', totalItems } = Astro.props;
+---
+
+{totalItems !== undefined && (
+  <div class="item-count text-sm text-muted-foreground" id="total-items-count">
+    <span class="font-medium">{totalItems}</span>
+    <span class="ml-1">{itemCountLabel}</span>
+  </div>
+)}

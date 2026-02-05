@@ -1,5 +1,5 @@
 ---
-import type { FilterConfig, ViewMode } from '../../lib/list';
+import type {  ViewMode } from '../../lib/list';
 
 import Stack from '../atoms/stack.astro';
 import LayoutRoot from '../layout/layout-root.astro';
@@ -15,7 +15,6 @@ interface Props {
   containerId: string;
   currentPage?: number;
   description: string;
-  filters: FilterConfig[];
 
   // Helpers to map generic items to Card props
   // eslint-disable-next-line no-unused-vars
@@ -44,7 +43,6 @@ const {
   containerId,
   currentPage = 1,
   description,
-  filters,
   getItemCardProps,
   headerDescription,
   headerIcon,
@@ -68,7 +66,6 @@ const isGrid = viewMode === 'grid';
 <LayoutRoot description={description} title={title}>
   <Section>
     <SectionHeader
-      class="mb-4"
       description={headerDescription}
       icon={headerIcon}
       title={headerTitle}
@@ -78,14 +75,11 @@ const isGrid = viewMode === 'grid';
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
-        filters={filters}
         getPageUrl={(p: number) => `${baseUrl}/${p}/${viewMode}`}
         itemCountLabel="items"
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
-        showItemCount
-        showViewToggle
         totalItems={totalItems}
         totalPages={totalPages}
         viewMode={viewMode}
@@ -123,7 +117,7 @@ const isGrid = viewMode === 'grid';
         )}
 
         {/* No Results */}
-        <div class="mt-12 hidden text-center text-gray-500" id="no-results">
+        <div class="mt-12 hidden text-center text-muted-foreground" id="no-results">
           <div class="flex flex-col items-center justify-center gap-2">
             <span class="text-4xl">🔍</span>
             <p class="text-lg font-medium">No results found.</p>

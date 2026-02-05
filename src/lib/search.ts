@@ -28,10 +28,12 @@ export const initSearchDropdown = (): void => {
       return;
     }
     if (searchInput.value.length > 0) {
-      clearButton.classList.add("visible");
+      clearButton.classList.add("visible", "flex");
+      clearButton.classList.remove("hidden");
       return;
     }
-    clearButton.classList.remove("visible");
+    clearButton.classList.remove("visible", "flex");
+    clearButton.classList.add("hidden");
   };
 
   const closeDropdown = (): void => {
@@ -80,6 +82,13 @@ export const initSearchDropdown = (): void => {
     }
   });
 
+  // Handle touch events for mobile
+  searchInput.addEventListener("touchstart", () => {
+    if (!isOpen) {
+      openDropdown();
+    }
+  }, { passive: true });
+
   // Clear button click handler
   if (clearButton) {
     clearButton.addEventListener("click", (e) => {
@@ -98,21 +107,30 @@ export const initSearchDropdown = (): void => {
     });
   }
 
-  // Focus handling
+  // Focus handling - open dropdown on click/focus
   searchInput.addEventListener("focus", () => {
-    // Only open if there's already content > 2 chars
-    if (searchInput.value.length > 2 && !isOpen) {
+    if (!isOpen) {
       openDropdown();
     }
   });
 
-  // Close on outside click
-  document.addEventListener("click", (e) => {
+  // Close on outside click/touch
+  const closeOnOutside = (e: MouseEvent | TouchEvent): void => {
     const target = e.target as Node;
     if (!container.contains(target)) {
       closeDropdown();
     }
-  });
+  };
+
+  document.addEventListener("click", closeOnOutside);
+
+  // Handle touch outside to close dropdown on mobile
+  document.addEventListener("touchstart", (e: TouchEvent) => {
+    const target = e.target as Node;
+    if (!container.contains(target)) {
+      closeDropdown();
+    }
+  }, { passive: true });
 
   // Close on Escape key
   document.addEventListener("keydown", (e) => {

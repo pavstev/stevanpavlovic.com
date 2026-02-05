@@ -1,7 +1,7 @@
 ---
 import { NAV_ITEMS } from '../../lib/config';
 import Card from './card.astro';
-import ProfileHero from './profile-hero.astro';
+import ProfileHeader from './profile-header.astro';
 
 const { items = NAV_ITEMS.filter((i) => i.label !== 'Home') } = Astro.props;
 
@@ -11,8 +11,8 @@ interface Props {
 ---
 
 <div class="flex flex-col gap-8">
-  {/* Profile Hero */}
-  <ProfileHero />
+  {/* Profile Header */}
+  <ProfileHeader />
 
   {/* Navigation Grid */}
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

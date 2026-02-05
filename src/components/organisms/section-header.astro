@@ -4,53 +4,46 @@ import { Icon } from 'astro-icon/components';
 import Heading from '../atoms/heading.astro';
 import Stack from '../atoms/stack.astro';
 import Text from '../atoms/text.astro';
-import Container from '../molecules/container.astro';
 
 interface Props {
-  class?: string;
   description?: string;
   icon?: string;
-  id?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   subtitle?: string;
   title: string;
 }
 
 const {
-  class: className,
   description,
   icon,
-  id,
   level = 2,
   subtitle,
   title,
 } = Astro.props;
 ---
 
-<Container class:list={className} id={id}>
-  <Stack align={{ base: 'start', sm: 'center' }} direction={{ base: 'col', sm: 'row' }} gap={8} justify="between">
-    <Stack align="center" class="min-w-0" direction="row" gap={4}>
-      {icon && (
-        <div class="shadow-glow hover:shadow-glow-primary flex size-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5 hover:text-primary">
-          <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size={24} />
-        </div>
-      )}
-      <div class="min-w-0">
-        <Heading level={level} size="xl">
-          {title}
-        </Heading>
-        {subtitle && (
-          <Text class="mt-2" size="sm" variant="muted">
-            {subtitle}
-          </Text>
-        )}
-        {description && (
-          <Text class="mt-3" size="sm" variant="secondary">
-            {description}
-          </Text>
-        )}
+<Stack align={{ base: 'start', md: 'center' }} class="pb-8" direction={{ base: 'col', lg: 'row' }} gap={6} justify="between">
+  <Stack align="center" class="min-w-0" direction="row" gap={4}>
+    {icon && (
+      <div class="shadow-glow hover:shadow-glow-primary flex size-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5 hover:text-primary">
+        <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size={24} />
       </div>
-    </Stack>
-    <slot name="action" />
+    )}
+    <div class="min-w-0">
+      <Heading level={level} size="xl">
+        {title}
+      </Heading>
+      {subtitle && (
+        <Text size="sm" variant="muted">
+          {subtitle}
+        </Text>
+      )}
+      {description && (
+        <Text class="mt-2" size="sm" variant="secondary">
+          {description}
+        </Text>
+      )}
+    </div>
   </Stack>
-</Container>
+  <slot name="action" />
+</Stack>

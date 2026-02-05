@@ -1,6 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import playformInline from "@playform/inline";
 import sentry from "@sentry/astro";
@@ -24,6 +25,7 @@ export default defineConfig({
   }),
   integrations: [
     mdx(),
+    react(),
     sitemap(),
     favicons({
       input: {
@@ -63,11 +65,12 @@ export default defineConfig({
     },
     syntaxHighlight: "shiki",
   },
-
-  output: "server",
+  output: "static",
 
   prefetch: true,
+
   site: "https://localhost:4321",
+  trailingSlash: "never",
 
   vite: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

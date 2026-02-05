@@ -1,42 +1,11 @@
 ---
-import { z } from 'astro/zod';
 import { getCollection } from 'astro:content';
 
 import CollectionPage from '../../../components/templates/collection-page.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
 import { PROFILE } from '../../../lib/config';
 
-export const prerender = false;
-
-// Validation Schemas
-const paramsSchema = z.object({
-  collection: z.enum(['blog', 'projects', 'experience']),
-  page: z.coerce.number().int().positive(),
-  view: z.enum(['list', 'grid']),
-});
-
-const searchSchema = z.object({
-  filter: z.string().optional(),
-  limit: z.coerce.number().int().positive().optional(),
-  sort: z.enum(['newest', 'oldest', 'a-z', 'z-a']).optional().default('newest'),
-});
-
-// Validate Params
-const paramsResult = paramsSchema.safeParse(Astro.params);
-if (!paramsResult.success) {
-  return Astro.redirect('/404');
-}
-
-const { collection, page: pageNum, view } = paramsResult.data;
-
-// Validate Search Params
-const searchResult = searchSchema.safeParse(Object.fromEntries(Astro.url.searchParams));
-if (!searchResult.success) {
-  // Fallback to default sort if invalid query params
-  return Astro.redirect(`/${collection}/${pageNum}/${view}`);
-}
-
-const { filter: filterParam, limit: limitParam, sort: sortParam } = searchResult.data;
+export const prerender = true;
 
 // Type Definitions
 type CollectionItem = {
@@ -44,93 +13,65 @@ type CollectionItem = {
   id: string;
 };
 
-// Helper Functions
-const getItemDate = (item: CollectionItem, collection: string): number => {
-  if (collection === 'blog' || collection === 'projects') {
-    return item.data.pubDate ? new Date(item.data.pubDate).getTime() : 0;
+type CollectionName = 'blog' | 'experience' | 'projects';
+
+// Generate static paths for all collection pages
+export async function getStaticPaths() {
+  const ITEMS_PER_PAGE = 10;
+  const collections: CollectionName[] = ['blog', 'projects', 'experience'];
+  const views = ['list', 'grid'] as const;
+  const paths = [];
+
+  for (const collectionName of collections) {
+    // Fetch all items for this collection
+    const allItems = await getCollection(collectionName) as CollectionItem[];
+
+    // Sort by newest first (default)
+    const sortedItems = allItems.sort((a, b) => {
+      const getItemDate = (item: CollectionItem): number => {
+        if (collectionName === 'blog' || collectionName === 'projects') {
+          return item.data.pubDate ? new Date(item.data.pubDate).getTime() : 0;
+        }
+        // experience
+        return item.data.startDate ? new Date(item.data.startDate).getTime() : 0;
+      };
+
+      return getItemDate(b) - getItemDate(a);
+    });
+
+    const totalItems = sortedItems.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+
+    // Generate paths for each page and view combination
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      for (const view of views) {
+        const startIndex = (pageNum - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        const pageItems = sortedItems.slice(startIndex, endIndex);
+
+        paths.push({
+          params: {
+            collection: collectionName,
+            page: pageNum.toString(),
+            view,
+          },
+          props: {
+            collection: collectionName,
+            currentPage: pageNum,
+            items: pageItems,
+            totalItems,
+            totalPages,
+            view,
+          },
+        });
+      }
+    }
   }
-  // experience
-  return item.data.startDate ? new Date(item.data.startDate).getTime() : 0;
-};
 
-const getItemTitle = (item: CollectionItem, collection: string): string => {
-  if (collection === 'experience') {
-    return (item.data.role || item.data.company || '').toLowerCase();
-  }
-  return (item.data.title || '').toLowerCase();
-};
-
-
-// Data Fetching & Processing
-let allItems: CollectionItem[] = [];
-if (collection === 'blog') {
-  allItems = await getCollection('blog') as CollectionItem[];
-} else if (collection === 'projects') {
-  allItems = await getCollection('projects') as CollectionItem[];
-} else if (collection === 'experience') {
-  allItems = await getCollection('experience') as CollectionItem[];
+  return paths;
 }
 
-// Filter
-let filteredItems = allItems;
-if (filterParam) {
-  filteredItems = allItems.filter((item) => {
-    const tags = item.data.tags || item.data.skills || [];
-    return tags.includes(filterParam);
-  });
-}
-
-// Sort - only once based on sort parameter
-if (sortParam === 'a-z') {
-  filteredItems.sort((a, b) => {
-    const titleA = getItemTitle(a, collection);
-    const titleB = getItemTitle(b, collection);
-    return titleA.localeCompare(titleB);
-  });
-} else if (sortParam === 'z-a') {
-  filteredItems.sort((a, b) => {
-    const titleA = getItemTitle(a, collection);
-    const titleB = getItemTitle(b, collection);
-    return titleB.localeCompare(titleA);
-  });
-} else if (sortParam === 'oldest') {
-  filteredItems.sort((a, b) => {
-    const dateA = getItemDate(a, collection);
-    const dateB = getItemDate(b, collection);
-    return dateA - dateB;
-  });
-} else {
-  // Default: newest first
-  filteredItems.sort((a, b) => {
-    const dateA = getItemDate(a, collection);
-    const dateB = getItemDate(b, collection);
-    return dateB - dateA;
-  });
-}
-
-// Pagination
-const initialPageSize = collection === 'blog' ? 8 : 6;
-const pageSize = limitParam || initialPageSize;
-const totalItems = filteredItems.length;
-const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-
-// Handle invalid page numbers - avoid redirecting to page 0
-if (totalItems === 0) {
-  // No items, stay on page 1
-  if (pageNum !== 1) {
-    return Astro.redirect(`/${collection}/1/${view}${Astro.url.search}`);
-  }
-} else if (pageNum > totalPages) {
-  return Astro.redirect(`/${collection}/${totalPages}/${view}${Astro.url.search}`);
-}
-
-const startIndex = (pageNum - 1) * pageSize;
-const endIndex = startIndex + pageSize;
-const pageItems = filteredItems.slice(startIndex, endIndex);
-
-const prevUrl = pageNum > 1 ? `/${collection}/${pageNum - 1}/${view}${Astro.url.search}` : undefined;
-const nextUrl = pageNum < totalPages ? `/${collection}/${pageNum + 1}/${view}${Astro.url.search}` : undefined;
-
+const { collection, currentPage, items, totalItems, totalPages, view } = Astro.props;
 
 // --- Collection Specific Configuration ---
 
@@ -162,34 +103,7 @@ if (collection === 'blog') {
   headerIcon = "mdi:briefcase-outline";
 }
 
-// 2. Filters (for UI)
-// Recalculate allTags from *allItems* (not just filtered) so users see all options
-const allTags = [...new Set(allItems.flatMap((item: any) => item.data.tags || item.data.skills || []))].sort();
-
-const sortOptions = [
-  { href: `/${collection}/${pageNum}/${view}?sort=newest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Newest First', value: 'newest' },
-  ...(collection === 'blog' ? [{ href: `/${collection}/${pageNum}/${view}?sort=oldest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Oldest First', value: 'oldest' }] : []),
-  { href: `/${collection}/${pageNum}/${view}?sort=a-z${filterParam ? `&filter=${filterParam}` : ''}`, label: 'A-Z', value: 'a-z' },
-  { href: `/${collection}/${pageNum}/${view}?sort=z-a${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Z-A', value: 'z-a' },
-];
-
-const tagOptions = [
-  { href: `/${collection}/${pageNum}/${view}?sort=${sortParam}`, label: 'All Tags', value: '' },
-  ...allTags.map((tag: string) => ({
-    href: `/${collection}/${pageNum}/${view}?filter=${tag}&sort=${sortParam}`,
-    label: tag.charAt(0).toUpperCase() + tag.slice(1),
-    value: tag,
-  })),
-];
-
-const filters = [
-  { id: 'sort', label: 'Sort', options: sortOptions, selectedValue: sortParam },
-  ...(allTags.length > 0 ? [{ id: 'filter', label: 'Tag', options: tagOptions, selectedValue: filterParam || '' }] : []),
-];
-
-// 3. Item Props Helpers
-
-
+// 2. Item Props Helpers
 const getItemCardProps = (item: any) => {
   if (collection === 'blog') {
     return { post: item, variant: 'content' };
@@ -198,7 +112,7 @@ const getItemCardProps = (item: any) => {
     return {
       portfolioItem: {
         desc: item.data.description,
-        href: `/projects/view/${item.id}/`,
+        href: `/projects/view/${item.id}`,
         id: item.id,
         meta: item.data.pubDate ? new Date(item.data.pubDate).getFullYear().toString() : '',
         subtitle: item.data.subtitle,
@@ -214,7 +128,7 @@ const getItemCardProps = (item: any) => {
         company: item.data.company,
         desc: item.data.description,
         endDate: item.data.endDate,
-        href: `/experience/view/${item.id}/`,
+        href: `/experience/view/${item.id}`,
         id: item.id,
         location: item.data.location,
         logo: item.data.logo,
@@ -225,31 +139,33 @@ const getItemCardProps = (item: any) => {
         tags: item.data.skills,
         title: item.data.role,
       },
-      variant: 'portfolio' // Reverting to portfolio as 'experience' variant not found in card.astro review
+      variant: 'portfolio'
     };
   }
   return {};
 };
 
 const viewUrls = {
-  grid: `/${collection}/${pageNum}/grid${Astro.url.search}`,
-  list: `/${collection}/${pageNum}/list${Astro.url.search}`,
+  grid: `/${collection}/${currentPage}/grid`,
+  list: `/${collection}/${currentPage}/list`,
 };
+
+const prevUrl = currentPage > 1 ? `/${collection}/${currentPage - 1}/${view}` : undefined;
+const nextUrl = currentPage < totalPages ? `/${collection}/${currentPage + 1}/${view}` : undefined;
 
 ---
 
 <CollectionPage
   baseUrl={baseUrl}
   containerId={`${collection}-container`}
-  currentPage={pageNum}
+  currentPage={currentPage}
   description={description}
-  filters={filters}
   getItemCardProps={getItemCardProps}
   headerDescription={headerDescription}
   headerIcon={headerIcon}
   headerTitle={headerTitle}
-  initialPageSize={pageSize}
-  items={pageItems}
+  initialPageSize={20}
+  items={items}
   nextUrl={nextUrl}
   prevUrl={prevUrl}
   title={title}

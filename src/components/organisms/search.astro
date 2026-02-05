@@ -6,31 +6,35 @@ import Pagefind from "astro-pagefind/components/Search";
 <div class="search-dropdown-container relative" id="search-container">
   {/* Search Input */}
   <div class="group/search relative flex items-center transition-all duration-300">
-    <Icon class="absolute left-3 size-4 text-muted-foreground transition-colors group-focus-within/search:text-primary" name="mdi:magnify" />
+    <Icon class="absolute left-3 size-5 text-muted-foreground transition-colors group-focus-within/search:text-primary md:size-4" name="mdi:magnify" />
     <input
       aria-controls="search-dropdown"
-      class="h-9 w-48 rounded-full border border-white/10 bg-white/5 pr-20 pl-9 text-sm transition-all outline-none hover:bg-white/10 focus:border-primary/50 focus:bg-white/10 focus:ring-2 focus:ring-primary/20 lg:w-64"
+      autocomplete="off"
+      class="h-10 w-full min-w-[200px] rounded-full border border-white/10 bg-white/5 pr-24 pl-10 text-sm transition-all outline-none hover:bg-white/10 focus:border-primary/50 focus:bg-white/10 focus:ring-2 focus:ring-primary/20 md:h-9 md:w-48 md:min-w-0 md:pr-24 lg:w-64"
       id="search-input"
       placeholder="Search..."
       type="text"
     />
-    <button
-      aria-label="Clear search"
-      class="search-clear absolute right-10 hidden size-5 items-center justify-center rounded-full bg-white/10 text-muted-foreground transition-all hover:bg-white/20 hover:text-foreground"
-      id="search-clear"
-      type="button"
-    >
-      <Icon class="size-3" name="mdi:close" />
-    </button>
-    <kbd class="absolute right-3 hidden h-5 items-center gap-1 rounded bg-white/10 px-1.5 font-mono text-[10px] font-medium opacity-50 sm:flex">
-      <span class="text-xs">⌘</span>K
-    </kbd>
+    <div class="absolute top-0 right-0 flex h-full items-center pr-1.5">
+      <button
+        aria-label="Clear search"
+        class="search-clear mr-2 hidden size-5 items-center justify-center rounded-full bg-white/10 text-muted-foreground transition-all hover:bg-white/20 hover:text-foreground"
+        id="search-clear"
+        type="button"
+      >
+        <Icon class="size-3" name="mdi:close" />
+      </button>
+      <div class="mx-2 h-4 w-px bg-white/10"></div>
+      <kbd class="hidden h-5 items-center gap-1 rounded bg-white/20 px-2 py-1 font-mono text-[10px] font-medium opacity-70 sm:flex md:hidden lg:flex">
+        <span class="text-xs">⌘</span>K
+      </kbd>
+    </div>
   </div>
 
   {/* Dropdown Menu */}
   <div
     aria-label="Search results"
-    class="search-dropdown invisible absolute top-[calc(100%+0.5rem)] right-0 z-50 w-screen max-w-md opacity-0 transition-all duration-200 sm:w-md"
+    class="search-dropdown invisible absolute top-[calc(100%+0.5rem)] right-0 left-0 z-50 mx-auto w-[calc(100vw-2rem)] max-w-md opacity-0 transition-all duration-200 md:left-auto md:w-full lg:w-md"
     id="search-dropdown"
     role="menu"
   >
@@ -50,7 +54,7 @@ import Pagefind from "astro-pagefind/components/Search";
       </div>
 
       {/* Keyboard Shortcuts Footer */}
-      <div class="flex flex-wrap items-center gap-3 border-t border-white/5 bg-white/5 px-4 py-2.5 text-[10px] font-medium text-muted-foreground">
+      <div class="flex flex-wrap items-center gap-2 border-t border-white/5 bg-white/5 px-4 py-2 text-xs font-medium text-muted-foreground md:text-[10px]">
         <span class="flex items-center gap-1">
           <kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd>
           close
@@ -105,7 +109,7 @@ import Pagefind from "astro-pagefind/components/Search";
 
   .search-dropdown .pagefind-ui__drawer {
     width: 100% !important;
-    max-height: 20rem !important;
+    max-height: 60vh !important;
     overflow-y: auto !important;
     margin-top: 0 !important;
   }

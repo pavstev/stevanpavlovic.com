@@ -29,7 +29,7 @@ export const getExperience = async (): Promise<PortfolioItem[]> => {
     .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
     .map(entry => ({
       desc: entry.data.description,
-      href: `/expertise/${entry.id}/`,
+      href: `/experience/${entry.id}/`,
       id: entry.id,
       meta: `${entry.data.startDate.getFullYear().toString()} - ${
         entry.data.endDate ? entry.data.endDate.getFullYear().toString() : "Present"

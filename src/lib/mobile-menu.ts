@@ -12,14 +12,15 @@ export const initMobileMenu = (): void => {
 
   newToggle.addEventListener("click", () => {
     const isOpen = newToggle.classList.contains("open");
-    newToggle.classList.toggle("open");
 
     if (!isOpen) {
+      newToggle.classList.add("open");
       menu.setAttribute("data-open", "true");
       document.body.style.overflow = "hidden";
       return;
     }
 
+    newToggle.classList.remove("open");
     menu.setAttribute("data-open", "false");
     document.body.style.overflow = "";
   });

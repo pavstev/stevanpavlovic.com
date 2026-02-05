@@ -9,7 +9,7 @@ import Container from '../molecules/container.astro';
 <footer class="relative w-full overflow-hidden border-t border-white/5 bg-black/90" transition:persist>
   {/* Wave SVG Background */}
   <div class="absolute inset-0 -z-10">
-    <svg class="absolute bottom-0 w-full" preserveAspectRatio="none" style="height: 100%;" viewBox="0 0 1440 320">
+    <svg class="absolute bottom-0 w-full" preserveAspectRatio="none" style="height: 120px;" viewBox="0 0 1440 120">
       <defs>
         <linearGradient id="wave-gradient" x1="0%" x2="100%" y1="0%" y2="100%">
           <stop offset="0%" style="stop-color:rgba(139, 92, 246, 0.1);stop-opacity:1" />
@@ -17,7 +17,7 @@ import Container from '../molecules/container.astro';
           <stop offset="100%" style="stop-color:rgba(139, 92, 246, 0.05);stop-opacity:1" />
         </linearGradient>
       </defs>
-      <path d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fill="url(#wave-gradient)"></path>
+      <path d="M0,40L48,46.7C96,53,192,67,288,69.3C384,72,480,63,576,54C672,45,768,36,864,38.7C960,41,1056,53,1152,58.7C1248,64,1344,61,1392,58.7L1440,56L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" fill="url(#wave-gradient)"></path>
     </svg>
   </div>
 
@@ -31,30 +31,30 @@ import Container from '../molecules/container.astro';
   <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
 
   <Container>
-    <div class="relative z-10 flex flex-col items-start justify-between gap-8 py-12 sm:flex-row sm:items-center">
+    <div class="relative z-10 flex flex-col items-start justify-between gap-4 py-8 sm:flex-row sm:items-center">
       {/* Brand & Bio */}
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-3">
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2">
           <Text class="font-bold tracking-tight text-white">{PROFILE.name}</Text>
         </div>
-        <Text class="max-w-sm" size="sm" variant="muted">
+        <Text class="max-w-sm" size="xs" variant="muted">
           {SITE_CONFIG.hero.tagline}
         </Text>
       </div>
 
       {/* Social Links with Icons and Borders */}
-      <div class="flex flex-wrap items-center gap-3">
+      <div class="flex flex-wrap items-center gap-2">
         {
           SOCIALS.map((social) => (
             <a
-              class="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-white/10 hover:text-white"
+              class="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-sm font-medium text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-white/10 hover:text-white"
               data-tooltip={social.name}
               href={social.href}
               rel="noreferrer"
               target="_blank"
             >
-              <Icon class="size-4 transition-transform group-hover:scale-110" name={social.icon} />
-              <span class="text-xs">{social.handle}</span>
+              <Icon class="size-3.5 transition-transform group-hover:scale-110" name={social.icon} />
+              <span class="text-[10px]">{social.handle}</span>
             </a>
           ))
         }
@@ -62,14 +62,14 @@ import Container from '../molecules/container.astro';
     </div>
 
     {/* Bottom Bar */}
-    <div class="relative z-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 py-6 sm:flex-row">
-      <Text size="sm" variant="muted">
+    <div class="relative z-10 flex flex-col items-center justify-between gap-2 border-t border-white/5 py-4 sm:flex-row">
+      <Text size="xs" variant="muted">
         &copy; {new Date().getFullYear()}{" "}{PROFILE.name}. All rights reserved.
       </Text>
 
-      <div class="flex gap-6">
-        <a class="text-xs text-muted-foreground transition-colors hover:text-foreground" href="/rss.xml">RSS</a>
-        <a class="text-xs text-muted-foreground transition-colors hover:text-foreground" href="/sitemap-index.xml">Sitemap</a>
+      <div class="flex gap-4">
+        <a class="text-[10px] text-muted-foreground transition-colors hover:text-foreground" href="/rss.xml">RSS</a>
+        <a class="text-[10px] text-muted-foreground transition-colors hover:text-foreground" href="/sitemap-index.xml">Sitemap</a>
       </div>
     </div>
   </Container>

@@ -6,8 +6,6 @@ import { isActivePath } from "../../lib/nav";
 import Spacer from "../atoms/spacer.astro";
 import Text from "../atoms/text.astro";
 import Container from "../molecules/container.astro";
-import IdentitySection from "../molecules/identity-section.astro";
-import InteractiveAvatar from "../molecules/interactive-avatar.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
 import Search from "../organisms/search.astro";
@@ -26,17 +24,18 @@ const isActive = (href: string) => isActivePath(pathname, href);
       {/* Main Bar */}
       <div class="glass flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
 
-        {/* Identity */}
-        <IdentitySection class="pl-2">
-          <InteractiveAvatar class="shrink-0" size="sm" slot="avatar" />
+        {/* Identity - Simplified with Initials */}
+        <div class="flex items-center gap-3 pl-2">
+          <div class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold tracking-tighter text-primary ring-1 ring-primary/20">
+            SP
+          </div>
           <Text
             as="span"
             class="hidden cursor-default text-sm font-bold tracking-tight text-foreground sm:block"
-            slot="name"
           >
             {PROFILE.name}
           </Text>
-        </IdentitySection>
+        </div>
 
         <Spacer />
 

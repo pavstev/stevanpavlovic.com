@@ -17,24 +17,28 @@ export const SITE_CONFIG = {
 export const NAV_ITEMS = [
   {
     color: "var(--color-primary)",
+    description: "Start your journey through my professional portfolio and recent work",
     href: "/",
     icon: "mdi:home-variant-outline",
     label: "Home",
   },
   {
     color: "var(--color-primary)",
+    description: "Explore cutting-edge solutions built with modern technologies",
     href: "/projects",
     icon: "mdi:console",
     label: "Projects",
   },
   {
-    color: "var(--color-secondary)",
+    color: "#f59e0b",
+    description: "Discover my career journey across fintech, betting, and logistics",
     href: "/experience",
     icon: "mdi:briefcase-outline",
     label: "Experience",
   },
   {
     color: "var(--color-accent)",
+    description: "Read insights on distributed systems and software architecture",
     href: "/blog",
     icon: "mdi:newspaper-variant-outline",
     label: "Blog",

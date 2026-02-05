@@ -1,0 +1,72 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import profileImage from '../../assets/profile.jpeg';
+import { PROFILE } from '../../lib/config';
+import Heading from '../atoms/heading.astro';
+import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
+import ZoomableImage from '../molecules/zoomable-image.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const stats = [
+  { icon: 'mdi:briefcase-outline', label: '10+ Years Experience' },
+  { icon: 'mdi:server-network', label: '5+ Systems Architected' },
+  { icon: 'mdi:account-group', label: '100k+ Users Served' },
+];
+---
+
+<div class:list={[
+  "group relative overflow-hidden rounded-2xl border border-white/10 bg-card/60 backdrop-blur-md transition-all duration-300 hover:border-primary/20",
+  className
+]}>
+  <div class="relative z-10 flex min-h-full flex-col justify-between gap-6 p-6 md:p-8">
+    {/* Avatar - Top - Larger & Non-circular */}
+    <ZoomableImage
+      alt={PROFILE.name}
+      class="h-40 w-full shrink-0 rounded-lg object-cover ring-2 ring-white/10 transition-all duration-300 hover:ring-primary/30 md:h-48"
+      loading="eager"
+      src={profileImage}
+    />
+
+    {/* Content - Bottom Left */}
+    <Stack class="flex-1" gap={4}>
+      {/* Header */}
+      <div>
+        <Heading class="mb-1 text-white" level={2} size="xl">
+          {PROFILE.name}
+        </Heading>
+        <Text size="base" variant="muted">
+          Senior Software Engineer
+        </Text>
+      </div>
+
+      {/* Bio */}
+      <Stack gap={1}>
+        <Text size="base" variant="muted">
+          Focused on distributed systems and backend architecture
+        </Text>
+        <Text size="sm" variant="muted">
+          Building scalable, high-performance distributed systems
+        </Text>
+      </Stack>
+
+      {/* Statistics */}
+      <div class="flex flex-wrap gap-4">
+        {stats.map((stat) => (
+          <div class="flex items-center gap-2">
+            <Icon class="text-primary/70" name={stat.icon} size={16} />
+            <Text class="text-xs" variant="muted">
+              {stat.label}
+            </Text>
+          </div>
+        ))}
+      </div>
+    </Stack>
+  </div>
+</div>

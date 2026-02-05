@@ -1,5 +1,4 @@
 ---
-import Link from '../atoms/link.astro';
 
 interface Props {
   navItems: readonly { href: string; label: string }[];
@@ -13,16 +12,34 @@ const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
-<nav aria-label="Mobile navigation" class="flex flex-col gap-4 md:hidden">
-  {
-    navItems.map((item) => (
-      <Link
-        class="text-xl"
-        href={item.href}
-        variant={isActive(item.href) ? 'nav' : 'ghost'}
-      >
-        {item.label}
-      </Link>
-    ))
-  }
-</nav>
+<div
+  class="pointer-events-none fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center bg-background/80 px-6 opacity-0 backdrop-blur-xl transition-all duration-500 ease-in-out outline-none data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
+  data-open="false"
+  id="mobile-menu"
+>
+  <nav
+    aria-label="Mobile navigation"
+    class="flex w-full max-w-sm flex-col gap-4 text-center"
+  >
+    {
+      navItems.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <a
+            class:list={[
+              "text-2xl font-bold tracking-tight transition-all duration-300",
+              {"scale-110 text-primary": active, "text-muted-foreground hover:text-foreground": !active}
+            ]}
+            href={item.href}
+          >
+            {item.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="absolute bottom-12 flex items-center gap-6">
+    {/* Could add social links here if needed */}
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import type React from "react";
 
+import { Icon } from "@iconify/react";
 import { useEffect, useRef } from "react";
 
 import { cn } from "../../lib/cn";
@@ -71,7 +72,7 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={cn(
-          "relative w-full max-w-lg overflow-hidden rounded-2xl bg-card p-6 shadow-2xl sm:p-8",
+          "relative w-full max-w-lg overflow-hidden rounded-2xl bg-card shadow-2xl",
           className,
         )}
       >
@@ -82,17 +83,7 @@ const Modal: React.FC<ModalProps> = ({
             onClick={onClose}
             type="button"
           >
-            <svg
-              className="size-5"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
+            <Icon className="size-5" icon="mdi:close" />
           </button>
         )}
 

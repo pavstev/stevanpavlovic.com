@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 
 const ScrollToTop: React.FC = () => {
@@ -32,17 +33,7 @@ const ScrollToTop: React.FC = () => {
       type="button"
     >
       TOP
-      <svg
-        className="size-3 transition-transform duration-300 group-hover:-translate-y-0.5"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 19V5M5 12l7-7 7 7" />
-      </svg>
+      <Icon className="size-3 transition-transform duration-300 group-hover:-translate-y-0.5" icon="mdi:arrow-up" />
     </button>
   );
 };

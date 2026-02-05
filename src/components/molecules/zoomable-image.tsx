@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { ImageMetadata } from "astro";
 
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import MagnifyOverlay from "../atoms/magnify-overlay";
 import Modal from "../atoms/modal";
@@ -26,11 +28,9 @@ const ZoomableImage: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMagnified, setIsMagnified] = useState(false);
-  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const positionRef = useRef({ x: 50, y: 50 });
 
-  const imageSrc = typeof src === "string" ? src : src.src;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>): void => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
     if (!isMagnified) {
       return;
     }
@@ -39,8 +39,15 @@ const ZoomableImage: React.FC<Props> = ({
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    setPosition({ x, y });
-  };
+    // Use ref for instant updates without re-renders
+    positionRef.current = { x, y };
+
+    // Update transform directly for instant response
+    const img = e.currentTarget.querySelector("img");
+    if (img) {
+      img.style.transformOrigin = `${x.toString()}% ${y.toString()}%`;
+    }
+  }, [isMagnified]);
 
   return (
     <>
@@ -61,7 +68,7 @@ const ZoomableImage: React.FC<Props> = ({
           className="size-full object-cover"
           height={height}
           loading={loading}
-          src={imageSrc}
+          src={typeof src === "string" ? src : src.src}
           width={width}
         />
         {/* Magnifying Glass Decoration */}
@@ -100,11 +107,11 @@ const ZoomableImage: React.FC<Props> = ({
                 ? "scale-150 cursor-zoom-out"
                 : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
             }`}
-            src={imageSrc}
+            src={typeof src === "string" ? src : src.src}
             style={
               isMagnified
                 ? {
-                  transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
+                  transformOrigin: `${String(position.x.toString())}% ${String(position.y.toString())}%`,
                 }
                 : undefined
             }

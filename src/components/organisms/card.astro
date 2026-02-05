@@ -51,6 +51,7 @@ interface IconProps extends BaseProps {
 
 interface PortfolioProps extends BaseProps {
   headingLevel?: number;
+  list?: boolean;
   portfolioItem: PortfolioItem;
   variant: 'portfolio';
 }
@@ -123,8 +124,49 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
 {/* PORTFOLIO CARD */}
 {isPortfolio && (() => {
-  const { headingLevel = 3, portfolioItem: item, ...pProps } = props as PortfolioProps;
+  const { headingLevel = 3, list = false, portfolioItem: item, ...pProps } = props as PortfolioProps;
   const Element = getElement(item.href);
+
+  // List variant - condensed single-column layout
+  if (list) {
+    return (
+      <Element class="group block" href={item.href}>
+        <div
+          class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "p-4!")}
+          style={{ '--glow-color': glowColor }}
+          {...pProps}
+        >
+          <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+            style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="md">
+                  {item.title}
+                </Heading>
+                {item.href && (
+                  <Icon class="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
+                )}
+              </div>
+              <Text class="mt-0.5 font-mono tracking-wider uppercase" size="xs" variant="muted">
+                {item.subtitle}
+              </Text>
+            </div>
+            <div class="flex items-center gap-2">
+              <Badge variant="secondary">{item.meta}</Badge>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <Tags limit={4} tags={item.tags} />
+          </div>
+        </div>
+      </Element>
+    );
+  }
+
+  // Default grid variant
   return (
     <Element class="group block h-full" href={item.href}>
       <div

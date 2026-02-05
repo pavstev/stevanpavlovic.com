@@ -1,0 +1,21 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+
+import PostView from '../../components/organisms/post-view.astro';
+
+export const getStaticPaths = async () => {
+  const experience = await getCollection('experience');
+  return experience.map((exp) => ({
+    params: { slug: exp.id },
+    props: exp,
+  }));
+};
+type Props = CollectionEntry<'experience'>;
+
+const exp = Astro.props;
+const { Content } = await render(exp);
+---
+
+<PostView data={exp.data} type="experience">
+  <Content />
+</PostView>

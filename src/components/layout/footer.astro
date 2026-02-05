@@ -6,11 +6,29 @@ import Text from '../atoms/text.astro';
 import Container from '../molecules/container.astro';
 ---
 
-<footer class="relative w-full overflow-hidden border-t border-white/5 bg-gradient-to-b from-background to-card" transition:persist>
-  {/* Different background pattern from main layout */}
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,119,198,0.05),transparent_50%)]"></div>
-  <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-  <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+<footer class="relative w-full overflow-hidden border-t border-white/5 bg-black/90" transition:persist>
+  {/* Wave SVG Background */}
+  <div class="absolute inset-0 -z-10">
+    <svg class="absolute bottom-0 w-full" preserveAspectRatio="none" style="height: 100%;" viewBox="0 0 1440 320">
+      <defs>
+        <linearGradient id="wave-gradient" x1="0%" x2="100%" y1="0%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(139, 92, 246, 0.1);stop-opacity:1" />
+          <stop offset="50%" style="stop-color:rgba(6, 182, 212, 0.08);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(139, 92, 246, 0.05);stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <path d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fill="url(#wave-gradient)"></path>
+    </svg>
+  </div>
+
+  {/* Animated Gradient Overlay */}
+  <div class="animate-gradient absolute inset-0 bg-gradient-to-br from-violet-500/5 via-cyan-500/5 to-violet-500/5"></div>
+
+  {/* Subtle Grid Pattern */}
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808006_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+
+  {/* Top Glow Accent */}
+  <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
 
   <Container>
     <div class="relative z-10 flex flex-col items-start justify-between gap-8 py-12 sm:flex-row sm:items-center">

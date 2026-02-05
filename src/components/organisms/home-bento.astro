@@ -1,13 +1,13 @@
 ---
-import { NAV_ITEMS } from '../../lib/config';
+import { NAV_ITEMS, type NavItem } from '../../lib/config';
 import { Meteors } from '../meteor';
 import Card from './card.astro';
 import ProfileHeader from './profile-header.astro';
 
-const { items = NAV_ITEMS.filter((i) => i.label !== 'Home') } = Astro.props;
+const { items = Object.values(NAV_ITEMS).filter((i) => i.label !== 'Home') } = Astro.props;
 
 interface Props {
-  items?: typeof NAV_ITEMS[number][];
+  items?: NavItem[];
 }
 ---
 

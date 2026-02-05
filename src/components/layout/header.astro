@@ -1,5 +1,5 @@
 ---
-import { NAV_ITEMS } from "../../lib/config";
+import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
 import Logo from "../atoms/logo.astro";
 import Container from "../molecules/container.astro";
@@ -40,7 +40,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
           </div>
           {/* Desktop Nav */}
           <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS_ARRAY.map((item) => {
               const active = isActive(item.href);
               return (
                 <a
@@ -67,7 +67,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
   </Container>
 </header>
 
-<MobileMenu navItems={NAV_ITEMS} />
+<MobileMenu navItems={Object.values(NAV_ITEMS)} />
 
 <script>
   import { initMobileMenu, updateActiveLinks } from '../../lib/mobile-menu';

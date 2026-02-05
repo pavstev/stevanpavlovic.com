@@ -1,5 +1,5 @@
 ---
-// Handles: /blog, /projects, /experience (defaults to list view, page 1)
+// Handles: /blog/grid, /blog/list, /projects/grid, etc. (explicit view, page 1)
 import type { GetStaticPaths } from 'astro';
 
 import CollectionPage from '../../components/templates/collection-page.astro';
@@ -12,20 +12,33 @@ import {
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
+  type ViewMode,
 } from '../../lib/collection-pages';
 
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const collections: CollectionName[] = ['blog', 'projects', 'experience'];
+  const views: ViewMode[] = ['list', 'grid'];
+  const paths: Array<{
+    params: {
+      collection: CollectionName;
+      view: ViewMode;
+    };
+  }> = [];
 
-  return collections.map((collection) => ({
-    params: { collection },
-  }));
+  for (const collection of collections) {
+    for (const view of views) {
+      paths.push({
+        params: { collection, view },
+      });
+    }
+  }
+
+  return paths;
 };
 
-const { collection } = Astro.params;
-const view = 'list' as const;
+const { collection, view } = Astro.params;
 const currentPage = 1;
 
 const sortedItems = await getCollectionData(collection);

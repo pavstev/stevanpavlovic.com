@@ -8,36 +8,51 @@ export const SITE_CONFIG = {
   title: "Stevan Pavlovic - Senior Software Engineer",
 } as const;
 
-export const NAV_ITEMS = [
-  {
+export interface NavItem {
+  color: string;
+  defaultView: "grid" | "list";
+  description: string;
+  href: string;
+  icon: `mdi:${string}`;
+  label: string;
+}
+
+export const NAV_ITEMS: Record<string, NavItem> = {
+  blog: {
+    color: "var(--color-accent)",
+    defaultView: "list",
+    description: "Read insights on distributed systems and software architecture",
+    href: "/blog",
+    icon: "mdi:newspaper-variant-outline",
+    label: "Blog",
+  },
+  experience: {
     color: "var(--color-primary)",
+    defaultView: "list",
+    description: "Discover my career journey across fintech, betting, and logistics",
+    href: "/experience",
+    icon: "mdi:briefcase-outline",
+    label: "Experience",
+  },
+  home: {
+    color: "var(--color-primary)",
+    defaultView: "list",
     description: "Start your journey through my professional portfolio and recent work",
     href: "/",
     icon: "mdi:home-variant-outline",
     label: "Home",
   },
-  {
+  projects: {
     color: "var(--color-primary)",
+    defaultView: "grid",
     description: "Explore cutting-edge solutions built with modern technologies",
-    href: "/projects/list",
+    href: "/projects",
     icon: "mdi:console",
     label: "Projects",
   },
-  {
-    color: "var(--color-primary)",
-    description: "Discover my career journey across fintech, betting, and logistics",
-    href: "/experience/list",
-    icon: "mdi:briefcase-outline",
-    label: "Experience",
-  },
-  {
-    color: "var(--color-accent)",
-    description: "Read insights on distributed systems and software architecture",
-    href: "/blog/grid",
-    icon: "mdi:newspaper-variant-outline",
-    label: "Blog",
-  },
-] as const;
+} as const;
+
+export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS);
 
 export const PROFILE = {
   avatar: profileImage,
@@ -70,7 +85,7 @@ export const SOCIALS = [
   },
 ] as const;
 
-export interface Stat {
+interface Stat {
   format?: "compact" | "plain";
   icon: `mdi:${string}`;
   label: string;

@@ -4,8 +4,9 @@
     "noUnusedParameters": true,
     "strict": true,
     "noImplicitAny": true,
-    "jsx": "react-jsx",
     "strictNullChecks": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "types": [
       "./worker-configuration.d.ts",
       "node"

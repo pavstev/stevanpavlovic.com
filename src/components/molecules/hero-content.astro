@@ -1,7 +1,6 @@
 ---
 import { cn } from '../../lib/cn';
-import { SITE_CONFIG } from '../../lib/config';
-import { stats } from '../../lib/content';
+import { SITE_CONFIG, STATS } from '../../lib/config';
 import Heading from '../atoms/heading.astro';
 import Text from '../atoms/text.astro';
 import Stat from './stat.astro';
@@ -15,22 +14,22 @@ const { class: className } = Astro.props;
 
 <div class:list={cn("relative -mt-12 space-y-6 overflow-hidden py-12 md:py-20", className)}>
   <div class="relative z-10 space-y-1">
-    <Text class="font-mono tracking-tight text-white/50" size="lg">
+    <Text class="font-mono tracking-tight text-foreground/50" size="lg">
       Hi, I'm
     </Text>
     <Heading class="leading-[1.1]" size="display">
       <span class="animate-shiny-text block">
-        {SITE_CONFIG.hero.title.main} {SITE_CONFIG.hero.title.highlight}
+        {SITE_CONFIG.author}
       </span>
     </Heading>
-    <Text class="max-w-xl font-mono tracking-tight text-white/50" size="lg">
-      {SITE_CONFIG.hero.tagline}
+    <Text class="max-w-xl font-mono tracking-tight text-foreground/50" size="lg">
+      {SITE_CONFIG.tagline}
     </Text>
   </div>
 
   {/* Statistics */}
   <div class="flex flex-wrap justify-start gap-4 pt-4 md:gap-6">
-    {stats.map((stat) => (
+    {STATS.map((stat) => (
       <Stat
         class="origin-left scale-95 md:scale-100"
         icon={stat.icon}

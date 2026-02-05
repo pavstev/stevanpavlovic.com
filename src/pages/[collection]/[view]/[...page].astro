@@ -1,4 +1,6 @@
 ---
+import type { GetStaticPaths, GetStaticPathsResult } from 'astro';
+
 import { getCollection } from 'astro:content';
 
 import CollectionPage from '../../../components/templates/collection-page.astro';
@@ -7,32 +9,45 @@ import { PROFILE } from '../../../lib/config';
 
 export const prerender = true;
 
-// Type Definitions
 type CollectionItem = {
   data: any;
   id: string;
 };
 
 type CollectionName = 'blog' | 'experience' | 'projects';
+interface Props {
+  [key: string]: unknown;
+  collection: CollectionName;
+  currentPage: number;
+  items: CollectionItem[];
+  totalItems: number;
+  totalPages: number;
+  view: ViewMode;
+}
 
-// Generate static paths for all collection pages
-export async function getStaticPaths() {
+type ViewMode = 'grid' | 'list';
+
+export const getStaticPaths: GetStaticPaths = async (): Promise<GetStaticPathsResult> => {
   const ITEMS_PER_PAGE = 10;
   const collections: CollectionName[] = ['blog', 'projects', 'experience'];
-  const views = ['list', 'grid'] as const;
-  const paths = [];
+  const views: ViewMode[] = ['list', 'grid'];
+  const paths: Array<{
+    params: {
+      collection: CollectionName;
+      page: string | undefined;
+      view: ViewMode;
+    };
+    props: Props;
+  }> = [];
 
   for (const collectionName of collections) {
-    // Fetch all items for this collection
     const allItems = await getCollection(collectionName) as CollectionItem[];
 
-    // Sort by newest first (default)
     const sortedItems = allItems.sort((a, b) => {
       const getItemDate = (item: CollectionItem): number => {
         if (collectionName === 'blog' || collectionName === 'projects') {
           return item.data.pubDate ? new Date(item.data.pubDate).getTime() : 0;
         }
-        // experience
         return item.data.startDate ? new Date(item.data.startDate).getTime() : 0;
       };
 
@@ -42,17 +57,18 @@ export async function getStaticPaths() {
     const totalItems = sortedItems.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
 
-    // Generate paths for each page and view combination
-    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-      for (const view of views) {
+    for (const view of views) {
+      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
         const startIndex = (pageNum - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
         const pageItems = sortedItems.slice(startIndex, endIndex);
 
+        const pageParam = pageNum === 1 ? undefined : pageNum.toString();
+
         paths.push({
           params: {
             collection: collectionName,
-            page: pageNum.toString(),
+            page: pageParam,
             view,
           },
           props: {
@@ -71,17 +87,16 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { collection, currentPage, items, totalItems, totalPages, view } = Astro.props;
+const { collection, currentPage, items, totalItems, totalPages, view } = Astro.props as Props;
 
 // --- Collection Specific Configuration ---
 
-// 1. Title & Description
 let title = '';
 let description = '';
 let headerTitle = '';
 let headerDescription = '';
 let headerIcon = '';
-let baseUrl = `/${collection}`;
+const baseUrl = `/${collection}`;
 
 if (collection === 'blog') {
   title = `Blog | ${SITE_TITLE}`;
@@ -103,8 +118,7 @@ if (collection === 'blog') {
   headerIcon = "mdi:briefcase-outline";
 }
 
-// 2. Item Props Helpers
-const getItemCardProps = (item: any) => {
+const getItemCardProps = (item: CollectionItem) => {
   if (collection === 'blog') {
     return { post: item, variant: 'content' };
   }
@@ -146,12 +160,18 @@ const getItemCardProps = (item: any) => {
 };
 
 const viewUrls = {
-  grid: `/${collection}/${currentPage}/grid`,
-  list: `/${collection}/${currentPage}/list`,
+  grid: currentPage === 1 ? `/${collection}/grid` : `/${collection}/grid/${currentPage}`,
+  list: currentPage === 1 ? `/${collection}/list` : `/${collection}/list/${currentPage}`,
 };
 
-const prevUrl = currentPage > 1 ? `/${collection}/${currentPage - 1}/${view}` : undefined;
-const nextUrl = currentPage < totalPages ? `/${collection}/${currentPage + 1}/${view}` : undefined;
+const prevUrl = currentPage > 1
+  ? (currentPage === 2
+    ? `/${collection}/${view}`
+    : `/${collection}/${view}/${currentPage - 1}`)
+  : undefined;
+const nextUrl = currentPage < totalPages
+  ? `/${collection}/${view}/${currentPage + 1}`
+  : undefined;
 
 ---
 

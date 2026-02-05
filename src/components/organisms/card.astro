@@ -105,7 +105,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
         <div class="relative">
           <div class="absolute -inset-2 bg-primary/5 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"></div>
           <IconBox
-            class="group-hover:shadow-glow-primary relative border-white/10 bg-white/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/10 group-hover:bg-primary/5 group-hover:text-primary"
+            class="group-hover:shadow-glow-primary relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/10 group-hover:bg-primary/5 group-hover:text-primary"
             size="lg"
             variant="glass"
           >
@@ -340,7 +340,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
 <script is:inline>
   function initInteractiveCards() {
-    const cards = document.querySelectorAll(".group/card");
+    const cards = document.querySelectorAll(".group\\/card");
 
     for (const card of cards) {
       if (!(card instanceof HTMLElement)) {

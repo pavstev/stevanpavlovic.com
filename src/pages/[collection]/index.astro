@@ -5,9 +5,9 @@ import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() => {
   return [
-    { params: { collection: 'blog' } },
-    { params: { collection: 'projects' } },
-    { params: { collection: 'experience' } },
+    { params: { collection: 'blog' as const } },
+    { params: { collection: 'projects' as const } },
+    { params: { collection: 'experience' as const } },
   ];
 }) satisfies GetStaticPaths;
 
@@ -17,11 +17,11 @@ const search = Astro.url.search;
 console.log('Redirecting with search:', search);
 
 if (collection === 'blog') {
-  return Astro.redirect(`/blog/1/grid${search}`);
+  return Astro.redirect(`/blog/grid${search}`);
 } else if (collection === 'projects') {
-  return Astro.redirect(`/projects/1/grid${search}`);
+  return Astro.redirect(`/projects/grid${search}`);
 } else if (collection === 'experience') {
-  return Astro.redirect(`/experience/1/list${search}`);
+  return Astro.redirect(`/experience/list${search}`);
 }
 
 return Astro.redirect(`/${search}`);

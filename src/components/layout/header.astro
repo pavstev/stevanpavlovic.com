@@ -20,7 +20,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
   <Container>
     <LayoutWrapper class="items-center">
       {/* Main Bar */}
-      <div class="glass relative flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
+      <div class="glass relative flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20">
 
         {/* Left: Logo */}
         <div class="shrink-0">
@@ -29,14 +29,14 @@ const isActive = (href: string) => isActivePath(pathname, href);
 
         {/* Center: Search - Desktop */}
         <div class="absolute top-1/2 left-1/2 hidden -translate-1/2 md:block">
-          <Search />
+          <Search variant="desktop" />
         </div>
 
         {/* Right: Nav & Mobile Toggle */}
         <div class="flex items-center gap-2 pr-1">
           {/* Mobile Search (Visible only on mobile) */}
           <div class="md:hidden">
-            <Search />
+            <Search variant="mobile" />
           </div>
           {/* Desktop Nav */}
           <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
@@ -46,7 +46,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
                 <a
                   class:list={[
                     "relative rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-300",
-                    {"bg-white/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-white/5 hover:text-foreground": !active}
+                    {"bg-foreground/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
                   ]}
                   data-nav-link
                   href={item.href}

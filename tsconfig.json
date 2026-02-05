@@ -4,6 +4,7 @@
     "noUnusedParameters": true,
     "strict": true,
     "noImplicitAny": true,
+    "jsx": "react-jsx",
     "strictNullChecks": true,
     "types": [
       "./worker-configuration.d.ts",

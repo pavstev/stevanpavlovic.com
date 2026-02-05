@@ -52,7 +52,6 @@ const {
   nextUrl,
   prevUrl,
   title,
-  totalItems,
   totalPages = 1,
   viewMode,
   viewUrls,
@@ -69,22 +68,23 @@ const isGrid = viewMode === 'grid';
       description={headerDescription}
       icon={headerIcon}
       title={headerTitle}
-    />
-
-    <Stack gap={4}>
+    >
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
-        getPageUrl={(p: number) => `${baseUrl}/${p}/${viewMode}`}
-        itemCountLabel="items"
+        getPageUrl={(p: number) => p === 1 ? `${baseUrl}/${viewMode}` : `${baseUrl}/${viewMode}/${p}`}
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
-        totalItems={totalItems}
+        slot="action"
         totalPages={totalPages}
         viewMode={viewMode}
         viewUrls={viewUrls}
       />
+    </SectionHeader>
+
+
+    <Stack gap={4}>
 
       <div class="view-container" data-initial-page-size={initialPageSize} id={containerId}>
 

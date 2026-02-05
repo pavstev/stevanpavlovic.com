@@ -107,14 +107,14 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={cn(
-          "glass-strong relative flex flex-col rounded-3xl border border-white/10 shadow-2xl transition-all duration-500",
+          "glass-strong relative flex flex-col rounded-3xl border border-foreground/10 shadow-2xl transition-all duration-500",
           "max-h-[85vh] w-full max-w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-xl",
           className,
         )}
       >
         {/* Optional Header */}
         {(title || description) && (
-          <div className="flex flex-col gap-1.5 border-b border-white/5 p-6 pb-4">
+          <div className="flex flex-col gap-1.5 border-b border-foreground/5 p-6 pb-4">
             {title && (
               <h2
                 className="text-xl font-bold tracking-tight text-foreground"
@@ -138,7 +138,7 @@ const Modal: React.FC<ModalProps> = ({
         {showCloseButton && (
           <button
             aria-label="Close modal"
-            className="absolute top-4 right-4 z-50 flex size-10 items-center justify-center rounded-full bg-white/10 text-muted-foreground transition-all hover:scale-110 hover:bg-white/20 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background focus:outline-none"
+            className="absolute top-4 right-4 z-50 flex size-10 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition-all hover:scale-110 hover:bg-foreground/20 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background focus:outline-none"
             onClick={onClose}
           >
             <svg className="size-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ const Modal: React.FC<ModalProps> = ({
         )}
 
         {/* Scrollable Content Body */}
-        <div className={cn("scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent flex-1 overflow-y-auto p-6", bodyClass)}>
+        <div className={cn("scrollbar-thin scrollbar-thumb-foreground/10 scrollbar-track-transparent flex-1 overflow-y-auto p-6", bodyClass)}>
           {children}
         </div>
 

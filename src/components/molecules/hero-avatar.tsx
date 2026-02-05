@@ -14,7 +14,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
   return (
     <>
       <div
-        className={`w-56 cursor-zoom-in rounded-lg bg-white p-1.5 shadow-xl transition-all duration-500 hover:scale-108 hover:rotate-2 hover:shadow-2xl md:w-64 ${className || ""}`}
+        className={`w-56 cursor-zoom-in rounded-lg bg-foreground p-1.5 shadow-xl transition-all duration-500 hover:scale-108 hover:rotate-2 hover:shadow-2xl md:w-64 ${className || ""}`}
         onClick={() => { setIsModalOpen(true); }}
         onKeyDown={(e): void => {
           if (e.key === "Enter" || e.key === " ") {

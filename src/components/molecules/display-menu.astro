@@ -20,11 +20,11 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
   buildListUrl(Astro.url, 'path', path, paramsToSet);
 ---
 
-<div class="display-menu flex items-center gap-1">
+<div class="display-menu flex items-center gap-1 rounded-md bg-foreground/5 p-1">
   {VIEW_MODES.map(({ icon, label, mode }) => (
     <Button
       as="a"
-      class="hover:no-underline"
+      class="transition-colors hover:bg-accent-foreground/50 hover:no-underline"
       data-active={viewMode === mode}
       href={viewUrls ? buildUrl(viewUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
       size="sm"

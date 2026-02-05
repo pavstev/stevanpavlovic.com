@@ -1,17 +1,12 @@
 /**
- * Initializes search dropdown functionality
+ * Initializes a single search dropdown instance
  */
-export const initSearchDropdown = (): void => {
-  const container = document.getElementById("search-container");
-  const searchInput = document.getElementById("search-input") as HTMLInputElement;
-  const clearButton = document.getElementById("search-clear");
-  const dropdown = document.getElementById("search-dropdown");
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!container || !searchInput || !dropdown) {
-    return;
-  }
-
+const initSingleSearch = (
+  container: HTMLElement,
+  searchInput: HTMLInputElement,
+  clearButton: HTMLElement | null,
+  dropdown: HTMLElement,
+): void => {
   let isOpen = false;
   let pagefindInput: HTMLInputElement | null = null;
 
@@ -83,11 +78,15 @@ export const initSearchDropdown = (): void => {
   });
 
   // Handle touch events for mobile
-  searchInput.addEventListener("touchstart", () => {
-    if (!isOpen) {
-      openDropdown();
-    }
-  }, { passive: true });
+  searchInput.addEventListener(
+    "touchstart",
+    () => {
+      if (!isOpen) {
+        openDropdown();
+      }
+    },
+    { passive: true },
+  );
 
   // Clear button click handler
   if (clearButton) {
@@ -125,12 +124,16 @@ export const initSearchDropdown = (): void => {
   document.addEventListener("click", closeOnOutside);
 
   // Handle touch outside to close dropdown on mobile
-  document.addEventListener("touchstart", (e: TouchEvent) => {
-    const target = e.target as Node;
-    if (!container.contains(target)) {
-      closeDropdown();
-    }
-  }, { passive: true });
+  document.addEventListener(
+    "touchstart",
+    (e: TouchEvent) => {
+      const target = e.target as Node;
+      if (!container.contains(target)) {
+        closeDropdown();
+      }
+    },
+    { passive: true },
+  );
 
   // Close on Escape key
   document.addEventListener("keydown", (e) => {
@@ -161,4 +164,35 @@ export const initSearchDropdown = (): void => {
       searchInput.focus();
     }
   });
+};
+
+/**
+ * Initializes all search dropdowns on the page
+ */
+export const initSearchDropdown = (): void => {
+  // Find all search containers and initialize each one
+  const containers = document.querySelectorAll(".search-dropdown-container");
+
+  for (const container of containers) {
+    const variant = container.getAttribute("data-search-variant") || "desktop";
+    const idPrefix
+      = variant === "mobile" ? "mobile-search" : "desktop-search";
+    const searchInput = document.getElementById(
+      `${idPrefix}-input`,
+    ) as HTMLInputElement;
+    const clearButton = document.getElementById(`${idPrefix}-clear`);
+    const dropdown = document.getElementById(`${idPrefix}-dropdown`);
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!searchInput || !dropdown) {
+      continue;
+    }
+
+    initSingleSearch(
+      container as HTMLElement,
+      searchInput,
+      clearButton,
+      dropdown,
+    );
+  }
 };

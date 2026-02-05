@@ -22,11 +22,11 @@ const {
 } = Astro.props;
 ---
 
-<Stack align={{ base: 'start', md: 'center' }} class="pb-8" direction={{ base: 'col', lg: 'row' }} gap={6} justify="between">
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
   <Stack align="center" class="min-w-0" direction="row" gap={4}>
     {icon && (
-      <div class="shadow-glow hover:shadow-glow-primary flex size-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5 hover:text-primary">
-        <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size={24} />
+      <div class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
+        <Icon name={icon} size={24} />
       </div>
     )}
     <div class="min-w-0">
@@ -46,4 +46,4 @@ const {
     </div>
   </Stack>
   <slot name="action" />
-</Stack>
+</div>

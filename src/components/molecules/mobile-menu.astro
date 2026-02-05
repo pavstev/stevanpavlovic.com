@@ -36,7 +36,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
     {SOCIALS.map((social) => (
       <a
         aria-label={social.name}
-        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-white/5 hover:text-foreground"
+        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-foreground/5 hover:text-foreground"
         href={social.href}
         rel="noreferrer"
         target="_blank"

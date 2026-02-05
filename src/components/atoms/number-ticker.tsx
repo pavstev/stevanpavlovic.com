@@ -57,7 +57,7 @@ export const NumberTicker: FC<Props> = ({
   return (
     <span
       className={cn(
-        "inline-block tracking-wider text-black tabular-nums dark:text-white",
+        "inline-block tracking-wider text-foreground tabular-nums",
         className,
       )}
       ref={ref}

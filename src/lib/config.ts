@@ -4,13 +4,7 @@ export const SITE_CONFIG = {
   author: "Stevan Pavlovic",
   description: "Technical Lead and Senior Software Engineer",
   email: "hi@stevanpavlovic.com",
-  hero: {
-    tagline: "a software engineer focused on distributed systems and backend architecture",
-    title: {
-      highlight: "Pavlovic",
-      main: "Stevan",
-    },
-  },
+  tagline: "a software engineer focused on distributed systems and backend architecture",
   title: "Stevan Pavlovic - Senior Software Engineer",
 } as const;
 
@@ -25,21 +19,21 @@ export const NAV_ITEMS = [
   {
     color: "var(--color-primary)",
     description: "Explore cutting-edge solutions built with modern technologies",
-    href: "/projects",
+    href: "/projects/list",
     icon: "mdi:console",
     label: "Projects",
   },
   {
-    color: "var(--color-secondary-foreground)",
+    color: "var(--color-primary)",
     description: "Discover my career journey across fintech, betting, and logistics",
-    href: "/experience",
+    href: "/experience/list",
     icon: "mdi:briefcase-outline",
     label: "Experience",
   },
   {
     color: "var(--color-accent)",
     description: "Read insights on distributed systems and software architecture",
-    href: "/blog",
+    href: "/blog/grid",
     icon: "mdi:newspaper-variant-outline",
     label: "Blog",
   },
@@ -74,4 +68,19 @@ export const SOCIALS = [
     icon: "mdi:email",
     name: "Email",
   },
+] as const;
+
+export interface Stat {
+  format?: "compact" | "plain";
+  icon: `mdi:${string}`;
+  label: string;
+  unit?: string;
+  value: number;
+}
+
+export const STATS: Stat[] = [
+  { icon: "mdi:clock-time-eight-outline", label: "Years Exp.", value: 12 },
+  { icon: "mdi:server-network", label: "Systems", value: 24 },
+  { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "+", value: 120000 },
+  { icon: "mdi:earth", label: "Countries", value: 15 },
 ] as const;

@@ -2,7 +2,6 @@
 import type { ViewUrls } from '../../lib/list';
 
 import DisplayMenu from './display-menu.astro';
-import ItemCount from './item-count.astro';
 import Pagination from './pagination.astro';
 
 interface Props {
@@ -11,15 +10,12 @@ interface Props {
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
   // eslint-disable-next-line no-unused-vars
   getPageUrl?: (_page: number) => string;
-  itemCountLabel?: string;
   /** Optional: Direct URL for next page (overrides auto-generation) */
   nextUrl?: string;
   paginationType?: 'path' | 'query';
   /** Optional: Direct URL for previous page (overrides auto-generation) */
   prevUrl?: string;
-  showItemCount?: boolean;
   showViewToggle?: boolean;
-  totalItems?: number;
   totalPages: number;
   viewMode?: 'grid' | 'list';
   /** Optional: Explicit URLs for view toggles */
@@ -30,40 +26,27 @@ const {
   baseUrl,
   currentPage,
   getPageUrl: customGetPageUrl,
-  itemCountLabel,
   nextUrl,
   paginationType = 'path',
   prevUrl,
-  showItemCount = true,
   showViewToggle = true,
-  totalItems,
   totalPages,
   viewMode = 'list',
   viewUrls,
 } = Astro.props;
 ---
 
-<div class="list-actions w-full">
-  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
-    {/* Left: Item Count */}
-    {showItemCount && (
-      <ItemCount itemCountLabel={itemCountLabel} totalItems={totalItems} />
-    )}
-
-    {/* Right: Controls */}
-    <div class="flex flex-wrap items-center gap-3">
-      {showViewToggle && (
-        <DisplayMenu showLabels viewMode={viewMode} viewUrls={viewUrls} />
-      )}
-      <Pagination
-        baseUrl={baseUrl}
-        currentPage={currentPage}
-        getPageUrl={customGetPageUrl}
-        nextUrl={nextUrl}
-        paginationType={paginationType}
-        prevUrl={prevUrl}
-        totalPages={totalPages}
-      />
-    </div>
-  </div>
+<div class="flex flex-wrap items-center gap-3">
+  {showViewToggle && (
+    <DisplayMenu showLabels viewMode={viewMode} viewUrls={viewUrls} />
+  )}
+  <Pagination
+    baseUrl={baseUrl}
+    currentPage={currentPage}
+    getPageUrl={customGetPageUrl}
+    nextUrl={nextUrl}
+    paginationType={paginationType}
+    prevUrl={prevUrl}
+    totalPages={totalPages}
+  />
 </div>

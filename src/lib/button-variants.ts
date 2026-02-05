@@ -27,7 +27,7 @@ export const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:scale-[0.98]",
         tabs:
-          "rounded-full border border-border/40 bg-background/40 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-accent/60 hover:text-accent-foreground data-[active=true]:bg-accent/80 data-[active=true]:text-accent-foreground data-[active=true]:border-border/60",
+          "rounded-md px-4 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-muted-foreground hover:text-foreground data-[active=true]:bg-background data-[active=true]:text-foreground data-[active=true]:shadow-sm bg-transparent",
         toggle:
           "rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-bold tracking-widest uppercase shadow-sm backdrop-blur-md hover:bg-accent/50 hover:text-accent-foreground hover:border-border active:scale-[0.95]",
       },

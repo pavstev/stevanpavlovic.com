@@ -1,73 +1,46 @@
 ---
-
 interface Props {
   navItems: readonly { href: string; label: string }[];
 }
 
 import { Icon } from 'astro-icon/components';
-
 import { SOCIALS } from '../../lib/config';
 import { isActivePath } from '../../lib/nav';
 
 const { navItems } = Astro.props;
 const { pathname } = Astro.url;
-
 const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
 <div
-  class="pointer-events-none fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center bg-background/95 px-6 opacity-0 backdrop-blur-2xl transition-all duration-500 ease-in-out outline-none data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
+  class="pointer-events-none fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center bg-background/95 backdrop-blur-lg opacity-0 transition-all duration-500 ease-out data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
   data-open="false"
   id="mobile-menu"
 >
-  {/* Background Effects */}
-  <div
-    class="pointer-events-none absolute inset-0 -z-10"
-    style="background: radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);"
-  >
-  </div>
-  <div
-    class="pointer-events-none absolute inset-0 -z-10 opacity-[0.03]"
-    style={{
-      backgroundImage:
-        'linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)',
-      backgroundSize: '32px 32px',
-    }}
-  >
-  </div>
-
-  <nav
-    aria-label="Mobile navigation"
-    class="flex w-full max-w-sm flex-col gap-6 text-center"
-  >
-    {
-      navItems.map((item) => {
-        const active = isActive(item.href);
-        return (
-          <a
-            class:list={[
-              "text-3xl font-bold tracking-tight transition-all duration-300",
-              {"scale-110 text-primary drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]": active, "text-muted-foreground hover:text-foreground": !active}
-            ]}
-            href={item.href}
-          >
-            {item.label}
-          </a>
-        );
-      })
-    }
+  <nav class="flex w-full max-w-sm flex-col gap-4 text-center">
+    {navItems.map((item) => (
+      <a
+        class:list={[
+          "text-xl font-medium transition-all duration-300",
+          { "text-foreground scale-105": isActive(item.href), "text-muted-foreground hover:text-foreground": !isActive(item.href) }
+        ]}
+        href={item.href}
+      >
+        {item.label}
+      </a>
+    ))}
   </nav>
 
-  <div class="absolute bottom-12 flex items-center gap-6">
+  <div class="absolute bottom-12 flex items-center gap-4">
     {SOCIALS.map((social) => (
       <a
         aria-label={social.name}
-        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground"
+        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-white/5 hover:text-foreground"
         href={social.href}
         rel="noreferrer"
         target="_blank"
       >
-        <Icon class="size-6" name={social.icon} />
+        <Icon class="size-5" name={social.icon} />
       </a>
     ))}
   </div>

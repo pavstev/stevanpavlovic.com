@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import profileImage from "../../assets/profile.jpeg";
 import { PROFILE } from "../../lib/config";
-import Modal from "../atoms/Modal";
+import Modal from "../atoms/modal";
 
 interface HeroAvatarProps {
   className?: string;
@@ -28,7 +28,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
         <div className="rounded">
           <img
             alt={PROFILE.name}
-            className="aspect-[4/5] w-full object-cover"
+            className="aspect-4/5 w-full object-cover"
             loading="eager"
             src={profileImage.src}
           />
@@ -36,7 +36,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
       </div>
 
       <Modal
-        className="m-0 !flex !h-screen !max-h-none !w-screen !max-w-none !items-center !justify-center !border-none !bg-transparent !p-0"
+        className="m-0 flex! h-screen! max-h-none! w-screen! max-w-none! items-center! !justify-center !border-none !bg-transparent !p-0"
         dialogClass="!p-0"
         onClose={() => { setIsModalOpen(false); }}
         open={isModalOpen}

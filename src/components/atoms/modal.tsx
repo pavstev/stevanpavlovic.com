@@ -88,6 +88,7 @@ const Modal: React.FC<ModalProps> = ({
   }, [open]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <dialog
       aria-describedby={description ? `${title?.toLowerCase().replace(/\s+/g, "-") ?? ""}-description` : undefined}
       aria-labelledby={title ? `${title.toLowerCase().replace(/\s+/g, "-")}-title` : undefined}
@@ -96,16 +97,13 @@ const Modal: React.FC<ModalProps> = ({
         "m-auto overflow-visible border-none bg-transparent p-0 outline-none backdrop:bg-black/80 backdrop:backdrop-blur-md",
         dialogClass,
       )}
-
       onClick={handleBackdropClick}
-
       onKeyDown={(e): void => {
         if (e.key === "Escape") {
           onClose();
         }
       }}
       ref={dialogRef}
-      role="dialog"
     >
       <div
         className={cn(

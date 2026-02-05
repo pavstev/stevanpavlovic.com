@@ -1,11 +1,10 @@
 import type { ImageMetadata } from "astro";
 
-import { Image } from "astro:assets";
 import React, { useState } from "react";
 
-import Modal from "../atoms/Modal";
+import Modal from "../atoms/modal";
 
-interface ZoomableImageProps {
+interface Props {
   alt: string;
   className?: string;
   height?: number;
@@ -14,7 +13,7 @@ interface ZoomableImageProps {
   width?: number;
 }
 
-const ZoomableImage: React.FC<ZoomableImageProps> = ({
+const ZoomableImage: React.FC<Props> = ({
   alt,
   className,
   height,
@@ -40,25 +39,14 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({
         role="button"
         tabIndex={0}
       >
-        {typeof src === "string"
-          ? (
-            <img
-              alt={alt}
-              className="transition-transform duration-300 group-hover:scale-110"
-              loading={loading}
-              src={src}
-            />
-          )
-          : (
-            <Image
-              alt={alt}
-              class="transition-transform duration-300 group-hover:scale-110"
-              height={height}
-              loading={loading}
-              src={src}
-              width={width}
-            />
-          )}
+        <img
+          alt={alt}
+          className="transition-transform duration-300 group-hover:scale-110"
+          height={height}
+          loading={loading}
+          src={typeof src === "string" ? src : src.src}
+          width={width}
+        />
       </div>
 
       <Modal

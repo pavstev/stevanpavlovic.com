@@ -1,41 +1,72 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { cn } from '../../lib/cn';
+import Heading from './heading.astro';
+import Text from './text.astro';
 
 interface Props {
+  bodyClass?: string;
   class?: string;
+  description?: string;
   id: string;
+  title?: string;
 }
 
-const { class: className, id } = Astro.props;
+const {
+  bodyClass,
+  class: className,
+  description,
+  id,
+  title,
+} = Astro.props;
 ---
 
 <dialog
-  class:list={[
-    "group m-auto p-0 outline-none",
-    // Shadcn-like Layout & Visuals
-    "w-full max-w-lg gap-4 rounded-xl border border-zinc-800 bg-zinc-950 p-6 shadow-lg sm:rounded-lg",
-    // Scroll handling: Max height 85vh to leave room, auto overflow for inner content
-    "max-h-[85vh] overflow-y-auto",
-    // Animations (Standard ease-out)
-    "backdrop:animate-in backdrop:fade-in-0 backdrop:bg-black/80",
-    "open:animate-in open:fade-in-0 open:zoom-in-95 open:slide-in-from-bottom-2 open:duration-200",
-    className
-  ]}
+  aria-describedby={description ? `${id}-description` : undefined}
+  aria-labelledby={title ? `${id}-title` : undefined}
+  class="m-auto overflow-visible p-0 border-none bg-transparent outline-none backdrop:backdrop-blur-md backdrop:bg-black/80"
   id={id}
 >
-  {/* Close Button - Sticky to stay visible when scrolling long content */}
-  <form class="sticky top-0 z-50 -mt-2 -mr-2 flex justify-end" method="dialog">
-    <button
-      aria-label="Close modal"
-      class="rounded-sm text-zinc-100 opacity-70 ring-offset-zinc-950 transition-opacity hover:text-zinc-50 hover:opacity-100 focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-zinc-800 data-[state=open]:text-zinc-400"
-    >
-      <Icon class="size-4" name="mdi:close" />
-    </button>
-  </form>
+  <div
+    class:list={cn(
+      "relative m-4 flex flex-col rounded-3xl border border-white/10 glass-strong shadow-2xl transition-all duration-500",
+      "max-h-[90vh] w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-xl",
+      className
+    )}
+  >
+    {/* Optional Header */}
+    {(title || description) && (
+      <div class="flex flex-col gap-1.5 border-b border-white/5 p-6 pb-4">
+        {title && (
+          <Heading as="h2" class="text-xl font-bold tracking-tight" id={`${id}-title`} level={2}>
+            {title}
+          </Heading>
+        )}
+        {description && (
+          <Text class="max-w-[90%]" id={`${id}-description`} size="xs" variant="muted">
+            {description}
+          </Text>
+        )}
+      </div>
+    )}
 
-  {/* Content Container */}
-  <div class="grid gap-4 text-zinc-50">
-    <slot />
+    {/* Close Button - Always present and positioned correctly */}
+    <form class="absolute right-4 top-4 z-51" method="dialog">
+      <button
+        aria-label="Close modal"
+        class="flex size-9 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background"
+      >
+        <Icon class="size-5" name="mdi:close" />
+      </button>
+    </form>
+
+    {/* Scrollable Content Body */}
+    <div class:list={cn("flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent", bodyClass)}>
+      <slot />
+    </div>
+
+    {/* Subtle bottom fade for long content */}
+    <div class="pointer-events-none absolute bottom-0 left-0 h-12 w-full bg-linear-to-t from-black/20 to-transparent"></div>
   </div>
 </dialog>
 
@@ -46,15 +77,19 @@ const { class: className, id } = Astro.props;
     const dialogs = document.querySelectorAll('dialog');
 
     dialogs.forEach(dialog => {
-      // Use MutationObserver to watch for the 'open' attribute
-      // This ensures we catch both .showModal() calls and manual attribute toggles
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
             if (dialog.hasAttribute('open')) {
               document.body.style.overflow = 'hidden';
+              // Prevent layout shift by adding padding-right equal to scrollbar width
+              const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+              if (scrollbarWidth > 0) {
+                document.body.style.paddingRight = `${scrollbarWidth}px`;
+              }
             } else {
               document.body.style.overflow = '';
+              document.body.style.paddingRight = '';
             }
           }
         });
@@ -62,9 +97,14 @@ const { class: className, id } = Astro.props;
 
       observer.observe(dialog, { attributes: true });
 
-      // Backup: Ensure scroll is restored when dialog is closed/cancelled events fire
-      dialog.addEventListener('close', () => { document.body.style.overflow = ''; });
-      dialog.addEventListener('cancel', () => { document.body.style.overflow = ''; });
+      dialog.addEventListener('close', () => {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      });
+      dialog.addEventListener('cancel', () => {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      });
     });
   };
 
@@ -78,32 +118,48 @@ const { class: className, id } = Astro.props;
 </script>
 
 <style>
+  /* Use fixed positioning with inset 0 for native dialog centering */
   dialog {
-    /* Native centering magic */
-    margin: auto;
     position: fixed;
     inset: 0;
-
-    /* Responsive width constraint */
-    max-width: calc(100vw - 2rem);
+    z-index: 100;
   }
 
-  /* Desktop width override to match Shadcn 'max-w-lg' tailwind class */
-  @media (min-width: 640px) {
-    dialog {
-      max-width: 32rem; /* 512px */
+  /* Backdrop standard styling */
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+  }
+
+  /* Animations for dialog and backdrop */
+  dialog[open] {
+    animation: modal-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  dialog[open]::backdrop {
+    animation: backdrop-enter 0.4s ease-out forwards;
+  }
+
+  @keyframes modal-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
   }
 
-  /* Native backdrop styling to match Tailwind utility */
-  dialog::backdrop {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
-    animation: fade-in 0.2s ease-out;
+  @keyframes backdrop-enter {
+    to {
+      opacity: 1;
+    }
   }
 
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  /* Custom scrollbar for better aesthetics */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
   }
 </style>

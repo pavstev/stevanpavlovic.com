@@ -1,0 +1,172 @@
+---
+import Stack from '../atoms/stack.astro';
+import LayoutRoot from '../layout/layout-root.astro';
+import ListActions, { type FilterConfig, type ViewMode } from '../molecules/list-actions.astro';
+import MasonryGrid from '../molecules/masonry-grid.astro';
+import Card from '../organisms/card.astro';
+import SectionHeader from "../organisms/section-header.astro";
+import Section from "../organisms/section.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  headerIcon: string;
+  headerTitle: string;
+  headerDescription: string;
+
+  // Data
+  items: any[]; // The collection items
+  totalItems: number;
+
+  // Configuration
+  viewMode: ViewMode;
+  baseUrl: string;
+  filters: FilterConfig[];
+
+  // Helpers to map generic items to Card props
+  getItemDate: (item: any) => number;
+  getItemTags: (item: any) => string[];
+  getItemCardProps: (item: any) => any;
+
+  // Script configuration
+  containerId: string;
+  initialPageSize?: number;
+}
+
+const {
+  title,
+  description,
+  headerIcon,
+  headerTitle,
+  headerDescription,
+  items,
+  totalItems,
+  viewMode,
+  baseUrl,
+  filters,
+  getItemDate,
+  getItemTags,
+  getItemCardProps,
+  containerId,
+  initialPageSize = 6
+} = Astro.props;
+
+// Determine if we should show List or Grid
+const isList = viewMode === 'list';
+const isGrid = viewMode === 'grid';
+---
+
+<LayoutRoot description={description} title={title}>
+  <Section>
+    <SectionHeader
+      class="mb-8"
+      description={headerDescription}
+      icon={headerIcon}
+      title={headerTitle}
+    />
+
+    <Stack gap={6}>
+      <ListActions
+        baseUrl={baseUrl}
+        currentPage={1}
+        filters={filters}
+        itemCountLabel="items"
+        itemsPerPage={initialPageSize}
+        paginationType="query"
+        showItemCount
+        showItemsPerPage={true}
+        showViewToggle
+        totalItems={totalItems}
+        totalPages={1}
+        viewMode={viewMode}
+      />
+
+      <div class={`view-container min-h-[50vh]`} id={containerId} data-initial-page-size={initialPageSize}>
+
+        {/* VIEW MODE: LIST */}
+        {isList && (
+          <div class="list-view flex flex-col gap-3 sm:gap-4 transition-opacity duration-300">
+            {items.map((item, index) => (
+              <div
+                class:list={['list-item transition-all duration-300', { hidden: index >= initialPageSize }]}
+                data-date={getItemDate(item)}
+                data-tags={getItemTags(item).join(',')}
+                data-title={typeof item.data?.title === 'string' ? item.data.title : ''}
+              >
+                <Card list {...getItemCardProps(item)} />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* VIEW MODE: GRID */}
+        {isGrid && (
+          <div class="grid-view transition-opacity duration-300">
+            <MasonryGrid columns={2}>
+              {items.map((item, index) => (
+                <div
+                  class:list={['masonry-item list-item transition-all duration-300', { hidden: index >= initialPageSize }]}
+                  data-date={getItemDate(item)}
+                  data-tags={getItemTags(item).join(',')}
+                  data-title={typeof item.data?.title === 'string' ? item.data.title : ''}
+                >
+                  <Card {...getItemCardProps(item)} />
+                </div>
+              ))}
+            </MasonryGrid>
+          </div>
+        )}
+
+        {/* No Results */}
+        <div class="mt-12 hidden text-center text-gray-500" id="no-results">
+           <div class="flex flex-col items-center justify-center gap-2">
+             <span class="text-4xl">🔍</span>
+             <p class="text-lg font-medium">No results found.</p>
+             <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href={baseUrl}>
+                Clear Filters
+             </a>
+           </div>
+        </div>
+
+      </div>
+    </Stack>
+  </Section>
+</LayoutRoot>
+
+<style is:global>
+  .hidden { display: none !important; }
+</style>
+
+<script>
+  import { initList } from '../../lib/list-logic';
+  import { initInteractiveCards } from '../../lib/interactive-cards';
+
+  const setup = () => {
+    initInteractiveCards();
+
+    // Find the container to get configuration
+    // We look for elements that are list containers
+    const containers = document.querySelectorAll('.view-container');
+
+    containers.forEach(container => {
+        if (!(container instanceof HTMLElement)) return;
+
+        const containerId = container.id;
+        const initialPageSizeStr = container.dataset.initialPageSize;
+        const initialPageSize = initialPageSizeStr ? parseInt(initialPageSizeStr, 10) : 6;
+
+        if (containerId) {
+             initList({
+                containerId: containerId,
+                initialPageSize: initialPageSize,
+                selectors: {
+                    item: '.list-item',
+                }
+             });
+        }
+    });
+  };
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>

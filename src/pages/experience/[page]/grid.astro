@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
-import CollectionPage from '../../components/templates/collection-page.astro';
-import { PROFILE } from '../../lib/config';
+import CollectionPage from '../../../components/templates/collection-page.astro';
+import { PROFILE } from '../../../lib/config';
 
 export const prerender = true;
 
@@ -69,5 +69,5 @@ const getItemCardProps = (exp: any) => ({
   items={page.data}
   title={`Experience | ${PROFILE.name}`}
   totalItems={page.total}
-  viewMode="list"
+  viewMode="grid"
 />

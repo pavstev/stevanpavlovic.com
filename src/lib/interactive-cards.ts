@@ -4,7 +4,7 @@
  */
 
 export const initInteractiveCards = (): void => {
-  const cards = document.querySelectorAll(".group/card");
+  const cards = document.querySelectorAll(".group\\/card");
 
   for (const card of cards) {
     if (!(card instanceof HTMLElement)) {

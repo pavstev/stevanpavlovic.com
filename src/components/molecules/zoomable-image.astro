@@ -55,7 +55,11 @@ const imageSrc = typeof src === 'string' ? src : src.src;
   </div>
 </Button>
 
-<Modal class="h-screen max-h-none! w-screen max-w-none! border-none bg-transparent p-4 backdrop:bg-black/90 sm:p-6" id={modalId}>
+<Modal
+  bodyClass="p-0"
+  class="h-screen max-h-none! w-screen max-w-none! border-none bg-transparent p-4 backdrop:bg-black/90 sm:p-6"
+  id={modalId}
+>
   <div class="flex size-full items-center justify-center">
     <img
       alt={alt}

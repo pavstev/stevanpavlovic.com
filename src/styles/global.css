@@ -215,18 +215,19 @@
   .animate-shiny-text {
     background: linear-gradient(
       to right,
-      transparent 0%,
-      var(--shimmer-primary) 35%,
-      var(--shimmer-primary) 50%,
-      hsl(250 100% 80%) 65%,
-      transparent 100%
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 40%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.8) 60%,
+      rgba(255, 255, 255, 0) 100%
     );
     background-size: 200% 100%;
     background-position: -100% 0;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shiny-text 8s infinite;
+    animation: shiny-text 6s ease-in-out infinite;
+    opacity: 0.9;
   }
 
   .avatar-stamp {

@@ -3,6 +3,10 @@ import { Icon } from 'astro-icon/components';
 
 import Button from '../atoms/button.astro';
 import Dropdown, { type DropdownOption } from '../atoms/dropdown.astro';
+import type { ViewMode } from '../../lib/list-logic';
+export type { ViewMode };
+
+export type PaginationType = 'path' | 'query';
 
 export interface FilterConfig {
   id: string;
@@ -12,10 +16,12 @@ export interface FilterConfig {
   selectedValues?: string[];
 }
 
-export type PaginationType = 'path' | 'query';
-export type ViewMode = 'grid' | 'list';
+export interface ViewUrls {
+  grid: string;
+  list: string;
+}
 
-interface Props {
+export interface Props {
   baseUrl: string;
   currentPage: number;
   filters?: FilterConfig[];
@@ -33,6 +39,10 @@ interface Props {
   totalItems?: number;
   totalPages: number;
   viewMode?: ViewMode;
+  /** Optional: Explicit URLs for view toggles */
+  viewUrls?: ViewUrls;
+  /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
+  getPageUrl?: (page: number) => string;
 }
 
 const {
@@ -51,6 +61,8 @@ const {
   totalItems,
   totalPages,
   viewMode = 'list',
+  viewUrls,
+  getPageUrl: customGetPageUrl,
 } = Astro.props;
 
 // Get current search params to preserve filters/sorts
@@ -85,6 +97,10 @@ function buildUrl(path: string, paramsToSet: Record<string, number | string | un
 const cleanBaseUrl = baseUrl.replace(/\/$/, '');
 
 const getPageUrl = (p: number) => {
+  if (customGetPageUrl) {
+    return customGetPageUrl(p);
+  }
+
   if (paginationType === 'query') {
     // Query mode: /projects?page=2
     return buildUrl(cleanBaseUrl, { page: p });
@@ -97,16 +113,36 @@ const getPageUrl = (p: number) => {
 };
 
 // Calculate Previous/Next Links
+// Note: If using customGetPageUrl, we assume it returns a full path which acts as the base.
+// We still might need to append current params if they aren't handled by customGetPageUrl.
+// For safety, if customGetPageUrl is used, we wrap it in buildUrl ONLY if it's meant to be a base.
+// But usually custom logic handles everything.
+// Let's assume getPageUrl returns the clean path, and we wrap it to add params.
+const resolveLink = (p: number) => {
+    const base = getPageUrl(p);
+    // If it's a query param style, it already has query params.
+    // If path style, it might need params.
+    // Safest check: does it include '?'?
+    if (base.includes('?')) {
+        // Assume logic handled it, but maybe we need to merge existing params?
+        // Let's rely on buildUrl merging.
+        // Complex. Let's assume default behavior for existing.
+        return base;
+    }
+    return buildUrl(base);
+};
+
+
 const prevLink = prevUrl
   ? buildUrl(prevUrl)
   : currentPage > 1
-    ? (paginationType === 'query' ? getPageUrl(currentPage - 1) : buildUrl(getPageUrl(currentPage - 1)))
+    ? resolveLink(currentPage - 1)
     : undefined;
 
 const nextLink = nextUrl
   ? buildUrl(nextUrl)
   : currentPage < totalPages
-    ? (paginationType === 'query' ? getPageUrl(currentPage + 1) : buildUrl(getPageUrl(currentPage + 1)))
+    ? resolveLink(currentPage + 1)
     : undefined;
 
 
@@ -128,7 +164,7 @@ const itemsPerPageOptions = [
   <div class="flex flex-wrap items-center gap-2 border-b border-border pb-4 sm:gap-3">
     {/* Left: Filters */}
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-      {filters.map((filter) => (
+      {filters.map((filter: FilterConfig) => (
         <Dropdown
           align="left"
           id={`filter-${filter.id}`}
@@ -236,7 +272,7 @@ const itemsPerPageOptions = [
                 'bg-accent text-accent-foreground shadow-sm': viewMode === mode,
                 'text-muted-foreground hover:bg-muted hover:text-foreground': viewMode !== mode,
               }]}
-              href={buildUrl(Astro.url.pathname, { view: mode })}
+              href={viewUrls ? buildUrl(viewUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
               size="icon"
               title={label}
               variant="ghost"

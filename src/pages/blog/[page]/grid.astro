@@ -1,9 +1,9 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
-import CollectionPage from '../../components/templates/collection-page.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import { sortPosts } from '../../lib/cms';
+import CollectionPage from '../../../components/templates/collection-page.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
+import { sortPosts } from '../../../lib/cms';
 
 export const prerender = true;
 

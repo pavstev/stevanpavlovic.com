@@ -1,11 +1,11 @@
 ---
-import { Icon } from 'astro-icon/components';
-
 import profileImage from '../../assets/profile.jpeg';
 import { cn } from '../../lib/cn';
 import { PROFILE, SITE_CONFIG } from '../../lib/config';
+import Heading from '../atoms/heading.astro';
 import Stack from '../atoms/stack.astro';
 import Text from '../atoms/text.astro';
+import Stat from '../molecules/stat.astro';
 import ZoomableImage from '../molecules/zoomable-image.astro';
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 const { class: className } = Astro.props;
 
 // New utility function for formatting numbers nicely
-// e.g. 1200 -> 1.2k, 1000000 -> 1M
 const formatCompactNumber = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
     compactDisplay: "short",
@@ -25,70 +24,66 @@ const formatCompactNumber = (number: number) => {
   return formatter.format(number);
 };
 
-// Updated stats with exact number values and improved icon choices
+// Expanded stats for a more professional overview
 const stats = [
-  { icon: 'mdi:clock-time-eight-outline', label: 'Years Experience', value: 12 },
-  { icon: 'mdi:server-network', label: 'Systems Architected', value: 24 },
-  { icon: 'mdi:account-group-outline', label: 'Users Served', value: 120000 },
+  { icon: 'mdi:clock-time-eight-outline', label: 'Years Exp.', value: 12 },
+  { icon: 'mdi:server-network', label: 'Systems', value: 24 },
+  { icon: 'mdi:account-group-outline', label: 'Users', value: 120000 },
+  { icon: 'mdi:earth', label: 'Countries', value: 15 },
+  { icon: 'mdi:check-decagram-outline', label: 'Uptime', value: "99.9%" },
 ];
 ---
 
-<div class:list={cn("flex flex-col items-center gap-8 text-center md:flex-row-reverse md:items-start md:text-left", className)}>
-  {/* Avatar - photo card popping effect */}
-  <div class="relative flex shrink-0 items-center justify-center p-4">
-    <div class="group relative size-40 md:size-48">
-      {/* Decorative backing card (adds depth) */}
-      <div class="absolute inset-0 rotate-6 rounded-xl bg-white/10 shadow-lg backdrop-blur-sm transition-transform duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-12"></div>
-
-      {/* Main Photo Card */}
-      <div class="relative size-full -rotate-3 overflow-hidden rounded-xl border-4 border-white/90 bg-white shadow-2xl transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-2 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]">
-        <ZoomableImage
-          alt={PROFILE.name}
-          class="size-full object-cover"
-          loading="eager"
-          src={profileImage}
-        />
-        {/* Gloss overlay */}
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-50"></div>
-      </div>
-    </div>
-  </div>
-
+<div class:list={cn("grid grid-cols-1 items-center gap-8 md:grid-cols-[1fr_auto] md:items-start", className)}>
   {/* Content */}
-  <Stack align="start" class="flex flex-1 items-center" gap={0}>
-    <div class="flex-1">
-      {/* Heading */}
-      <h1 class="text-left font-heading text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-        <span class="font-mono text-sm tracking-[0.2em] text-white/80 md:text-base">Hi, I'm</span><br />
-        <span class="hero-title animate-shiny-text relative mt-3 inline-block text-white">
+  <Stack align="start" class="order-2 md:order-1" gap={6}>
+    <div class="space-y-1">
+      <Text class="max-w-xl font-mono tracking-tight text-white/50" size="lg">
+        Hi, I'm
+      </Text>
+      <Heading class="leading-[1.1]" size="display">
+        <span class="animate-shiny-text block">
           {SITE_CONFIG.hero.title.main} {SITE_CONFIG.hero.title.highlight}
-        </span><br />
-        <span class="mt-3 inline-block font-mono text-sm tracking-[0.2em] text-white/80 md:text-base">
-          {SITE_CONFIG.hero.tagline}
         </span>
-      </h1>
+      </Heading>
+      <Text class="max-w-xl font-mono tracking-tight text-white/50" size="lg">
+        {SITE_CONFIG.hero.tagline}
+      </Text>
 
       {/* Statistics */}
-      <div class="flex flex-wrap justify-start gap-6 py-6 md:gap-10">
+      <div class="flex flex-wrap justify-start gap-4 pt-8 md:gap-8">
         {stats.map((stat) => (
-          <div class="group flex items-center gap-3">
-            {/* Icon Container */}
-            <div class="flex items-center justify-center rounded-lg bg-white/10 p-2 text-white ring-1 ring-white/20 backdrop-blur-md transition-colors group-hover:bg-white/20 group-hover:text-white">
-              <Icon class="size-6 md:size-7" name={stat.icon} />
-            </div>
-
-            {/* Text Content */}
-            <div class="flex flex-col text-left">
-              <Text class="text-xl leading-none font-bold text-white md:text-2xl" variant="primary">
-                {formatCompactNumber(stat.value)}+
-              </Text>
-              <Text class="mt-1 text-xs font-medium tracking-wide text-white/60 uppercase" variant="primary">
-                {stat.label}
-              </Text>
-            </div>
-          </div>
+          <Stat
+            class="scale-90 origin-left md:scale-100"
+            icon={stat.icon}
+            label={stat.label}
+            value={typeof stat.value === 'number' ? `${formatCompactNumber(stat.value)}+` : stat.value}
+          />
         ))}
       </div>
     </div>
   </Stack>
+
+  {/* Avatar Section */}
+  <div class="order-1 flex justify-center md:order-2 md:justify-end">
+    <div class="group relative">
+      {/* Glow Backdrop */}
+      <div class="absolute -inset-4 bg-primary/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"></div>
+
+      {/* Image Container */}
+      <div class="relative overflow-hidden rounded-2xl border border-white/10 glass shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/30 group-hover:shadow-primary/10">
+        <div class="aspect-4/5 w-48 md:w-56">
+          <ZoomableImage
+            alt={PROFILE.name}
+            class="size-full object-cover transition-transform duration-700 group-hover:scale-110"
+            loading="eager"
+            src={profileImage}
+          />
+        </div>
+
+        {/* Animated Accent line */}
+        <div class="absolute bottom-0 left-0 h-1 w-0 bg-primary/50 transition-all duration-500 group-hover:w-full"></div>
+      </div>
+    </div>
+  </div>
 </div>

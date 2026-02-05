@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 
 import { Icon } from 'astro-icon/components';
-import { type VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../../lib/cn';
 import Badge from '../atoms/badge.astro';
@@ -13,7 +13,46 @@ import Text from '../atoms/text.astro';
 import CardImage from '../molecules/card-image.astro';
 import CardSpotlight from '../molecules/card-spotlight.astro';
 import Tags from '../molecules/tags.astro';
-import { type CardData, variants } from './card/card-helpers';
+
+
+export const variants = cva(
+  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
+  {
+    defaultVariants: {
+      interactive: false,
+      variant: "default",
+    },
+    variants: {
+      interactive: {
+        false: "",
+        true: "cursor-pointer hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 hover:shadow-xl hover:shadow-primary/5",
+      },
+      variant: {
+        default: "",
+        ghost: "border-foreground/5 bg-transparent shadow-none hover:border-foreground/15",
+        glass: "glass text-foreground border-white/10",
+        outline: "border-2 border-foreground/10 bg-transparent hover:border-primary/20",
+      },
+    },
+  },
+);
+
+export interface CardData {
+  align?: "center" | "start";
+  animate?: boolean;
+  date?: Date;
+  delay?: number;
+  description?: string;
+  footerMeta?: string;
+  icon?: string;
+  image?: ImageMetadata | string;
+  meta?: string;
+  subtitle?: string;
+  tags?: string[];
+  title?: string;
+  url?: string;
+}
+
 
 interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof variants>, 'variant'> {
   as?: string;

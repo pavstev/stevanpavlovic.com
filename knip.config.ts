@@ -10,6 +10,7 @@ const config: KnipConfig = {
     "sharp",
     "@typescript-eslint/eslint-plugin",
     "@typescript-eslint/parser",
+    "@fontsource-variable/*",
     "astro-eslint-parser",
     "@iconify-json/mdi",
   ],

@@ -60,7 +60,7 @@ export const getViewPageProps = (item: CollectionItem<CollectionName>): {
   icon: string | undefined;
   tags: string[] | undefined;
   date: string;
-} ={
+} = {
   if (itemIsBlog(item)) {
     return {
       title: item.data.title,

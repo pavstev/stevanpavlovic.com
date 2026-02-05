@@ -1,7 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-
 import type {Params} from './../index.astro';
+import { getViewPageProps } from "../../lib/collection-pages";
 
 import PostView from '../../../components/organisms/post-view.astro';
 import SectionHeader from '../../../components/organisms/section-header.astro';
@@ -21,53 +21,13 @@ const {collection} = Astro.params as unknown as Params;
 const entry = Astro.props;
 const { Content } = await render(entry);
 
-// Type guards for different collection types
-const isBlog = (item: any): item is CollectionEntry<"blog"> => item.collection === "blog";
-const isExperience = (item: any): item is CollectionEntry<"experience"> => item.collection === "experience";
-const isProject = (item: any): item is CollectionEntry<"projects"> => item.collection === "projects";
+import { getViewPageProps } from "../../lib/collection-pages";
 
-// Extract common properties with fallbacks
-const getTitle = (): string => {
-  if (isBlog(entry)) return entry.data.title;
-  if (isExperience(entry)) return entry.data.role;
-  if (isProject(entry)) return entry.data.title;
-  return "";
-};
-
-const getSubtitle = (): string | undefined => {
-  if (isBlog(entry)) return undefined; // Blog doesn't have subtitle
-  if (isExperience(entry)) return entry.data.company;
-  if (isProject(entry)) return entry.data.subtitle;
-  return undefined;
-};
-
-const getDescription = (): string | undefined => {
-  if (isBlog(entry)) return entry.data.description;
-  if (isExperience(entry)) return entry.data.description;
-  if (isProject(entry)) return entry.data.desc;
-  return undefined;
-};
-
-const getIcon = (): string | undefined => {
-  if (isBlog(entry)) return undefined; // Blog doesn't have icon
-  if (isExperience(entry)) return undefined;
-  if (isProject(entry)) return undefined;
-  return undefined;
-};
-
-const getTags = (): string[] | undefined => {
-  if (isBlog(entry)) return entry.data.tags;
-  if (isExperience(entry)) return entry.data.skills;
-  if (isProject(entry)) return entry.data.tags;
-  return undefined;
-};
-
-const getDate = (): string => {
-  if (isBlog(entry)) return new Date(entry.data.pubDate).toLocaleDateString("en-US", { month: "long", year: "numeric" });
-  if (isExperience(entry)) return new Date(entry.data.startDate).toLocaleDateString("en-US", { month: "long", year: "numeric" });
-  if (isProject(entry)) return entry.data.meta || "";
-  return "";
-};
+const { title, subtitle, description, icon, tags, date } = getViewPageProps({
+  collection: collection as "blog" | "experience" | "projects",
+  data: entry.data,
+  id: entry.id,
+});
 ---
 
 <SectionHeader

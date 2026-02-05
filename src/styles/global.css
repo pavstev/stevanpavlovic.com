@@ -159,4 +159,5 @@
   }
 }
 
+@import "./components.css";
 @import "./transitions.css";

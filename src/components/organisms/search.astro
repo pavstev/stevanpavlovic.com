@@ -16,22 +16,25 @@ import Modal from '../atoms/modal.astro';
     <Icon name="mdi:magnify" size={20} />
   </button>
 
-  <Modal class="w-full max-w-2xl" id="search-modal">
-    <div class="flex max-h-[70vh] flex-col overflow-hidden">
-      <div class="max-h-[60vh] overflow-y-auto">
+  <Modal
+    class="w-[90vw] max-w-sm sm:max-w-md md:max-w-xl"
+    id="search-modal"
+  >
+    <div class="flex max-h-[50vh] sm:max-h-[60vh] flex-col overflow-hidden">
+      <div class="max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
         <Pagefind
           className="pagefind-ui"
           id="search"
           uiOptions={{
             showImages: false,
             translations: {
-              placeholder: "Search documentation, posts, projects..."
+              placeholder: "Search..."
             }
           }}
         />
       </div>
 
-      <div class="mt-4 flex flex-wrap items-center gap-3 border-t border-white/10 pt-4 text-[10px] font-medium text-muted-foreground">
+      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-[10px] sm:text-[11px] font-medium text-muted-foreground">
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd> close</span>
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd> navigate</span>
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd> select</span>
@@ -46,6 +49,14 @@ import Modal from '../atoms/modal.astro';
     const modal = document.getElementById('search-modal') as HTMLDialogElement;
 
     if (!trigger || !modal) return;
+
+    // Constrain Pagefind width
+    const pagefind = modal.querySelector('.pagefind-ui');
+    if (pagefind) {
+      pagefind.style.width = '100%';
+      const input = pagefind.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+      if (input) input.style.width = '100%';
+    }
 
     trigger.addEventListener('click', () => {
       modal.showModal();
@@ -84,5 +95,21 @@ import Modal from '../atoms/modal.astro';
   initSearch();
   document.addEventListener('astro:page-load', initSearch);
 </script>
+
+<style>
+  #search-modal .pagefind-ui {
+    width: 100% !important;
+  }
+  #search-modal .pagefind-ui__search-input {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  #search-modal .pagefind-ui__drawer {
+    width: 100% !important;
+  }
+  #search-modal .pagefind-ui__results {
+    width: 100% !important;
+  }
+</style>
 
 

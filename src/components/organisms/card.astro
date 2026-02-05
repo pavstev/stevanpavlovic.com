@@ -4,7 +4,6 @@ import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 import { type VariantProps } from 'class-variance-authority';
 
-import { type CardData, cardVariants } from '../../lib/card-helpers';
 import { cn } from '../../lib/cn';
 import Badge from '../atoms/badge.astro';
 import FormattedDate from '../atoms/formatted-date.astro';
@@ -14,8 +13,9 @@ import Text from '../atoms/text.astro';
 import CardImage from '../molecules/card-image.astro';
 import CardSpotlight from '../molecules/card-spotlight.astro';
 import Tags from '../molecules/tags.astro';
+import { type CardData, variants } from './card/card-helpers';
 
-interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof cardVariants>, 'variant'> {
+interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof variants>, 'variant'> {
   as?: string;
   glowColor?: string;
   visual?: 'default' | 'ghost' | 'glass' | 'outline';
@@ -44,7 +44,7 @@ const isSimpleCard = !hasData;
 
 // Layout Helpers
 const Wrapper = url ? 'a' : 'div';
-const cardClasses = cn(cardVariants({ className, interactive: !!url || interactive, variant: visual }));
+const cardClasses = cn(variants({ className, interactive: !!url || interactive, variant: visual }));
 
 // Determine Layout Mode
 // If it's a list view, we use row layout. Otherwise default column.

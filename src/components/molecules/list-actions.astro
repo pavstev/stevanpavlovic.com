@@ -7,6 +7,9 @@ import Pagination from './pagination.astro';
 interface Props {
   baseUrl: string;
   currentPage: number;
+  display?: 'grid' | 'list';
+  /** Optional: Explicit URLs for view toggles */
+  displayUrls?: ViewUrls
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
   // eslint-disable-next-line no-unused-vars
   getPageUrl?: (_page: number) => string;
@@ -17,28 +20,25 @@ interface Props {
   prevUrl?: string;
   showViewToggle?: boolean;
   totalPages: number;
-  viewMode?: 'grid' | 'list';
-  /** Optional: Explicit URLs for view toggles */
-  viewUrls?: ViewUrls
 }
 
 const {
   baseUrl,
   currentPage,
+  display = 'list',
+  displayUrls,
   getPageUrl: customGetPageUrl,
   nextUrl,
   paginationType = 'path',
   prevUrl,
   showViewToggle = true,
   totalPages,
-  viewMode = 'list',
-  viewUrls,
 } = Astro.props;
 ---
 
 <div class="flex flex-wrap items-center gap-3">
   {showViewToggle && (
-    <DisplayMenu showLabels viewMode={viewMode} viewUrls={viewUrls} />
+    <DisplayMenu display={display} displayUrls={displayUrls} showLabels />
   )}
   <Pagination
     baseUrl={baseUrl}

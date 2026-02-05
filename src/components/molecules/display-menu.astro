@@ -1,19 +1,19 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import { buildListUrl, VIEW_MODES, type ViewMode, type ViewUrls } from '../../lib/list';
+import { buildListUrl, type DisplayMode, VIEW_MODES, type ViewUrls } from '../../lib/list';
 import Button from '../atoms/button.astro';
 
 interface Props {
+  display?: DisplayMode;
+  displayUrls?: ViewUrls;
   showLabels?: boolean;
-  viewMode?: ViewMode;
-  viewUrls?: ViewUrls;
 }
 
 const {
+  display = 'list',
+  displayUrls,
   showLabels = true,
-  viewMode = 'list',
-  viewUrls,
 } = Astro.props;
 
 const buildUrl = (path: string, paramsToSet: Record<string, number | string | undefined> = {}) =>
@@ -22,7 +22,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
 
 <div class="display-menu glass relative flex items-center gap-2 rounded-2xl p-2 shadow-2xl">
   {VIEW_MODES.map(({ icon, label, mode }) => {
-    const isActive = viewMode === mode;
+    const isActive = display === mode;
     return (
       <Button
         as="a"
@@ -31,7 +31,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
           {"shadow-glow-primary bg-primary text-primary-foreground": isActive}
         ]}
         data-active={isActive}
-        href={viewUrls ? buildUrl(viewUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
+        href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
         size="sm"
         variant={isActive ? "default" : "subtle"}
       >

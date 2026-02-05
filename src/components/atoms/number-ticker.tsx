@@ -21,7 +21,7 @@ export const NumberTicker: FC<Props> = ({
   startValue = 0,
   value,
   ...props
-}: Props) => {
+}) => {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === "down" ? value : startValue);
   const springValue = useSpring(motionValue, {

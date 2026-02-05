@@ -1,20 +1,20 @@
 ---
-// Handles: /blog/grid/2, /blog/list/3, etc. (explicit view, pages 2+)
+// Handles: /blog/grid/2, /blog/list/3, etc. (explicit display, pages 2+)
 import type { GetStaticPaths } from 'astro';
 
 import CollectionPage from '../../../components/templates/collection-page.astro';
 import {
+  buildDisplayUrls,
   buildPaginationUrls,
-  buildViewUrls,
   type CollectionName,
+  type DisplayMode,
   getCollectionConfig,
   getCollectionData,
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
-  type ViewMode,
 } from '../../../lib/collection-pages';
-import {type Params as BaseParams} from './../[view].astro';
+import {type Params as BaseParams} from './../[display].astro';
 
 interface Params extends BaseParams {
   page: `${number}`;
@@ -24,12 +24,12 @@ export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const collections: CollectionName[] = ['blog', 'projects', 'experience'];
-  const views: ViewMode[] = ['list', 'grid'];
+  const displays: DisplayMode[] = ['list', 'grid'];
   const paths: Array<{
     params: {
       collection: CollectionName;
+      display: DisplayMode;
       page: string;
-      view: ViewMode;
     };
   }> = [];
 
@@ -38,14 +38,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const totalItems = sortedItems.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
 
-    for (const view of views) {
-      // Start from page 2 since page 1 is handled by [view].astro
+    for (const display of displays) {
+      // Start from page 2 since page 1 is handled by [display].astro
       for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
         paths.push({
           params: {
             collection,
+            display,
             page: String(pageNum),
-            view,
           },
         });
       }
@@ -55,7 +55,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const { collection, page, view } = Astro.params as unknown as Params;
+const { collection, display, page } = Astro.params as unknown as Params;
 const currentPage = parseInt(page, 10);
 
 const sortedItems = await getCollectionData(collection);
@@ -65,8 +65,8 @@ const items = getPageItems(sortedItems, currentPage);
 
 const config = getCollectionConfig(collection);
 const baseUrl = `/${collection}`;
-const viewUrls = buildViewUrls(collection, currentPage);
-const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, totalPages);
+const displayUrls = buildDisplayUrls(collection, currentPage);
+const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
 ---
 
 <CollectionPage
@@ -74,6 +74,8 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   baseUrl={baseUrl}
   containerId={`${collection}-container`}
   currentPage={currentPage}
+  display={display}
+  displayUrls={displayUrls}
   getItemCardProps={(item) => getItemCardProps(collection, item)}
   initialPageSize={20}
   items={items}
@@ -81,6 +83,4 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   prevUrl={prevUrl}
   totalItems={totalItems}
   totalPages={totalPages}
-  viewMode={view}
-  viewUrls={viewUrls}
 />

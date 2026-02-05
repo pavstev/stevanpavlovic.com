@@ -1,13 +1,13 @@
-export type PaginationType = "path" | "query";
+export type DisplayMode = "grid" | "list";
 
-export type ViewMode = "grid" | "list";
+export type PaginationType = "path" | "query";
 
 export interface ViewUrls {
   grid: string;
   list: string;
 }
 
-export const VIEW_MODES: { icon: string; label: string; mode: ViewMode }[] = [
+export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = [
   { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
   { icon: "mdi:view-column", label: "Grid", mode: "grid" },
 ];

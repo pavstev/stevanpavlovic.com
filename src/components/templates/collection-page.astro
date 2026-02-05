@@ -1,5 +1,5 @@
 ---
-import type {  ViewMode } from '../../lib/list';
+import type {  DisplayMode } from '../../lib/list';
 
 import Stack from '../atoms/stack.astro';
 import LayoutRoot from '../layout/layout-root.astro';
@@ -16,11 +16,14 @@ interface Props {
   currentPage?: number;
   description: string;
 
+  // Configuration
+  display: DisplayMode;
+  displayUrls?: { grid: string; list: string; };
+
   // Helpers to map generic items to Card props
   // eslint-disable-next-line no-unused-vars
   getItemCardProps: (item: any) => any;
   headerDescription: string;
-
   headerIcon: string;
   headerTitle: string;
   initialPageSize?: number;
@@ -28,14 +31,11 @@ interface Props {
   items: any[]; // The collection items
   nextUrl?: string;
   prevUrl?: string;
+
   title: string;
+
   totalItems: number;
-
   totalPages?: number;
-
-  // Configuration
-  viewMode: ViewMode;
-  viewUrls?: { grid: string; list: string; };
 }
 
 const {
@@ -43,6 +43,8 @@ const {
   containerId,
   currentPage = 1,
   description,
+  display,
+  displayUrls,
   getItemCardProps,
   headerDescription,
   headerIcon,
@@ -53,13 +55,11 @@ const {
   prevUrl,
   title,
   totalPages = 1,
-  viewMode,
-  viewUrls,
 } = Astro.props;
 
 // Determine if we should show List or Grid
-const isList = viewMode === 'list';
-const isGrid = viewMode === 'grid';
+const isList = display === 'list';
+const isGrid = display === 'grid';
 ---
 
 <LayoutRoot description={description} title={title}>
@@ -72,14 +72,14 @@ const isGrid = viewMode === 'grid';
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
-        getPageUrl={(p: number) => p === 1 ? `${baseUrl}/${viewMode}` : `${baseUrl}/${viewMode}/${p}`}
+        display={display}
+        displayUrls={displayUrls}
+        getPageUrl={(p: number) => p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`}
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
         slot="action"
         totalPages={totalPages}
-        viewMode={viewMode}
-        viewUrls={viewUrls}
       />
     </SectionHeader>
 

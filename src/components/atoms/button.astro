@@ -4,13 +4,13 @@ import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 import { type VariantProps } from 'class-variance-authority';
 
-import { buttonVariants } from '../../lib/button-variants';
 import { cn } from '../../lib/cn';
+import { variants } from './button/button-variants';
 
 interface Props
   extends HTMLAttributes<'button'>,
     Omit<HTMLAttributes<'a'>, 'type'>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof variants> {
   as?: string;
   external?: boolean;
   icon?: string;
@@ -60,7 +60,7 @@ if (Element === 'button' && !elementProps.type) {
 
 <Tag
   class:list={cn(
-    buttonVariants({ className, size, variant }),
+    variants({ className, size, variant }),
     variant === 'nav' && navActiveClasses,
     (icon || withArrow) && 'group'
   )}

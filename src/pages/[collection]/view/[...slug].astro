@@ -1,0 +1,89 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+
+import type {Params} from './../index.astro';
+
+import PostView from '../../../components/organisms/post-view.astro';
+import SectionHeader from '../../../components/organisms/section-header.astro';
+
+export const prerender = true;
+
+export const getStaticPaths = async () => {
+  const {collection} = Astro.params as unknown as Params;
+  const items = await getCollection(collection);
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: item,
+  }));
+};
+
+const {collection} = Astro.params as unknown as Params;
+const entry = Astro.props;
+const { Content } = await render(entry);
+
+// Type guards for different collection types
+const isBlog = (item: any): item is CollectionEntry<"blog"> => item.collection === "blog";
+const isExperience = (item: any): item is CollectionEntry<"experience"> => item.collection === "experience";
+const isProject = (item: any): item is CollectionEntry<"projects"> => item.collection === "projects";
+
+// Extract common properties with fallbacks
+const getTitle = (): string => {
+  if (isBlog(entry)) return entry.data.title;
+  if (isExperience(entry)) return entry.data.role;
+  if (isProject(entry)) return entry.data.title;
+  return "";
+};
+
+const getSubtitle = (): string | undefined => {
+  if (isBlog(entry)) return undefined; // Blog doesn't have subtitle
+  if (isExperience(entry)) return entry.data.company;
+  if (isProject(entry)) return entry.data.subtitle;
+  return undefined;
+};
+
+const getDescription = (): string | undefined => {
+  if (isBlog(entry)) return entry.data.description;
+  if (isExperience(entry)) return entry.data.description;
+  if (isProject(entry)) return entry.data.desc;
+  return undefined;
+};
+
+const getIcon = (): string | undefined => {
+  if (isBlog(entry)) return undefined; // Blog doesn't have icon
+  if (isExperience(entry)) return undefined;
+  if (isProject(entry)) return undefined;
+  return undefined;
+};
+
+const getTags = (): string[] | undefined => {
+  if (isBlog(entry)) return entry.data.tags;
+  if (isExperience(entry)) return entry.data.skills;
+  if (isProject(entry)) return entry.data.tags;
+  return undefined;
+};
+
+const getDate = (): string => {
+  if (isBlog(entry)) return new Date(entry.data.pubDate).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  if (isExperience(entry)) return new Date(entry.data.startDate).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  if (isProject(entry)) return entry.data.meta || "";
+  return "";
+};
+---
+
+<SectionHeader
+  backText={`Back to ${collection.charAt(0).toUpperCase() + collection.slice(1)}`}
+  backUrl={`/${collection}`}
+  description={getDescription()}
+  icon={getIcon()}
+  subtitle={getSubtitle()}
+  tags={getTags()}
+  title={getTitle()}
+>
+  <div slot="action">
+    <span class="text-muted">{getDate()}</span>
+  </div>
+</SectionHeader>
+
+<PostView collection={collection} data={entry.data}>
+  <Content />
+</PostView>

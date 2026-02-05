@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-export const buttonVariants = cva(
+export const variants = cva(
   "inline-flex items-center justify-center gap-2 font-medium transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none ring-offset-background",
   {
     compoundVariants: [
@@ -24,6 +24,7 @@ export const buttonVariants = cva(
         xl: "h-14 px-10 rounded-2xl text-lg",
       },
       variant: {
+        // Alphabetical order for lint
         accent:
           "bg-accent text-accent-foreground shadow-sm hover:bg-accent/90 hover:shadow-glow-accent hover:-translate-y-0.5 active:scale-95",
         back: "text-sm text-muted-foreground no-underline hover:text-foreground",

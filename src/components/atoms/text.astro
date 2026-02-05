@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../../lib/cn';
 
-const textVariants = cva(
+const variants = cva(
   'leading-relaxed wrap-break-word',
   {
     defaultVariants: {
@@ -18,11 +18,11 @@ const textVariants = cva(
         '3xl': 'text-3xl font-bold tracking-tight',
         '4xl': 'text-4xl font-extrabold tracking-tight',
         base: 'text-base leading-relaxed',
-        lg: 'text-lg font-medium leading-relaxed',
-        sm: 'text-sm leading-relaxed',
-        xl: 'text-xl font-semibold leading-relaxed',
-        xs: 'text-xs leading-relaxed',
+        lg: 'text-lg leading-relaxed font-medium',
         p: 'text-base leading-relaxed',
+        sm: 'text-sm leading-relaxed',
+        xl: 'text-xl leading-relaxed font-semibold',
+        xs: 'text-xs leading-relaxed',
       },
       variant: {
         accent: 'font-medium text-accent',
@@ -38,7 +38,7 @@ const textVariants = cva(
   }
 );
 
-interface Props extends HTMLAttributes<'p'>, VariantProps<typeof textVariants> {
+interface Props extends HTMLAttributes<'p'>, VariantProps<typeof variants> {
   as?: string;
 }
 
@@ -46,6 +46,6 @@ const { as = 'p', class: className, size, variant, ...props } = Astro.props;
 const Tag = as as any;
 ---
 
-<Tag class:list={cn(textVariants({ className, size, variant }))} {...props}>
+<Tag class:list={cn(variants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

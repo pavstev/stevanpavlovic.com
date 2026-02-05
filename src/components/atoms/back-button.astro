@@ -1,19 +1,31 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import type { CollectionName } from '../../lib/collection-pages';
+
 import Button from './button.astro';
 
 interface Props {
-  href: string;
+  collection?: CollectionName
 }
 
-const { href } = Astro.props;
+const { collection } = Astro.props;
+
+const backLabel = collection === 'blog' ? 'Back to Blog' :
+  collection === 'projects' ? 'Back to Projects' :
+    collection === 'experience' ?
+      'Back to Experience' : "Back";
+
+const backLink = collection === 'blog' ? '/blog' :
+  collection === 'projects' ? '/projects' :
+    collection === 'experience' ? '/experience' : '/';
+
 ---
 
 <Button
   as="a"
   class="group mb-4 font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
-  href={href}
+  href={backLink}
   size="sm"
   variant="outline"
 >
@@ -21,5 +33,5 @@ const { href } = Astro.props;
     class="mr-1 size-4 transition-transform group-hover:-translate-x-1"
     name="mdi:arrow-left"
   />
-  <slot>Back</slot>
+  <slot>{backLabel}</slot>
 </Button>

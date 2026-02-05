@@ -6,19 +6,22 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/cn';
 import Container from '../molecules/container.astro';
 
-const section = cva('w-full py-8', {
-  defaultVariants: {
-    width: 'default',
-  },
-  variants: {
-    width: {
-      default: 'max-w-6xl',
-      full: 'max-w-full',
-      prose: 'max-w-prose',
-      sm: 'max-w-3xl',
+const section = cva(
+  'w-full py-8',
+  {
+    defaultVariants: {
+      width: 'default',
     },
-  },
-});
+    variants: {
+      width: {
+        default: 'max-w-6xl',
+        full: 'max-w-full',
+        prose: 'max-w-prose',
+        sm: 'max-w-3xl',
+      },
+    },
+  }
+);
 
 interface Props
   extends HTMLAttributes<'div'>,

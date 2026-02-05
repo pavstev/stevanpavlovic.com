@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../../lib/cn';
 
-const iconBoxVariants = cva(
+const variants = cva(
   'flex items-center justify-center rounded-xl transition-colors duration-200',
   {
     defaultVariants: {
@@ -32,7 +32,7 @@ const iconBoxVariants = cva(
   }
 );
 
-interface Props extends HTMLAttributes<'div'>, Omit<VariantProps<typeof iconBoxVariants>, 'size'> {
+interface Props extends HTMLAttributes<'div'>, Omit<VariantProps<typeof variants>, 'size'> {
   as?: string;
   size?: 'lg' | 'md' | 'sm' | 'xl' | number;
 }
@@ -46,7 +46,7 @@ const numericStyle = isNumericSize
 ---
 
 <Tag
-  class:list={cn(iconBoxVariants({ className, size: isNumericSize ? null : (size as any), variant }))}
+  class:list={cn(variants({ className, size: isNumericSize ? null : (size as any), variant }))}
   style={numericStyle}
   {...props}
 >

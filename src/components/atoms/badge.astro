@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../../lib/cn';
 
-const badgeVariants = cva(
+const variants = cva(
   'inline-flex max-w-full items-center rounded-full border px-3 py-1 font-mono text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
   {
     variants: {
@@ -21,7 +21,7 @@ const badgeVariants = cva(
   }
 );
 
-interface Props extends HTMLAttributes<'span'>, VariantProps<typeof badgeVariants> {
+interface Props extends HTMLAttributes<'span'>, VariantProps<typeof variants> {
   as?: string;
 }
 
@@ -33,7 +33,7 @@ const hasContent = slotContent.trim().length > 0;
 
 {hasContent && (
   <Tag
-    class:list={cn(badgeVariants({ className, variant }))}
+    class:list={cn(variants({ className, variant }))}
     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
     {...props}
   >

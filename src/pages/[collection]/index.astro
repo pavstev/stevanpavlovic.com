@@ -4,8 +4,8 @@ import type { GetStaticPaths } from 'astro';
 
 import CollectionPage from '../../components/templates/collection-page.astro';
 import {
+  buildDisplayUrls,
   buildPaginationUrls,
-  buildViewUrls,
   type CollectionName,
   getCollectionConfig,
   getCollectionData,
@@ -39,7 +39,7 @@ const items = getPageItems(sortedItems, currentPage);
 
 const config = getCollectionConfig(collection);
 const baseUrl = `/${collection}`;
-const viewUrls = buildViewUrls(collection, currentPage);
+const displayUrls = buildDisplayUrls(collection, currentPage);
 const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, totalPages);
 ---
 
@@ -48,6 +48,8 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   baseUrl={baseUrl}
   containerId={`${collection}-container`}
   currentPage={currentPage}
+  display={view}
+  displayUrls={displayUrls}
   getItemCardProps={(item) => getItemCardProps(collection, item)}
   initialPageSize={20}
   items={items}
@@ -55,6 +57,4 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   prevUrl={prevUrl}
   totalItems={totalItems}
   totalPages={totalPages}
-  viewMode={view}
-  viewUrls={viewUrls}
 />

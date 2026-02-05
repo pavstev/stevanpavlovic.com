@@ -1,41 +1,41 @@
 ---
-// Handles: /blog/grid, /blog/list, /projects/grid, etc. (explicit view, page 1)
+// Handles: /blog/grid, /blog/list, /projects/grid, etc. (explicit display, page 1)
 import type { GetStaticPaths } from 'astro';
 
 import CollectionPage from '../../components/templates/collection-page.astro';
 import {
+  buildDisplayUrls,
   buildPaginationUrls,
-  buildViewUrls,
   type CollectionName,
+  type DisplayMode,
   getCollectionConfig,
   getCollectionData,
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
-  type ViewMode,
 } from '../../lib/collection-pages';
 import {type Params as IndexParams} from './index.astro'
 
 export interface Params extends IndexParams {
-  view: ViewMode;
+  display: DisplayMode;
 }
 
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const collections: CollectionName[] = ['blog', 'projects', 'experience'];
-  const views: ViewMode[] = ['list', 'grid'];
+  const displays: DisplayMode[] = ['list', 'grid'];
   const paths: Array<{
     params: {
       collection: CollectionName;
-      view: ViewMode;
+      display: DisplayMode;
     };
   }> = [];
 
   for (const collection of collections) {
-    for (const view of views) {
+    for (const display of displays) {
       paths.push({
-        params: { collection, view },
+        params: { collection, display },
       });
     }
   }
@@ -43,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const { collection, view } = Astro.params as unknown as Params;
+const { collection, display } = Astro.params as unknown as Params;
 const currentPage = 1;
 
 const sortedItems = await getCollectionData(collection);
@@ -53,8 +53,8 @@ const items = getPageItems(sortedItems, currentPage);
 
 const config = getCollectionConfig(collection);
 const baseUrl = `/${collection}`;
-const viewUrls = buildViewUrls(collection, currentPage);
-const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, totalPages);
+const displayUrls = buildDisplayUrls(collection, currentPage);
+const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
 ---
 
 <CollectionPage
@@ -62,6 +62,8 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   baseUrl={baseUrl}
   containerId={`${collection}-container`}
   currentPage={currentPage}
+  display={display}
+  displayUrls={displayUrls}
   getItemCardProps={(item) => getItemCardProps(collection, item)}
   initialPageSize={20}
   items={items}
@@ -69,6 +71,4 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   prevUrl={prevUrl}
   totalItems={totalItems}
   totalPages={totalPages}
-  viewMode={view}
-  viewUrls={viewUrls}
 />

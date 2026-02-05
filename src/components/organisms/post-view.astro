@@ -1,5 +1,8 @@
 ---
+
 import type { CollectionEntry } from 'astro:content';
+
+import type { CollectionName } from '../../lib/collection-pages';
 
 import { PROFILE } from '../../lib/config';
 import Avatar from '../atoms/avatar.astro';
@@ -12,35 +15,18 @@ import LayoutContent from "../layout/layout-content.astro";
 import PostTags from '../molecules/post-tags.astro';
 import ZoomableImage from '../molecules/zoomable-image';
 import PageHero from './page-hero.astro';
-
-type PostType = 'blog' | 'experience' | 'project';
-
 interface Props {
-  backLabel?: string;
   backLink?: string;
+  collection: CollectionName;
   data: CollectionEntry<'blog'>['data'] | CollectionEntry<'experience'>['data'] | CollectionEntry<'projects'>['data'];
-  type: PostType;
 }
 
 const {
-  backLabel,
-  backLink,
+  collection,
   data,
-  type,
 } = Astro.props;
 
-const defaultBackLabel = type === 'blog' ? 'Back to Blog' :
-  type === 'project' ? 'Back to Projects' :
-    'Back to Experience';
-
-const defaultBackLink = type === 'blog' ? '/blog' :
-  type === 'project' ? '/projects' :
-    '/experience';
-
-const finalBackLabel = backLabel || defaultBackLabel;
-const finalBackLink = backLink || defaultBackLink;
-
-const title = type === 'experience' && 'role' in data && 'company' in data
+const title = collection === 'experience' && 'role' in data && 'company' in data
   ? `${data.role} at ${data.company}`
   : ('title' in data ? data.title : '');
 
@@ -51,18 +37,17 @@ const description = 'description' in data ? data.description : ('desc' in data ?
   description={description}
   title={title}
 >
-  <BackButton href={finalBackLink} slot="back-link">
-    {finalBackLabel}
+  <BackButton collection={collection} slot="back-link">
   </BackButton>
   <PageHero description={description} slot="header" title={title}>
     <Stack align="center" class="font-mono text-xs tracking-wider uppercase" direction="row" gap={3} slot="eyebrow">
-      {type === 'blog' && 'pubDate' in data && data.pubDate && (
+      {collection === 'blog' && 'pubDate' in data && data.pubDate && (
         <FormattedDate date={data.pubDate} full />
       )}
-      {type === 'project' && 'subtitle' in data && data.subtitle && (
+      {collection === 'projects' && 'subtitle' in data && data.subtitle && (
         <Text variant="primary">{data.subtitle}</Text>
       )}
-      {type === 'experience' && 'company' in data && (
+      {collection === 'experience' && 'company' in data && (
         <>
           <Text variant="primary">{data.company}</Text>
           {'location' in data && data.location && <Text variant="muted">{data.location}</Text>}
@@ -70,7 +55,7 @@ const description = 'description' in data ? data.description : ('desc' in data ?
       )}
     </Stack>
 
-    {type === 'blog' && (
+    {collection === 'blog' && (
       <Stack align="center" direction="row" gap={3} slot="actions">
         <Avatar alt={PROFILE.name} size="sm" src={PROFILE.avatar} />
         <Stack gap={0}>
@@ -80,7 +65,7 @@ const description = 'description' in data ? data.description : ('desc' in data ?
       </Stack>
     )}
 
-    {type === 'project' && (
+    {collection === 'projects' && (
       <Stack align="center" direction="row" gap={3} slot="actions">
         {'demoUrl' in data && data.demoUrl && (
           <Button as="a" href={data.demoUrl} variant="default">
@@ -96,15 +81,15 @@ const description = 'description' in data ? data.description : ('desc' in data ?
     )}
   </PageHero>
 
-  {type === 'blog' && 'tags' in data && data.tags && (
+  {collection === 'blog' && 'tags' in data && data.tags && (
     <PostTags heading="Tags" tags={data.tags} />
   )}
 
-  {type === 'experience' && 'skills' in data && data.skills && (
+  {collection === 'experience' && 'skills' in data && data.skills && (
     <PostTags heading="Skills" tags={data.skills} />
   )}
 
-  {type === 'project' && 'tags' in data && data.tags && (
+  {collection === 'projects' && 'tags' in data && data.tags && (
     <PostTags heading="Technologies" tags={data.tags} />
   )}
 

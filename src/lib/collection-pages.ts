@@ -1,13 +1,13 @@
 // Shared collection page logic
 import { type CollectionEntry, getCollection } from "astro:content";
 
-import type { CardData } from "./card-helpers";
+import type { CardData } from "../components/organisms/card/card-helpers";
 
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { NAV_ITEMS, PROFILE } from "./config";
 
 export type CollectionName = "blog" | "experience" | "projects";
-export type ViewMode = "grid" | "list";
+export type DisplayMode = "grid" | "list";
 
 interface CollectionItem<CN extends CollectionName> {
   collection: CN;
@@ -19,7 +19,7 @@ export const ITEMS_PER_PAGE = 10;
 
 export const buildPaginationUrls = (
   collection: CollectionName,
-  view: ViewMode,
+  view: DisplayMode,
   currentPage: number,
   totalPages: number,
 ): {
@@ -39,7 +39,7 @@ export const buildPaginationUrls = (
   return { nextUrl, prevUrl };
 };
 
-export const buildViewUrls = (collection: CollectionName, currentPage: number): {
+export const buildDisplayUrls = (collection: CollectionName, currentPage: number): {
   grid: string;
   list: string;
 } => ({
@@ -47,9 +47,62 @@ export const buildViewUrls = (collection: CollectionName, currentPage: number): 
   list: currentPage === 1 ? `/${collection}` : `/${collection}/list/${currentPage.toString()}`,
 });
 
+// Type guards for different collection types
 const itemIsBlog = (item: CollectionItem<CollectionName>): item is CollectionItem<"blog"> => item.collection === "blog";
 const itemIsExperience = (item: CollectionItem<CollectionName>): item is CollectionItem<"experience"> => item.collection === "experience";
 const itemIsProject = (item: CollectionItem<CollectionName>): item is CollectionItem<"projects"> => item.collection === "projects";
+
+// Extract common properties with fallbacks for view pages
+export const getViewPageProps = (item: CollectionItem<CollectionName>): {
+  title: string;
+  subtitle: string | undefined;
+  description: string | undefined;
+  icon: string | undefined;
+  tags: string[] | undefined;
+  date: string;
+} ={
+  if (itemIsBlog(item)) {
+    return {
+      title: item.data.title,
+      subtitle: undefined, // Blog doesn't have subtitle
+      description: item.data.description,
+      icon: undefined, // Blog doesn't have icon
+      tags: item.data.tags,
+      date: new Date(item.data.pubDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+    };
+  }
+
+  if (itemIsExperience(item)) {
+    return {
+      title: item.data.role,
+      subtitle: item.data.company,
+      description: item.data.description,
+      icon: undefined,
+      tags: item.data.skills,
+      date: new Date(item.data.startDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+    };
+  }
+
+  if (itemIsProject(item)) {
+    return {
+      title: item.data.title,
+      subtitle: item.data.subtitle,
+      description: item.data.desc,
+      icon: undefined,
+      tags: item.data.tags,
+      date: item.data.meta || "",
+    };
+  }
+
+  return {
+    title: "",
+    subtitle: undefined,
+    description: undefined,
+    icon: undefined,
+    tags: undefined,
+    date: "",
+  };
+};
 
 export const getCollectionConfig = (collection: CollectionName): {
   description: string;

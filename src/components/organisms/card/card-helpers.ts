@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-export const cardVariants = cva(
+export const variants = cva(
   "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
     defaultVariants: {

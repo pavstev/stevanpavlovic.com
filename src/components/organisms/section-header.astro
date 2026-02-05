@@ -22,32 +22,32 @@ import PostTags from '../molecules/post-tags.astro';
  * @param backText - Optional text for back button, defaults to "Back"
  */
 interface Props {
-  title: string;
-  subtitle?: string;
+  backText?: string;
+  backUrl?: string;
   description?: string;
   icon?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  subtitle?: string;
   tags?: string[];
-  backUrl?: string;
-  backText?: string;
+  title: string;
 }
 
 const {
-  title,
-  subtitle,
+  backText = 'Back',
+  backUrl,
   description,
   icon,
   level = 2,
+  subtitle,
   tags,
-  backUrl,
-  backText = 'Back',
+  title,
 } = Astro.props;
 ---
 
 <div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
   <Stack align="center" class="min-w-0" direction="row" gap={4}>
     {backUrl && (
-      <a href={backUrl} class="shrink-0 text-muted hover:text-foreground transition-colors">
+      <a class="shrink-0 text-muted transition-colors hover:text-foreground" href={backUrl}>
         <span class="sr-only">{backText}</span>
         <span aria-hidden class="material-icons text-sm">arrow_back</span>
       </a>

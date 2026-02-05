@@ -48,7 +48,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
                   aria-current={active ? "page" : undefined}
                   class:list={[
                     "relative rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300",
-                    {"bg-foreground/10 text-primary shadow-[0_0_48px_rgba(var(--color-primary-rgb),0.6)] ring-2 ring-primary/40": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
+                    {"bg-foreground/10 text-foreground ring-2 ring-offset-foreground/20": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
                   ]}
                   data-nav-link
                   href={item.href}
@@ -58,7 +58,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
                     {item.label}
                   </span>
                   <div class:list={[
-                    "absolute -bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
+                    "absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
                     !active && "scale-0 opacity-0"
                   ]}></div>
                 </Button>

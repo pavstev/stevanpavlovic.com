@@ -41,7 +41,7 @@ export const updateActiveLinks = (): void => {
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
   // Standardized classes to match server rendering
-  const activeClasses = ["bg-foreground/10", "text-foreground", "ring-1", "ring-foreground/20"];
+  const activeClasses = ["bg-foreground/10", "text-foreground", "ring-2", "ring-offset-foreground/20"];
   const inactiveClasses = ["text-muted-foreground", "hover:bg-foreground/5", "hover:text-foreground"];
 
   for (const link of links) {

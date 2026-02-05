@@ -2,6 +2,7 @@ import type { ImageMetadata } from "astro";
 
 import React, { useState } from "react";
 
+import MagnifyOverlay from "../atoms/magnify-overlay";
 import Modal from "../atoms/modal";
 
 interface Props {
@@ -25,8 +26,21 @@ const ZoomableImage: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMagnified, setIsMagnified] = useState(false);
+  const [position, setPosition] = useState({ x: 50, y: 50 });
 
   const imageSrc = typeof src === "string" ? src : src.src;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>): void => {
+    if (!isMagnified) {
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    setPosition({ x, y });
+  };
 
   return (
     <>
@@ -51,14 +65,7 @@ const ZoomableImage: React.FC<Props> = ({
           width={width}
         />
         {/* Magnifying Glass Decoration */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/40">
-          <div className="flex size-16 scale-0 items-center justify-center rounded-full bg-primary/90 shadow-lg transition-all duration-300 group-hover:scale-100">
-            <svg className="size-8 text-primary-foreground" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-        </div>
+        <MagnifyOverlay />
       </div>
 
       <Modal
@@ -68,12 +75,13 @@ const ZoomableImage: React.FC<Props> = ({
         onClose={() => {
           setIsModalOpen(false);
           setIsMagnified(false);
+          setPosition({ x: 50, y: 50 });
         }}
         open={isModalOpen}
         showCloseButton={true}
       >
         <div
-          className={`relative cursor-zoom-${isMagnified ? "out" : "in"} transition-transform duration-300`}
+          className={`relative cursor-zoom-${isMagnified ? "out" : "in"} overflow-hidden transition-transform duration-100`}
           onClick={() => { setIsMagnified(!isMagnified); }}
           onKeyDown={(e): void => {
             if (e.key === "Enter" || e.key === " ") {
@@ -81,17 +89,25 @@ const ZoomableImage: React.FC<Props> = ({
               setIsMagnified(!isMagnified);
             }
           }}
+          onMouseMove={handleMouseMove}
           role="button"
           tabIndex={0}
         >
           <img
             alt={alt}
-            className={`transition-all duration-300 ${
+            className={`object-contain transition-all duration-100 ${
               isMagnified
-                ? "max-h-none max-w-none scale-150 cursor-zoom-out"
-                : "max-h-[80vh] max-w-[90vw] cursor-zoom-in object-contain"
+                ? "scale-150 cursor-zoom-out"
+                : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
             }`}
             src={imageSrc}
+            style={
+              isMagnified
+                ? {
+                  transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
+                }
+                : undefined
+            }
           />
         </div>
       </Modal>

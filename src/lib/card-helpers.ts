@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { cva } from "class-variance-authority";
 
 export const cardVariants = cva(
-  "group/card relative flex w-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
+  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
     defaultVariants: {
       interactive: false,

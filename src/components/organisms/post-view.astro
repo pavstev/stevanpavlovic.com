@@ -9,6 +9,7 @@ import Stack from '../atoms/stack.astro';
 import Text from '../atoms/text.astro';
 import LayoutContent from "../layout/layout-content.astro";
 import Tags from '../molecules/tags.astro';
+import ZoomableImage from '../molecules/zoomable-image.astro';
 import PageHero from './page-hero.astro';
 
 type PostType = 'blog' | 'experience' | 'project';
@@ -92,6 +93,18 @@ const description = 'description' in data ? data.description : ('desc' in data ?
       </Stack>
     )}
   </PageHero>
+
+  {'heroImage' in data && data.heroImage && (
+    <div class="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/50">
+      <ZoomableImage
+        alt={title}
+        class="size-full object-cover"
+        height={720}
+        src={data.heroImage}
+        width={1280}
+      />
+    </div>
+  )}
 
   {type === 'experience' && 'skills' in data && data.skills && (
     <Stack gap={2}>

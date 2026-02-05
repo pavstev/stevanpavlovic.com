@@ -6,11 +6,12 @@ import '@fontsource-variable/jetbrains-mono';
 import { ClientRouter } from 'astro:transitions';
 
 import ScrollToTop from '../atoms/scroll-to-top.astro';
-import Chatbot from '../molecules/chatbot.astro';
+// import Chatbot from '../molecules/chatbot.astro';
 import Container from '../molecules/container.astro';
 import Footer from './footer.astro';
 import Head from "./head.astro";
 import Header from './header.astro';
+import Chatbot from '../molecules/chatbot.astro';
 
 interface Props {
   description: string;
@@ -65,7 +66,7 @@ const {
 
     <Container
       as="main"
-      class="relative z-10 pt-32 pb-12 md:pt-28 md:pb-8"
+      class="relative z-10 pt-28 pb-4 md:pb-2"
       data-pagefind-body
       transition:name="main"
     >

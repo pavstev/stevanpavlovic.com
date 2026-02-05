@@ -1,0 +1,235 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Button from './button.astro';
+import Stack from './stack.astro';
+import { cn } from '../../lib/cn';
+
+export interface DropdownOption {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface Props {
+  class?: string;
+  id: string;
+  label: string;
+  options: DropdownOption[];
+  selectedValue?: string;
+  selectedValues?: string[];
+  align?: 'left' | 'right' | 'center';
+  size?: 'sm' | 'default';
+  variant?: 'default' | 'ghost' | 'outline';
+}
+
+const {
+  class: className,
+  id,
+  label,
+  options,
+  selectedValue,
+  selectedValues,
+  align = 'left',
+  size = 'sm',
+  variant = 'ghost',
+} = Astro.props;
+
+const isMultiSelect = selectedValues !== undefined;
+const isSelected = (value: string) => {
+  if (isMultiSelect) {
+    return selectedValues?.includes(value) ?? false;
+  }
+  return selectedValue === value;
+};
+
+const selectedOption = !isMultiSelect ? options.find((opt) => opt.value === selectedValue) : undefined;
+const displayLabel = selectedOption ? selectedOption.label : label;
+
+const alignClasses = {
+  center: 'left-1/2 -translate-x-1/2',
+  left: 'left-0',
+  right: 'right-0',
+};
+---
+
+<div class={cn('dropdown relative inline-block', className)} data-dropdown={id}>
+  <Button
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    class="dropdown-trigger whitespace-nowrap"
+    data-dropdown-trigger={id}
+    size={size}
+    variant={variant}
+  >
+    <span>{displayLabel}</span>
+    <Icon class="dropdown-icon size-4 transition-transform duration-200" name="mdi:chevron-down" />
+  </Button>
+
+  <Stack
+    align="stretch"
+    as="ul"
+    class={cn(
+      'dropdown-menu absolute z-50 mt-1 min-w-[160px] rounded-md border border-border bg-popover p-1 opacity-0 shadow-lg transition-all duration-200 invisible',
+      alignClasses[align]
+    )}
+    data-dropdown-menu={id}
+    direction="col"
+    gap={1}
+    role="listbox"
+  >
+    {
+      options.map((option) => (
+        <li role="none">
+          {option.href ? (
+            <a
+              class={cn(
+                'dropdown-item flex w-full items-center justify-between rounded-sm px-3 py-2 text-sm transition-colors',
+                'hover:bg-accent hover:text-accent-foreground',
+                'focus:bg-accent focus:text-accent-foreground focus:outline-none',
+                isSelected(option.value) && 'bg-accent/50 text-accent-foreground font-medium'
+              )}
+              href={option.href}
+              role="option"
+              aria-selected={isSelected(option.value)}
+            >
+              <span>{option.label}</span>
+              {isSelected(option.value) && (
+                <Icon class="size-4" name="mdi:check" />
+              )}
+            </a>
+          ) : (
+            <button
+              class={cn(
+                'dropdown-item flex w-full items-center justify-between rounded-sm px-3 py-2 text-sm transition-colors text-left',
+                'hover:bg-accent hover:text-accent-foreground',
+                'focus:bg-accent focus:text-accent-foreground focus:outline-none',
+                isSelected(option.value) && 'bg-accent/50 text-accent-foreground font-medium'
+              )}
+              data-value={option.value}
+              role="option"
+              aria-selected={isSelected(option.value)}
+              type="button"
+            >
+              <span>{option.label}</span>
+              {isSelected(option.value) && (
+                <Icon class="size-4" name="mdi:check" />
+              )}
+            </button>
+          )}
+        </li>
+      ))
+    }
+  </Stack>
+</div>
+
+<script>
+  function initDropdowns() {
+    const dropdowns = document.querySelectorAll<HTMLElement>('[data-dropdown]');
+
+    dropdowns.forEach((dropdown) => {
+      const id = dropdown.dataset.dropdown;
+      const trigger = dropdown.querySelector<HTMLButtonElement>(`[data-dropdown-trigger="${id}"]`);
+      const menu = dropdown.querySelector<HTMLElement>(`[data-dropdown-menu="${id}"]`);
+      const icon = dropdown.querySelector<HTMLElement>('.dropdown-icon');
+
+      if (!trigger || !menu) return;
+
+      const toggleDropdown = () => {
+        const isOpen = menu.classList.contains('opacity-100');
+
+        // Close all other dropdowns first
+        document.querySelectorAll<HTMLElement>('[data-dropdown-menu]').forEach((otherMenu) => {
+          if (otherMenu !== menu) {
+            otherMenu.classList.remove('opacity-100', 'visible');
+            otherMenu.classList.add('opacity-0', 'invisible');
+            const otherIcon = otherMenu.closest('[data-dropdown]')?.querySelector<HTMLElement>('.dropdown-icon');
+            otherIcon?.classList.remove('rotate-180');
+            const otherTrigger = otherMenu.closest('[data-dropdown]')?.querySelector<HTMLButtonElement>('[data-dropdown-trigger]');
+            otherTrigger?.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        if (isOpen) {
+          menu.classList.remove('opacity-100', 'visible');
+          menu.classList.add('opacity-0', 'invisible');
+          icon?.classList.remove('rotate-180');
+          trigger.setAttribute('aria-expanded', 'false');
+        } else {
+          menu.classList.remove('opacity-0', 'invisible');
+          menu.classList.add('opacity-100', 'visible');
+          icon?.classList.add('rotate-180');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      };
+
+      const closeDropdown = () => {
+        menu.classList.remove('opacity-100', 'visible');
+        menu.classList.add('opacity-0', 'invisible');
+        icon?.classList.remove('rotate-180');
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      // Handle item selection for non-link items
+      menu.querySelectorAll('button[data-value]').forEach((item) => {
+        item.addEventListener('click', () => {
+          closeDropdown();
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target as Node)) {
+          closeDropdown();
+        }
+      });
+
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('opacity-100')) {
+          closeDropdown();
+          trigger.focus();
+        }
+      });
+
+      // Keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (!menu.classList.contains('opacity-100')) {
+            toggleDropdown();
+          }
+          const firstItem = menu.querySelector<HTMLElement>('.dropdown-item');
+          firstItem?.focus();
+        }
+      });
+
+      menu.addEventListener('keydown', (e) => {
+        const items = Array.from(menu.querySelectorAll<HTMLElement>('.dropdown-item'));
+        const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const nextIndex = (currentIndex + 1) % items.length;
+          items[nextIndex]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prevIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+          items[prevIndex]?.focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          closeDropdown();
+          trigger.focus();
+        }
+      });
+    });
+  }
+
+  initDropdowns();
+  document.addEventListener('astro:page-load', initDropdowns);
+</script>

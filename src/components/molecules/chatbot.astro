@@ -1,10 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 
-import { cn } from '../../lib/cn';
 import { cardVariants } from '../../lib/card-helpers';
-import { buttonVariants } from '../../atoms/button.astro';
+import { cn } from '../../lib/cn';
+import Button from '../atoms/button.astro';
 
 // ============================================================================
 // Message Bubble Variants
@@ -19,17 +19,11 @@ const messageVariants = cva(
     variants: {
       variant: {
         ai: 'rounded-tl-none bg-muted/80 text-foreground/90',
-        user: 'rounded-tr-none bg-primary text-primary-foreground ml-auto',
+        user: 'ml-auto rounded-tr-none bg-primary text-primary-foreground',
       },
     },
   },
 );
-
-interface Message {
-  text: string;
-  isAi: boolean;
-  id: string;
-}
 
 // ============================================================================
 // Chatbot Props
@@ -42,28 +36,18 @@ interface Props {
 const { class: className } = Astro.props;
 
 // ============================================================================
-// Resume Context (Server-side)
-// ============================================================================
-
-const RESUME_CONTEXT = `
-  Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-  He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
-  Based in Belgrade, Serbia.
-`.trim();
-
-// ============================================================================
 // Component Template
 // ============================================================================
 ---
 
 <div
-  class={cn('relative z-[100] flex flex-col items-end print:hidden', className)}
+  class:list={cn('relative z-100 flex flex-col items-end print:hidden', className)}
   id="chatbot-widget"
 >
   {/* Chat Window */}
   <div
-    class={cn(
-      cardVariants({ variant: 'glass', className: 'pointer-events-none mb-4 w-[340px] max-w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[400px]' }),
+    class:list={cn(
+      cardVariants({ className: 'pointer-events-none mb-4 w-85 max-w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[400px]', variant: 'glass' }),
       'overflow-hidden',
       'data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100'
     )}
@@ -73,7 +57,7 @@ const RESUME_CONTEXT = `
     {/* Header */}
     <header class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
       <div class="flex items-center gap-3">
-        <div class="flex size-8 items-center justify-center rounded-full bg-primary/20 text-primary">
+        <div class="flex size-8 items-center justify-center rounded-md bg-primary/20 text-primary">
           <Icon name="mdi:robot-outline" size={16} />
         </div>
         <div class="flex flex-col">
@@ -81,13 +65,15 @@ const RESUME_CONTEXT = `
           <span class="text-[10px] text-muted-foreground" id="chat-status">Ready to help</span>
         </div>
       </div>
-      <button
-        class={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-8')}
-        id="close-chat"
+      <Button
         aria-label="Close chat"
+        class="size-8 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+        id="close-chat"
+        size="icon"
+        variant="ghost"
       >
         <Icon name="mdi:close" size={18} />
-      </button>
+      </Button>
     </header>
 
     {/* Messages Area */}
@@ -97,10 +83,10 @@ const RESUME_CONTEXT = `
     >
       {/* Welcome Message */}
       <div class="flex flex-col gap-1">
-        <div class={cn(messageVariants({ variant: 'ai' }))}>
+        <div class:list={cn(messageVariants({ variant: 'ai' }))}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
-        <span class="text-[10px] text-muted-foreground/60 px-1">Powered by AI</span>
+        <span class="px-1 text-[10px] text-muted-foreground/60">Powered by AI</span>
       </div>
     </div>
 
@@ -109,32 +95,36 @@ const RESUME_CONTEXT = `
       <form class="flex gap-2" id="chat-form">
         <div class="relative flex-1">
           <input
-            class="w-full rounded-full border border-white/10 bg-black/30 px-4 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none transition-all"
+            class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 pr-10 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
             id="chat-input"
             placeholder="Ask about Stevan's experience..."
             type="text"
           />
-          <div class="absolute right-3 top-1/2 -translate-y-1/2">
+          <div class="absolute top-1/2 right-3 -translate-y-1/2">
             <Icon class="text-muted-foreground/50" name="mdi:message-outline" size={16} />
           </div>
         </div>
-        <button
-          class={cn(buttonVariants({ variant: 'primary', size: 'icon' }), 'size-10 shrink-0 shadow-lg shadow-primary/20')}
-          id="send-button"
-          type="submit"
+        <Button
           aria-label="Send message"
+          class="size-10 rounded-md shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
+          id="send-button"
+          size="icon"
+          type="submit"
+          variant="default"
         >
           <Icon name="mdi:send" size={18} />
-        </button>
+        </Button>
       </form>
     </div>
   </div>
 
   {/* Toggle Button */}
-  <button
-    class="group relative flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/25 transition-all duration-300 hover:scale-110 hover:shadow-primary/40 active:scale-95 sm:size-13"
-    id="chat-toggle"
+  <Button
     aria-label="Toggle Chatbot"
+    class="group relative size-12 rounded-md shadow-xl shadow-primary/25 transition-all duration-300 hover:scale-110 hover:shadow-primary/40 active:scale-95 sm:size-13"
+    id="chat-toggle"
+    size="icon"
+    variant="default"
   >
     {/* Robot Icon (visible when closed) */}
     <Icon
@@ -149,26 +139,27 @@ const RESUME_CONTEXT = `
       size={24}
     />
     {/* Pulse Effect */}
-    <span class="absolute inset-0 rounded-full animate-ping bg-primary/30 opacity-0 group-data-[open=false]:opacity-75"></span>
-  </button>
+    <span class="absolute inset-0 animate-ping rounded-md bg-primary/30 opacity-0 group-data-[open=false]:opacity-75"></span>
+  </Button>
 </div>
 
-<script define:vars={{ RESUME_CONTEXT }}>
+
+<script is:inline>
   // ============================================================================
-  // Type Definitions
+  // Resume Context (inline to work with is:inline)
   // ============================================================================
 
-  interface ChatMessage {
-    id: string;
-    text: string;
-    isAi: boolean;
-  }
+  const RESUME_CONTEXT = `
+  Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
+  He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
+  Based in Belgrade, Serbia.
+  `.trim();
 
   // ============================================================================
   // State
   // ============================================================================
 
-  let qaPipeline: any = null;
+  let qaPipeline = null;
   let isInitializing = false;
   let isProcessing = false;
 
@@ -177,10 +168,10 @@ const RESUME_CONTEXT = `
   // ============================================================================
 
   const toggleBtn = document.getElementById('chat-toggle');
-  const chatWindow = document.getElementById('chat-window') as HTMLElement;
-  const messagesContainer = document.getElementById('chat-messages') as HTMLElement;
-  const chatForm = document.getElementById('chat-form') as HTMLFormElement;
-  const chatInput = document.getElementById('chat-input') as HTMLInputElement;
+  const chatWindow = document.getElementById('chat-window');
+  const messagesContainer = document.getElementById('chat-messages');
+  const chatForm = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
   const statusEl = document.getElementById('chat-status');
   const closeBtn = document.getElementById('close-chat');
 
@@ -188,18 +179,18 @@ const RESUME_CONTEXT = `
   // Utility Functions
   // ============================================================================
 
-  function generateId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  function generateId() {
+    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
   }
 
-  function scrollToBottom(): void {
+  function scrollToBottom() {
     messagesContainer.scrollTo({
       top: messagesContainer.scrollHeight,
       behavior: 'smooth',
     });
   }
 
-  function updateStatus(text: string): void {
+  function updateStatus(text) {
     if (statusEl) {
       statusEl.textContent = text;
     }
@@ -209,7 +200,7 @@ const RESUME_CONTEXT = `
   // Message Rendering
   // ============================================================================
 
-  function createMessageElement(message: ChatMessage): HTMLElement {
+  function createMessageElement(message) {
     const container = document.createElement('div');
     container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? '' : 'items-end'}`;
 
@@ -231,7 +222,7 @@ const RESUME_CONTEXT = `
     return container;
   }
 
-  function createTypingIndicator(): HTMLElement {
+  function createTypingIndicator() {
     const container = document.createElement('div');
     container.className = 'flex flex-col gap-1 animate-in fade-in';
     container.id = 'typing-indicator';
@@ -254,8 +245,8 @@ const RESUME_CONTEXT = `
     return container;
   }
 
-  function addMessage(text: string, isAi: boolean): void {
-    const message: ChatMessage = {
+  function addMessage(text, isAi) {
+    const message = {
       id: generateId(),
       text,
       isAi,
@@ -265,7 +256,7 @@ const RESUME_CONTEXT = `
     scrollToBottom();
   }
 
-  function removeTypingIndicator(): void {
+  function removeTypingIndicator() {
     const typing = document.getElementById('typing-indicator');
     if (typing) {
       typing.remove();
@@ -276,7 +267,7 @@ const RESUME_CONTEXT = `
   // AI Model Management
   // ============================================================================
 
-  async function initModel(): Promise<void> {
+  async function initModel() {
     if (qaPipeline || isInitializing) return;
     isInitializing = true;
     updateStatus('Loading AI model...');
@@ -299,7 +290,7 @@ const RESUME_CONTEXT = `
   // Event Handlers
   // ============================================================================
 
-  function toggleChat(): void {
+  function toggleChat() {
     const isOpen = chatWindow.dataset.open === 'true';
     const newState = !isOpen;
 
@@ -312,12 +303,12 @@ const RESUME_CONTEXT = `
     }
   }
 
-  function closeChat(): void {
+  function closeChat() {
     chatWindow.dataset.open = 'false';
     toggleBtn.dataset.open = 'false';
   }
 
-  async function handleSubmit(e: Event): Promise<void> {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (isProcessing) return;
@@ -373,11 +364,6 @@ const RESUME_CONTEXT = `
       closeChat();
     }
   });
-
-  // Close on backdrop click (optional enhancement)
-  // chatWindow.addEventListener('click', (e) => {
-  //   if (e.target === chatWindow) closeChat();
-  // });
 </script>
 
 <style is:global>

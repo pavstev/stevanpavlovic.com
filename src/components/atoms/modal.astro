@@ -1,6 +1,8 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import Button from './button.astro';
+
 interface Props {
   class?: string;
   id: string;
@@ -18,10 +20,14 @@ const { class: className, id } = Astro.props;
 >
   <div class="glass relative overflow-hidden rounded-xl p-4 shadow-2xl sm:p-6">
     <form class="absolute top-2 right-2 z-10" method="dialog">
-      <button class="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground">
+      <Button
+        class="text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
+        size="icon"
+        variant="ghost"
+      >
         <Icon name="mdi:close" size={24} />
         <span class="sr-only">Close</span>
-      </button>
+      </Button>
     </form>
     <slot />
   </div>

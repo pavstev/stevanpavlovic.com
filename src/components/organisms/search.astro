@@ -2,26 +2,28 @@
 import { Icon } from 'astro-icon/components';
 import Pagefind from "astro-pagefind/components/Search";
 
+import Button from '../atoms/button.astro';
 import Modal from '../atoms/modal.astro';
 ---
 
 <div class="search-wrapper group relative flex items-center">
   {/* Search Trigger */}
-  <button
+  <Button
     aria-label="Search"
-    class="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground active:scale-95"
+    class="size-9 rounded-md text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground active:scale-95"
     id="search-trigger"
-    type="button"
+    size="icon"
+    variant="ghost"
   >
     <Icon name="mdi:magnify" size={20} />
-  </button>
+  </Button>
 
   <Modal
     class="w-[90vw] max-w-sm sm:max-w-md md:max-w-xl"
     id="search-modal"
   >
-    <div class="flex max-h-[50vh] sm:max-h-[60vh] flex-col overflow-hidden">
-      <div class="max-h-[40vh] sm:max-h-[50vh] overflow-y-auto">
+    <div class="flex max-h-[50vh] flex-col overflow-hidden sm:max-h-[60vh]">
+      <div class="max-h-[40vh] overflow-y-auto sm:max-h-[50vh]">
         <Pagefind
           className="pagefind-ui"
           id="search"
@@ -34,7 +36,7 @@ import Modal from '../atoms/modal.astro';
         />
       </div>
 
-      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-[10px] sm:text-[11px] font-medium text-muted-foreground">
+      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd> close</span>
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd> navigate</span>
         <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd> select</span>
@@ -51,7 +53,7 @@ import Modal from '../atoms/modal.astro';
     if (!trigger || !modal) return;
 
     // Constrain Pagefind width
-    const pagefind = modal.querySelector('.pagefind-ui');
+    const pagefind = modal.querySelector('.pagefind-ui') as HTMLElement | null;
     if (pagefind) {
       pagefind.style.width = '100%';
       const input = pagefind.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
@@ -97,17 +99,21 @@ import Modal from '../atoms/modal.astro';
 </script>
 
 <style>
-  #search-modal .pagefind-ui {
+  /* stylelint-disable-next-line selector-id-pattern */
+  :global(#search-modal .pagefind-ui) {
     width: 100% !important;
   }
-  #search-modal .pagefind-ui__search-input {
+  /* stylelint-disable-next-line selector-id-pattern */
+  :global(#search-modal .pagefind-ui__search-input) {
     width: 100% !important;
     min-width: 0 !important;
   }
-  #search-modal .pagefind-ui__drawer {
+  /* stylelint-disable-next-line selector-id-pattern */
+  :global(#search-modal .pagefind-ui__drawer) {
     width: 100% !important;
   }
-  #search-modal .pagefind-ui__results {
+  /* stylelint-disable-next-line selector-id-pattern */
+  :global(#search-modal .pagefind-ui__results) {
     width: 100% !important;
   }
 </style>

@@ -11,7 +11,7 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 
 <div
   class:list={[
-    'w-full masonry-grid [column-count:1] md:[column-count:var(--masonry-cols)]',
+    'masonry-grid w-full [column-count:1] md:[column-count:var(--masonry-cols)]',
     className,
   ]}
   style={{ '--masonry-cols': columns }}

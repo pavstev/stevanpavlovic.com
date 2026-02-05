@@ -16,7 +16,7 @@ import IconBox from '../atoms/icon-box.astro';
 import Stack from '../atoms/stack.astro';
 import Text from '../atoms/text.astro';
 import Tags from '../molecules/tags.astro';
-import ZoomableImage from '../molecules/zoomable-image.astro';
+
 
 // Omit variant from BaseProps to avoid conflicts with specific variant strings
 interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof cardVariants>, 'variant'> {
@@ -29,6 +29,7 @@ interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof card
 interface ContentProps extends BaseProps {
   actionIcon?: string;
   actionLabel?: string;
+  list?: boolean;
   loading?: 'eager' | 'lazy';
   post: CollectionEntry<'blog'> | CollectionEntry<'projects'>;
   variant: 'content';
@@ -206,9 +207,71 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
 {/* CONTENT CARD */}
 {isContent && (() => {
-  const { actionIcon = 'mdi:arrow-right', actionLabel = 'Read Post', loading = 'lazy', post, ...cProps } = props as ContentProps;
+  const { actionIcon = 'mdi:arrow-right', actionLabel = 'Read Post', list = false, loading = 'lazy', post, ...cProps } = props as ContentProps;
   const { description, heroImage, postUrl, pubDate, subtitle, title } = getCardData(post);
 
+  // List variant - horizontal layout with small image on left
+  if (list) {
+    return (
+      <a class="group block" href={postUrl}>
+        <div
+          class:list={cn(cardVariants({ className, interactive: true, variant: visual }), "p-4!")}
+          style={{ '--glow-color': glowColor }}
+          {...cProps}
+        >
+          <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+            style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+          <div class="flex gap-4">
+            {heroImage && (
+              <div class="relative hidden sm:block h-20 w-20 lg:h-24 lg:w-24 shrink-0 overflow-hidden rounded-lg border border-border/50 bg-muted">
+                <img
+                  alt={title}
+                  class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading={loading}
+                  src={typeof heroImage === 'string' ? heroImage : heroImage.src}
+                />
+              </div>
+            )}
+
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                {pubDate && (
+                  <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+                    <FormattedDate date={pubDate} full />
+                  </Text>
+                )}
+                {subtitle && (
+                  <>
+                    <span class="text-muted-foreground hidden sm:inline">·</span>
+                    <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
+                      {subtitle}
+                    </Text>
+                  </>
+                )}
+              </div>
+
+              <Heading class="mt-1 line-clamp-1 transition-colors group-hover:text-primary" level={3} size="md">
+                {title}
+              </Heading>
+
+              {description && (
+                <Text class="mt-1 line-clamp-2 text-muted-foreground" size="sm">
+                  {description}
+                </Text>
+              )}
+            </div>
+
+            <div class="hidden sm:flex items-center self-center">
+              <Icon class="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" name={actionIcon} />
+            </div>
+          </div>
+        </div>
+      </a>
+    );
+  }
+
+  // Default grid variant
   return (
     <a class="group block h-full" href={postUrl}>
       <div
@@ -220,14 +283,12 @@ const getElement = (href?: string) => href ? 'a' : 'div';
           style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
 
         {heroImage && (
-          <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-border/50 bg-muted">
-            <ZoomableImage
+          <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-2xl border border-border/50 bg-muted">
+            <img
               alt={title}
               class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-              height={360}
               loading={loading}
-              src={heroImage}
-              width={720}
+              src={typeof heroImage === 'string' ? heroImage : heroImage.src}
             />
           </div>
         )}
@@ -266,7 +327,28 @@ const getElement = (href?: string) => href ? 'a' : 'div';
   );
 })()}
 
-<script>
-  import { initInteractiveCards } from '../../lib/interactive-cards';
+<script is:inline>
+  function initInteractiveCards() {
+    const cards = document.querySelectorAll(".group/card");
+
+    for (const card of cards) {
+      if (!(card instanceof HTMLElement)) {
+        continue;
+      }
+
+      const handleMouseMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty("--mouse-x", String(x) + "px");
+        card.style.setProperty("--mouse-y", String(y) + "px");
+      };
+
+      card.addEventListener("mousemove", handleMouseMove);
+    }
+  }
+
   initInteractiveCards();
+  document.addEventListener('astro:page-load', initInteractiveCards);
 </script>

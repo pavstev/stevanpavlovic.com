@@ -1,32 +1,199 @@
 ---
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import PortfolioGrid from "../../components/organisms/portfolio-grid.astro";
+import Stack from '../../components/atoms/stack.astro';
+import Empty from '../../components/molecules/empty.astro';
+import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
+import MasonryGrid from '../../components/molecules/masonry-grid.astro';
+import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { PROFILE } from '../../lib/config';
-import { getProjects } from '../../lib/portfolio';
+import { getPagination } from '../../lib/cms';
 
-const projects = await getProjects();
+// Get URL params
+const pageParam = Astro.url.searchParams.get('page');
+const sortParam = Astro.url.searchParams.get('sort') || 'newest';
+const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
+
+// Get and process projects
+const allProjects = await getCollection('projects');
+
+// Sort projects
+const sortedProjects = [...allProjects].sort((a, b) => {
+  switch (sortParam) {
+    case 'a-z':
+      return a.data.title.localeCompare(b.data.title);
+    case 'z-a':
+      return b.data.title.localeCompare(a.data.title);
+    case 'newest':
+    default:
+      const dateA = 'pubDate' in a.data && a.data.pubDate ? a.data.pubDate.valueOf() : 0;
+      const dateB = 'pubDate' in b.data && b.data.pubDate ? b.data.pubDate.valueOf() : 0;
+      return dateB - dateA;
+  }
+});
+
+// Get unique tags for filter dropdown
+const allTags = [...new Set(allProjects.flatMap(p => p.data.tags || []))].sort();
+const filterParam = Astro.url.searchParams.get('filter');
+
+// Filter projects
+const filteredProjects = filterParam
+  ? sortedProjects.filter(p => p.data.tags?.includes(filterParam))
+  : sortedProjects;
+
+// Pagination - adjust items per page based on view mode
+const { currentPage, paginatedItems, totalPages } = getPagination(
+  filteredProjects,
+  pageParam,
+  viewParam === 'list' ? 6 : viewParam === 'masonry-2' ? 6 : 9,
+  '/projects',
+  Astro.url.searchParams
+);
+
+// Helper to build URLs with params
+function buildUrl(base: string, params: Record<string, string | undefined>) {
+  const url = new URL(base, 'http://localhost');
+  Object.entries(params).forEach(([key, value]) => {
+    if (value && value !== 'newest') {
+      url.searchParams.set(key, value);
+    }
+  });
+  return url.pathname + url.search;
+}
+
+// Build filter dropdowns
+const sortOptions = [
+  { label: 'Newest First', value: 'newest', href: buildUrl('/projects', { sort: 'newest', filter: filterParam || undefined }) },
+  { label: 'A-Z', value: 'a-z', href: buildUrl('/projects', { sort: 'a-z', filter: filterParam || undefined }) },
+  { label: 'Z-A', value: 'z-a', href: buildUrl('/projects', { sort: 'z-a', filter: filterParam || undefined }) },
+];
+
+const tagOptions: { label: string; value: string; href: string }[] = [
+  { label: 'All Tags', value: '', href: buildUrl('/projects', { sort: sortParam !== 'newest' ? sortParam : undefined }) },
+  ...allTags.map(tag => ({
+    label: tag.charAt(0).toUpperCase() + tag.slice(1),
+    value: tag,
+    href: buildUrl('/projects', { filter: tag, sort: sortParam !== 'newest' ? sortParam : undefined }),
+  })),
+];
+
+const filters: FilterConfig[] = [
+  {
+    id: 'sort',
+    label: 'Sort',
+    options: sortOptions,
+    selectedValue: sortParam,
+  },
+  ...(allTags.length > 0 ? [{
+    id: 'filter',
+    label: 'Tag',
+    options: tagOptions,
+    selectedValue: filterParam || '',
+  }] : []),
+];
+
+// Build base URL for pagination
+const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: sortParam !== 'newest' ? sortParam : undefined });
 ---
 
 <LayoutRoot
   description={`${PROFILE.name} - Projects & Portfolio`}
-  includeFooter={true}
-  includeHeader={true}
   title={`Projects | ${PROFILE.name}`}
 >
   <Section>
     <SectionHeader
+      class="mb-8 px-0 sm:px-0 lg:px-0"
       description="A collection of open-source libraries, applications, and experiments I've built."
       icon="mdi:console"
-      id="projects-heading"
       title="Projects"
     />
-    <PortfolioGrid
-      headingLevel={2}
-      itemClass="project-card"
-      items={projects}
-      layout="list"
-    />
+
+    {
+      paginatedItems.length > 0 ? (
+        <Stack gap={6}>
+          <ListActions
+            baseUrl={baseUrl}
+            currentPage={currentPage}
+            filters={filters}
+            itemCountLabel="projects"
+            showItemCount
+            showViewToggle
+            totalItems={filteredProjects.length}
+            totalPages={totalPages}
+            viewMode={viewParam}
+          />
+
+          {viewParam === 'list' && (
+            <div class="flex flex-col gap-3 sm:gap-4">
+              {paginatedItems.map((project) => (
+                <Card list portfolioItem={{
+                  id: project.id,
+                  title: project.data.title,
+                  subtitle: project.data.subtitle,
+                  desc: project.data.desc,
+                  meta: project.data.meta,
+                  tags: project.data.tags,
+                  href: `/projects/${project.id}/`,
+                }} variant="portfolio" />
+              ))}
+            </div>
+          )}
+
+          {viewParam === 'masonry-2' && (
+            <MasonryGrid columns={2}>
+              {paginatedItems.map((project) => (
+                <div class="masonry-item">
+                  <Card portfolioItem={{
+                    id: project.id,
+                    title: project.data.title,
+                    subtitle: project.data.subtitle,
+                    desc: project.data.desc,
+                    meta: project.data.meta,
+                    tags: project.data.tags,
+                    href: `/projects/${project.id}/`,
+                  }} variant="portfolio" />
+                </div>
+              ))}
+            </MasonryGrid>
+          )}
+
+          {viewParam === 'masonry-3' && (
+            <MasonryGrid columns={3}>
+              {paginatedItems.map((project) => (
+                <div class="masonry-item">
+                  <Card portfolioItem={{
+                    id: project.id,
+                    title: project.data.title,
+                    subtitle: project.data.subtitle,
+                    desc: project.data.desc,
+                    meta: project.data.meta,
+                    tags: project.data.tags,
+                    href: `/projects/${project.id}/`,
+                  }} variant="portfolio" />
+                </div>
+              ))}
+            </MasonryGrid>
+          )}
+        </Stack>
+      ) : (
+        <Empty
+          action={filterParam ? { href: '/projects', label: 'Clear Filter' } : undefined}
+          description={filterParam ? `No projects found with tag "${filterParam}".` : "No projects yet."}
+          title="No projects found"
+        />
+      )
+    }
   </Section>
 </LayoutRoot>
+
+<script>
+  import { initInteractiveCards } from '../../lib/interactive-cards';
+
+  initInteractiveCards();
+  document.addEventListener('astro:page-load', initInteractiveCards);
+</script>

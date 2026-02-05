@@ -1,32 +1,197 @@
 ---
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import PortfolioGrid from "../../components/organisms/portfolio-grid.astro";
+import Stack from '../../components/atoms/stack.astro';
+import Empty from '../../components/molecules/empty.astro';
+import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
+import MasonryGrid from '../../components/molecules/masonry-grid.astro';
+import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { PROFILE } from '../../lib/config';
-import { getExperience } from '../../lib/portfolio';
+import { getPagination } from '../../lib/cms';
 
-const experience = await getExperience();
+// Get URL params
+const pageParam = Astro.url.searchParams.get('page');
+const sortParam = Astro.url.searchParams.get('sort') || 'newest';
+const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
+
+// Get and process experience
+const allExperience = await getCollection('experience');
+
+// Sort experience by date
+const sortedExperience = [...allExperience].sort((a, b) => {
+  switch (sortParam) {
+    case 'a-z':
+      return a.data.company.localeCompare(b.data.company);
+    case 'z-a':
+      return b.data.company.localeCompare(a.data.company);
+    case 'newest':
+    default:
+      return b.data.startDate.valueOf() - a.data.startDate.valueOf();
+  }
+});
+
+// Get unique skills for filter dropdown
+const allSkills = [...new Set(allExperience.flatMap(e => e.data.skills || []))].sort();
+const filterParam = Astro.url.searchParams.get('filter');
+
+// Filter experience
+const filteredExperience = filterParam
+  ? sortedExperience.filter(e => e.data.skills?.includes(filterParam))
+  : sortedExperience;
+
+// Pagination
+const { currentPage, paginatedItems, totalPages } = getPagination(
+  filteredExperience,
+  pageParam,
+  viewParam === 'list' ? 4 : viewParam === 'masonry-2' ? 4 : 6,
+  '/experience',
+  Astro.url.searchParams
+);
+
+// Helper to build URLs with params
+function buildUrl(base: string, params: Record<string, string | undefined>) {
+  const url = new URL(base, 'http://localhost');
+  Object.entries(params).forEach(([key, value]) => {
+    if (value && value !== 'newest') {
+      url.searchParams.set(key, value);
+    }
+  });
+  return url.pathname + url.search;
+}
+
+// Build filter dropdowns
+const sortOptions = [
+  { label: 'Newest First', value: 'newest', href: buildUrl('/experience', { sort: 'newest', filter: filterParam || undefined }) },
+  { label: 'A-Z', value: 'a-z', href: buildUrl('/experience', { sort: 'a-z', filter: filterParam || undefined }) },
+  { label: 'Z-A', value: 'z-a', href: buildUrl('/experience', { sort: 'z-a', filter: filterParam || undefined }) },
+];
+
+const skillOptions: { label: string; value: string; href: string }[] = [
+  { label: 'All Skills', value: '', href: buildUrl('/experience', { sort: sortParam !== 'newest' ? sortParam : undefined }) },
+  ...allSkills.map(skill => ({
+    label: skill,
+    value: skill,
+    href: buildUrl('/experience', { filter: skill, sort: sortParam !== 'newest' ? sortParam : undefined }),
+  })),
+];
+
+const filters: FilterConfig[] = [
+  {
+    id: 'sort',
+    label: 'Sort',
+    options: sortOptions,
+    selectedValue: sortParam,
+  },
+  ...(allSkills.length > 0 ? [{
+    id: 'filter',
+    label: 'Skill',
+    options: skillOptions,
+    selectedValue: filterParam || '',
+  }] : []),
+];
+
+// Build base URL for pagination
+const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort: sortParam !== 'newest' ? sortParam : undefined });
 ---
 
 <LayoutRoot
   description={`${PROFILE.name} - Professional Experience`}
-  includeFooter={true}
-  includeHeader={true}
   title={`Experience | ${PROFILE.name}`}
 >
   <Section>
     <SectionHeader
+      class="mb-8 px-0 sm:px-0 lg:px-0"
       description="My professional journey, key roles, and technical expertise specialized in building scalable systems."
       icon="mdi:briefcase-outline"
-      id="experience-heading"
       title="Experience"
     />
-    <PortfolioGrid
-      headingLevel={2}
-      itemClass="experience-card"
-      items={experience}
-      layout="list"
-    />
+
+    {
+      paginatedItems.length > 0 ? (
+        <Stack gap={6}>
+          <ListActions
+            baseUrl={baseUrl}
+            currentPage={currentPage}
+            filters={filters}
+            itemCountLabel="positions"
+            showItemCount
+            showViewToggle
+            totalItems={filteredExperience.length}
+            totalPages={totalPages}
+            viewMode={viewParam}
+          />
+
+          {viewParam === 'list' && (
+            <div class="flex flex-col gap-3 sm:gap-4">
+              {paginatedItems.map((exp) => (
+                <Card list portfolioItem={{
+                  id: exp.id,
+                  title: exp.data.company,
+                  subtitle: exp.data.role,
+                  desc: exp.data.description,
+                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                  tags: exp.data.skills,
+                  href: `/experience/${exp.id}/`,
+                }} variant="portfolio" />
+              ))}
+            </div>
+          )}
+
+          {viewParam === 'masonry-2' && (
+            <MasonryGrid columns={2}>
+              {paginatedItems.map((exp) => (
+                <div class="masonry-item">
+                  <Card portfolioItem={{
+                    id: exp.id,
+                    title: exp.data.company,
+                    subtitle: exp.data.role,
+                    desc: exp.data.description,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    tags: exp.data.skills,
+                    href: `/experience/${exp.id}/`,
+                  }} variant="portfolio" />
+                </div>
+              ))}
+            </MasonryGrid>
+          )}
+
+          {viewParam === 'masonry-3' && (
+            <MasonryGrid columns={3}>
+              {paginatedItems.map((exp) => (
+                <div class="masonry-item">
+                  <Card portfolioItem={{
+                    id: exp.id,
+                    title: exp.data.company,
+                    subtitle: exp.data.role,
+                    desc: exp.data.description,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    tags: exp.data.skills,
+                    href: `/experience/${exp.id}/`,
+                  }} variant="portfolio" />
+                </div>
+              ))}
+            </MasonryGrid>
+          )}
+        </Stack>
+      ) : (
+        <Empty
+          action={filterParam ? { href: '/experience', label: 'Clear Filter' } : undefined}
+          description={filterParam ? `No experience found with skill "${filterParam}".` : "No experience yet."}
+          title="No experience found"
+        />
+      )
+    }
   </Section>
 </LayoutRoot>
+
+<script>
+  import { initInteractiveCards } from '../../lib/interactive-cards';
+
+  initInteractiveCards();
+  document.addEventListener('astro:page-load', initInteractiveCards);
+</script>

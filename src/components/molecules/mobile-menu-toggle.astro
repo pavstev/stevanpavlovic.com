@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 
 import { cn } from '../../lib/cn';
+import Button from '../atoms/button.astro';
 
 interface Props extends HTMLAttributes<'button'> {
   size?: 'lg' | 'md' | 'sm';
@@ -22,16 +23,11 @@ const sizeClasses = {
 };
 ---
 
-<button
+<Button
   aria-label="Toggle menu"
   class:list={cn(
-    // Base styles
-    'group/toggle relative flex items-center justify-center rounded-full',
-    'bg-muted/50 text-muted-foreground',
-    'border border-border/50',
-    'transition-all duration-200 ease-out',
+    'group/toggle relative border border-border/50 bg-muted/50 text-muted-foreground',
     'hover:bg-muted hover:text-foreground',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
     // Hidden on desktop
     'md:hidden',
     // Size
@@ -39,6 +35,8 @@ const sizeClasses = {
     className
   )}
   id="mobile-menu-toggle"
+  size="icon"
+  variant="ghost"
   {...props}
 >
   <Icon
@@ -59,4 +57,4 @@ const sizeClasses = {
     name="mdi:close"
     size={20}
   />
-</button>
+</Button>

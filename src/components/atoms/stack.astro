@@ -21,6 +21,7 @@ interface Props
   justify?: ResponsiveValue<
     'around' | 'between' | 'center' | 'end' | 'evenly' | 'start'
   >;
+  wrap?: ResponsiveValue<'wrap' | 'nowrap' | 'wrap-reverse'>;
 }
 
 const {
@@ -30,6 +31,7 @@ const {
   direction = 'col',
   gap = 4,
   justify,
+  wrap,
   ...rest
 } = Astro.props;
 
@@ -37,11 +39,28 @@ const directionClass = buildResponsiveClasses(direction, 'flex');
 const gapClass = buildResponsiveClasses(gap, 'gap');
 const alignClass = buildResponsiveClasses(align, 'items');
 const justifyClass = buildResponsiveClasses(justify, 'justify');
+
+// Handle wrap classes with proper tailwind class names
+const wrapClass = wrap
+  ? typeof wrap === 'object'
+    ? [
+        `flex-wrap-${wrap.base}`,
+        wrap.sm ? `sm:flex-wrap-${wrap.sm}` : '',
+        wrap.md ? `md:flex-wrap-${wrap.md}` : '',
+        wrap.lg ? `lg:flex-wrap-${wrap.lg}` : '',
+        wrap.xl ? `xl:flex-wrap-${wrap.xl}` : '',
+      ]
+        .join(' ')
+        .replace(/flex-wrap-nowrap/g, 'flex-nowrap')
+        .replace(/flex-wrap-wrap-reverse/g, 'flex-wrap-reverse')
+        .trim()
+    : `flex-wrap-${wrap}`.replace(/flex-wrap-nowrap/g, 'flex-nowrap').replace(/flex-wrap-wrap-reverse/g, 'flex-wrap-reverse')
+  : '';
 ---
 
 <Tag
   class:list={stack({
-    class: [directionClass, alignClass, justifyClass, gapClass, className],
+    class: [directionClass, alignClass, justifyClass, gapClass, wrapClass, className],
   })}
   {...rest}
 >

@@ -15,8 +15,6 @@ interface Props {
 }
 
 const getGridClass = (index: number) => {
-  // Pattern adjusted for Identity card being first (2x2)
-  // We want the rest to flow around it or fill cleanly
   const pattern = [
     'md:col-span-1 md:row-span-1',
     'md:col-span-1 md:row-span-1',
@@ -25,17 +23,21 @@ const getGridClass = (index: number) => {
   ];
   return pattern[index % pattern.length] || 'col-span-1';
 };
+
+const cardBaseStyles = "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md transition-all duration-300 hover:scale-[1.02]";
+const glowBaseStyles = "absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100";
+const blobBaseStyles = "absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[50px] transition-all duration-500";
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
+<div class="grid auto-rows-[minmax(180px,auto)] grid-cols-1 gap-4 pb-8 md:grid-cols-3">
   {/* Identity Tile - Main Feature */}
-  <div class="group relative flex flex-col justify-center items-center text-center p-8 md:col-span-2 md:row-span-2 overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md">
+  <div class:list={[cardBaseStyles, "items-center justify-center p-8 text-center md:col-span-2 md:row-span-2"]}>
     {/* Background Glow */}
-    <div class="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-    <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-[80px] transition-all duration-500 group-hover:bg-primary/30" />
+    <div class:list={[glowBaseStyles, "from-primary/10 to-transparent"]} />
+    <div class:list={[blobBaseStyles, "-top-20 -right-20 size-64 bg-primary/20 blur-[80px] group-hover:bg-primary/30"]} />
 
     <div class="relative z-10 flex flex-col items-center gap-4">
-      <Heading level={1} size="hero" class="leading-tight">
+      <Heading class="leading-tight" level={1} size="hero">
         <GradientText variant="primary">
           {SITE_CONFIG.hero.title.main}
         </GradientText>
@@ -48,29 +50,26 @@ const getGridClass = (index: number) => {
       <Text class="max-w-md text-balance" size="lg" variant="muted">
         I'm Stevan, {SITE_CONFIG.hero.tagline}.
       </Text>
-
-      <div class="mt-4 flex gap-3">
-        {/* Social Mini-links or Call to Action could go here */}
-      </div>
     </div>
   </div>
 
   {
     items.map((item, index) => (
       <Link
-        href={item.href}
         class:list={[
-          'group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] border border-white/10 bg-black/40 backdrop-blur-md',
+          cardBaseStyles,
           getGridClass(index),
+          "p-6"
         ]}
+        href={item.href}
         style={{
           '--accent-color': item.color,
         }}
         variant="unstyled"
       >
         {/* Background Gradient/Glow Effect */}
-        <div class="absolute inset-0 bg-linear-to-br from-(--accent-color)/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-(--accent-color)/20 blur-[50px] transition-all duration-500 group-hover:bg-(--accent-color)/30" />
+        <div class:list={[glowBaseStyles, "from-(--accent-color)/10 to-transparent"]} />
+        <div class:list={[blobBaseStyles, "bg-(--accent-color)/20 group-hover:bg-(--accent-color)/30"]} />
 
         <div class="relative z-10 flex w-full items-start justify-between">
           <IconBox
@@ -81,15 +80,15 @@ const getGridClass = (index: number) => {
           </IconBox>
 
           <div class="rounded-full border border-white/10 bg-black/20 px-3 py-1 opacity-0 transition-all duration-300 group-hover:opacity-100">
-             <Icon name="mdi:arrow-top-right" class="text-white/70" size={16} />
+            <Icon class="text-white/70" name="mdi:arrow-top-right" size={16} />
           </div>
         </div>
 
         <div class="relative z-10 mt-4">
-          <Heading level={3} size="lg" class="mb-1 font-medium text-white group-hover:text-(--accent-color) transition-colors">
+          <Heading class="mb-1 font-medium text-white transition-colors group-hover:text-(--accent-color)" level={3} size="lg">
             {item.label}
           </Heading>
-          <Text size="sm" variant="muted" class="line-clamp-2">
+          <Text class="line-clamp-2" size="sm" variant="muted">
             Explore my {item.label.toLowerCase()} to see what I've been working on.
           </Text>
         </div>

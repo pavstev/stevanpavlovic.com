@@ -28,7 +28,7 @@ const ZoomableImage: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`group relative inline-block cursor-zoom-in overflow-hidden ${className || ""}`}
+        className={`group relative block cursor-pointer overflow-hidden transition-all hover:opacity-90 ${className || ""}`}
         onClick={() => { setIsModalOpen(true); }}
         onKeyDown={(e): void => {
           if (e.key === "Enter" || e.key === " ") {
@@ -41,39 +41,26 @@ const ZoomableImage: React.FC<Props> = ({
       >
         <img
           alt={alt}
-          className="transition-transform duration-300 group-hover:scale-110"
+          className="size-full object-cover"
           height={height}
           loading={loading}
-          src={typeof src === "string" ? src : src.src}
+          src={imageSrc}
           width={width}
         />
       </div>
 
       <Modal
-        bodyClass="p-0 overflow-hidden"
-        className="m-0 flex! h-screen! max-h-none! w-screen! max-w-none! items-center! justify-center! border-none! bg-transparent! p-0! backdrop:bg-black/90"
-        dialogClass="!p-0"
+        bodyClass="p-0 overflow-hidden flex items-center justify-center h-full"
+        className="max-h-[90vh] max-w-(--breakpoint-xl) overflow-hidden border-none bg-transparent shadow-none"
         onClose={() => { setIsModalOpen(false); }}
         open={isModalOpen}
-        showCloseButton={false}
+        showCloseButton={true}
       >
-        <div
-          className="absolute inset-0 size-full cursor-zoom-out"
-          onClick={() => { setIsModalOpen(false); }}
-          onKeyDown={(e): void => {
-            if (e.key === "Escape") {
-              setIsModalOpen(false);
-            }
-          }}
-          role="button"
-          tabIndex={0}
-        >
-          <img
-            alt={alt}
-            className="max-h-screen w-auto object-contain"
-            src={imageSrc}
-          />
-        </div>
+        <img
+          alt={alt}
+          className="h-auto max-h-full w-full object-contain"
+          src={imageSrc}
+        />
       </Modal>
     </>
   );

@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-import Pagefind from "astro-pagefind/components/Search";
 
 interface Props {
   variant?: 'desktop' | 'mobile';
@@ -47,17 +46,10 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
   >
     <div class="overflow-hidden rounded-2xl border border-foreground/10 bg-background/95 shadow-2xl backdrop-blur-xl">
       {/* Search Results Area */}
-      <div class="p-4">
-        <Pagefind
-          className="pagefind-ui"
-          id={`${id}-ui`}
-          uiOptions={{
-            showImages: false,
-            translations: {
-              placeholder: "Search..."
-            }
-          }}
-        />
+      <div class="p-2">
+        <div class="max-h-[60vh] overflow-y-auto" id={`${id}-results`}>
+          {/* Results will be injected here */}
+        </div>
       </div>
 
       {/* Keyboard Shortcuts Footer */}
@@ -82,8 +74,9 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
 <script>
   import { initSearchDropdown } from '../../lib/search';
 
-  initSearchDropdown();
-  document.addEventListener('astro:page-load', initSearchDropdown);
+  document.addEventListener('astro:page-load', () => {
+    initSearchDropdown();
+  });
 </script>
 
 <style is:global>
@@ -96,55 +89,5 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
   /* Show clear button when input has value */
   .search-clear.visible {
     display: flex !important;
-  }
-
-  /* Pagefind UI customization */
-  .search-dropdown .pagefind-ui {
-    width: 100% !important;
-    --pagefind-ui-background: transparent !important;
-  }
-
-  /* Hide the Pagefind search input since we're using the header input */
-  .search-dropdown .pagefind-ui__search-input {
-    display: none !important;
-  }
-
-  /* Hide the search form wrapper */
-  .search-dropdown .pagefind-ui__form {
-    display: none !important;
-  }
-
-  .search-dropdown .pagefind-ui__drawer {
-    width: 100% !important;
-    max-height: 60vh !important;
-    overflow-y: auto !important;
-    margin-top: 0 !important;
-  }
-
-  .search-dropdown .pagefind-ui__results {
-    width: 100% !important;
-  }
-
-  /* Custom scrollbar for results */
-  .search-dropdown .pagefind-ui__drawer::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .search-dropdown .pagefind-ui__drawer::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .search-dropdown .pagefind-ui__drawer::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-  }
-
-  .search-dropdown .pagefind-ui__drawer::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  /* Hide pagefind branding if present */
-  .search-dropdown .pagefind-ui__brand {
-    display: none !important;
   }
 </style>

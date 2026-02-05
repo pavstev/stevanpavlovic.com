@@ -3,6 +3,7 @@ import { cn } from '../../lib/cn';
 import { SITE_CONFIG, STATS } from '../../lib/config';
 import Heading from '../atoms/heading.astro';
 import Text from '../atoms/text.astro';
+import {Meteors} from './../meteor';
 import Stat from './stat.astro';
 
 interface Props {
@@ -13,6 +14,8 @@ const { class: className } = Astro.props;
 ---
 
 <div class:list={cn("relative -mt-12 space-y-6 overflow-hidden py-12 md:py-20", className)}>
+  <Meteors client:load number={30} />
+
   <div class="relative z-10 space-y-1">
     <Text class="font-mono tracking-tight text-foreground/50" size="lg">
       Hi, I'm

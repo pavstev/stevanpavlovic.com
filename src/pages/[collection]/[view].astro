@@ -14,6 +14,11 @@ import {
   ITEMS_PER_PAGE,
   type ViewMode,
 } from '../../lib/collection-pages';
+import {type Params as IndexParams} from './index.astro'
+
+export interface Params extends IndexParams {
+  view: ViewMode;
+}
 
 export const prerender = true;
 
@@ -38,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const { collection, view } = Astro.params;
+const { collection, view } = Astro.params as unknown as Params;
 const currentPage = 1;
 
 const sortedItems = await getCollectionData(collection);

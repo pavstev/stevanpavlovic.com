@@ -18,26 +18,23 @@ Cards are fundamental building blocks. Here's how to make them come alive with s
 ### Elevation Changes
 
 <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={6} class="my-8">
-  <Card class="transition-all duration-300 hover:scale-105 hover:shadow-2xl" interactive>
-    <Stack gap={3}>
-      <Heading level={3} size="lg">Scale Effect</Heading>
-      <Text variant="secondary">Hover to see the card scale up smoothly</Text>
-    </Stack>
-  </Card>
+  <Card
+    class="transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+    interactive
+    data={{ title: "Scale Effect", description: "Hover to see the card scale up smoothly" }}
+  />
 
-  <Card class="transition-all duration-300 hover:-translate-y-2 hover:shadow-xl" interactive>
-    <Stack gap={3}>
-      <Heading level={3} size="lg">Lift Effect</Heading>
-      <Text variant="secondary">Watch the card lift on hover</Text>
-    </Stack>
-  </Card>
+  <Card
+    class="transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+    interactive
+    data={{ title: "Lift Effect", description: "Watch the card lift on hover" }}
+  />
 
-  <Card class="transition-all duration-500 hover:rotate-1 hover:shadow-lg" interactive>
-    <Stack gap={3}>
-      <Heading level={3} size="lg">Rotate Effect</Heading>
-      <Text variant="secondary">Subtle rotation creates depth</Text>
-    </Stack>
-  </Card>
+  <Card
+    class="transition-all duration-500 hover:rotate-1 hover:shadow-lg"
+    interactive
+    data={{ title: "Rotate Effect", description: "Subtle rotation creates depth" }}
+  />
 </Grid>
 
 ### Gradient Overlays

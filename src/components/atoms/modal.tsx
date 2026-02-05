@@ -94,7 +94,7 @@ const Modal: React.FC<ModalProps> = ({
       aria-labelledby={title ? `${title.toLowerCase().replace(/\s+/g, "-")}-title` : undefined}
       aria-modal="true"
       className={cn(
-        "m-auto overflow-visible border-none bg-transparent p-0 outline-none backdrop:bg-black/80 backdrop:backdrop-blur-md",
+        "m-auto overflow-visible border-none bg-transparent p-0 outline-none backdrop:bg-background/80 backdrop:backdrop-blur-md",
         dialogClass,
       )}
       onClick={handleBackdropClick}
@@ -148,7 +148,7 @@ const Modal: React.FC<ModalProps> = ({
         )}
 
         {/* Scrollable Content Body */}
-        <div className={cn("scrollbar-thin scrollbar-thumb-foreground/10 scrollbar-track-transparent flex-1 overflow-y-auto p-6", bodyClass)}>
+        <div className={cn("flex-1 overflow-y-auto p-6", bodyClass)}>
           {children}
         </div>
 
@@ -177,7 +177,7 @@ const Modal: React.FC<ModalProps> = ({
         }
 
         dialog::backdrop {
-          background: rgba(0, 0, 0, 0.8);
+          background: color-mix(in srgb, var(--color-background), transparent 20%);
           backdrop-filter: blur(8px);
           opacity: 0;
         }
@@ -207,18 +207,6 @@ const Modal: React.FC<ModalProps> = ({
           }
         }
 
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 3px;
-        }
       `}</style>
     </dialog>
   );

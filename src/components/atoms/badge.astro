@@ -6,16 +6,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/cn';
 
 const badgeVariants = cva(
-  'inline-flex max-w-full items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
+  'inline-flex max-w-full items-center rounded-full border px-3 py-1 text-sm font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
   {
     variants: {
       variant: {
-        accent: 'border-transparent bg-accent text-accent-foreground hover:bg-accent/80',
-        default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-        destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        muted: 'border-transparent bg-muted text-muted-foreground hover:bg-muted/80',
-        outline: 'text-foreground',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        accent: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90',
+        default: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90',
+        destructive: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-destructive/20 group-hover:bg-destructive/10 group-hover:text-destructive/90',
+        muted: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/40 transition-all duration-500 group-hover:text-muted-foreground/80',
+        outline: 'border-border text-muted-foreground/60 transition-all duration-500 group-hover:text-foreground',
+        secondary: 'border-muted-foreground/5 bg-muted-foreground/5 text-muted-foreground/50 transition-all duration-500 group-hover:border-accent/10 group-hover:bg-accent/10 group-hover:text-accent/70',
       },
     },
   }

@@ -1,342 +1,197 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import type { CollectionEntry } from 'astro:content';
 
 import { Icon } from 'astro-icon/components';
 import { type VariantProps } from 'class-variance-authority';
 
-import type { PortfolioItem } from '../../lib/portfolio';
-
-import { cardVariants, getCardData } from '../../lib/card-helpers';
+import { type CardData, cardVariants } from '../../lib/card-helpers';
 import { cn } from '../../lib/cn';
 import Badge from '../atoms/badge.astro';
 import FormattedDate from '../atoms/formatted-date.astro';
 import Heading from '../atoms/heading.astro';
 import IconBox from '../atoms/icon-box.astro';
-import Stack from '../atoms/stack.astro';
 import Text from '../atoms/text.astro';
+import CardImage from '../molecules/card-image.astro';
+import CardSpotlight from '../molecules/card-spotlight.astro';
 import Tags from '../molecules/tags.astro';
 
-
-// Omit variant from BaseProps to avoid conflicts with specific variant strings
 interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof cardVariants>, 'variant'> {
   as?: string;
   glowColor?: string;
-  href?: string;
   visual?: 'default' | 'ghost' | 'glass' | 'outline';
 }
 
-interface ContentProps extends BaseProps {
+interface Props extends BaseProps {
   actionIcon?: string;
   actionLabel?: string;
-  list?: boolean;
-  loading?: 'eager' | 'lazy';
-  post: CollectionEntry<'blog'> | CollectionEntry<'projects'>;
-  variant: 'content';
-}
-
-interface DefaultProps extends BaseProps {
-  children: any;
-  variant?: 'default'; // Only default variant here, visual handles style
-}
-
-interface IconProps extends BaseProps {
-  align?: 'center' | 'start';
-  animate?: boolean;
-  delay?: number;
-  icon: string;
-  subtitle?: string;
-  title: string;
-  variant: 'icon';
-}
-
-interface PortfolioProps extends BaseProps {
+  data?: CardData;
   headingLevel?: number;
   list?: boolean;
-  portfolioItem: PortfolioItem;
-  variant: 'portfolio';
+  loading?: 'eager' | 'lazy';
 }
 
-type Props = ContentProps | DefaultProps | IconProps | PortfolioProps;
-
 const props = Astro.props;
-const { class: className, glowColor = 'var(--color-primary)', interactive, variant = 'default', visual = 'default', ...rest } = props;
+const { actionIcon = 'mdi:arrow-right', actionLabel, class: className, data: _data, glowColor = 'var(--color-primary)', headingLevel = 3, interactive, list, loading, visual = 'default', ...rest } = props;
+// Default to empty object if undefined
+const data = _data || {};
 
-const isPortfolio = variant === 'portfolio';
-const isContent = variant === 'content';
-const isIcon = variant === 'icon';
+// Destructure data properties
+const { align = 'start', animate, date, delay = 0, description, footerMeta, icon, image, meta, subtitle, tags, title, url } = data;
 
-// Helper to get element type
-const getElement = (href?: string) => href ? 'a' : 'div';
+// Determine Card State
+const hasData = Object.keys(data).length > 0;
+const isSimpleCard = !hasData;
+
+// Layout Helpers
+const Wrapper = url ? 'a' : 'div';
+const cardClasses = cn(cardVariants({ className, interactive: !!url || interactive, variant: visual }));
+
+// Determine Layout Mode
+// If it's a list view, we use row layout. Otherwise default column.
+// Note: Icon cards (with icon) are typically grid/column based.
+const isRowLayout = list && !icon;
 ---
 
-{/* DEFAULT CARD */}
-{(!isPortfolio && !isContent && !isIcon) && (
-  <div
-    class:list={cn(cardVariants({ className, interactive, variant: visual }))}
+{isSimpleCard ? (
+  <Wrapper
+    class:list={cn(cardClasses)}
+    href={url}
     style={{ '--glow-color': glowColor }}
     {...rest}
   >
-    <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-      style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+    <CardSpotlight glowColor={glowColor} />
     <slot />
-  </div>
-)}
+  </Wrapper>
+) : (
+  <Wrapper class:list={cn("group block", !isRowLayout && "h-full")} href={url} {...rest}>
+    <div
+      class:list={cn(
+        cardClasses,
+        isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4",
+        align === 'center' && !isRowLayout ? 'items-center text-center' : 'items-start',
+        animate && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
+      )}
+      style={{ '--glow-color': glowColor, animationDelay: `${delay}ms` }}
+    >
+      {/* Background Effects */}
+      <CardSpotlight glowColor={glowColor} />
 
-{/* ICON CARD */}
-{isIcon && (() => {
-  const { align = 'start', animate, delay = 0, href, icon, subtitle, title, ...iconProps } = props as IconProps;
-  const Element = getElement(href);
-  return (
-    <Element class="group block h-full" href={href}>
-      <div
-        class:list={cn(
-          cardVariants({ className, interactive: !!href, variant: visual }),
-          'flex h-full flex-col gap-4',
-          align === 'center' ? 'items-center text-center' : 'items-start',
-          animate && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
-        )}
-        style={{ '--glow-color': glowColor, animationDelay: `${delay}ms` }}
-        {...iconProps}
-      >
-        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
-
+      {/* Media Section: Icon */}
+      {icon && (
         <div class="relative">
-          <div class="absolute -inset-2 bg-primary/5 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"></div>
+          <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"></div>
           <IconBox
-            class="group-hover:shadow-glow-primary relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/10 group-hover:bg-primary/5 group-hover:text-primary"
+            class="relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5"
             size="lg"
             variant="glass"
           >
-            <Icon name={icon} size={24} />
+            <Icon class="transition-colors duration-300 group-hover:text-accent" name={isRowLayout ? icon : icon} size={24} />
           </IconBox>
         </div>
+      )}
 
-        <Stack align={align} gap={1}>
-          <Heading class="transition-colors group-hover:text-primary" level={3} size="md">
-            {title}
-          </Heading>
-          {subtitle && <Text size="sm" variant="muted">{subtitle}</Text>}
-        </Stack>
+      {/* Media Section: Image */}
+      {image && (
+        <CardImage
+          alt={title || ""}
+          image={image}
+          loading={loading}
+          wrapperClass={isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-2xl"}
+        />
+      )}
 
-        {href && (
-          <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
-        )}
-      </div>
-    </Element>
-  );
-})()}
+      {/* Content Section */}
+      <div class:list={cn("flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4")}>
 
-{/* PORTFOLIO CARD */}
-{isPortfolio && (() => {
-  const { headingLevel = 3, list = false, portfolioItem: item, ...pProps } = props as PortfolioProps;
-  const Element = getElement(item.href);
-
-  // List variant - condensed single-column layout
-  if (list) {
-    return (
-      <Element class="group block" href={item.href}>
-        <div
-          class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "p-4!")}
-          style={{ '--glow-color': glowColor }}
-          {...pProps}
-        >
-          <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-            style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
-
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex-1">
-              <div class="flex items-center gap-2">
-                <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="md">
-                  {item.title}
-                </Heading>
-                {item.href && (
-                  <Icon class="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
-                )}
-              </div>
-              <Text class="mt-0.5 font-mono tracking-wider uppercase" size="xs" variant="muted">
-                {item.subtitle}
-              </Text>
-            </div>
-            <div class="flex items-center gap-2">
-              <Badge variant="secondary">{item.meta}</Badge>
-            </div>
-          </div>
-
-          {item.desc && (
-            <Text class="mt-2 line-clamp-1 text-muted-foreground" size="sm">
-              {item.desc}
-            </Text>
-          )}
-
-          <div class="mt-2">
-            <Tags limit={4} tags={item.tags} />
-          </div>
-        </div>
-      </Element>
-    );
-  }
-
-  // Default grid variant
-  return (
-    <Element class="group block h-full" href={item.href}>
-      <div
-        class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "flex h-full flex-col")}
-        style={{ '--glow-color': glowColor }}
-        {...pProps}
-      >
-        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
-
-        <div class="mb-4 flex flex-col justify-between gap-4 sm:flex-row">
-          <div>
-            <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="lg">
-              {item.title}
-            </Heading>
-            <Text class="mt-1 font-mono tracking-wider uppercase" size="xs" variant="muted">
-              {item.subtitle}
-            </Text>
-          </div>
-          <div class="flex items-center gap-2 self-start sm:self-center">
-            <Badge variant="secondary">{item.meta}</Badge>
-            {item.href && (
-              <Icon class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
-            )}
-          </div>
-        </div>
-
-        <Text class="mb-6 line-clamp-3 flex-1" size="sm">{item.desc}</Text>
-
-        <div class="mt-auto">
-          <Tags limit={3} tags={item.tags} />
-        </div>
-      </div>
-    </Element>
-  );
-})()}
-
-{/* CONTENT CARD */}
-{isContent && (() => {
-  const { actionIcon = 'mdi:arrow-right', actionLabel = 'Read Post', list = false, loading = 'lazy', post, ...cProps } = props as ContentProps;
-  const { description, heroImage, postUrl, pubDate, subtitle, title } = getCardData(post);
-
-  // List variant - horizontal layout with small image on left
-  if (list) {
-    return (
-      <a class="group block" href={postUrl}>
-        <div
-          class:list={cn(cardVariants({ className, interactive: true, variant: visual }), "p-4!")}
-          style={{ '--glow-color': glowColor }}
-          {...cProps}
-        >
-          <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-            style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
-
-          <div class="flex gap-4">
-            {heroImage && (
-              <div class="relative hidden size-20 shrink-0 overflow-hidden rounded-lg border border-border/50 bg-muted sm:block lg:size-24">
-                <img
-                  alt={title}
-                  class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                  loading={loading}
-                  src={typeof heroImage === 'string' ? heroImage : heroImage.src}
-                />
-              </div>
-            )}
-
-            <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-2">
-                {pubDate && (
-                  <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
-                    <FormattedDate date={pubDate} full />
-                  </Text>
-                )}
-                {subtitle && (
-                  <>
-                    <span class="hidden text-muted-foreground sm:inline">·</span>
-                    <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
-                      {subtitle}
-                    </Text>
-                  </>
-                )}
-              </div>
-
-              <Heading class="mt-1 line-clamp-1 transition-colors group-hover:text-primary" level={3} size="md">
-                {title}
-              </Heading>
-
-              {description && (
-                <Text class="mt-1 line-clamp-2 text-muted-foreground" size="sm">
-                  {description}
+        {/* Header Row */}
+        <div class:list={cn("flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row")}>
+          <div class:list={cn("flex flex-col", isRowLayout ? "gap-0" : "gap-1")}>
+            {/* Date (List View / Grid View) */}
+            {date && (
+              <div class:list={cn("flex items-center justify-between", !isRowLayout && "mb-1")}>
+                <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+                  <FormattedDate date={date} full />
                 </Text>
-              )}
-            </div>
-
-            <div class="hidden items-center self-center sm:flex">
-              <Icon class="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" name={actionIcon} />
-            </div>
-          </div>
-        </div>
-      </a>
-    );
-  }
-
-  // Default grid variant
-  return (
-    <a class="group block h-full" href={postUrl}>
-      <div
-        class:list={cn(cardVariants({ className, interactive: true, variant: visual }), "flex h-full flex-col")}
-        style={{ '--glow-color': glowColor }}
-        {...cProps}
-      >
-        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-40"
-          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
-
-        {heroImage && (
-          <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-2xl border border-border/50 bg-muted">
-            <img
-              alt={title}
-              class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              loading={loading}
-              src={typeof heroImage === 'string' ? heroImage : heroImage.src}
-            />
-          </div>
-        )}
-
-        <Stack class="flex-1" gap={2}>
-          <div class="flex items-center justify-between">
-            {pubDate && (
-              <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
-                <FormattedDate date={pubDate} full />
-              </Text>
+              </div>
             )}
+
+            {/* Title */}
+            <Heading
+              class:list={cn("transition-colors group-hover:text-primary", isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2")}
+              level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
+              size={isRowLayout ? "md" : "lg"}
+            >
+              {title}
+            </Heading>
+
+            {/* Subtitle */}
             {subtitle && (
-              <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
+              <Text
+                class:list={cn("font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1")}
+                size="xs"
+                variant="muted"
+              >
                 {subtitle}
               </Text>
             )}
           </div>
 
-          <Heading class="line-clamp-2 transition-colors group-hover:text-primary" level={3} size="lg">
-            {title}
-          </Heading>
+          {/* Right Side: Meta & Action */}
+          <div class:list={cn("flex items-center gap-2 self-start", align === 'center' && !isRowLayout ? "hidden" : "")}>
+            {meta && <Badge variant="secondary">{meta}</Badge>}
 
-          {description && (
-            <Text class="line-clamp-2 text-muted-foreground" size="sm">
-              {description}
+            {url && (
+              <div class="relative flex min-h-[24px] min-w-[24px] items-center justify-end font-mono">
+                <div class:list={cn("absolute right-0 flex items-center text-muted-foreground transition-all duration-300", actionLabel ? "group-hover:-translate-x-2 group-hover:opacity-0" : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary")}>
+                  <Icon name="mdi:arrow-top-right" />
+                </div>
+                {actionLabel && (
+                  <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                    {actionLabel}
+                    <Icon class="size-3" name={actionIcon} />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Body: Description */}
+        {description && (
+          <Text class:list={cn("text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "line-clamp-2 flex-1")} size="sm">
+            {description}
+          </Text>
+        )}
+
+        {/* Footer Section */}
+        <div class:list={cn("mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between")}>
+
+          {/* Tags */}
+          {tags && tags.length > 0 && (
+            <div class:list={cn(isRowLayout ? "mt-2" : "")}>
+              <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
+            </div>
+          )}
+
+          {/* Footer Meta (e.g. Experience Date Range) */}
+          {footerMeta && (
+            <Text class="ml-auto font-mono tracking-wider whitespace-nowrap uppercase transition-colors group-hover:text-primary/80" size="xs" variant="muted">
+              {footerMeta}
             </Text>
           )}
-        </Stack>
 
-        <div class="mt-6 flex -translate-x-2 items-center gap-2 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-          {actionLabel}
-          <Icon name={actionIcon} />
+
+
+          {/* Icon Card Bottom Arrow (if no meta/header arrow used) */}
+          {icon && url && (
+            <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
+          )}
+
         </div>
       </div>
-    </a>
-  );
-})()}
+    </div>
+  </Wrapper>
+)}
 
 <script is:inline>
   function initInteractiveCards() {

@@ -13,7 +13,7 @@ const { class: className, limit, tags } = Astro.props;
 
 {
   tags && tags.length > 0 && (
-    <Stack class:list={[className, "flex-wrap"]} direction="row" gap={2}>
+    <Stack class:list={[className, "group flex-wrap"]} direction="row" gap={2}>
       {tags.slice(0, limit || tags.length).map((tag) => (
         <Badge variant="secondary">
           {tag}

@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 
 import { PROFILE } from '../../lib/config';
 import Avatar from '../atoms/avatar.astro';
+import BackButton from '../atoms/back-button.astro';
 import Button from '../atoms/button.astro';
 import FormattedDate from '../atoms/formatted-date.astro';
 import Stack from '../atoms/stack.astro';
@@ -47,11 +48,12 @@ const description = 'description' in data ? data.description : ('desc' in data ?
 ---
 
 <LayoutContent
-  backLabel={finalBackLabel}
-  backLink={finalBackLink}
   description={description}
   title={title}
 >
+  <BackButton href={finalBackLink} slot="back-link">
+    {finalBackLabel}
+  </BackButton>
   <PageHero description={description} slot="header" title={title}>
     <Stack align="center" class="font-mono text-xs tracking-wider uppercase" direction="row" gap={3} slot="eyebrow">
       {type === 'blog' && 'pubDate' in data && data.pubDate && (
@@ -95,22 +97,29 @@ const description = 'description' in data ? data.description : ('desc' in data ?
   </PageHero>
 
   {'heroImage' in data && data.heroImage && (
-    <div class="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/50">
+    <div class="relative mx-auto mb-12 aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-foreground/10 shadow-2xl transition-all hover:border-foreground/20" slot="hero-image">
       <ZoomableImage
         alt={title}
         className="size-full object-cover"
         client:load
-        height={720}
+        height={450}
         src={data.heroImage}
-        width={1280}
+        width={800}
       />
     </div>
   )}
 
   {type === 'experience' && 'skills' in data && data.skills && (
-    <Stack gap={2}>
-      <Text class="text-sm font-medium">Skills</Text>
+    <Stack class="mt-8" gap={3}>
+      <Text class="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Skills</Text>
       <Tags tags={data.skills ?? []} />
+    </Stack>
+  )}
+
+  {type === 'project' && 'tags' in data && data.tags && (
+    <Stack class="mt-8" gap={3}>
+      <Text class="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Technologies</Text>
+      <Tags tags={data.tags ?? []} />
     </Stack>
   )}
 

@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
+import { Icon } from 'astro-icon/components';
 import { type VariantProps } from 'class-variance-authority';
 
 import { buttonVariants } from '../../lib/button-variants';
@@ -11,23 +12,77 @@ interface Props
     Omit<HTMLAttributes<'a'>, 'type'>,
     VariantProps<typeof buttonVariants> {
   as?: string;
+  external?: boolean;
+  icon?: string;
+  withArrow?: boolean;
 }
 
-const { as, class: className, href, size, variant, ...props } = Astro.props;
+const {
+  as,
+  class: className,
+  external,
+  href,
+  icon,
+  size,
+  variant,
+  withArrow,
+  ...props
+} = Astro.props;
 
 const Element = as || (href ? 'a' : 'button');
-const elementProps = { href, ...props };
+const hrefString = typeof href === 'string' ? href : href?.toString();
+const isExternal = external ?? (hrefString?.startsWith('http') || hrefString?.startsWith('mailto'));
+const target = isExternal ? '_blank' : undefined;
+const rel = isExternal ? 'noopener noreferrer' : undefined;
+
+const { pathname } = Astro.url;
+const isActive = variant === 'nav' && (
+  hrefString === pathname ||
+  (hrefString !== '/' && pathname.startsWith(hrefString || ''))
+);
+
+const navActiveClasses = isActive
+  ? "text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-primary after:content-['']"
+  : "text-muted-foreground hover:text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-muted-foreground after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
+
+const Tag = Element as any;
+const elementProps = {
+  href,
+  rel,
+  target,
+  ...props,
+};
 
 if (Element === 'button' && !elementProps.type) {
   elementProps['type'] = 'button';
 }
-
-const Tag = Element as any;
 ---
 
 <Tag
-  class:list={cn(buttonVariants({ className, size, variant }))}
+  class:list={cn(
+    buttonVariants({ className, size, variant }),
+    variant === 'nav' && navActiveClasses,
+    (icon || withArrow) && 'group'
+  )}
   {...elementProps}
 >
+  {icon && (
+    <Icon
+      class:list={cn(
+        'size-4',
+        variant === 'back' && 'transition-transform group-hover:-translate-x-0.5'
+      )}
+      name={icon}
+    />
+  )}
   <slot />
+  {withArrow && (
+    <Icon
+      class="size-3.5 opacity-60 transition-transform group-hover:translate-x-0.5"
+      name="mdi:arrow-top-right"
+    />
+  )}
+  {isExternal && !withArrow && variant !== 'icon' && size !== 'icon' && (
+    <span class="sr-only">(opens in new tab)</span>
+  )}
 </Tag>

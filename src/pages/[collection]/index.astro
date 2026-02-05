@@ -16,6 +16,10 @@ import {
 
 export const prerender = true;
 
+export interface Params {
+  collection: CollectionName;
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const collections: CollectionName[] = ['blog', 'projects', 'experience'];
 
@@ -24,7 +28,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 };
 
-const { collection } = Astro.params;
+const { collection } = Astro.params as unknown as Params;
 const view = 'list' as const;
 const currentPage = 1;
 

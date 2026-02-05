@@ -15,6 +15,7 @@ export interface NavItem {
   href: string;
   icon: `mdi:${string}`;
   label: string;
+  order: number;
 }
 
 export const NAV_ITEMS: Record<string, NavItem> = {
@@ -25,6 +26,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     href: "/blog",
     icon: "mdi:newspaper-variant-outline",
     label: "Blog",
+    order: 4,
   },
   experience: {
     color: "var(--color-primary)",
@@ -33,6 +35,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     href: "/experience",
     icon: "mdi:briefcase-outline",
     label: "Experience",
+    order: 3,
   },
   home: {
     color: "var(--color-primary)",
@@ -41,6 +44,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     href: "/",
     icon: "mdi:home-variant-outline",
     label: "Home",
+    order: 1,
   },
   projects: {
     color: "var(--color-primary)",
@@ -49,10 +53,11 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     href: "/projects",
     icon: "mdi:console",
     label: "Projects",
+    order: 2,
   },
 } as const;
 
-export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS);
+export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS).sort((a, b) => a.order - b.order);
 
 export const PROFILE = {
   avatar: profileImage,

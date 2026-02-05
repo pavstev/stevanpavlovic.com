@@ -21,14 +21,19 @@ const {
 
 <Container class:list={className}>
   <Stack gap={6}>
-    <Heading class="leading-tight" level={level} size="hero">
+    <slot name="eyebrow" />
+
+    <Heading class:list={["leading-tight", className]} level={level} size="hero">
       {title}
     </Heading>
+
     {description && (
       <Text size="lg" variant="muted">
         {description}
       </Text>
     )}
+
+    <slot name="actions" />
     <slot />
   </Stack>
 </Container>

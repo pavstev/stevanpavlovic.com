@@ -1,0 +1,25 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Button from './button.astro';
+
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+---
+
+<Button
+  as="a"
+  class="group font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
+  href={href}
+  size="sm"
+  variant="outline"
+>
+  <Icon
+    class="mr-1 size-4 transition-transform group-hover:-translate-x-1"
+    name="mdi:arrow-left"
+  />
+  <slot>Back</slot>
+</Button>

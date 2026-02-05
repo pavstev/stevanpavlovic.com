@@ -69,7 +69,7 @@ const { class: className } = Astro.props;
 
     <!-- Messages Area -->
     <div
-      class="scrollbar-thin flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4"
+      class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4"
       id="chat-messages"
     >
       <!-- Welcome Message -->
@@ -128,7 +128,7 @@ const { class: className } = Astro.props;
   </Button>
 </div>
 
-<script is:inline>
+<script>
   // Resume Context
   const RESUME_CONTEXT = `
     Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
@@ -136,7 +136,7 @@ const { class: className } = Astro.props;
     Based in Belgrade, Serbia.
   `.trim();
 
-  let qaPipeline = null;
+  let qaPipeline: any = null;
   let isInitializing = false;
   let isProcessing = false;
 
@@ -144,7 +144,7 @@ const { class: className } = Astro.props;
   const chatWindow = document.getElementById('chat-window');
   const messagesContainer = document.getElementById('chat-messages');
   const chatForm = document.getElementById('chat-form');
-  const chatInput = document.getElementById('chat-input');
+  const chatInput = document.getElementById('chat-input') as HTMLInputElement | null;
   const statusEl = document.getElementById('chat-status');
   const closeBtn = document.getElementById('close-chat');
 
@@ -153,19 +153,21 @@ const { class: className } = Astro.props;
   }
 
   function scrollToBottom() {
-    messagesContainer.scrollTo({
-      top: messagesContainer.scrollHeight,
-      behavior: 'smooth',
-    });
+    if (messagesContainer) {
+      messagesContainer.scrollTo({
+        top: messagesContainer.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }
 
-  function updateStatus(text) {
+  function updateStatus(text: string) {
     if (statusEl) {
       statusEl.textContent = text;
     }
   }
 
-  function createMessageElement(message) {
+  function createMessageElement(message: { id: string; text: string; isAi: boolean }) {
     const container = document.createElement('div');
     container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? '' : 'items-end'}`;
 
@@ -208,11 +210,13 @@ const { class: className } = Astro.props;
     return container;
   }
 
-  function addMessage(text, isAi) {
+  function addMessage(text: string, isAi: boolean) {
     const message = { id: generateId(), text, isAi };
     const element = createMessageElement(message);
-    messagesContainer.appendChild(element);
-    scrollToBottom();
+    if (messagesContainer) {
+      messagesContainer.appendChild(element);
+      scrollToBottom();
+    }
   }
 
   function removeTypingIndicator() {
@@ -239,6 +243,7 @@ const { class: className } = Astro.props;
   }
 
   function toggleChat() {
+    if (!chatWindow || !toggleBtn) return;
     const isOpen = chatWindow.dataset.open === 'true';
     const newState = !isOpen;
     chatWindow.dataset.open = String(newState);
@@ -246,18 +251,21 @@ const { class: className } = Astro.props;
 
     if (newState) {
       initModel();
-      setTimeout(() => chatInput.focus(), 300);
+      if (chatInput) {
+        setTimeout(() => chatInput.focus(), 300);
+      }
     }
   }
 
   function closeChat() {
-    chatWindow.dataset.open = 'false';
-    toggleBtn.dataset.open = 'false';
+    if (chatWindow) chatWindow.dataset.open = 'false';
+    if (toggleBtn) toggleBtn.dataset.open = 'false';
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: Event) {
     e.preventDefault();
     if (isProcessing) return;
+    if (!chatInput) return;
 
     const question = chatInput.value.trim();
     if (!question) return;
@@ -273,8 +281,10 @@ const { class: className } = Astro.props;
     }
 
     const typingIndicator = createTypingIndicator();
-    messagesContainer.appendChild(typingIndicator);
-    scrollToBottom();
+    if (messagesContainer) {
+      messagesContainer.appendChild(typingIndicator);
+      scrollToBottom();
+    }
 
     try {
       const result = await qaPipeline(question, RESUME_CONTEXT);
@@ -285,9 +295,11 @@ const { class: className } = Astro.props;
       removeTypingIndicator();
       addMessage("Sorry, error occurred.", true);
     } finally {
-      chatInput.disabled = false;
+      if (chatInput) {
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
       isProcessing = false;
-      chatInput.focus();
     }
   }
 
@@ -296,17 +308,14 @@ const { class: className } = Astro.props;
   chatForm?.addEventListener('submit', handleSubmit);
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && chatWindow.dataset.open === 'true') {
+    if (e.key === 'Escape' && chatWindow?.dataset.open === 'true') {
       closeChat();
     }
   });
 </script>
 
 <style is:global>
-  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
-  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
 
   @keyframes slide-in-from-bottom-2 {
     from { opacity: 0; transform: translateY(8px); }

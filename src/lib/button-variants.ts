@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none",
   {
     defaultVariants: {
       size: "default",
@@ -9,27 +9,38 @@ export const buttonVariants = cva(
     },
     variants: {
       size: {
-        default: "h-9 px-4 py-2",
-        icon: "size-9",
-        lg: "h-10 rounded-md px-8",
-        sm: "h-8 rounded-md px-3 text-xs",
+        default: "h-10 px-5 py-2 rounded-xl text-sm font-medium",
+        icon: "size-10 rounded-xl",
+        lg: "h-12 rounded-2xl px-8 text-base font-medium",
+        sm: "h-9 rounded-lg px-4 text-xs font-medium",
+        xl: "h-14 rounded-2xl px-10 text-lg font-medium",
       },
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.98]",
-        destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 active:scale-[0.98]",
-        fab: "rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105 active:scale-95",
-        ghost: "hover:bg-accent/50 hover:text-accent-foreground",
-        glass: "glass glass-hover text-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        accent:
+          "bg-accent text-accent-foreground shadow-sm hover:bg-accent/90 hover:shadow-glow-accent hover:-translate-y-0.5 active:scale-95",
+        back: "group text-sm text-muted-foreground no-underline hover:text-foreground",
+        default:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-glow-primary hover:-translate-y-0.5 active:scale-95",
+        fab:
+          "fixed bottom-6 right-6 size-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:shadow-glow-primary hover:-translate-y-1 active:scale-95 z-50",
+        ghost:
+          "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+        glass:
+          "glass border-foreground/10 text-foreground hover:bg-foreground/10 hover:border-foreground/30 hover:shadow-glow-subtle active:scale-95",
+        icon: "rounded-md p-2 text-muted-foreground no-underline hover:bg-muted/50 hover:text-foreground",
+        link: "text-foreground underline-offset-4 hover:underline",
+        muted: "text-muted-foreground/80 no-underline hover:text-muted-foreground",
+        nav: "relative py-1 text-sm font-medium transition-colors duration-200",
         outline:
-          "border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98]",
+          "border border-foreground/15 bg-transparent shadow-sm hover:bg-foreground/5 hover:text-foreground hover:border-foreground/30 active:scale-95",
+        primary: "text-primary underline-offset-4 hover:underline",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:scale-[0.98]",
+          "bg-primary/10 text-primary shadow-sm hover:bg-primary/20 hover:shadow-glow-primary/10 active:scale-95",
+        subtle:
+          "bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:scale-95",
         tabs:
-          "rounded-md px-4 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-muted-foreground hover:text-foreground data-[active=true]:bg-background data-[active=true]:text-foreground data-[active=true]:shadow-sm bg-transparent",
-        toggle:
-          "rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-bold tracking-widest uppercase shadow-sm backdrop-blur-md hover:bg-accent/50 hover:text-accent-foreground hover:border-border active:scale-[0.95]",
+          "relative h-9 rounded-lg px-4 text-sm font-medium transition-all hover:bg-muted/50 data-[active=true]:bg-background data-[active=true]:text-foreground data-[active=true]:shadow-sm",
+        unstyled: "",
       },
     },
   },

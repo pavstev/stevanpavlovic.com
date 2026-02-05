@@ -7,8 +7,8 @@ export const SITE_CONFIG = {
   hero: {
     tagline: "a software engineer focused on distributed systems and backend architecture",
     title: {
-      highlight: "Software",
-      main: "Crafting",
+      main: "Stevan",
+      highlight: "Pavlovic",
     },
   },
   title: "Stevan Pavlovic - Senior Software Engineer",
@@ -30,7 +30,7 @@ export const NAV_ITEMS = [
     label: "Projects",
   },
   {
-    color: "#f59e0b",
+    color: "var(--color-secondary-foreground)",
     description: "Discover my career journey across fintech, betting, and logistics",
     href: "/experience",
     icon: "mdi:briefcase-outline",

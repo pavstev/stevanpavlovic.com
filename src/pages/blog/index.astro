@@ -3,8 +3,8 @@ import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
-import LayoutRoot from '../../components/layout/layout-root.astro';
 import Stack from '../../components/atoms/stack.astro';
+import LayoutRoot from '../../components/layout/layout-root.astro';
 import Empty from '../../components/molecules/empty.astro';
 import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
@@ -12,7 +12,7 @@ import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import { sortPosts, getPagination } from '../../lib/cms';
+import { getPagination, sortPosts } from '../../lib/cms';
 
 // Get URL params
 const pageParam = Astro.url.searchParams.get('page');
@@ -28,11 +28,11 @@ const allPosts = await getCollection('blog');
 
 // Filter posts - must have ALL selected tags
 const filteredPosts = selectedFilters.length > 0
-  ? allPosts.filter(post => 
-      selectedFilters.every(filter => 
-        post.data.tags?.some(tag => tag.toLowerCase() === filter.toLowerCase())
-      )
+  ? allPosts.filter(post =>
+    selectedFilters.every(filter =>
+      post.data.tags?.some(tag => tag.toLowerCase() === filter.toLowerCase())
     )
+  )
   : allPosts;
 
 const sortedPosts = sortPosts(filteredPosts, sortParam);
@@ -49,6 +49,18 @@ const { currentPage, paginatedItems, totalPages } = getPagination(
   Astro.url.searchParams
 );
 
+// Build multi-select filter URLs
+function buildFilterUrl(tag: string): string {
+  const newFilters = selectedFilters.includes(tag)
+    ? selectedFilters.filter(f => f !== tag)
+    : [...selectedFilters, tag];
+
+  return buildUrl('/blog', {
+    filter: newFilters.length > 0 ? newFilters.join(',') : undefined,
+    sort: sortParam !== 'newest' ? sortParam : undefined
+  });
+}
+
 // Helper to build URLs with params
 function buildUrl(base: string, params: Record<string, string | undefined>) {
   const url = new URL(base, 'http://localhost');
@@ -60,33 +72,21 @@ function buildUrl(base: string, params: Record<string, string | undefined>) {
   return url.pathname + url.search;
 }
 
-// Build multi-select filter URLs
-function buildFilterUrl(tag: string): string {
-  const newFilters = selectedFilters.includes(tag)
-    ? selectedFilters.filter(f => f !== tag)
-    : [...selectedFilters, tag];
-  
-  return buildUrl('/blog', { 
-    filter: newFilters.length > 0 ? newFilters.join(',') : undefined,
-    sort: sortParam !== 'newest' ? sortParam : undefined 
-  });
-}
-
 // Build sort URLs (preserve current filters)
 const sortOptions = [
-  { label: 'Newest First', value: 'newest', href: buildUrl('/blog', { sort: 'newest', filter: filterParam || undefined }) },
-  { label: 'Oldest First', value: 'oldest', href: buildUrl('/blog', { sort: 'oldest', filter: filterParam || undefined }) },
-  { label: 'A-Z', value: 'a-z', href: buildUrl('/blog', { sort: 'a-z', filter: filterParam || undefined }) },
-  { label: 'Z-A', value: 'z-a', href: buildUrl('/blog', { sort: 'z-a', filter: filterParam || undefined }) },
+  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
+  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'oldest' }), label: 'Oldest First', value: 'oldest' },
+  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
+  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
 ];
 
 // Tag options with checkmarks for selected
-const tagOptions: { label: string; value: string; href: string }[] = [
-  { label: 'All Tags', value: '', href: buildUrl('/blog', { sort: sortParam !== 'newest' ? sortParam : undefined }) },
+const tagOptions: { href: string; label: string; value: string; }[] = [
+  { href: buildUrl('/blog', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Tags', value: '' },
   ...allTags.map(tag => ({
+    href: buildFilterUrl(tag),
     label: tag.charAt(0).toUpperCase() + tag.slice(1),
     value: tag,
-    href: buildFilterUrl(tag),
   })),
 ];
 

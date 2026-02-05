@@ -1,0 +1,57 @@
+---
+import profileImage from '../../assets/profile.jpeg';
+import { cn } from '../../lib/cn';
+import { PROFILE, SITE_CONFIG } from '../../lib/config';
+import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
+import ZoomableImage from '../molecules/zoomable-image.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const stats = [
+  { label: '10+ Years Experience' },
+  { label: '5+ Systems Architected' },
+  { label: '100k+ Users Served' },
+];
+---
+
+<div class:list={cn("flex flex-col items-center gap-4 text-center", className)}>
+  {/* Avatar - stamp photo */}
+  <ZoomableImage
+    alt={PROFILE.name}
+    class="avatar-stamp size-36 md:size-40 -rotate-2 rounded-sm object-cover ring-4 ring-white/30 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+    loading="eager"
+    src={profileImage}
+  />
+
+  {/* Content */}
+  <Stack align="center" class="max-w-2xl" gap={4}>
+    {/* Heading */}
+    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+      <span class="text-xs md:text-sm font-mono tracking-[0.2em] text-muted-foreground/50 uppercase">Hi, I'm</span><br />
+      <span class="hero-title relative inline-block animate-shiny-text mt-3">
+        {SITE_CONFIG.hero.title.main} {SITE_CONFIG.hero.title.highlight}
+      </span>
+    </h1>
+
+    {/* Description */}
+    <Text class="text-lg max-w-xl leading-relaxed" size="lg" variant="muted">
+      {SITE_CONFIG.hero.tagline}
+    </Text>
+
+    {/* Statistics */}
+    <div class="flex flex-wrap justify-center gap-8 py-4">
+      {stats.map((stat) => (
+        <div class="flex flex-col items-center gap-1">
+          <Text class="text-sm font-medium" variant="primary">
+            {stat.label}
+          </Text>
+        </div>
+      ))}
+    </div>
+  </Stack>
+</div>

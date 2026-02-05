@@ -1,36 +1,36 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import { cn } from '../../lib/cn';
 import Button from './button.astro';
 import Stack from './stack.astro';
-import { cn } from '../../lib/cn';
 
 export interface DropdownOption {
+  href?: string;
   label: string;
   value: string;
-  href?: string;
 }
 
 interface Props {
+  align?: 'center' | 'left' | 'right';
   class?: string;
   id: string;
   label: string;
   options: DropdownOption[];
   selectedValue?: string;
   selectedValues?: string[];
-  align?: 'left' | 'right' | 'center';
-  size?: 'sm' | 'default';
+  size?: 'default' | 'sm';
   variant?: 'default' | 'ghost' | 'outline';
 }
 
 const {
+  align = 'left',
   class: className,
   id,
   label,
   options,
   selectedValue,
   selectedValues,
-  align = 'left',
   size = 'sm',
   variant = 'ghost',
 } = Astro.props;
@@ -53,12 +53,18 @@ const alignClasses = {
 };
 ---
 
-<div class={cn('dropdown relative inline-block', className)} data-dropdown={id}>
+<div
+  class:list={cn('dropdown relative inline-block', className)}
+  data-dropdown={id}
+>
   <Button
+    aria-controls={`${id}-menu`}
     aria-expanded="false"
     aria-haspopup="listbox"
+    aria-label={displayLabel}
     class="dropdown-trigger whitespace-nowrap"
     data-dropdown-trigger={id}
+    id={`${id}-trigger`}
     size={size}
     variant={variant}
   >
@@ -68,30 +74,36 @@ const alignClasses = {
 
   <Stack
     align="stretch"
+    aria-label={`${label} options`}
+    aria-orientation="vertical"
     as="ul"
-    class={cn(
-      'dropdown-menu absolute z-50 mt-1 min-w-[160px] rounded-md border border-border bg-popover p-1 opacity-0 shadow-lg transition-all duration-200 invisible',
+    class:list={cn(
+      'dropdown-menu invisible absolute z-50 mt-1 min-w-[160px] rounded-md border border-border bg-popover p-1 opacity-0 shadow-lg transition-all duration-200',
       alignClasses[align]
     )}
     data-dropdown-menu={id}
     direction="col"
     gap={1}
+    id={`${id}-menu`}
     role="listbox"
+    tabindex="-1"
   >
     {
-      options.map((option) => (
-        <li role="none">
+      options.map((option, index) => (
+        <li role="presentation">
           {option.href ? (
             <a
-              class={cn(
+              aria-selected={isSelected(option.value)}
+              class:list={cn(
                 'dropdown-item flex w-full items-center justify-between rounded-sm px-3 py-2 text-sm transition-colors',
                 'hover:bg-accent hover:text-accent-foreground',
                 'focus:bg-accent focus:text-accent-foreground focus:outline-none',
-                isSelected(option.value) && 'bg-accent/50 text-accent-foreground font-medium'
+                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                isSelected(option.value) && 'bg-accent/50 font-medium text-accent-foreground'
               )}
               href={option.href}
+              id={`${id}-option-${index}`}
               role="option"
-              aria-selected={isSelected(option.value)}
             >
               <span>{option.label}</span>
               {isSelected(option.value) && (
@@ -100,15 +112,17 @@ const alignClasses = {
             </a>
           ) : (
             <button
-              class={cn(
-                'dropdown-item flex w-full items-center justify-between rounded-sm px-3 py-2 text-sm transition-colors text-left',
+              aria-selected={isSelected(option.value)}
+              class:list={cn(
+                'dropdown-item flex w-full items-center justify-between rounded-sm px-3 py-2 text-left text-sm transition-colors',
                 'hover:bg-accent hover:text-accent-foreground',
                 'focus:bg-accent focus:text-accent-foreground focus:outline-none',
-                isSelected(option.value) && 'bg-accent/50 text-accent-foreground font-medium'
+                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                isSelected(option.value) && 'bg-accent/50 font-medium text-accent-foreground'
               )}
               data-value={option.value}
+              id={`${id}-option-${index}`}
               role="option"
-              aria-selected={isSelected(option.value)}
               type="button"
             >
               <span>{option.label}</span>
@@ -129,16 +143,43 @@ const alignClasses = {
 
     dropdowns.forEach((dropdown) => {
       const id = dropdown.dataset.dropdown;
+      if (!id) return;
+
       const trigger = dropdown.querySelector<HTMLButtonElement>(`[data-dropdown-trigger="${id}"]`);
       const menu = dropdown.querySelector<HTMLElement>(`[data-dropdown-menu="${id}"]`);
       const icon = dropdown.querySelector<HTMLElement>('.dropdown-icon');
 
       if (!trigger || !menu) return;
 
-      const toggleDropdown = () => {
-        const isOpen = menu.classList.contains('opacity-100');
+      let isOpen = false;
 
-        // Close all other dropdowns first
+      const getItems = () => menu.querySelectorAll<HTMLElement>('[role="option"]');
+      const getFirstItem = () => menu.querySelector<HTMLElement>('[role="option"]');
+      const getLastItem = () => {
+        const items = getItems();
+        return items.length > 0 ? items[items.length - 1] : null;
+      };
+
+      const closeDropdown = () => {
+        isOpen = false;
+        menu.classList.remove('opacity-100', 'visible');
+        menu.classList.add('opacity-0', 'invisible');
+        icon?.classList.remove('rotate-180');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.focus();
+      };
+
+      const openDropdown = () => {
+        isOpen = true;
+        menu.classList.remove('opacity-0', 'invisible');
+        menu.classList.add('opacity-100', 'visible');
+        icon?.classList.add('rotate-180');
+        trigger.setAttribute('aria-expanded', 'true');
+        getFirstItem()?.focus();
+      };
+
+      const toggleDropdown = () => {
+        // Close all other dropdowns
         document.querySelectorAll<HTMLElement>('[data-dropdown-menu]').forEach((otherMenu) => {
           if (otherMenu !== menu) {
             otherMenu.classList.remove('opacity-100', 'visible');
@@ -151,31 +192,19 @@ const alignClasses = {
         });
 
         if (isOpen) {
-          menu.classList.remove('opacity-100', 'visible');
-          menu.classList.add('opacity-0', 'invisible');
-          icon?.classList.remove('rotate-180');
-          trigger.setAttribute('aria-expanded', 'false');
+          closeDropdown();
         } else {
-          menu.classList.remove('opacity-0', 'invisible');
-          menu.classList.add('opacity-100', 'visible');
-          icon?.classList.add('rotate-180');
-          trigger.setAttribute('aria-expanded', 'true');
+          openDropdown();
         }
       };
 
-      const closeDropdown = () => {
-        menu.classList.remove('opacity-100', 'visible');
-        menu.classList.add('opacity-0', 'invisible');
-        icon?.classList.remove('rotate-180');
-        trigger.setAttribute('aria-expanded', 'false');
-      };
-
+      // Toggle on click
       trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleDropdown();
       });
 
-      // Handle item selection for non-link items
+      // Handle button items - close dropdown on click
       menu.querySelectorAll('button[data-value]').forEach((item) => {
         item.addEventListener('click', () => {
           closeDropdown();
@@ -189,42 +218,59 @@ const alignClasses = {
         }
       });
 
-      // Close on escape key
+      // Handle escape key
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menu.classList.contains('opacity-100')) {
+        if (e.key === 'Escape' && isOpen) {
+          e.preventDefault();
           closeDropdown();
-          trigger.focus();
         }
       });
 
-      // Keyboard navigation
+      // Trigger keyboard navigation
       trigger.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (!menu.classList.contains('opacity-100')) {
+          if (!isOpen) {
             toggleDropdown();
+          } else {
+            getFirstItem()?.focus();
           }
-          const firstItem = menu.querySelector<HTMLElement>('.dropdown-item');
-          firstItem?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!isOpen) {
+            toggleDropdown();
+          } else {
+            getLastItem()?.focus();
+          }
         }
       });
 
+      // Menu keyboard navigation
       menu.addEventListener('keydown', (e) => {
-        const items = Array.from(menu.querySelectorAll<HTMLElement>('.dropdown-item'));
-        const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+        const items = getItems();
+        const itemsArray = Array.from(items);
+        const currentIndex = itemsArray.indexOf(document.activeElement as HTMLElement);
 
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const nextIndex = (currentIndex + 1) % items.length;
-          items[nextIndex]?.focus();
+          const nextIndex = currentIndex < itemsArray.length - 1 ? currentIndex + 1 : 0;
+          itemsArray[nextIndex]?.focus();
         } else if (e.key === 'ArrowUp') {
           e.preventDefault();
-          const prevIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
-          items[prevIndex]?.focus();
+          const prevIndex = currentIndex > 0 ? currentIndex - 1 : itemsArray.length - 1;
+          itemsArray[prevIndex]?.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          getFirstItem()?.focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          getLastItem()?.focus();
         } else if (e.key === 'Escape') {
           e.preventDefault();
           closeDropdown();
-          trigger.focus();
+        } else if (e.key === 'Tab') {
+          // Allow tab to close dropdown normally
+          closeDropdown();
         }
       });
     });

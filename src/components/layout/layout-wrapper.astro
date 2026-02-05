@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  as?: string;
+  flexDirection?: 'row' | 'col';
+  justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around';
+  alignItems?: 'start' | 'center' | 'end';
+  gap?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+}
+
+const {
+  as: Tag = 'div',
+  flexDirection = 'col',
+  justifyContent = 'center',
+  alignItems = 'center',
+  gap = 'md',
+  class: className,
+  ...props
+} = Astro.props;
+
+const gapClasses = {
+  none: 'gap-0',
+  sm: 'gap-2',
+  md: 'gap-4',
+  lg: 'gap-6',
+  xl: 'gap-8'
+};
+
+const flexDirectionClass = flexDirection === 'row' ? 'flex-row' : 'flex-col';
+const justifyClass = justifyContent === 'between' ? 'justify-between' :
+                     justifyContent === 'around' ? 'justify-around' :
+                     justifyContent === 'end' ? 'justify-end' :
+                     justifyContent === 'start' ? 'justify-start' : 'justify-center';
+const alignClass = alignItems === 'end' ? 'items-end' :
+                   alignItems === 'start' ? 'items-start' : 'items-center';
+---
+
+<Tag class:list={[
+  "relative flex",
+  flexDirectionClass,
+  justifyClass,
+  alignClass,
+  gapClasses[gap],
+  className
+]} {...props}>
+  <slot />
+</Tag>

@@ -2,21 +2,18 @@
 import { Icon } from 'astro-icon/components';
 import Pagefind from "astro-pagefind/components/Search";
 
-import Button from '../atoms/button.astro';
 import Modal from '../atoms/modal.astro';
 ---
 
 <div class="search-wrapper group relative flex items-center">
   {/* Search Trigger */}
-  <Button
-    aria-label="Search"
-    class="size-9 rounded-md text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground active:scale-95"
+  <button
+    class="group/search inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all duration-300 hover:bg-white/5 hover:text-foreground"
     id="search-trigger"
-    size="icon"
-    variant="ghost"
   >
-    <Icon name="mdi:magnify" size={20} />
-  </Button>
+    <Icon class="size-4" name="mdi:magnify" />
+    <span>Search</span>
+  </button>
 
   <Modal
     class="w-[90vw] max-w-sm sm:max-w-md md:max-w-xl"

@@ -3,16 +3,16 @@ import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
-import LayoutRoot from '../../components/layout/layout-root.astro';
 import Stack from '../../components/atoms/stack.astro';
+import LayoutRoot from '../../components/layout/layout-root.astro';
 import Empty from '../../components/molecules/empty.astro';
 import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
 import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
-import { PROFILE } from '../../lib/config';
 import { getPagination } from '../../lib/cms';
+import { PROFILE } from '../../lib/config';
 
 // Get URL params
 const pageParam = Astro.url.searchParams.get('page');
@@ -25,13 +25,13 @@ const allExperience = await getCollection('experience');
 // Sort experience by date
 const sortedExperience = [...allExperience].sort((a, b) => {
   switch (sortParam) {
-    case 'a-z':
-      return a.data.company.localeCompare(b.data.company);
-    case 'z-a':
-      return b.data.company.localeCompare(a.data.company);
-    case 'newest':
-    default:
-      return b.data.startDate.valueOf() - a.data.startDate.valueOf();
+  case 'a-z':
+    return a.data.company.localeCompare(b.data.company);
+  case 'z-a':
+    return b.data.company.localeCompare(a.data.company);
+  case 'newest':
+  default:
+    return b.data.startDate.valueOf() - a.data.startDate.valueOf();
   }
 });
 
@@ -66,17 +66,17 @@ function buildUrl(base: string, params: Record<string, string | undefined>) {
 
 // Build filter dropdowns
 const sortOptions = [
-  { label: 'Newest First', value: 'newest', href: buildUrl('/experience', { sort: 'newest', filter: filterParam || undefined }) },
-  { label: 'A-Z', value: 'a-z', href: buildUrl('/experience', { sort: 'a-z', filter: filterParam || undefined }) },
-  { label: 'Z-A', value: 'z-a', href: buildUrl('/experience', { sort: 'z-a', filter: filterParam || undefined }) },
+  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
+  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
+  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
 ];
 
-const skillOptions: { label: string; value: string; href: string }[] = [
-  { label: 'All Skills', value: '', href: buildUrl('/experience', { sort: sortParam !== 'newest' ? sortParam : undefined }) },
+const skillOptions: { href: string; label: string; value: string; }[] = [
+  { href: buildUrl('/experience', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Skills', value: '' },
   ...allSkills.map(skill => ({
+    href: buildUrl('/experience', { filter: skill, sort: sortParam !== 'newest' ? sortParam : undefined }),
     label: skill,
     value: skill,
-    href: buildUrl('/experience', { filter: skill, sort: sortParam !== 'newest' ? sortParam : undefined }),
   })),
 ];
 
@@ -130,13 +130,13 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
             <div class="flex flex-col gap-3 sm:gap-4">
               {paginatedItems.map((exp) => (
                 <Card list portfolioItem={{
-                  id: exp.id,
-                  title: exp.data.company,
-                  subtitle: exp.data.role,
                   desc: exp.data.description,
-                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
-                  tags: exp.data.skills,
                   href: `/experience/${exp.id}/`,
+                  id: exp.id,
+                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                  subtitle: exp.data.role,
+                  tags: exp.data.skills || [],
+                  title: exp.data.company,
                 }} variant="portfolio" />
               ))}
             </div>
@@ -147,13 +147,13 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
               {paginatedItems.map((exp) => (
                 <div class="masonry-item">
                   <Card portfolioItem={{
-                    id: exp.id,
-                    title: exp.data.company,
-                    subtitle: exp.data.role,
                     desc: exp.data.description,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
-                    tags: exp.data.skills,
                     href: `/experience/${exp.id}/`,
+                    id: exp.id,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    subtitle: exp.data.role,
+                    tags: exp.data.skills || [],
+                    title: exp.data.company,
                   }} variant="portfolio" />
                 </div>
               ))}
@@ -165,13 +165,13 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
               {paginatedItems.map((exp) => (
                 <div class="masonry-item">
                   <Card portfolioItem={{
-                    id: exp.id,
-                    title: exp.data.company,
-                    subtitle: exp.data.role,
                     desc: exp.data.description,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
-                    tags: exp.data.skills,
                     href: `/experience/${exp.id}/`,
+                    id: exp.id,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    subtitle: exp.data.role,
+                    tags: exp.data.skills || [],
+                    title: exp.data.company,
                   }} variant="portfolio" />
                 </div>
               ))}

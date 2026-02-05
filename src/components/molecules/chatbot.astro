@@ -1,29 +1,19 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { cva } from 'class-variance-authority';
 
-import { cardVariants } from '../../lib/card-helpers';
 import { cn } from '../../lib/cn';
 import Button from '../atoms/button.astro';
+import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
 
 // ============================================================================
 // Message Bubble Variants
 // ============================================================================
 
-const messageVariants = cva(
-  'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
-  {
-    defaultVariants: {
-      variant: 'ai',
-    },
-    variants: {
-      variant: {
-        ai: 'rounded-tl-none bg-muted/80 text-foreground/90',
-        user: 'ml-auto rounded-tr-none bg-primary text-primary-foreground',
-      },
-    },
-  },
-);
+const messageVariants = {
+  ai: 'rounded-tl-none bg-muted/80 text-foreground/90',
+  user: 'ml-auto rounded-tr-none bg-primary text-primary-foreground',
+};
 
 // ============================================================================
 // Chatbot Props
@@ -40,34 +30,35 @@ const { class: className } = Astro.props;
 // ============================================================================
 ---
 
+<!-- Fixed position widget - doesn't take document flow space -->
 <div
-  class:list={cn('relative z-100 flex flex-col items-end print:hidden', className)}
+  class:list={cn('fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden', className)}
   id="chatbot-widget"
 >
-  {/* Chat Window */}
+  <!-- Chat Window -->
   <div
     class:list={cn(
-      cardVariants({ className: 'pointer-events-none mb-4 w-85 max-w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[400px]', variant: 'glass' }),
-      'overflow-hidden',
-      'data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100'
+      'pointer-events-none mb-4 w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[380px]',
+      'data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100',
+      'glass overflow-hidden rounded-xl border border-border'
     )}
     data-open="false"
     id="chat-window"
   >
-    {/* Header */}
-    <header class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
-      <div class="flex items-center gap-3">
+    <!-- Header -->
+    <header class="flex items-center justify-between border-b border-border bg-card px-4 py-3">
+      <Stack align="center" direction="row" gap={3}>
         <div class="flex size-8 items-center justify-center rounded-md bg-primary/20 text-primary">
           <Icon name="mdi:robot-outline" size={16} />
         </div>
-        <div class="flex flex-col">
-          <span class="text-xs font-bold tracking-tight text-foreground uppercase">Resume Assistant</span>
-          <span class="text-[10px] text-muted-foreground" id="chat-status">Ready to help</span>
-        </div>
-      </div>
+        <Stack gap={0}>
+          <Text class="text-xs font-bold tracking-tight uppercase">Resume Assistant</Text>
+          <Text class="text-[10px]" id="chat-status" variant="muted">Ready to help</Text>
+        </Stack>
+      </Stack>
       <Button
         aria-label="Close chat"
-        class="size-8 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+        class="size-8"
         id="close-chat"
         size="icon"
         variant="ghost"
@@ -76,96 +67,77 @@ const { class: className } = Astro.props;
       </Button>
     </header>
 
-    {/* Messages Area */}
+    <!-- Messages Area -->
     <div
-      class="scrollbar-thin flex h-[400px] flex-col gap-3 overflow-y-auto p-4"
+      class="scrollbar-thin flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4"
       id="chat-messages"
     >
-      {/* Welcome Message */}
+      <!-- Welcome Message -->
       <div class="flex flex-col gap-1">
-        <div class:list={cn(messageVariants({ variant: 'ai' }))}>
+        <div class:list={cn('max-w-[85%] rounded-2xl px-4 py-2.5 text-sm', messageVariants.ai)}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
-        <span class="px-1 text-[10px] text-muted-foreground/60">Powered by AI</span>
+        <Text class="px-1 text-[10px]" variant="muted">Powered by AI</Text>
       </div>
     </div>
 
-    {/* Input Area */}
-    <div class="border-t border-white/10 bg-white/5 p-3">
+    <!-- Input Area -->
+    <div class="border-t border-border bg-card p-3">
       <form class="flex gap-2" id="chat-form">
         <div class="relative flex-1">
           <input
-            class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 pr-10 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
+            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
             id="chat-input"
             placeholder="Ask about Stevan's experience..."
             type="text"
           />
-          <div class="absolute top-1/2 right-3 -translate-y-1/2">
-            <Icon class="text-muted-foreground/50" name="mdi:message-outline" size={16} />
-          </div>
         </div>
         <Button
           aria-label="Send message"
-          class="size-10 rounded-md shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
+          class="size-9"
           id="send-button"
           size="icon"
           type="submit"
-          variant="default"
         >
-          <Icon name="mdi:send" size={18} />
+          <Icon name="mdi:send" size={16} />
         </Button>
       </form>
     </div>
   </div>
 
-  {/* Toggle Button */}
+  <!-- Toggle Button -->
   <Button
     aria-label="Toggle Chatbot"
-    class="group relative size-12 rounded-md shadow-xl shadow-primary/25 transition-all duration-300 hover:scale-110 hover:shadow-primary/40 active:scale-95 sm:size-13"
+    class="group relative size-11 rounded-full shadow-lg shadow-primary/25 transition-all hover:scale-105 active:scale-95"
     id="chat-toggle"
     size="icon"
-    variant="default"
   >
-    {/* Robot Icon (visible when closed) */}
+    <!-- Robot Icon (visible when closed) -->
     <Icon
       class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"
       name="mdi:robot-outline"
-      size={24}
+      size={20}
     />
-    {/* Close Icon (visible when open) */}
+    <!-- Close Icon (visible when open) -->
     <Icon
       class="absolute scale-0 transition-all duration-300 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0"
       name="mdi:close"
-      size={24}
+      size={20}
     />
-    {/* Pulse Effect */}
-    <span class="absolute inset-0 animate-ping rounded-md bg-primary/30 opacity-0 group-data-[open=false]:opacity-75"></span>
   </Button>
 </div>
 
-
 <script is:inline>
-  // ============================================================================
-  // Resume Context (inline to work with is:inline)
-  // ============================================================================
-
+  // Resume Context
   const RESUME_CONTEXT = `
-  Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-  He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
-  Based in Belgrade, Serbia.
+    Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
+    He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
+    Based in Belgrade, Serbia.
   `.trim();
-
-  // ============================================================================
-  // State
-  // ============================================================================
 
   let qaPipeline = null;
   let isInitializing = false;
   let isProcessing = false;
-
-  // ============================================================================
-  // DOM Elements
-  // ============================================================================
 
   const toggleBtn = document.getElementById('chat-toggle');
   const chatWindow = document.getElementById('chat-window');
@@ -174,10 +146,6 @@ const { class: className } = Astro.props;
   const chatInput = document.getElementById('chat-input');
   const statusEl = document.getElementById('chat-status');
   const closeBtn = document.getElementById('close-chat');
-
-  // ============================================================================
-  // Utility Functions
-  // ============================================================================
 
   function generateId() {
     return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
@@ -196,29 +164,24 @@ const { class: className } = Astro.props;
     }
   }
 
-  // ============================================================================
-  // Message Rendering
-  // ============================================================================
-
   function createMessageElement(message) {
     const container = document.createElement('div');
     container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? '' : 'items-end'}`;
 
-    const messageBubble = document.createElement('div');
-    messageBubble.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+    const bubble = document.createElement('div');
+    bubble.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
       message.isAi
         ? 'rounded-tl-none bg-muted/80 text-foreground/90'
         : 'rounded-tr-none bg-primary text-primary-foreground ml-auto'
     }`;
-    messageBubble.textContent = message.text;
+    bubble.textContent = message.text;
 
     const timestamp = document.createElement('span');
     timestamp.className = 'text-[10px] text-muted-foreground/60 px-1';
     timestamp.textContent = message.isAi ? 'AI' : 'You';
 
-    container.appendChild(messageBubble);
+    container.appendChild(bubble);
     container.appendChild(timestamp);
-
     return container;
   }
 
@@ -241,16 +204,11 @@ const { class: className } = Astro.props;
 
     container.appendChild(bubble);
     container.appendChild(timestamp);
-
     return container;
   }
 
   function addMessage(text, isAi) {
-    const message = {
-      id: generateId(),
-      text,
-      isAi,
-    };
+    const message = { id: generateId(), text, isAi };
     const element = createMessageElement(message);
     messagesContainer.appendChild(element);
     scrollToBottom();
@@ -258,42 +216,30 @@ const { class: className } = Astro.props;
 
   function removeTypingIndicator() {
     const typing = document.getElementById('typing-indicator');
-    if (typing) {
-      typing.remove();
-    }
+    if (typing) typing.remove();
   }
-
-  // ============================================================================
-  // AI Model Management
-  // ============================================================================
 
   async function initModel() {
     if (qaPipeline || isInitializing) return;
     isInitializing = true;
-    updateStatus('Loading AI model...');
+    updateStatus('Loading AI...');
 
     try {
-      // Dynamically import transformers
       const { pipeline } = await import('@xenova/transformers');
       qaPipeline = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
-      updateStatus('Ready to help');
-      setTimeout(() => updateStatus('Ready to help'), 2000);
+      updateStatus('Ready');
+      setTimeout(() => updateStatus('Ready'), 2000);
     } catch (err) {
       console.error('Failed to load model:', err);
-      updateStatus('Error loading model');
+      updateStatus('Error');
     } finally {
       isInitializing = false;
     }
   }
 
-  // ============================================================================
-  // Event Handlers
-  // ============================================================================
-
   function toggleChat() {
     const isOpen = chatWindow.dataset.open === 'true';
     const newState = !isOpen;
-
     chatWindow.dataset.open = String(newState);
     toggleBtn.dataset.open = String(newState);
 
@@ -310,39 +256,33 @@ const { class: className } = Astro.props;
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     if (isProcessing) return;
 
     const question = chatInput.value.trim();
     if (!question) return;
 
-    // Clear input and add user message
     chatInput.value = '';
     chatInput.disabled = true;
     isProcessing = true;
-
     addMessage(question, false);
 
-    // Initialize model if needed
     if (!qaPipeline) {
-      addMessage("I'm initializing the AI model. Give me a moment...", true);
+      addMessage("Initializing AI...", true);
       await initModel();
     }
 
-    // Show typing indicator
     const typingIndicator = createTypingIndicator();
     messagesContainer.appendChild(typingIndicator);
     scrollToBottom();
 
     try {
-      // Get AI response
       const result = await qaPipeline(question, RESUME_CONTEXT);
       removeTypingIndicator();
-      addMessage(result.answer || "I'm not sure about that. You might want to check Stevan's full profile!", true);
+      addMessage(result.answer || "I'm not sure about that.", true);
     } catch (err) {
-      console.error('Error processing question:', err);
+      console.error('Error:', err);
       removeTypingIndicator();
-      addMessage("Sorry, I encountered an error while processing your request. Please try again.", true);
+      addMessage("Sorry, error occurred.", true);
     } finally {
       chatInput.disabled = false;
       isProcessing = false;
@@ -350,15 +290,10 @@ const { class: className } = Astro.props;
     }
   }
 
-  // ============================================================================
-  // Event Listeners
-  // ============================================================================
-
   toggleBtn?.addEventListener('click', toggleChat);
   closeBtn?.addEventListener('click', closeChat);
   chatForm?.addEventListener('submit', handleSubmit);
 
-  // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && chatWindow.dataset.open === 'true') {
       closeChat();
@@ -367,37 +302,14 @@ const { class: className } = Astro.props;
 </script>
 
 <style is:global>
-  /* Custom scrollbar for chat - matching global patterns */
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 5px;
-  }
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  /* Smooth message animations */
   @keyframes slide-in-from-bottom-2 {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  .animate-in {
-    animation: slide-in-from-bottom-2 0.2s ease-out forwards;
-  }
+  .animate-in { animation: slide-in-from-bottom-2 0.2s ease-out forwards; }
 </style>

@@ -7,42 +7,42 @@
 
 @theme {
   /* --------------------------------------------------------------------------
-     Colors - Design System (Enhanced Dark Theme)
+     Colors - Vercel-inspired Dark Theme
      -------------------------------------------------------------------------- */
-  /* Backgrounds - Richer blacks with subtle warmth */
-  --color-background: hsl(240 3% 3%); /* Deep dark with subtle blue undertone */
-  --color-foreground: hsl(0 0% 96%); /* Brighter white for better contrast */
+  /* Backgrounds - Pure dark, no blue tint */
+  --color-background: hsl(0 0% 3%); /* Near black */
+  --color-foreground: hsl(0 0% 98%); /* High contrast white */
 
-  --color-card: hsl(240 4% 6%); /* Slightly lighter than background */
-  --color-card-foreground: hsl(0 0% 94%);
+  --color-card: hsl(0 0% 6%);
+  --color-card-foreground: hsl(0 0% 98%);
 
-  --color-popover: hsl(240 5% 8%); /* Elevated surface */
-  --color-popover-foreground: hsl(0 0% 96%);
+  --color-popover: hsl(0 0% 8%);
+  --color-popover-foreground: hsl(0 0% 98%);
 
-  /* Primary - Vibrant purple accent */
-  --color-primary: hsl(270 80% 65%); /* Vibrant purple */
+  /* Primary - Vercel violet */
+  --color-primary: hsl(250 100% 66%); /* Vibrant violet */
   --color-primary-foreground: hsl(0 0% 100%);
 
-  /* Secondary - Rich dark surface with cyan accent */
-  --color-secondary: hsl(240 6% 12%); /* Richer dark gray */
-  --color-secondary-foreground: hsl(180 70% 75%); /* Cyan accent */
+  /* Secondary - Subtle surface */
+  --color-secondary: hsl(0 0% 12%);
+  --color-secondary-foreground: hsl(250 100% 80%); /* Soft violet accent */
 
-  /* Muted elements - Better visibility */
-  --color-muted: hsl(240 5% 18%); /* Lighter than before for better contrast */
-  --color-muted-foreground: hsl(0 0% 68%); /* Improved readability */
+  /* Muted */
+  --color-muted: hsl(0 0% 16%);
+  --color-muted-foreground: hsl(0 0% 60%);
 
-  /* Accent - Cyan/turquoise for interactive elements */
-  --color-accent: hsl(180 60% 50%); /* Vibrant cyan */
-  --color-accent-foreground: hsl(240 5% 8%); /* Dark text on bright accent */
+  /* Accent - Blue-violet */
+  --color-accent: hsl(230 100% 68%);
+  --color-accent-foreground: hsl(0 0% 3%);
 
-  /* Destructive - More vibrant red */
-  --color-destructive: hsl(0 72% 55%); /* Brighter, more visible red */
+  /* Destructive */
+  --color-destructive: hsl(0 72% 55%);
   --color-destructive-foreground: hsl(0 0% 100%);
 
   /* Borders and inputs */
-  --color-border: hsl(240 4% 20%); /* More visible borders */
-  --color-input: hsl(240 5% 12%); /* Matches secondary */
-  --color-ring: hsl(270 80% 65%); /* Purple ring to match primary */
+  --color-border: hsl(0 0% 18%);
+  --color-input: hsl(0 0% 12%);
+  --color-ring: hsl(250 100% 66%);
 
   /* --------------------------------------------------------------------------
      Typography
@@ -103,36 +103,14 @@
 
 @layer base {
   :root {
-    /* Colors */
-    --background: 240 3% 3%;
-    --foreground: 0 0% 96%;
-    --card: 240 4% 6%;
-    --card-foreground: 0 0% 94%;
-    --popover: 240 5% 8%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 270 80% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 6% 12%;
-    --secondary-foreground: 180 70% 75%;
-    --muted: 240 5% 18%;
-    --muted-foreground: 0 0% 68%;
-    --accent: 180 60% 50%;
-    --accent-foreground: 240 5% 8%;
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 240 4% 20%;
-    --input: 240 5% 12%;
-    --ring: 270 80% 65%;
-    --radius: 0.5rem;
-
     /* Spacing Scale */
-    --spacing-xs: 0.5rem;    /* 8px */
-    --spacing-sm: 0.75rem;   /* 12px */
-    --spacing-md: 1rem;      /* 16px */
-    --spacing-lg: 1.5rem;    /* 24px */
-    --spacing-xl: 2rem;      /* 32px */
-    --spacing-2xl: 3rem;     /* 48px */
-    --spacing-3xl: 4rem;     /* 64px */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -141,10 +119,10 @@
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
-    /* Glow Effects */
-    --glow-primary: 0 0 20px hsl(270 80% 65% / 0.3);
-    --glow-accent: 0 0 20px hsl(180 60% 50% / 0.3);
-    --glow-subtle: 0 0 10px hsl(0 0% 100% / 0.1);
+    /* Glow Effects - Vercel violet */
+    --glow-primary: 0 0 20px hsl(250 100% 66% / 0.4);
+    --glow-accent: 0 0 20px hsl(230 100% 68% / 0.3);
+    --glow-subtle: 0 0 10px hsl(0 0% 100% / 0.08);
   }
 
   body {
@@ -155,6 +133,48 @@
     @apply font-heading font-semibold tracking-tight;
   }
 }
+
+
+  :root {
+    --shimmer-primary: hsl(250 100% 66%);
+    --shimmer-accent: hsl(230 100% 68%);
+  }
+
+  @keyframes shiny-text {
+    0%, 90%, 100% {
+      background-position: calc(-200% - 100px) 0;
+    }
+    30%, 60% {
+      background-position: calc(100% + 100px) 0;
+    }
+  }
+
+  .animate-shiny-text {
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--shimmer-primary) 35%,
+      var(--shimmer-primary) 50%,
+      hsl(250 100% 80%) 65%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-position: -100% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shiny-text 8s infinite;
+  }
+
+  .avatar-stamp {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  }
+
+  .avatar-stamp:hover {
+    transform: rotate-0 scale-105;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+
 
 /* ==========================================================================
    Utilities
@@ -184,11 +204,11 @@
   }
 
   .text-gradient-primary {
-    @apply bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent;
   }
 
   .text-gradient-accent {
-    @apply bg-linear-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
   }
 
   /* Shadow Utilities */

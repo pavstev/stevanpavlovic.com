@@ -114,9 +114,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
         </Stack>
 
         {href && (
-          <div class="absolute top-4 right-4 -translate-y-1 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
-            <Icon class="text-muted-foreground" name="mdi:arrow-top-right" size={16} />
-          </div>
+          <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
         )}
       </div>
     </Element>
@@ -224,7 +222,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
           <div class="flex gap-4">
             {heroImage && (
-              <div class="relative hidden sm:block h-20 w-20 lg:h-24 lg:w-24 shrink-0 overflow-hidden rounded-lg border border-border/50 bg-muted">
+              <div class="relative hidden size-20 shrink-0 overflow-hidden rounded-lg border border-border/50 bg-muted sm:block lg:size-24">
                 <img
                   alt={title}
                   class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -234,8 +232,8 @@ const getElement = (href?: string) => href ? 'a' : 'div';
               </div>
             )}
 
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 flex-wrap">
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
                 {pubDate && (
                   <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
                     <FormattedDate date={pubDate} full />
@@ -243,7 +241,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
                 )}
                 {subtitle && (
                   <>
-                    <span class="text-muted-foreground hidden sm:inline">·</span>
+                    <span class="hidden text-muted-foreground sm:inline">·</span>
                     <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
                       {subtitle}
                     </Text>
@@ -262,7 +260,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
               )}
             </div>
 
-            <div class="hidden sm:flex items-center self-center">
+            <div class="hidden items-center self-center sm:flex">
               <Icon class="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" name={actionIcon} />
             </div>
           </div>

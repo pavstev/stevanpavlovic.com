@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
+import type { Page } from 'astro';
 
-export const prerender = false;
+export const prerender = true;
 
-import LayoutRoot from '../../components/layout/layout-root.astro';
 import Stack from '../../components/atoms/stack.astro';
+import LayoutRoot from '../../components/layout/layout-root.astro';
 import Empty from '../../components/molecules/empty.astro';
 import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
@@ -12,48 +13,35 @@ import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { PROFILE } from '../../lib/config';
-import { getPagination } from '../../lib/cms';
 
-// Get URL params
-const pageParam = Astro.url.searchParams.get('page');
+export async function getStaticPaths({ paginate }) {
+  const allProjects = await getCollection('projects');
+  
+  // Sort by newest (default)
+  const sortedProjects = [...allProjects].sort((a, b) => {
+    const dateA = 'pubDate' in a.data && a.data.pubDate ? (a.data.pubDate as Date).getTime() : 0;
+    const dateB = 'pubDate' in b.data && b.data.pubDate ? (b.data.pubDate as Date).getTime() : 0;
+    return dateB - dateA;
+  });
+
+  return paginate(sortedProjects, { pageSize: 3 });
+}
+
+const { page } = Astro.props;
 const sortParam = Astro.url.searchParams.get('sort') || 'newest';
 const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
 
-// Get and process projects
-const allProjects = await getCollection('projects');
-
-// Sort projects
-const sortedProjects = [...allProjects].sort((a, b) => {
-  switch (sortParam) {
-    case 'a-z':
-      return a.data.title.localeCompare(b.data.title);
-    case 'z-a':
-      return b.data.title.localeCompare(a.data.title);
-    case 'newest':
-    default:
-      const dateA = 'pubDate' in a.data && a.data.pubDate ? a.data.pubDate.valueOf() : 0;
-      const dateB = 'pubDate' in b.data && b.data.pubDate ? b.data.pubDate.valueOf() : 0;
-      return dateB - dateA;
-  }
-});
-
-// Get unique tags for filter dropdown
-const allTags = [...new Set(allProjects.flatMap(p => p.data.tags || []))].sort();
+// Get all tags for filter dropdown (from page.data to avoid extra collection call)
+const allTags = [...new Set(page.data.flatMap(p => p.data.tags || []))].sort();
 const filterParam = Astro.url.searchParams.get('filter');
 
-// Filter projects
+// Note: For SSG, filtering is handled via URL params but applied to page.data
 const filteredProjects = filterParam
-  ? sortedProjects.filter(p => p.data.tags?.includes(filterParam))
-  : sortedProjects;
+  ? page.data.filter(p => p.data.tags?.includes(filterParam))
+  : page.data;
 
-// Pagination - adjust items per page based on view mode
-const { currentPage, paginatedItems, totalPages } = getPagination(
-  filteredProjects,
-  pageParam,
-  viewParam === 'list' ? 6 : viewParam === 'masonry-2' ? 6 : 9,
-  '/projects',
-  Astro.url.searchParams
-);
+// For SSG with pagination, totalItems should reflect the full collection, not filtered
+const totalItems = page.total;
 
 // Helper to build URLs with params
 function buildUrl(base: string, params: Record<string, string | undefined>) {
@@ -68,17 +56,17 @@ function buildUrl(base: string, params: Record<string, string | undefined>) {
 
 // Build filter dropdowns
 const sortOptions = [
-  { label: 'Newest First', value: 'newest', href: buildUrl('/projects', { sort: 'newest', filter: filterParam || undefined }) },
-  { label: 'A-Z', value: 'a-z', href: buildUrl('/projects', { sort: 'a-z', filter: filterParam || undefined }) },
-  { label: 'Z-A', value: 'z-a', href: buildUrl('/projects', { sort: 'z-a', filter: filterParam || undefined }) },
+  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
+  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
+  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
 ];
 
-const tagOptions: { label: string; value: string; href: string }[] = [
-  { label: 'All Tags', value: '', href: buildUrl('/projects', { sort: sortParam !== 'newest' ? sortParam : undefined }) },
+const tagOptions: { href: string; label: string; value: string; }[] = [
+  { href: buildUrl('/projects', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Tags', value: '' },
   ...allTags.map(tag => ({
+    href: buildUrl('/projects', { filter: tag, sort: sortParam !== 'newest' ? sortParam : undefined }),
     label: tag.charAt(0).toUpperCase() + tag.slice(1),
     value: tag,
-    href: buildUrl('/projects', { filter: tag, sort: sortParam !== 'newest' ? sortParam : undefined }),
   })),
 ];
 
@@ -114,31 +102,31 @@ const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: 
     />
 
     {
-      paginatedItems.length > 0 ? (
+      filteredProjects.length > 0 ? (
         <Stack gap={6}>
           <ListActions
             baseUrl={baseUrl}
-            currentPage={currentPage}
+            currentPage={page.currentPage}
             filters={filters}
             itemCountLabel="projects"
             showItemCount
             showViewToggle
-            totalItems={filteredProjects.length}
-            totalPages={totalPages}
+            totalItems={totalItems}
+            totalPages={page.lastPage}
             viewMode={viewParam}
           />
 
           {viewParam === 'list' && (
             <div class="flex flex-col gap-3 sm:gap-4">
-              {paginatedItems.map((project) => (
+              {filteredProjects.map((project) => (
                 <Card list portfolioItem={{
-                  id: project.id,
-                  title: project.data.title,
-                  subtitle: project.data.subtitle,
                   desc: project.data.desc,
-                  meta: project.data.meta,
-                  tags: project.data.tags,
                   href: `/projects/${project.id}/`,
+                  id: project.id,
+                  meta: project.data.meta,
+                  subtitle: project.data.subtitle,
+                  tags: project.data.tags,
+                  title: project.data.title,
                 }} variant="portfolio" />
               ))}
             </div>
@@ -146,16 +134,16 @@ const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: 
 
           {viewParam === 'masonry-2' && (
             <MasonryGrid columns={2}>
-              {paginatedItems.map((project) => (
+              {filteredProjects.map((project) => (
                 <div class="masonry-item">
                   <Card portfolioItem={{
-                    id: project.id,
-                    title: project.data.title,
-                    subtitle: project.data.subtitle,
                     desc: project.data.desc,
-                    meta: project.data.meta,
-                    tags: project.data.tags,
                     href: `/projects/${project.id}/`,
+                    id: project.id,
+                    meta: project.data.meta,
+                    subtitle: project.data.subtitle,
+                    tags: project.data.tags,
+                    title: project.data.title,
                   }} variant="portfolio" />
                 </div>
               ))}
@@ -164,16 +152,16 @@ const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: 
 
           {viewParam === 'masonry-3' && (
             <MasonryGrid columns={3}>
-              {paginatedItems.map((project) => (
+              {filteredProjects.map((project) => (
                 <div class="masonry-item">
                   <Card portfolioItem={{
-                    id: project.id,
-                    title: project.data.title,
-                    subtitle: project.data.subtitle,
                     desc: project.data.desc,
-                    meta: project.data.meta,
-                    tags: project.data.tags,
                     href: `/projects/${project.id}/`,
+                    id: project.id,
+                    meta: project.data.meta,
+                    subtitle: project.data.subtitle,
+                    tags: project.data.tags,
+                    title: project.data.title,
                   }} variant="portfolio" />
                 </div>
               ))}

@@ -1,6 +1,6 @@
 ---
-import Pagefind from "astro-pagefind/components/Search";
 import { Icon } from 'astro-icon/components';
+import Pagefind from "astro-pagefind/components/Search";
 ---
 
 <div class="search-dropdown-container relative" id="search-container">
@@ -9,7 +9,6 @@ import { Icon } from 'astro-icon/components';
     <Icon class="absolute left-3 size-4 text-muted-foreground transition-colors group-focus-within/search:text-primary" name="mdi:magnify" />
     <input
       aria-controls="search-dropdown"
-      aria-expanded="false"
       class="h-9 w-48 rounded-full border border-white/10 bg-white/5 pr-20 pl-9 text-sm transition-all outline-none hover:bg-white/10 focus:border-primary/50 focus:bg-white/10 focus:ring-2 focus:ring-primary/20 lg:w-64"
       id="search-input"
       placeholder="Search..."
@@ -31,7 +30,7 @@ import { Icon } from 'astro-icon/components';
   {/* Dropdown Menu */}
   <div
     aria-label="Search results"
-    class="search-dropdown invisible absolute right-0 top-[calc(100%+0.5rem)] z-50 w-screen max-w-md opacity-0 transition-all duration-200 sm:w-md"
+    class="search-dropdown invisible absolute top-[calc(100%+0.5rem)] right-0 z-50 w-screen max-w-md opacity-0 transition-all duration-200 sm:w-md"
     id="search-dropdown"
     role="menu"
   >

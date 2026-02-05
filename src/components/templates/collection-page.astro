@@ -68,13 +68,13 @@ const isGrid = viewMode === 'grid';
 <LayoutRoot description={description} title={title}>
   <Section>
     <SectionHeader
-      class="mb-8"
+      class="mb-4"
       description={headerDescription}
       icon={headerIcon}
       title={headerTitle}
     />
 
-    <Stack gap={6}>
+    <Stack gap={4}>
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
@@ -92,7 +92,7 @@ const isGrid = viewMode === 'grid';
         viewUrls={viewUrls}
       />
 
-      <div class:list={`view-container min-h-[50vh]`} data-initial-page-size={initialPageSize} id={containerId}>
+      <div class="view-container" data-initial-page-size={initialPageSize} id={containerId}>
 
         {/* VIEW MODE: LIST */}
         {isList && (

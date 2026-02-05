@@ -174,7 +174,6 @@ export default defineConfig(
       "func-style": ["error", "expression"],
       // 7. Enforce maximum nesting depth of 3
       "max-depth": ["error", 3],
-
       "no-console": ["warn", { allow: ["warn", "error"] }],
 
       // 6. Forbid 'else' and 'else if'
@@ -190,6 +189,8 @@ export default defineConfig(
           selector: "CallExpression[callee.property.name='forEach']",
         },
       ],
+
+      "no-unused-vars": "off",
 
       "prefer-arrow-callback": "error",
     },

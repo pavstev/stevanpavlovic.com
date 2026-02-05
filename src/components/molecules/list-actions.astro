@@ -19,7 +19,8 @@ interface Props {
   currentPage: number;
   filters?: FilterConfig[];
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
-  getPageUrl?: (page: number) => string;
+  // eslint-disable-next-line no-unused-vars
+  getPageUrl?: (_page: number) => string;
   itemCountLabel?: string;
   /** Optional: Direct URL for next page (overrides auto-generation) */
   nextUrl?: string;

@@ -3,10 +3,6 @@
  * Handles spotlight/glow effects for cards
  */
 
-export const initAllComponents = (): void => {
-  initInteractiveCards();
-};
-
 export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group/card");
 
@@ -26,9 +22,4 @@ export const initInteractiveCards = (): void => {
 
     card.addEventListener("mousemove", handleMouseMove);
   }
-};
-
-export const withPageLoad = (fn: () => void): (() => void) => () => {
-  fn();
-  document.addEventListener("astro:page-load", fn);
 };

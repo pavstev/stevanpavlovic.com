@@ -10,16 +10,15 @@ import Pagefind from "astro-pagefind/components/Search";
     aria-expanded="false"
     aria-haspopup="dialog"
     aria-label="Search"
-    class="search-trigger flex h-6 w-full min-w-[120px] items-center justify-center gap-2 rounded-full border border-white/5 bg-white/5 px-3 text-xs text-muted-foreground transition-all duration-300 hover:border-white/10 hover:bg-white/10 hover:text-foreground"
+    class="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground active:scale-95"
     id="search-trigger"
     type="button"
   >
-    <Icon name="mdi:magnify" size={14} />
-    <span>Search...</span>
+    <Icon name="mdi:magnify" size={20} />
   </button>
 
   {/* Search UI Container */}
-  <div class="search-ui-container pointer-events-none fixed inset-0 z-50 flex items-start justify-center p-4 pt-[15vh] opacity-0 backdrop-blur-sm transition-all duration-300 sm:p-6" id="search-ui">
+  <div class="search-ui-container pointer-events-none fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[15vh] opacity-0 backdrop-blur-sm transition-all duration-300 sm:p-6" id="search-ui">
     {/* Backdrop Overlay */}
     <div class="absolute inset-0 bg-black/60 transition-opacity" id="search-backdrop"></div>
 
@@ -65,7 +64,7 @@ import Pagefind from "astro-pagefind/components/Search";
             modal?.classList.remove('scale-95', 'opacity-0');
             modal?.classList.add('scale-100', 'opacity-100');
             trigger?.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
+            // document.body.style.overflow = 'hidden'; // Optional: lock scroll
 
             // Auto-focus the input
             setTimeout(() => {
@@ -82,7 +81,7 @@ import Pagefind from "astro-pagefind/components/Search";
             modal?.classList.add('scale-95', 'opacity-0');
             modal?.classList.remove('scale-100', 'opacity-100');
             trigger?.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+            // document.body.style.overflow = '';
         }
 
         trigger?.addEventListener('click', openSearch);

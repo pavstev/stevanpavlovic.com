@@ -35,7 +35,7 @@ const buttonVariants = cva(
   }
 );
 
-export interface Props
+interface Props
   extends HTMLAttributes<'button'>,
     Omit<HTMLAttributes<'a'>, 'type'>,
     VariantProps<typeof buttonVariants> {
@@ -48,7 +48,6 @@ const Element = as || (href ? 'a' : 'button');
 const elementProps = { href, ...props };
 
 if (Element === 'button' && !elementProps.type) {
-  // @ts-expect-error - dynamic type handling
   elementProps['type'] = 'button';
 }
 

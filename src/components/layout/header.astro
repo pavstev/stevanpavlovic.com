@@ -10,7 +10,6 @@ import IdentitySection from "../molecules/identity-section.astro";
 import InteractiveAvatar from "../molecules/interactive-avatar.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
-import SearchBar from "../molecules/search-bar.astro";
 import Search from "../molecules/search.astro";
 import SocialIcons from "../molecules/social-icons.astro";
 
@@ -64,18 +63,15 @@ const isActive = (href: string) => isActivePath(pathname, href);
           })}
         </nav>
 
-        <div class="hidden items-center gap-2 pr-2 md:flex">
+        <div class="hidden items-center gap-1 pr-1 md:flex">
           <SocialIcons />
+          <div class="mx-1 h-4 w-px bg-white/10"></div>
+          <Search />
         </div>
 
         {/* Mobile Toggle */}
         <MobileMenuToggle size="sm" />
       </div>
-
-      {/* Search Bar attached */}
-      <SearchBar>
-        <Search />
-      </SearchBar>
     </div>
   </Container>
 </header>

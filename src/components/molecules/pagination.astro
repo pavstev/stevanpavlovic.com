@@ -1,0 +1,116 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+const showPages = 5; // Number of page links to show
+const halfShow = Math.floor(showPages / 2);
+
+let startPage = Math.max(1, currentPage - halfShow);
+let endPage = Math.min(totalPages, currentPage + halfShow);
+
+if (endPage - startPage + 1 < showPages) {
+  if (startPage === 1) {
+    endPage = Math.min(totalPages, showPages);
+  } else {
+    startPage = Math.max(1, totalPages - showPages + 1);
+  }
+}
+
+function getPageUrl(page: number): string {
+  if (page === 1) return baseUrl;
+  return `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}page=${page}`;
+}
+---
+
+<nav aria-label="Pagination" class="mt-10 flex items-center justify-center gap-1">
+  {/* Previous Page */}
+  <a
+    aria-disabled={currentPage === 1}
+    class:list={[
+      'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+      currentPage === 1
+        ? 'pointer-events-none text-muted-foreground/40'
+        : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+    ]}
+    href={currentPage > 1 ? getPageUrl(currentPage - 1) : '#'}
+  >
+    <Icon class="size-4" name="mdi:chevron-left" />
+    <span class="hidden sm:inline">Previous</span>
+  </a>
+
+  {/* Page Numbers */}
+  <div class="flex items-center gap-1">
+    {/* First Page */}
+    {startPage > 1 && (
+      <>
+        <a
+          aria-label="Page 1"
+          class="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+          href={getPageUrl(1)}
+        >
+          1
+        </a>
+        {startPage > 2 && <span class="text-muted-foreground/40">...</span>}
+      </>
+    )}
+
+    {/* Range Pages */}
+    {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((page) => (
+      <a
+        aria-current={page === currentPage ? 'page' : undefined}
+        class:list={[
+          'flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium transition-colors',
+          page === currentPage
+            ? 'bg-primary/10 text-primary ring-1 ring-primary/20'
+            : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+        ]}
+        href={getPageUrl(page)}
+      >
+        {page}
+      </a>
+    ))}
+
+    {/* Last Page */}
+    {endPage < totalPages && (
+      <>
+        {endPage < totalPages - 1 && <span class="text-muted-foreground/40">...</span>}
+        <a
+          aria-label={`Page ${totalPages}`}
+          class="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+          href={getPageUrl(totalPages)}
+        >
+          {totalPages}
+        </a>
+      </>
+    )}
+  </div>
+
+  {/* Next Page */}
+  <a
+    aria-disabled={currentPage === totalPages}
+    class:list={[
+      'flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+      currentPage === totalPages
+        ? 'pointer-events-none text-muted-foreground/40'
+        : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+    ]}
+    href={currentPage < totalPages ? getPageUrl(currentPage + 1) : '#'}
+  >
+    <span class="hidden sm:inline">Next</span>
+    <Icon class="size-4" name="mdi:chevron-right" />
+  </a>
+</nav>
+
+<style>
+  /* Smooth transition for page numbers */
+  nav a {
+    transition: all 0.2s ease-in-out;
+  }
+</style>

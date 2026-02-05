@@ -236,7 +236,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
           <div class="flex items-center justify-between">
             {pubDate && (
               <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
-                <FormattedDate date={pubDate} />
+                <FormattedDate date={pubDate} full />
               </Text>
             )}
             {subtitle && (

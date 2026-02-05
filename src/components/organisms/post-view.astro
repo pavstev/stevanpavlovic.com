@@ -54,7 +54,7 @@ const description = 'description' in data ? data.description : ('desc' in data ?
   <PageHero description={description} slot="header" title={title}>
     <Stack align="center" class="font-mono text-xs tracking-wider uppercase" direction="row" gap={3} slot="eyebrow">
       {type === 'blog' && 'pubDate' in data && data.pubDate && (
-        <FormattedDate date={data.pubDate} />
+        <FormattedDate date={data.pubDate} full />
       )}
       {type === 'project' && 'subtitle' in data && data.subtitle && (
         <Text variant="primary">{data.subtitle}</Text>

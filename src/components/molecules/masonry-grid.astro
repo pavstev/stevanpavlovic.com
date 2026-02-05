@@ -11,7 +11,7 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 
 <div
   class:list={[
-    'w-full gap-x-6 [column-count:1] md:[column-count:var(--masonry-cols)]',
+    'w-full masonry-grid [column-count:1] md:[column-count:var(--masonry-cols)]',
     className,
   ]}
   style={{ '--masonry-cols': columns }}
@@ -21,9 +21,19 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 </div>
 
 <style is:global>
-  /* Ensure children don't break across columns */
+  /* Horizontal gap between columns */
+  .masonry-grid {
+    column-gap: 1.5rem;
+  }
+
+  /* Vertical spacing between items and prevent breaking */
   .masonry-item {
     break-inside: avoid;
     margin-bottom: 1.5rem;
+  }
+
+  /* Remove bottom margin from last item in each column */
+  .masonry-item:last-child {
+    margin-bottom: 0;
   }
 </style>

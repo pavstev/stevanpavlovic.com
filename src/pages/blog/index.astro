@@ -6,6 +6,7 @@ export const prerender = false;
 import LayoutRoot from '../../components/layout/layout-root.astro';
 import Empty from '../../components/molecules/empty.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
+import Pagination from '../../components/molecules/pagination.astro';
 import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
@@ -38,29 +39,31 @@ const { currentPage, nextUrl, paginatedItems, prevUrl, totalPages } = getPaginat
 
     {
       paginatedItems.length > 0 ? (
-        <MasonryGrid>
-          {
-            paginatedItems.map((post) => (
-              <Card post={post} variant="content" />
-            ))
-          }
-        </MasonryGrid>
+        <>
+          <MasonryGrid>
+            {
+              paginatedItems.map((post) => (
+                <div class="masonry-item">
+                  <Card post={post} variant="content" />
+                </div>
+              ))
+            }
+          </MasonryGrid>
+
+          {totalPages > 1 && (
+            <Pagination
+              baseUrl="/blog"
+              currentPage={currentPage}
+              totalPages={totalPages}
+            />
+          )}
+        </>
       ) : (
         <Empty
           action={filterParam ? { href: '/blog', label: 'Clear Filter' } : undefined}
           description={filterParam ? `No posts found with tag "${filterParam}".` : "No posts yet."}
           title="No posts found"
         />
-      )
-    }
-
-    {
-      totalPages > 1 && (
-        <div class="mt-8 flex justify-between">
-          <a href={prevUrl || '#'}>Previous</a>
-          <span>Page {currentPage} of {totalPages}</span>
-          <a href={nextUrl || '#'}>Next</a>
-        </div>
       )
     }
   </Section>

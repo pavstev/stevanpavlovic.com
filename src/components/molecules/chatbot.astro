@@ -1,55 +1,130 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+import { cn } from '../../lib/cn';
+import { cardVariants } from '../../lib/card-helpers';
+import { buttonVariants } from '../../atoms/button.astro';
+
+// ============================================================================
+// Message Bubble Variants
+// ============================================================================
+
+const messageVariants = cva(
+  'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
+  {
+    defaultVariants: {
+      variant: 'ai',
+    },
+    variants: {
+      variant: {
+        ai: 'rounded-tl-none bg-muted/80 text-foreground/90',
+        user: 'rounded-tr-none bg-primary text-primary-foreground ml-auto',
+      },
+    },
+  },
+);
+
+interface Message {
+  text: string;
+  isAi: boolean;
+  id: string;
+}
+
+// ============================================================================
+// Chatbot Props
+// ============================================================================
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// ============================================================================
+// Resume Context (Server-side)
+// ============================================================================
+
+const RESUME_CONTEXT = `
+  Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
+  He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
+  Based in Belgrade, Serbia.
+`.trim();
+
+// ============================================================================
+// Component Template
+// ============================================================================
 ---
 
-<div class="fixed right-6 bottom-6 z-[100] flex flex-col items-end gap-4 print:hidden" id="chatbot-widget">
+<div
+  class={cn('relative z-[100] flex flex-col items-end print:hidden', className)}
+  id="chatbot-widget"
+>
   {/* Chat Window */}
   <div
-    class="glass pointer-events-none mb-2 flex w-[320px] max-w-[calc(100vw-3rem)] translate-y-4 flex-col overflow-hidden rounded-2xl opacity-0 shadow-2xl transition-all duration-300 data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100 sm:w-[380px]"
+    class={cn(
+      cardVariants({ variant: 'glass', className: 'pointer-events-none mb-4 w-[340px] max-w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[400px]' }),
+      'overflow-hidden',
+      'data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100'
+    )}
+    data-open="false"
     id="chat-window"
   >
     {/* Header */}
-    <div class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
-      <div class="flex items-center gap-2">
-        <div class="flex size-6 items-center justify-center rounded-full bg-primary/20 text-primary">
-          <Icon name="mdi:robot-outline" size={14} />
+    <header class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <div class="flex size-8 items-center justify-center rounded-full bg-primary/20 text-primary">
+          <Icon name="mdi:robot-outline" size={16} />
         </div>
-        <span class="text-xs font-bold tracking-tight text-foreground uppercase">Resume Assistant</span>
+        <div class="flex flex-col">
+          <span class="text-xs font-bold tracking-tight text-foreground uppercase">Resume Assistant</span>
+          <span class="text-[10px] text-muted-foreground" id="chat-status">Ready to help</span>
+        </div>
       </div>
-      <button class="text-muted-foreground hover:text-foreground" id="close-chat">
+      <button
+        class={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-8')}
+        id="close-chat"
+        aria-label="Close chat"
+      >
         <Icon name="mdi:close" size={18} />
       </button>
-    </div>
+    </header>
 
     {/* Messages Area */}
-    <div class="scrollbar-thin scrollbar-thumb-border flex h-[350px] flex-col gap-4 overflow-y-auto p-4 text-sm" id="chat-messages">
+    <div
+      class="scrollbar-thin flex h-[400px] flex-col gap-3 overflow-y-auto p-4"
+      id="chat-messages"
+    >
+      {/* Welcome Message */}
       <div class="flex flex-col gap-1">
-        <div class="w-fit max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-3 py-2 text-foreground/80">
+        <div class={cn(messageVariants({ variant: 'ai' }))}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
+        <span class="text-[10px] text-muted-foreground/60 px-1">Powered by AI</span>
       </div>
-    </div>
-
-    {/* Status / Loading */}
-    <div class="hidden px-4 py-2 text-[10px] text-muted-foreground italic" id="chat-status">
-      Initializing model...
     </div>
 
     {/* Input Area */}
-    <div class="border-t border-white/10 p-3">
+    <div class="border-t border-white/10 bg-white/5 p-3">
       <form class="flex gap-2" id="chat-form">
-        <input
-          class="flex-1 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
-          id="chat-input"
-          placeholder="Ask a question..."
-          type="text"
-        />
+        <div class="relative flex-1">
+          <input
+            class="w-full rounded-full border border-white/10 bg-black/30 px-4 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none transition-all"
+            id="chat-input"
+            placeholder="Ask about Stevan's experience..."
+            type="text"
+          />
+          <div class="absolute right-3 top-1/2 -translate-y-1/2">
+            <Icon class="text-muted-foreground/50" name="mdi:message-outline" size={16} />
+          </div>
+        </div>
         <button
-          class="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+          class={cn(buttonVariants({ variant: 'primary', size: 'icon' }), 'size-10 shrink-0 shadow-lg shadow-primary/20')}
           id="send-button"
           type="submit"
+          aria-label="Send message"
         >
-          <Icon name="mdi:send" size={16} />
+          <Icon name="mdi:send" size={18} />
         </button>
       </form>
     </div>
@@ -57,120 +132,286 @@ import { Icon } from 'astro-icon/components';
 
   {/* Toggle Button */}
   <button
-    aria-label="Toggle Chatbot"
-    class="group flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 sm:size-14"
+    class="group relative flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/25 transition-all duration-300 hover:scale-110 hover:shadow-primary/40 active:scale-95 sm:size-13"
     id="chat-toggle"
+    aria-label="Toggle Chatbot"
   >
-    <Icon class="transition-transform duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90" name="mdi:robot-outline" size={24} />
-    <Icon class="absolute scale-0 transition-transform duration-300 group-data-[open=true]:scale-100" name="mdi:close" size={24} />
+    {/* Robot Icon (visible when closed) */}
+    <Icon
+      class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"
+      name="mdi:robot-outline"
+      size={24}
+    />
+    {/* Close Icon (visible when open) */}
+    <Icon
+      class="absolute scale-0 transition-all duration-300 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0"
+      name="mdi:close"
+      size={24}
+    />
+    {/* Pulse Effect */}
+    <span class="absolute inset-0 rounded-full animate-ping bg-primary/30 opacity-0 group-data-[open=false]:opacity-75"></span>
   </button>
 </div>
 
-<script>
-  import { pipeline } from '@xenova/transformers';
+<script define:vars={{ RESUME_CONTEXT }}>
+  // ============================================================================
+  // Type Definitions
+  // ============================================================================
 
-  const RESUME_CONTEXT = `
-    Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-    ... (omitted for brevity)
-    Stevan is based in Belgrade, Serbia and is open to new opportunities.
-  `.trim();
+  interface ChatMessage {
+    id: string;
+    text: string;
+    isAi: boolean;
+  }
+
+  // ============================================================================
+  // State
+  // ============================================================================
 
   let qaPipeline: any = null;
   let isInitializing = false;
+  let isProcessing = false;
 
-  const toggle = document.getElementById('chat-toggle');
-  const window_ = document.getElementById('chat-window');
-  const messages = document.getElementById('chat-messages');
-  const form = document.getElementById('chat-form') as HTMLFormElement;
-  const input = document.getElementById('chat-input') as HTMLInputElement;
-  const status = document.getElementById('chat-status');
+  // ============================================================================
+  // DOM Elements
+  // ============================================================================
 
-  function addMessage(text: string, isAi: boolean) {
-    const div = document.createElement('div');
-    div.className = 'flex flex-col gap-1' + (isAi ? '' : ' items-end');
-    div.innerHTML = `
-      <div class="w-fit max-w-[85%] rounded-2xl ${isAi ? 'rounded-tl-none bg-muted text-foreground/80' : 'rounded-tr-none bg-primary text-foreground'} px-3 py-2">
-        ${text}
-      </div>
-    `;
-    messages?.appendChild(div);
-    messages?.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+  const toggleBtn = document.getElementById('chat-toggle');
+  const chatWindow = document.getElementById('chat-window') as HTMLElement;
+  const messagesContainer = document.getElementById('chat-messages') as HTMLElement;
+  const chatForm = document.getElementById('chat-form') as HTMLFormElement;
+  const chatInput = document.getElementById('chat-input') as HTMLInputElement;
+  const statusEl = document.getElementById('chat-status');
+  const closeBtn = document.getElementById('close-chat');
+
+  // ============================================================================
+  // Utility Functions
+  // ============================================================================
+
+  function generateId(): string {
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  async function initModel() {
+  function scrollToBottom(): void {
+    messagesContainer.scrollTo({
+      top: messagesContainer.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+
+  function updateStatus(text: string): void {
+    if (statusEl) {
+      statusEl.textContent = text;
+    }
+  }
+
+  // ============================================================================
+  // Message Rendering
+  // ============================================================================
+
+  function createMessageElement(message: ChatMessage): HTMLElement {
+    const container = document.createElement('div');
+    container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? '' : 'items-end'}`;
+
+    const messageBubble = document.createElement('div');
+    messageBubble.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+      message.isAi
+        ? 'rounded-tl-none bg-muted/80 text-foreground/90'
+        : 'rounded-tr-none bg-primary text-primary-foreground ml-auto'
+    }`;
+    messageBubble.textContent = message.text;
+
+    const timestamp = document.createElement('span');
+    timestamp.className = 'text-[10px] text-muted-foreground/60 px-1';
+    timestamp.textContent = message.isAi ? 'AI' : 'You';
+
+    container.appendChild(messageBubble);
+    container.appendChild(timestamp);
+
+    return container;
+  }
+
+  function createTypingIndicator(): HTMLElement {
+    const container = document.createElement('div');
+    container.className = 'flex flex-col gap-1 animate-in fade-in';
+    container.id = 'typing-indicator';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'flex items-center gap-1 rounded-2xl rounded-tl-none bg-muted/80 px-4 py-3';
+    bubble.innerHTML = `
+      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 0ms;"></span>
+      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 150ms;"></span>
+      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 300ms;"></span>
+    `;
+
+    const timestamp = document.createElement('span');
+    timestamp.className = 'text-[10px] text-muted-foreground/60 px-1';
+    timestamp.textContent = 'AI';
+
+    container.appendChild(bubble);
+    container.appendChild(timestamp);
+
+    return container;
+  }
+
+  function addMessage(text: string, isAi: boolean): void {
+    const message: ChatMessage = {
+      id: generateId(),
+      text,
+      isAi,
+    };
+    const element = createMessageElement(message);
+    messagesContainer.appendChild(element);
+    scrollToBottom();
+  }
+
+  function removeTypingIndicator(): void {
+    const typing = document.getElementById('typing-indicator');
+    if (typing) {
+      typing.remove();
+    }
+  }
+
+  // ============================================================================
+  // AI Model Management
+  // ============================================================================
+
+  async function initModel(): Promise<void> {
     if (qaPipeline || isInitializing) return;
     isInitializing = true;
-    if (status) status.classList.remove('hidden');
+    updateStatus('Loading AI model...');
 
     try {
-      // Use a very small, efficient model for QA
+      // Dynamically import transformers
+      const { pipeline } = await import('@xenova/transformers');
       qaPipeline = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
-      if (status) status.innerText = 'Model ready.';
-      setTimeout(() => status?.classList.add('hidden'), 2000);
+      updateStatus('Ready to help');
+      setTimeout(() => updateStatus('Ready to help'), 2000);
     } catch (err) {
       console.error('Failed to load model:', err);
-      if (status) status.innerText = 'Error loading model.';
+      updateStatus('Error loading model');
     } finally {
       isInitializing = false;
     }
   }
 
-  toggle?.addEventListener('click', () => {
-    const isOpen = window_?.dataset.open === 'true';
+  // ============================================================================
+  // Event Handlers
+  // ============================================================================
+
+  function toggleChat(): void {
+    const isOpen = chatWindow.dataset.open === 'true';
     const newState = !isOpen;
-    window_?.setAttribute('data-open', String(newState));
-    toggle?.setAttribute('data-open', String(newState));
+
+    chatWindow.dataset.open = String(newState);
+    toggleBtn.dataset.open = String(newState);
+
     if (newState) {
       initModel();
-      setTimeout(() => input?.focus(), 300);
+      setTimeout(() => chatInput.focus(), 300);
     }
-  });
+  }
 
-  document.getElementById('close-chat')?.addEventListener('click', () => {
-    window_?.setAttribute('data-open', 'false');
-    toggle?.setAttribute('data-open', 'false');
-  });
+  function closeChat(): void {
+    chatWindow.dataset.open = 'false';
+    toggleBtn.dataset.open = 'false';
+  }
 
-  form?.addEventListener('submit', async (e) => {
+  async function handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
-    const question = input.value.trim();
+
+    if (isProcessing) return;
+
+    const question = chatInput.value.trim();
     if (!question) return;
 
-    input.value = '';
+    // Clear input and add user message
+    chatInput.value = '';
+    chatInput.disabled = true;
+    isProcessing = true;
+
     addMessage(question, false);
 
+    // Initialize model if needed
     if (!qaPipeline) {
-      addMessage("I'm still waking up... Give me a second to load the AI model.", true);
+      addMessage("I'm initializing the AI model. Give me a moment...", true);
       await initModel();
     }
 
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'text-[10px] text-muted-foreground animate-pulse px-2';
-    typingDiv.innerText = 'Thinking...';
-    messages?.appendChild(typingDiv);
-    messages?.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+    // Show typing indicator
+    const typingIndicator = createTypingIndicator();
+    messagesContainer.appendChild(typingIndicator);
+    scrollToBottom();
 
     try {
+      // Get AI response
       const result = await qaPipeline(question, RESUME_CONTEXT);
-      messages?.removeChild(typingDiv);
+      removeTypingIndicator();
       addMessage(result.answer || "I'm not sure about that. You might want to check Stevan's full profile!", true);
     } catch (err) {
-      messages?.removeChild(typingDiv);
-      addMessage("Sorry, I encountered an error while processing your request.", true);
+      console.error('Error processing question:', err);
+      removeTypingIndicator();
+      addMessage("Sorry, I encountered an error while processing your request. Please try again.", true);
+    } finally {
+      chatInput.disabled = false;
+      isProcessing = false;
+      chatInput.focus();
+    }
+  }
+
+  // ============================================================================
+  // Event Listeners
+  // ============================================================================
+
+  toggleBtn?.addEventListener('click', toggleChat);
+  closeBtn?.addEventListener('click', closeChat);
+  chatForm?.addEventListener('submit', handleSubmit);
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && chatWindow.dataset.open === 'true') {
+      closeChat();
     }
   });
+
+  // Close on backdrop click (optional enhancement)
+  // chatWindow.addEventListener('click', (e) => {
+  //   if (e.target === chatWindow) closeChat();
+  // });
 </script>
 
 <style is:global>
-  /* Custom scrollbar for chat */
+  /* Custom scrollbar for chat - matching global patterns */
   .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
   }
+
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Smooth message animations */
+  @keyframes slide-in-from-bottom-2 {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-in {
+    animation: slide-in-from-bottom-2 0.2s ease-out forwards;
   }
 </style>

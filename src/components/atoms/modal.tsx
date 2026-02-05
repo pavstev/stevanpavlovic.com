@@ -6,6 +6,8 @@ import { useEffect, useRef } from "react";
 import { cn } from "../../lib/cn";
 
 interface ModalProps {
+  caption?: React.ReactNode;
+  captionPosition?: "bottom" | "top";
   children: React.ReactNode;
   className?: string;
   onClose: () => void;
@@ -14,6 +16,8 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({
+  caption,
+  captionPosition: _captionPosition = "bottom",
   children,
   className,
   onClose,
@@ -65,6 +69,7 @@ const Modal: React.FC<ModalProps> = ({
         "m-auto bg-transparent p-0 focus:outline-none",
         "backdrop:bg-background/80 backdrop:backdrop-blur-xl",
         "open:animate-in open:fade-in open:zoom-in-95 open:duration-300",
+        "before:absolute before:inset-0 before:rounded-2xl before:bg-linear-to-br before:from-primary/30 before:via-accent/20 before:to-secondary/30 before:opacity-20 before:blur-3xl before:grayscale",
       )}
       onCancel={handleCancel}
       onClick={handleClick}
@@ -72,22 +77,35 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={cn(
-          "relative w-full max-w-lg overflow-hidden rounded-2xl bg-card shadow-2xl",
+          "relative w-full max-w-lg overflow-hidden rounded-2xl border border-foreground/5 bg-card shadow-2xl backdrop-blur-sm",
+          "hover:shadow-3xl transition-all duration-300",
+          "before:absolute before:-inset-1 before:-z-10 before:rounded-2xl before:bg-linear-to-br before:from-primary/20 before:via-accent/10 before:to-secondary/20 before:opacity-5 before:blur-3xl before:grayscale",
           className,
         )}
       >
-        {showCloseButton && (
-          <button
-            aria-label="Close"
-            className="absolute top-4 right-4 rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
-            onClick={onClose}
-            type="button"
-          >
-            <Icon className="size-5" icon="mdi:close" />
-          </button>
-        )}
+        <div className="absolute inset-0 rounded-2xl bg-card/50 backdrop-blur-sm" ></div>
+        <div className="relative z-10 p-6">
+          {showCloseButton && (
+            <button
+              aria-label="Close"
+              className="absolute top-4 right-4 rounded-full p-1 text-muted-foreground transition-all duration-300 hover:scale-105 hover:bg-foreground/10 hover:text-foreground hover:shadow-lg focus:scale-105 focus:ring-2 focus:ring-foreground/20 focus:outline-none active:scale-95 active:shadow-md"
+              onClick={onClose}
+              type="button"
+            >
+              <Icon className="hover:scale-1.1 size-5 transition-all duration-300 hover:rotate-90" icon="mdi:close-thick" />
+            </button>
+          )}
 
-        {children}
+          {children}
+
+          {caption && (
+            <div className="mt-4 border-t border-foreground/10 pt-4" >
+              <div className="text-sm leading-relaxed text-muted-foreground" >
+                {caption}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </dialog>
   );

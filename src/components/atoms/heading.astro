@@ -21,6 +21,12 @@ const headingVariants = cva(
         sm: 'text-base sm:text-lg',
         xl: 'text-2xl sm:text-3xl md:text-4xl',
         xs: 'text-sm sm:text-base',
+        h1: 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl',
+        h2: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
+        h3: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
+        h4: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
+        h5: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl',
+        h6: 'text-lg sm:text-xl md:text-2xl lg:text-3xl',
       },
       variant: {
         default: 'text-foreground',
@@ -36,6 +42,7 @@ const headingVariants = cva(
 interface Props extends HTMLAttributes<'h1'>, VariantProps<typeof headingVariants> {
   as?: 1 | 2 | 3 | 4 | 5 | 6 | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   level?: 1 | 2 | 3 | 4 | 5 | 6;
+  size?: 'display' | 'hero' | 'lg' | 'md' | 'sm' | 'xl' | 'xs' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 const {

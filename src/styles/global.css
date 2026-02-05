@@ -116,8 +116,33 @@
     @apply bg-background text-foreground antialiased font-sans selection:bg-foreground/20 selection:text-foreground;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight;
+  h1 {
+    font-size: 5.61rem;
+    font-size: clamp(2.5rem, 8vw, 5.61rem);
+  }
+  h2 {
+    font-size: 4.209rem;
+    font-size: clamp(2.25rem, 6vw, 4.209rem);
+  }
+  h3 {
+    font-size: 3.157rem;
+    font-size: clamp(2rem, 5vw, 3.157rem);
+  }
+  h4 {
+    font-size: 2.369rem;
+    font-size: clamp(1.75rem, 4vw, 2.369rem);
+  }
+  h5 {
+    font-size: 1.777rem;
+    font-size: clamp(1.5rem, 3vw, 1.777rem);
+  }
+  h6 {
+    font-size: 1.333rem;
+    font-size: clamp(1.25rem, 2vw, 1.333rem);
+  }
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
   }
 }
 

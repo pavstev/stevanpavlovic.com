@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { ImageMetadata } from "astro";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import MagnifyOverlay from "../atoms/magnify-overlay";
 import Modal from "../atoms/modal";
 
 interface Props {
   alt: string;
-  caption?: string;
   className?: string;
   height?: number;
   loading?: "eager" | "lazy";
@@ -19,7 +16,6 @@ interface Props {
 
 const ZoomableImage: React.FC<Props> = ({
   alt,
-  caption,
   className,
   height,
   loading = "lazy",
@@ -28,7 +24,7 @@ const ZoomableImage: React.FC<Props> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMagnified, setIsMagnified] = useState(false);
-  const positionRef = useRef({ x: 50, y: 50 });
+  const [position, setPosition] = useState({ x: 50, y: 50 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
     if (!isMagnified) {
@@ -39,8 +35,8 @@ const ZoomableImage: React.FC<Props> = ({
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Use ref for instant updates without re-renders
-    positionRef.current = { x, y };
+    // Use state for updates without re-renders
+    setPosition({ x, y });
 
     // Update transform directly for instant response
     const img = e.currentTarget.querySelector("img");
@@ -76,8 +72,6 @@ const ZoomableImage: React.FC<Props> = ({
       </div>
 
       <Modal
-        bodyClass="p-0 overflow-visible flex items-center justify-center h-full"
-        caption={caption}
         className="max-h-[95vh] max-w-[95vw] overflow-visible border-none bg-transparent shadow-none"
         onClose={() => {
           setIsModalOpen(false);
@@ -111,7 +105,7 @@ const ZoomableImage: React.FC<Props> = ({
             style={
               isMagnified
                 ? {
-                  transformOrigin: `${String(position.x.toString())}% ${String(position.y.toString())}%`,
+                  transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
                 }
                 : undefined
             }

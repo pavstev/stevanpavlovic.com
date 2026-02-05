@@ -1,24 +1,27 @@
 ---
-import Heading from '../atoms/heading.astro';
 import Stack from '../atoms/stack.astro';
 import Tags from '../molecules/tags.astro';
 
 interface Props {
   heading: string;
   tags: string[];
+  variant?: 'default' | 'subtle' | 'elevated';
 }
 
-const { heading, tags } = Astro.props;
+const { heading, tags, variant = 'default' } = Astro.props;
 ---
 
 {tags && tags.length > 0 && (
-  <div class="group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-background/30 to-transparent p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md">
+  <div class={`group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-background/30 to-transparent p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md ${variant === 'subtle' ? 'bg-foreground/5 border-foreground/10' : ''} ${variant === 'elevated' ? 'shadow-lg' : ''}`}>
     {/* Subtle gradient overlay */}
     <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
     {/* Content */}
     <Stack class="relative" gap={3}>
-      <Heading as="h6" class="mb-2" size="md" variant="muted">{heading}</Heading>
+      <div class="flex items-center justify-between">
+        <h6 class={`mb-2 font-medium ${variant === 'subtle' ? 'text-foreground' : 'text-muted'}`}>{heading}</h6>
+        <slot name="action" />
+      </div>
       <Tags tags={tags} />
     </Stack>
   </div>

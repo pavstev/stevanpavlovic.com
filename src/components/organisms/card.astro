@@ -141,7 +141,7 @@ const isRowLayout = list && !icon;
             {meta && <Badge variant="secondary">{meta}</Badge>}
 
             {url && (
-              <div class="relative flex min-h-[24px] min-w-[24px] items-center justify-end font-mono">
+              <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
                 <div class:list={cn("absolute right-0 flex items-center text-muted-foreground transition-all duration-300", actionLabel ? "group-hover:-translate-x-2 group-hover:opacity-0" : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary")}>
                   <Icon name="mdi:arrow-top-right" />
                 </div>

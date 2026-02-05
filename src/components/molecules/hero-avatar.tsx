@@ -67,7 +67,6 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
       </div>
 
       <Modal
-        bodyClass="p-0 overflow-visible flex items-center justify-center h-full"
         className="max-h-[95vh] max-w-[95vw] overflow-visible border-none bg-transparent shadow-none"
         onClose={() => {
           setIsModalOpen(false);

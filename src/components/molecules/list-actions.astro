@@ -12,8 +12,8 @@ export interface FilterConfig {
   selectedValues?: string[];
 }
 
-export type ViewMode = 'grid' | 'list';
 export type PaginationType = 'path' | 'query';
+export type ViewMode = 'grid' | 'list';
 
 interface Props {
   baseUrl: string;
@@ -21,6 +21,11 @@ interface Props {
   filters?: FilterConfig[];
   itemCountLabel?: string;
   itemsPerPage?: number;
+  /** Optional: Direct URL for next page (overrides auto-generation) */
+  nextUrl?: string;
+  paginationType?: PaginationType;
+  /** Optional: Direct URL for previous page (overrides auto-generation) */
+  prevUrl?: string;
   resetHref?: string;
   showItemCount?: boolean;
   showItemsPerPage?: boolean;
@@ -28,11 +33,6 @@ interface Props {
   totalItems?: number;
   totalPages: number;
   viewMode?: ViewMode;
-  paginationType?: PaginationType;
-  /** Optional: Direct URL for previous page (overrides auto-generation) */
-  prevUrl?: string;
-  /** Optional: Direct URL for next page (overrides auto-generation) */
-  nextUrl?: string;
 }
 
 const {
@@ -41,6 +41,9 @@ const {
   filters = [],
   itemCountLabel,
   itemsPerPage = 6,
+  nextUrl,
+  paginationType = 'path',
+  prevUrl,
   resetHref,
   showItemCount = false,
   showItemsPerPage = false,
@@ -48,9 +51,6 @@ const {
   totalItems,
   totalPages,
   viewMode = 'list',
-  paginationType = 'path',
-  prevUrl,
-  nextUrl,
 } = Astro.props;
 
 // Get current search params to preserve filters/sorts
@@ -59,7 +59,7 @@ const currentParams = new URLSearchParams(Astro.url.searchParams);
 /**
  * Helper to build a URL by merging a base path with current query params and overrides.
  */
-function buildUrl(path: string, paramsToSet: Record<string, string | number | undefined> = {}): string {
+function buildUrl(path: string, paramsToSet: Record<string, number | string | undefined> = {}): string {
   const url = new URL(path, Astro.url.origin);
 
   // 1. Preserve existing params
@@ -159,12 +159,12 @@ const itemsPerPageOptions = [
 
     {/* Right: Controls */}
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-        {/* Total Count */}
-        {showItemCount && totalItems !== undefined && (
-            <span class="text-xs text-muted-foreground hidden sm:inline-block mr-2">
-                {totalItems} {itemCountLabel || 'items'}
-            </span>
-        )}
+      {/* Total Count */}
+      {showItemCount && totalItems !== undefined && (
+        <span class="mr-2 hidden text-xs text-muted-foreground sm:inline-block">
+          {totalItems} {itemCountLabel || 'items'}
+        </span>
+      )}
 
       {/* Items per page dropdown */}
       {showItemsPerPage && (

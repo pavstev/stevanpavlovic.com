@@ -17,19 +17,19 @@ const { class: className, id } = Astro.props;
     // Scroll handling: Max height 85vh to leave room, auto overflow for inner content
     "max-h-[85vh] overflow-y-auto",
     // Animations (Standard ease-out)
-    "backdrop:bg-black/80 backdrop:animate-in backdrop:fade-in-0",
+    "backdrop:animate-in backdrop:fade-in-0 backdrop:bg-black/80",
     "open:animate-in open:fade-in-0 open:zoom-in-95 open:slide-in-from-bottom-2 open:duration-200",
     className
   ]}
   id={id}
 >
   {/* Close Button - Sticky to stay visible when scrolling long content */}
-  <form method="dialog" class="sticky top-0 z-50 -mr-2 -mt-2 flex justify-end">
+  <form class="sticky top-0 z-50 -mt-2 -mr-2 flex justify-end" method="dialog">
     <button
-      class="rounded-sm opacity-70 ring-offset-zinc-950 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-zinc-800 data-[state=open]:text-zinc-400 text-zinc-100 hover:text-zinc-50"
       aria-label="Close modal"
+      class="rounded-sm text-zinc-100 opacity-70 ring-offset-zinc-950 transition-opacity hover:text-zinc-50 hover:opacity-100 focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-zinc-800 data-[state=open]:text-zinc-400"
     >
-      <Icon name="mdi:close" class="size-4" />
+      <Icon class="size-4" name="mdi:close" />
     </button>
   </form>
 

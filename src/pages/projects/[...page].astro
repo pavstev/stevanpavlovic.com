@@ -1,6 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+
+import { getCollection } from 'astro:content';
+
 import Stack from '../../components/atoms/stack.astro';
 import LayoutRoot from '../../components/layout/layout-root.astro';
 import ListActions, { type FilterConfig } from '../../components/molecules/list-actions.astro';
@@ -89,15 +91,15 @@ const filters: FilterConfig[] = [
         viewMode="list"
       />
 
-      <div id="projects-container" class="project-view-list min-h-[50vh]">
+      <div class="project-view-list min-h-[50vh]" id="projects-container">
 
         {/* LIST VIEW */}
         <div class="list-view flex flex-col gap-4 transition-opacity duration-300">
           {page.data.map((project, index) => (
             <div
               class:list={['project-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
-              data-tags={project.data.tags?.join(',') || ''}
               data-date={getProjectDate(project.data)}
+              data-tags={project.data.tags?.join(',') || ''}
               data-title={project.data.title}
             >
               <Card list portfolioItem={{
@@ -119,8 +121,8 @@ const filters: FilterConfig[] = [
             {page.data.map((project, index) => (
               <div
                 class:list={['masonry-item project-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
-                data-tags={project.data.tags?.join(',') || ''}
                 data-date={getProjectDate(project.data)}
+                data-tags={project.data.tags?.join(',') || ''}
                 data-title={project.data.title}
               >
                 <Card portfolioItem={{
@@ -137,14 +139,14 @@ const filters: FilterConfig[] = [
           </MasonryGrid>
         </div>
 
-        <div id="no-results" class="hidden mt-12 text-center text-gray-500">
-           <div class="flex flex-col items-center justify-center gap-2">
-             <span class="text-4xl">🔍</span>
-             <p class="text-lg font-medium">No projects found.</p>
-             <a href="/projects" class="mt-4 px-4 py-2 bg-secondary/10 rounded-full text-secondary hover:bg-secondary/20 transition-colors text-sm font-semibold">
+        <div class="mt-12 hidden text-center text-gray-500" id="no-results">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="text-4xl">🔍</span>
+            <p class="text-lg font-medium">No projects found.</p>
+            <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href="/projects">
                Clear Filters
-             </a>
-           </div>
+            </a>
+          </div>
         </div>
 
       </div>

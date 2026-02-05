@@ -3,16 +3,22 @@ import { Icon } from 'astro-icon/components';
 import Pagefind from "astro-pagefind/components/Search";
 
 import Modal from '../atoms/modal.astro';
+
+const { class: className } = Astro.props;
 ---
 
 <div class="search-wrapper group relative flex items-center">
   {/* Search Trigger */}
   <button
-    class="group/search inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all duration-300 hover:bg-white/5 hover:text-foreground"
+    class:list={[
+      "group/search inline-flex items-center gap-1.5 rounded-full bg-transparent px-2.5 py-0.5 text-sm font-medium text-muted-foreground transition-all hover:bg-white/5 hover:text-foreground md:px-3 md:py-1",
+      className
+    ]}
     id="search-trigger"
+    aria-label="Open search"
   >
-    <Icon class="size-4" name="mdi:magnify" />
-    <span>Search</span>
+    <Icon class="size-4 md:size-4.5" name="mdi:magnify" />
+    <span class="hidden sm:inline">Search</span>
   </button>
 
   <Modal

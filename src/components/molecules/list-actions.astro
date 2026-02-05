@@ -161,7 +161,7 @@ const itemsPerPageOptions = [
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
       {/* Total Count */}
       {showItemCount && totalItems !== undefined && (
-        <span class="mr-2 hidden text-xs text-muted-foreground sm:inline-block">
+        <span id="total-items-count" class="mr-2 hidden text-xs text-muted-foreground sm:inline-block">
           {totalItems} {itemCountLabel || 'items'}
         </span>
       )}

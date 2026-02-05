@@ -160,122 +160,21 @@ const filters: FilterConfig[] = [
 </style>
 
 <script>
+  import { ClientList } from '../../lib/client-list';
   import { initInteractiveCards } from '../../lib/interactive-cards';
+
+  // Initialize on first load
   initInteractiveCards();
-  document.addEventListener('astro:page-load', initInteractiveCards);
 
   document.addEventListener('astro:page-load', () => {
-    const container = document.getElementById('projects-container');
-    const listView = container?.querySelector('.list-view');
-    const gridView = container?.querySelector('.grid-view');
-    const noResults = document.getElementById('no-results');
+    initInteractiveCards();
 
-    if (!container || !listView || !gridView) return;
-
-    // --- 1. State Management ---
-    const params = new URLSearchParams(window.location.search);
-    const state = {
-      view: params.get('view') || 'list',
-      filter: params.get('filter'),
-      sort: params.get('sort') || 'newest',
-      limit: parseInt(params.get('limit') || '6'),
-      page: parseInt(params.get('page') || '1')
-    };
-
-    // --- 2. Update Controls (ListActions) ---
-    // Since ListActions is static HTML, we update its text/state to match URL
-    // Update Dropdown Labels if needed (Simplified: relying on URL params reload)
-    // Update Pagination Display
-    const updatePaginationUI = (totalVisible: number) => {
-      const totalPages = Math.ceil(totalVisible / state.limit);
-      const nav = document.querySelector('nav[aria-label="Pagination"]');
-
-      if (totalPages <= 1) {
-        if (nav) nav.classList.add('hidden');
-      } else {
-        if (nav) nav.classList.remove('hidden');
-        const currentEl = nav?.querySelector('.text-foreground');
-        const totalEl = nav?.querySelector('.text-muted-foreground.tabular-nums');
-        const prevBtn = nav?.querySelector('a[href*="page"]:first-child');
-        const nextBtn = nav?.querySelector('a[href*="page"]:last-child');
-
-        // Update numbers
-        if (currentEl) currentEl.textContent = String(state.page);
-        if (totalEl) totalEl.textContent = String(totalPages);
-
-        // Update buttons state
-        if (prevBtn) {
-            (prevBtn as HTMLElement).style.pointerEvents = state.page <= 1 ? 'none' : 'auto';
-            (prevBtn as HTMLElement).style.opacity = state.page <= 1 ? '0.5' : '1';
-        }
-        if (nextBtn) {
-            (nextBtn as HTMLElement).style.pointerEvents = state.page >= totalPages ? 'none' : 'auto';
-            (nextBtn as HTMLElement).style.opacity = state.page >= totalPages ? '0.5' : '1';
-        }
+    new ClientList({
+      containerId: 'projects-container',
+      initialPageSize: 6,
+      ui: {
+        itemSelector: '.project-item'
       }
-    };
-
-    // --- 3. View Mode Toggle ---
-    if (state.view === 'grid') {
-      listView.classList.add('hidden');
-      gridView.classList.remove('hidden');
-    } else {
-      gridView.classList.add('hidden');
-      listView.classList.remove('hidden');
-    }
-
-    // --- 4. Core Logic: Sort, Filter, Slice ---
-    const processItems = (parentContainer: Element) => {
-      const items = Array.from(parentContainer.querySelectorAll('.project-item')) as HTMLElement[];
-
-      // A. Sort
-      items.sort((a, b) => {
-        if (state.sort === 'a-z') {
-          return (a.dataset.title || '').localeCompare(b.dataset.title || '');
-        }
-        return parseInt(b.dataset.date || '0') - parseInt(a.dataset.date || '0');
-      });
-
-      // B. Filter
-      const filteredItems = items.filter(item => {
-        const itemTags = item.dataset.tags?.split(',') || [];
-        return !state.filter || itemTags.includes(state.filter);
-      });
-
-      // C. Paginate (Slice)
-      const startIndex = (state.page - 1) * state.limit;
-      const endIndex = startIndex + state.limit;
-      const visibleItems = filteredItems.slice(startIndex, endIndex);
-
-      // D. Apply to DOM
-      // We loop through ALL items to ensure correct show/hide state
-      items.forEach(item => {
-         // It must be in the filtered set AND within the current page slice to be visible
-         const isVisible = visibleItems.includes(item);
-         if (isVisible) {
-             item.classList.remove('hidden');
-             parentContainer.appendChild(item); // Re-append triggers visual sort
-         } else {
-             item.classList.add('hidden');
-         }
-      });
-
-      return filteredItems.length;
-    };
-
-    // Run Logic
-    const listCount = processItems(listView);
-    const gridWrapper = gridView.querySelector('.masonry-grid') || gridView;
-    const gridCount = processItems(gridWrapper);
-
-    const totalResults = Math.max(listCount, gridCount);
-    updatePaginationUI(totalResults);
-
-    // No Results Handling
-    if (totalResults === 0 && noResults) {
-      noResults.classList.remove('hidden');
-    } else if (noResults) {
-      noResults.classList.add('hidden');
-    }
+    });
   });
 </script>

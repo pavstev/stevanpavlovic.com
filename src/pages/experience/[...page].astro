@@ -1,102 +1,58 @@
 ---
-import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
 
-export const prerender = false;
+import { getCollection } from 'astro:content';
 
 import Stack from '../../components/atoms/stack.astro';
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import Empty from '../../components/molecules/empty.astro';
-import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
+import ListActions, { type FilterConfig } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
 import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
-import { getPagination } from '../../lib/cms';
 import { PROFILE } from '../../lib/config';
 
-// Get URL params
-const pageParam = Astro.url.searchParams.get('page');
-const sortParam = Astro.url.searchParams.get('sort') || 'newest';
-const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
+export const prerender = true;
 
-// Get and process experience
-const allExperience = await getCollection('experience');
+export const getStaticPaths = (async ({ paginate }) => {
+  const allExperience = await getCollection('experience');
 
-// Sort experience by date
-const sortedExperience = [...allExperience].sort((a, b) => {
-  switch (sortParam) {
-  case 'a-z':
-    return a.data.company.localeCompare(b.data.company);
-  case 'z-a':
-    return b.data.company.localeCompare(a.data.company);
-  case 'newest':
-  default:
-    return b.data.startDate.valueOf() - a.data.startDate.valueOf();
-  }
-});
-
-// Get unique skills for filter dropdown
-const allSkills = [...new Set(allExperience.flatMap(e => e.data.skills || []))].sort();
-const filterParam = Astro.url.searchParams.get('filter');
-
-// Filter experience
-const filteredExperience = filterParam
-  ? sortedExperience.filter(e => e.data.skills?.includes(filterParam))
-  : sortedExperience;
-
-// Pagination
-const { currentPage, paginatedItems, totalPages } = getPagination(
-  filteredExperience,
-  pageParam,
-  viewParam === 'list' ? 4 : viewParam === 'grid' ? 4 : 6,
-  '/experience',
-  Astro.url.searchParams
-);
-
-// Helper to build URLs with params
-function buildUrl(base: string, params: Record<string, string | undefined>) {
-  const url = new URL(base, 'http://localhost');
-  Object.entries(params).forEach(([key, value]) => {
-    if (value && value !== 'newest') {
-      url.searchParams.set(key, value);
-    }
+  const sortedExperience = [...allExperience].sort((a, b) => {
+     return b.data.startDate.valueOf() - a.data.startDate.valueOf();
   });
-  return url.pathname + url.search;
-}
 
-// Build filter dropdowns
+  // Load ALL items
+  return paginate(sortedExperience, { pageSize: 1000 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+// Client-side defaults
+const allSkills = [...new Set(page.data.flatMap(e => e.data.skills || []))].sort();
+const INITIAL_PAGE_SIZE = 6; // Default for experience
+
+// Helpers
+const getExperienceDate = (data: any) => data.startDate ? new Date(data.startDate).getTime() : 0;
+
 const sortOptions = [
-  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
-  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
-  { href: buildUrl('/experience', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
+  { href: '?sort=newest', label: 'Newest First', value: 'newest' },
+  { href: '?sort=oldest', label: 'Oldest First', value: 'oldest' },
+  { href: '?sort=a-z', label: 'A-Z', value: 'a-z' },
 ];
 
-const skillOptions: { href: string; label: string; value: string; }[] = [
-  { href: buildUrl('/experience', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Skills', value: '' },
+const skillOptions = [
+  { href: '?', label: 'All Skills', value: '' },
   ...allSkills.map(skill => ({
-    href: buildUrl('/experience', { filter: skill, sort: sortParam !== 'newest' ? sortParam : undefined }),
+    href: `?filter=${skill}`,
     label: skill,
     value: skill,
   })),
 ];
 
 const filters: FilterConfig[] = [
-  {
-    id: 'sort',
-    label: 'Sort',
-    options: sortOptions,
-    selectedValue: sortParam,
-  },
-  ...(allSkills.length > 0 ? [{
-    id: 'filter',
-    label: 'Skill',
-    options: skillOptions,
-    selectedValue: filterParam || '',
-  }] : []),
+  { id: 'sort', label: 'Sort', options: sortOptions, selectedValue: 'newest' },
+  ...(allSkills.length > 0 ? [{ id: 'filter', label: 'Skill', options: skillOptions, selectedValue: '' }] : []),
 ];
-
-// Build base URL for pagination
-const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort: sortParam !== 'newest' ? sortParam : undefined });
 ---
 
 <LayoutRoot
@@ -105,93 +61,110 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
 >
   <Section>
     <SectionHeader
-      class="mb-8 px-0 sm:px-0 lg:px-0"
+      class="mb-8"
       description="My professional journey, key roles, and technical expertise specialized in building scalable systems."
       icon="mdi:briefcase-outline"
       title="Experience"
     />
 
-    {
-      paginatedItems.length > 0 ? (
-        <Stack gap={6}>
-          <ListActions
-            baseUrl={baseUrl}
-            currentPage={currentPage}
-            filters={filters}
-            itemCountLabel="positions"
-            showItemCount
-            showViewToggle
-            totalItems={filteredExperience.length}
-            totalPages={totalPages}
-            viewMode={viewParam}
-          />
+    <Stack gap={6}>
+      <ListActions
+        baseUrl="/experience"
+        currentPage={1}
+        filters={filters}
+        itemCountLabel="positions"
+        itemsPerPage={INITIAL_PAGE_SIZE}
+        paginationType="query"
+        showItemCount
+        showItemsPerPage={true}
+        showViewToggle
+        totalItems={page.total}
+        totalPages={1}
+        viewMode="list"
+      />
 
-          {viewParam === 'list' && (
-            <div class="flex flex-col gap-3 sm:gap-4">
-              {paginatedItems.map((exp) => (
-                <Card list portfolioItem={{
+      <div class="experience-view-list min-h-[50vh]" id="experience-container">
+
+        {/* LIST VIEW (Default) */}
+        <div class="list-view flex flex-col gap-3 sm:gap-4 transition-opacity duration-300">
+          {page.data.map((exp, index) => (
+            <div
+              class:list={['list-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+              data-date={getExperienceDate(exp.data)}
+              data-tags={exp.data.skills?.join(',') || ''}
+              data-title={exp.data.company}
+            >
+              <Card list portfolioItem={{
+                desc: exp.data.description,
+                href: `/experience/view/${exp.id}/`,
+                id: exp.id,
+                meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                subtitle: exp.data.role,
+                tags: exp.data.skills || [],
+                title: exp.data.company,
+              }} variant="portfolio" />
+            </div>
+          ))}
+        </div>
+
+        {/* GRID VIEW (Initially Hidden) */}
+        <div class="grid-view hidden transition-opacity duration-300">
+          <MasonryGrid columns={2}>
+            {page.data.map((exp, index) => (
+              <div
+                class:list={['masonry-item list-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+                data-date={getExperienceDate(exp.data)}
+                data-tags={exp.data.skills?.join(',') || ''}
+                data-title={exp.data.company}
+              >
+                <Card portfolioItem={{
                   desc: exp.data.description,
                   href: `/experience/view/${exp.id}/`,
                   id: exp.id,
-                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
+                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
                   subtitle: exp.data.role,
                   tags: exp.data.skills || [],
                   title: exp.data.company,
                 }} variant="portfolio" />
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </MasonryGrid>
+        </div>
 
-          {viewParam === 'grid' && (
-            <MasonryGrid columns={2}>
-              {paginatedItems.map((exp) => (
-                <div class="masonry-item">
-                  <Card portfolioItem={{
-                    desc: exp.data.description,
-                    href: `/experience/view/${exp.id}/`,
-                    id: exp.id,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
-                    subtitle: exp.data.role,
-                    tags: exp.data.skills || [],
-                    title: exp.data.company,
-                  }} variant="portfolio" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
+        <div class="mt-12 hidden text-center text-gray-500" id="no-results">
+           <div class="flex flex-col items-center justify-center gap-2">
+             <span class="text-4xl">🔍</span>
+             <p class="text-lg font-medium">No experience found.</p>
+             <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href="/experience">
+                Clear Filters
+             </a>
+           </div>
+        </div>
 
-          {viewParam === 'grid' && (
-            <MasonryGrid columns={3}>
-              {paginatedItems.map((exp) => (
-                <div class="masonry-item">
-                  <Card portfolioItem={{
-                    desc: exp.data.description,
-                    href: `/experience/view/${exp.id}/`,
-                    id: exp.id,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
-                    subtitle: exp.data.role,
-                    tags: exp.data.skills || [],
-                    title: exp.data.company,
-                  }} variant="portfolio" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
-        </Stack>
-      ) : (
-        <Empty
-          action={filterParam ? { href: '/experience', label: 'Clear Filter' } : undefined}
-          description={filterParam ? `No experience found with skill "${filterParam}".` : "No experience yet."}
-          title="No experience found"
-        />
-      )
-    }
+      </div>
+    </Stack>
   </Section>
 </LayoutRoot>
 
+<style is:global>
+  .hidden { display: none !important; }
+</style>
+
 <script>
+  import { ClientList } from '../../lib/client-list';
   import { initInteractiveCards } from '../../lib/interactive-cards';
 
   initInteractiveCards();
-  document.addEventListener('astro:page-load', initInteractiveCards);
+
+  document.addEventListener('astro:page-load', () => {
+    initInteractiveCards();
+
+    new ClientList({
+      containerId: 'experience-container',
+      initialPageSize: 6,
+      ui: {
+        itemSelector: '.list-item'
+      }
+    });
+  });
 </script>

@@ -8,6 +8,7 @@ import Text from "../atoms/text.astro";
 import Container from "../molecules/container.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
+import Search from "../organisms/search.astro";
 import LayoutWrapper from "./layout-wrapper.astro";
 
 const { pathname } = Astro.url;
@@ -60,12 +61,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
 
         {/* Search */}
         <div class="flex items-center gap-0.5 pr-1">
-          <button
-            class="search-trigger inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-medium text-muted-foreground transition-all hover:bg-white/5 hover:text-foreground md:px-3 md:py-1"
-          >
-            <Icon class="size-4 md:size-4.5" name="mdi:magnify" />
-            <span class="hidden sm:inline">Search</span>
-          </button>
+          <Search />
         </div>
 
         {/* Social Links */}
@@ -98,22 +94,6 @@ const isActive = (href: string) => isActivePath(pathname, href);
   const init = () => {
     initMobileMenu();
     updateActiveLinks();
-
-    // Search trigger
-    const triggers = document.querySelectorAll('.search-trigger');
-    const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
-
-    if (triggers.length && modal) {
-      triggers.forEach(trigger => {
-        trigger.addEventListener('click', () => {
-          modal.showModal();
-          setTimeout(() => {
-            const input = modal.querySelector('input');
-            if (input) input.focus();
-          }, 50);
-        });
-      });
-    }
   };
 
   init();

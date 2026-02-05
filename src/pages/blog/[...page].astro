@@ -1,181 +1,149 @@
 ---
-import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
 
-export const prerender = false;
+import { getCollection } from 'astro:content';
 
 import Stack from '../../components/atoms/stack.astro';
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import Empty from '../../components/molecules/empty.astro';
-import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
+import ListActions, { type FilterConfig } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
 import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import { getPagination, sortPosts } from '../../lib/cms';
+import { sortPosts } from '../../lib/cms';
 
-// Get URL params
-const pageParam = Astro.url.searchParams.get('page');
-const filterParam = Astro.url.searchParams.get('filter');
-const sortParam = Astro.url.searchParams.get('sort') || 'newest';
-const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'grid';
+export const prerender = true;
 
-// Parse multi-select filters (comma-separated)
-const selectedFilters = filterParam ? filterParam.split(',').filter(Boolean) : [];
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getCollection('blog');
+  const sortedPosts = sortPosts(allPosts);
 
-// Get and process posts
-const allPosts = await getCollection('blog');
+  // Load ALL posts into one page for client-side control
+  return paginate(sortedPosts, { pageSize: 1000 });
+}) satisfies GetStaticPaths;
 
-// Filter posts - must have ALL selected tags
-const filteredPosts = selectedFilters.length > 0
-  ? allPosts.filter(post =>
-    selectedFilters.every(filter =>
-      post.data.tags?.some(tag => tag.toLowerCase() === filter.toLowerCase())
-    )
-  )
-  : allPosts;
+const { page } = Astro.props;
 
-const sortedPosts = sortPosts(filteredPosts, sortParam);
+// Client-side state defaults
+const allTags = [...new Set(page.data.flatMap(post => post.data.tags || []))].sort();
+const INITIAL_PAGE_SIZE = 8; // Default for blog grid
 
-// Get unique tags for filter dropdown
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].sort();
+// Logic Helpers for data attributes
+const getPostDate = (data: any) => data.pubDate ? new Date(data.pubDate).getTime() : 0;
 
-// Pagination
-const { currentPage, paginatedItems, totalPages } = getPagination(
-  sortedPosts,
-  pageParam,
-  viewParam === 'list' ? 10 : viewParam === 'grid' ? 8 : 9,
-  '/blog',
-  Astro.url.searchParams
-);
-
-// Build multi-select filter URLs
-function buildFilterUrl(tag: string): string {
-  const newFilters = selectedFilters.includes(tag)
-    ? selectedFilters.filter(f => f !== tag)
-    : [...selectedFilters, tag];
-
-  return buildUrl('/blog', {
-    filter: newFilters.length > 0 ? newFilters.join(',') : undefined,
-    sort: sortParam !== 'newest' ? sortParam : undefined
-  });
-}
-
-// Helper to build URLs with params
-function buildUrl(base: string, params: Record<string, string | undefined>) {
-  const url = new URL(base, 'http://localhost');
-  Object.entries(params).forEach(([key, value]) => {
-    if (value && value !== 'newest') {
-      url.searchParams.set(key, value);
-    }
-  });
-  return url.pathname + url.search;
-}
-
-// Build sort URLs (preserve current filters)
 const sortOptions = [
-  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
-  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'oldest' }), label: 'Oldest First', value: 'oldest' },
-  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
-  { href: buildUrl('/blog', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
+  { href: '?sort=newest', label: 'Newest First', value: 'newest' },
+  { href: '?sort=oldest', label: 'Oldest First', value: 'oldest' },
+  { href: '?sort=a-z', label: 'A-Z', value: 'a-z' },
 ];
 
-// Tag options with checkmarks for selected
-const tagOptions: { href: string; label: string; value: string; }[] = [
-  { href: buildUrl('/blog', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Tags', value: '' },
+const tagOptions = [
+  { href: '?', label: 'All Tags', value: '' },
   ...allTags.map(tag => ({
-    href: buildFilterUrl(tag),
+    href: `?filter=${tag}`,
     label: tag.charAt(0).toUpperCase() + tag.slice(1),
     value: tag,
   })),
 ];
 
 const filters: FilterConfig[] = [
-  {
-    id: 'sort',
-    label: 'Sort',
-    options: sortOptions,
-    selectedValue: sortParam,
-  },
-  ...(allTags.length > 0 ? [{
-    id: 'filter',
-    label: selectedFilters.length > 0 ? `Tags (${selectedFilters.length})` : 'Filter',
-    options: tagOptions,
-    selectedValues: selectedFilters,
-  }] : []),
+  { id: 'sort', label: 'Sort', options: sortOptions, selectedValue: 'newest' },
+  ...(allTags.length > 0 ? [{ id: 'filter', label: 'Tag', options: tagOptions, selectedValue: '' }] : []),
 ];
-
-// Build base URL for pagination (preserves filter and sort)
-const baseUrl = buildUrl('/blog', { filter: filterParam || undefined, sort: sortParam !== 'newest' ? sortParam : undefined });
-
-// Reset URL - keeps sort but clears filters
-const resetUrl = buildUrl('/blog', { sort: sortParam !== 'newest' ? sortParam : undefined });
 ---
 
 <LayoutRoot description={SITE_DESCRIPTION} title={`Blog | ${SITE_TITLE}`}>
   <Section>
     <SectionHeader
-      class="mb-8 px-0 sm:px-0 lg:px-0"
+      class="mb-8"
       description="Thoughts and tutorials on software engineering."
       icon="mdi:newspaper-variant-outline"
       title="Blog Posts"
     />
 
-    {
-      paginatedItems.length > 0 ? (
-        <Stack gap={6}>
-          <ListActions
-            baseUrl={baseUrl}
-            currentPage={currentPage}
-            filters={filters}
-            resetHref={selectedFilters.length > 0 ? resetUrl : undefined}
-            showViewToggle
-            totalPages={totalPages}
-            viewMode={viewParam}
-          />
+    <Stack gap={6}>
+      <ListActions
+        baseUrl="/blog"
+        currentPage={1}
+        filters={filters}
+        itemCountLabel="posts"
+        itemsPerPage={INITIAL_PAGE_SIZE}
+        paginationType="query"
+        showItemCount
+        showItemsPerPage={true}
+        showViewToggle
+        totalItems={page.total}
+        totalPages={1}
+        viewMode="grid"
+      />
 
-          {viewParam === 'list' && (
-            <div class="flex flex-col gap-3 sm:gap-4">
-              {paginatedItems.map((post) => (
-                <Card list post={post} variant="content" />
-              ))}
+      <div class="blog-view-list min-h-[50vh]" id="blog-container">
+
+        {/* LIST VIEW (Initially Hidden if default is Grid) */}
+        <div class="list-view hidden flex flex-col gap-3 sm:gap-4 transition-opacity duration-300">
+          {page.data.map((post, index) => (
+            <div
+              class:list={['list-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+              data-date={getPostDate(post.data)}
+              data-tags={post.data.tags?.join(',') || ''}
+              data-title={post.data.title}
+            >
+              <Card list post={post} variant="content" />
             </div>
-          )}
+          ))}
+        </div>
 
-          {viewParam === 'grid' && (
-            <MasonryGrid columns={2}>
-              {paginatedItems.map((post) => (
-                <div class="masonry-item">
-                  <Card post={post} variant="content" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
+        {/* GRID VIEW (Default) */}
+        <div class="grid-view transition-opacity duration-300">
+          <MasonryGrid columns={2}>
+            {page.data.map((post, index) => (
+              <div
+                class:list={['masonry-item list-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+                data-date={getPostDate(post.data)}
+                data-tags={post.data.tags?.join(',') || ''}
+                data-title={post.data.title}
+              >
+                <Card post={post} variant="content" />
+              </div>
+            ))}
+          </MasonryGrid>
+        </div>
 
-          {viewParam === 'grid' && (
-            <MasonryGrid columns={3}>
-              {paginatedItems.map((post) => (
-                <div class="masonry-item">
-                  <Card post={post} variant="content" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
-        </Stack>
-      ) : (
-        <Empty
-          action={selectedFilters.length > 0 ? { href: resetUrl, label: 'Clear Filters' } : undefined}
-          description={selectedFilters.length > 0 ? `No posts found with ${selectedFilters.length > 1 ? 'these tags' : 'this tag'}.` : "No posts yet."}
-          title="No posts found"
-        />
-      )
-    }
+        <div class="mt-12 hidden text-center text-gray-500" id="no-results">
+           <div class="flex flex-col items-center justify-center gap-2">
+             <span class="text-4xl">🔍</span>
+             <p class="text-lg font-medium">No posts found.</p>
+             <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href="/blog">
+                Clear Filters
+             </a>
+           </div>
+        </div>
+
+      </div>
+    </Stack>
   </Section>
 </LayoutRoot>
 
+<style is:global>
+  .hidden { display: none !important; }
+</style>
+
 <script>
+  import { ClientList } from '../../lib/client-list';
   import { initInteractiveCards } from '../../lib/interactive-cards';
 
   initInteractiveCards();
-  document.addEventListener('astro:page-load', initInteractiveCards);
+
+  document.addEventListener('astro:page-load', () => {
+    initInteractiveCards();
+
+    new ClientList({
+      containerId: 'blog-container',
+      initialPageSize: 8,
+      ui: {
+        itemSelector: '.list-item'
+      }
+    });
+  });
 </script>

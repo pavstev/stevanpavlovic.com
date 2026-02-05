@@ -1,0 +1,25 @@
+---
+import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
+import Tags from '../molecules/tags.astro';
+
+interface Props {
+  heading: string;
+  tags: string[];
+}
+
+const { heading, tags } = Astro.props;
+---
+
+{tags && tags.length > 0 && (
+  <div class="group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-foreground/2 to-transparent p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md">
+    {/* Subtle gradient overlay */}
+    <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/2 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+    {/* Content */}
+    <Stack class="relative" gap={3}>
+      <Text class="font-mono text-xs font-semibold tracking-widest text-muted-foreground/80 uppercase">{heading}</Text>
+      <Tags tags={tags} />
+    </Stack>
+  </div>
+)}

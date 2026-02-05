@@ -41,6 +41,7 @@
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/space-grotesk": "^5.2.10",
     "@iconify-json/mdi": "^1.2.3",
+    "@iconify/react": "^6.0.2",
     "@playform/compress": "^0.2.1",
     "@playform/inline": "^0.1.2",
     "@sentry/astro": "^10.38.0",

@@ -24,7 +24,7 @@ const ScrollToTop: React.FC = () => {
   return (
     <button
       aria-label="Scroll to top"
-      className={`group fixed right-20 bottom-4 z-40 flex items-center gap-1.5 rounded-full bg-foreground/10 px-4 py-2 text-sm font-semibold text-foreground shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-foreground/20 hover:shadow-xl ${
+      className={`group fixed right-20 bottom-4 z-40 flex cursor-pointer items-center gap-1.5 rounded-full bg-foreground/5 px-4 py-2 text-sm font-semibold text-muted-foreground shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-foreground/10 hover:text-foreground hover:shadow-xl ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
       }`}
       id="smart-scroll-to-top"

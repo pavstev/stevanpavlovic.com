@@ -36,7 +36,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
       </div>
 
       <Modal
-        className="m-0 flex! h-screen! max-h-none! w-screen! max-w-none! items-center! !justify-center !border-none !bg-transparent !p-0"
+        className="m-0 flex! h-screen! max-h-none! w-screen! max-w-none! items-center! justify-center! border-none! bg-transparent! p-0!"
         dialogClass="!p-0"
         onClose={() => { setIsModalOpen(false); }}
         open={isModalOpen}

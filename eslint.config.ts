@@ -66,8 +66,10 @@ export default defineConfig(
       "better-tailwindcss": tailwind,
     },
     rules: {
-      "better-tailwindcss/enforce-consistent-class-order": "warn",
-      "better-tailwindcss/enforce-shorthand-classes": "warn",
+      "better-tailwindcss/enforce-consistent-class-order": "error",
+      "better-tailwindcss/enforce-consistent-important-position": "error",
+      "better-tailwindcss/enforce-consistent-variable-syntax": "error",
+      "better-tailwindcss/enforce-shorthand-classes": "error",
       "better-tailwindcss/no-conflicting-classes": "error",
       "better-tailwindcss/no-deprecated-classes": "error",
       "better-tailwindcss/no-duplicate-classes": "error",

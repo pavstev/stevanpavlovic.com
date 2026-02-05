@@ -1,6 +1,7 @@
 ---
 import { cn } from '../../lib/cn';
 import { SITE_CONFIG } from '../../lib/config';
+import { stats } from '../../lib/content';
 import Heading from '../atoms/heading.astro';
 import Text from '../atoms/text.astro';
 import Stat from './stat.astro';
@@ -10,25 +11,6 @@ interface Props {
 }
 
 const { class: className } = Astro.props;
-
-// New utility function for formatting numbers nicely
-const formatCompactNumber = (number: number) => {
-  const formatter = new Intl.NumberFormat('en-US', {
-    compactDisplay: "short",
-    maximumFractionDigits: 1,
-    notation: "compact",
-  });
-  return formatter.format(number);
-};
-
-// Expanded stats for a more professional overview
-const stats = [
-  { icon: 'mdi:clock-time-eight-outline', label: 'Years Exp.', value: 12 },
-  { icon: 'mdi:server-network', label: 'Systems', value: 24 },
-  { icon: 'mdi:account-group-outline', label: 'Users', value: 120000 },
-  { icon: 'mdi:earth', label: 'Countries', value: 15 },
-  { icon: 'mdi:check-decagram-outline', label: 'Uptime', value: "99.9%" },
-];
 ---
 
 <div class:list={cn("relative -mt-12 space-y-6 overflow-hidden py-12 md:py-20", className)}>
@@ -53,7 +35,8 @@ const stats = [
         class="origin-left scale-95 md:scale-100"
         icon={stat.icon}
         label={stat.label}
-        value={typeof stat.value === 'number' ? `${formatCompactNumber(stat.value)}+` : stat.value}
+        unit={stat.unit}
+        value={stat.value}
       />
     ))}
   </div>

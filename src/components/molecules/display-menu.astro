@@ -1,13 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import { cn } from '../../lib/cn';
-import {
-  buildListUrl,
-  VIEW_MODES,
-  type ViewMode,
-  type ViewUrls,
-} from '../../lib/list';
+import { buildListUrl, VIEW_MODES, type ViewMode, type ViewUrls } from '../../lib/list';
 import Button from '../atoms/button.astro';
 
 interface Props {
@@ -29,14 +23,12 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
 <div class="display-menu flex items-center gap-1">
   {VIEW_MODES.map(({ icon, label, mode }) => (
     <Button
-      aria-pressed={viewMode === mode}
       as="a"
-      class:list={cn("rounded-full border border-border bg-background/80 px-4 py-2 text-[10px] font-bold tracking-widest text-muted-foreground uppercase shadow-xl backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-background hover:text-primary focus:outline-none", {
-        'bg-accent/80 text-accent-foreground shadow-sm': viewMode === mode,
-        'text-muted-foreground': viewMode !== mode,
-      })}
+      class="hover:no-underline"
+      data-active={viewMode === mode}
       href={viewUrls ? buildUrl(viewUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
       size="sm"
+      variant="tabs"
     >
       <Icon class="shrink-0" name={icon} size={16} />
       {showLabels && (

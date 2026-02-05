@@ -51,7 +51,7 @@ const ZoomableImage: React.FC<Props> = ({
 
       <Modal
         bodyClass="p-0 overflow-hidden"
-        className="m-0 !flex !h-screen !max-h-none !w-screen !max-w-none !items-center !justify-center !border-none !bg-transparent !p-0 backdrop:bg-black/90"
+        className="m-0 flex! h-screen! max-h-none! w-screen! max-w-none! items-center! justify-center! border-none! bg-transparent! p-0! backdrop:bg-black/90"
         dialogClass="!p-0"
         onClose={() => { setIsModalOpen(false); }}
         open={isModalOpen}

@@ -1,92 +1,61 @@
 ---
 import { getCollection } from 'astro:content';
-import type { Page } from 'astro';
-
-export const prerender = true;
-
+import type { GetStaticPaths } from 'astro';
 import Stack from '../../components/atoms/stack.astro';
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import Empty from '../../components/molecules/empty.astro';
-import ListActions, { type FilterConfig, type ViewMode } from '../../components/molecules/list-actions.astro';
+import ListActions, { type FilterConfig } from '../../components/molecules/list-actions.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
 import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { PROFILE } from '../../lib/config';
 
-export async function getStaticPaths({ paginate }) {
+export const prerender = true;
+
+export const getStaticPaths = (async ({ paginate }) => {
   const allProjects = await getCollection('projects');
-  
-  // Sort by newest (default)
+
   const sortedProjects = [...allProjects].sort((a, b) => {
     const dateA = 'pubDate' in a.data && a.data.pubDate ? (a.data.pubDate as Date).getTime() : 0;
     const dateB = 'pubDate' in b.data && b.data.pubDate ? (b.data.pubDate as Date).getTime() : 0;
     return dateB - dateA;
   });
 
-  return paginate(sortedProjects, { pageSize: 3 });
-}
+  // We load ALL projects into one static page (effectively) to allow
+  // dynamic client-side pagination and "items per page" handling.
+  return paginate(sortedProjects, { pageSize: 1000 });
+}) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-const sortParam = Astro.url.searchParams.get('sort') || 'newest';
-const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
 
-// Get all tags for filter dropdown (from page.data to avoid extra collection call)
+// --- Client-Side State Helpers ---
+// In SSG, we use the URL search params (available via Astro.url only for initial build hint)
+// But real values come from client. We set defaults here for the initial render.
+// Note: Astro.url.searchParams is empty during build, so defaults apply.
 const allTags = [...new Set(page.data.flatMap(p => p.data.tags || []))].sort();
-const filterParam = Astro.url.searchParams.get('filter');
 
-// Note: For SSG, filtering is handled via URL params but applied to page.data
-const filteredProjects = filterParam
-  ? page.data.filter(p => p.data.tags?.includes(filterParam))
-  : page.data;
+// Logic Helpers
+const getProjectDate = (data: any) => data.pubDate ? new Date(data.pubDate).getTime() : 0;
+const INITIAL_PAGE_SIZE = 6;
 
-// For SSG with pagination, totalItems should reflect the full collection, not filtered
-const totalItems = page.total;
-
-// Helper to build URLs with params
-function buildUrl(base: string, params: Record<string, string | undefined>) {
-  const url = new URL(base, 'http://localhost');
-  Object.entries(params).forEach(([key, value]) => {
-    if (value && value !== 'newest') {
-      url.searchParams.set(key, value);
-    }
-  });
-  return url.pathname + url.search;
-}
-
-// Build filter dropdowns
 const sortOptions = [
-  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'newest' }), label: 'Newest First', value: 'newest' },
-  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'a-z' }), label: 'A-Z', value: 'a-z' },
-  { href: buildUrl('/projects', { filter: filterParam || undefined, sort: 'z-a' }), label: 'Z-A', value: 'z-a' },
+  { href: '?sort=newest', label: 'Newest First', value: 'newest' },
+  { href: '?sort=a-z', label: 'A-Z', value: 'a-z' },
 ];
 
-const tagOptions: { href: string; label: string; value: string; }[] = [
-  { href: buildUrl('/projects', { sort: sortParam !== 'newest' ? sortParam : undefined }), label: 'All Tags', value: '' },
+const tagOptions = [
+  { href: '?', label: 'All Tags', value: '' },
   ...allTags.map(tag => ({
-    href: buildUrl('/projects', { filter: tag, sort: sortParam !== 'newest' ? sortParam : undefined }),
+    href: `?filter=${tag}`,
     label: tag.charAt(0).toUpperCase() + tag.slice(1),
     value: tag,
   })),
 ];
 
 const filters: FilterConfig[] = [
-  {
-    id: 'sort',
-    label: 'Sort',
-    options: sortOptions,
-    selectedValue: sortParam,
-  },
-  ...(allTags.length > 0 ? [{
-    id: 'filter',
-    label: 'Tag',
-    options: tagOptions,
-    selectedValue: filterParam || '',
-  }] : []),
+  { id: 'sort', label: 'Sort', options: sortOptions, selectedValue: 'newest' },
+  ...(allTags.length > 0 ? [{ id: 'filter', label: 'Tag', options: tagOptions, selectedValue: '' }] : []),
 ];
-
-// Build base URL for pagination
-const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: sortParam !== 'newest' ? sortParam : undefined });
 ---
 
 <LayoutRoot
@@ -95,93 +64,216 @@ const baseUrl = buildUrl('/projects', { filter: filterParam || undefined, sort: 
 >
   <Section>
     <SectionHeader
-      class="mb-8 px-0 sm:px-0 lg:px-0"
+      class="mb-8"
       description="A collection of open-source libraries, applications, and experiments I've built."
       icon="mdi:console"
       title="Projects"
     />
 
-    {
-      filteredProjects.length > 0 ? (
-        <Stack gap={6}>
-          <ListActions
-            baseUrl={baseUrl}
-            currentPage={page.currentPage}
-            filters={filters}
-            itemCountLabel="projects"
-            showItemCount
-            showViewToggle
-            totalItems={totalItems}
-            totalPages={page.lastPage}
-            viewMode={viewParam}
-          />
+    <Stack gap={6}>
+      {/* ListActions now acts as a Client-Side Controller.
+        We pass default values, but the script below will update the UI based on URL params.
+      */}
+      <ListActions
+        baseUrl="/projects"
+        currentPage={1}
+        filters={filters}
+        itemCountLabel="projects"
+        itemsPerPage={INITIAL_PAGE_SIZE}
+        paginationType="query"
+        showItemCount
+        showItemsPerPage={true}
+        showViewToggle
+        totalItems={page.total}
+        totalPages={1}
+        viewMode="list"
+      />
 
-          {viewParam === 'list' && (
-            <div class="flex flex-col gap-3 sm:gap-4">
-              {filteredProjects.map((project) => (
-                <Card list portfolioItem={{
+      <div id="projects-container" class="project-view-list min-h-[50vh]">
+
+        {/* LIST VIEW */}
+        <div class="list-view flex flex-col gap-4 transition-opacity duration-300">
+          {page.data.map((project, index) => (
+            <div
+              class:list={['project-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+              data-tags={project.data.tags?.join(',') || ''}
+              data-date={getProjectDate(project.data)}
+              data-title={project.data.title}
+            >
+              <Card list portfolioItem={{
+                desc: project.data.desc,
+                href: `/projects/view/${project.id}/`,
+                id: project.id,
+                meta: project.data.meta,
+                subtitle: project.data.subtitle,
+                tags: project.data.tags,
+                title: project.data.title,
+              }} variant="portfolio" />
+            </div>
+          ))}
+        </div>
+
+        {/* GRID VIEW */}
+        <div class="grid-view hidden transition-opacity duration-300">
+          <MasonryGrid columns={2}>
+            {page.data.map((project, index) => (
+              <div
+                class:list={['masonry-item project-item transition-all duration-300', { hidden: index >= INITIAL_PAGE_SIZE }]}
+                data-tags={project.data.tags?.join(',') || ''}
+                data-date={getProjectDate(project.data)}
+                data-title={project.data.title}
+              >
+                <Card portfolioItem={{
                   desc: project.data.desc,
-                  href: `/projects/${project.id}/`,
+                  href: `/projects/view/${project.id}/`,
                   id: project.id,
                   meta: project.data.meta,
                   subtitle: project.data.subtitle,
                   tags: project.data.tags,
                   title: project.data.title,
                 }} variant="portfolio" />
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </MasonryGrid>
+        </div>
 
-          {viewParam === 'masonry-2' && (
-            <MasonryGrid columns={2}>
-              {filteredProjects.map((project) => (
-                <div class="masonry-item">
-                  <Card portfolioItem={{
-                    desc: project.data.desc,
-                    href: `/projects/${project.id}/`,
-                    id: project.id,
-                    meta: project.data.meta,
-                    subtitle: project.data.subtitle,
-                    tags: project.data.tags,
-                    title: project.data.title,
-                  }} variant="portfolio" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
+        <div id="no-results" class="hidden mt-12 text-center text-gray-500">
+           <div class="flex flex-col items-center justify-center gap-2">
+             <span class="text-4xl">🔍</span>
+             <p class="text-lg font-medium">No projects found.</p>
+             <a href="/projects" class="mt-4 px-4 py-2 bg-secondary/10 rounded-full text-secondary hover:bg-secondary/20 transition-colors text-sm font-semibold">
+               Clear Filters
+             </a>
+           </div>
+        </div>
 
-          {viewParam === 'masonry-3' && (
-            <MasonryGrid columns={3}>
-              {filteredProjects.map((project) => (
-                <div class="masonry-item">
-                  <Card portfolioItem={{
-                    desc: project.data.desc,
-                    href: `/projects/${project.id}/`,
-                    id: project.id,
-                    meta: project.data.meta,
-                    subtitle: project.data.subtitle,
-                    tags: project.data.tags,
-                    title: project.data.title,
-                  }} variant="portfolio" />
-                </div>
-              ))}
-            </MasonryGrid>
-          )}
-        </Stack>
-      ) : (
-        <Empty
-          action={filterParam ? { href: '/projects', label: 'Clear Filter' } : undefined}
-          description={filterParam ? `No projects found with tag "${filterParam}".` : "No projects yet."}
-          title="No projects found"
-        />
-      )
-    }
+      </div>
+    </Stack>
   </Section>
 </LayoutRoot>
 
+<style is:global>
+  /* Global hidden class to ensure it overrides specific styles */
+  .hidden { display: none !important; }
+</style>
+
 <script>
   import { initInteractiveCards } from '../../lib/interactive-cards';
-
   initInteractiveCards();
   document.addEventListener('astro:page-load', initInteractiveCards);
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('projects-container');
+    const listView = container?.querySelector('.list-view');
+    const gridView = container?.querySelector('.grid-view');
+    const noResults = document.getElementById('no-results');
+
+    if (!container || !listView || !gridView) return;
+
+    // --- 1. State Management ---
+    const params = new URLSearchParams(window.location.search);
+    const state = {
+      view: params.get('view') || 'list',
+      filter: params.get('filter'),
+      sort: params.get('sort') || 'newest',
+      limit: parseInt(params.get('limit') || '6'),
+      page: parseInt(params.get('page') || '1')
+    };
+
+    // --- 2. Update Controls (ListActions) ---
+    // Since ListActions is static HTML, we update its text/state to match URL
+    // Update Dropdown Labels if needed (Simplified: relying on URL params reload)
+    // Update Pagination Display
+    const updatePaginationUI = (totalVisible: number) => {
+      const totalPages = Math.ceil(totalVisible / state.limit);
+      const nav = document.querySelector('nav[aria-label="Pagination"]');
+
+      if (totalPages <= 1) {
+        if (nav) nav.classList.add('hidden');
+      } else {
+        if (nav) nav.classList.remove('hidden');
+        const currentEl = nav?.querySelector('.text-foreground');
+        const totalEl = nav?.querySelector('.text-muted-foreground.tabular-nums');
+        const prevBtn = nav?.querySelector('a[href*="page"]:first-child');
+        const nextBtn = nav?.querySelector('a[href*="page"]:last-child');
+
+        // Update numbers
+        if (currentEl) currentEl.textContent = String(state.page);
+        if (totalEl) totalEl.textContent = String(totalPages);
+
+        // Update buttons state
+        if (prevBtn) {
+            (prevBtn as HTMLElement).style.pointerEvents = state.page <= 1 ? 'none' : 'auto';
+            (prevBtn as HTMLElement).style.opacity = state.page <= 1 ? '0.5' : '1';
+        }
+        if (nextBtn) {
+            (nextBtn as HTMLElement).style.pointerEvents = state.page >= totalPages ? 'none' : 'auto';
+            (nextBtn as HTMLElement).style.opacity = state.page >= totalPages ? '0.5' : '1';
+        }
+      }
+    };
+
+    // --- 3. View Mode Toggle ---
+    if (state.view === 'grid') {
+      listView.classList.add('hidden');
+      gridView.classList.remove('hidden');
+    } else {
+      gridView.classList.add('hidden');
+      listView.classList.remove('hidden');
+    }
+
+    // --- 4. Core Logic: Sort, Filter, Slice ---
+    const processItems = (parentContainer: Element) => {
+      const items = Array.from(parentContainer.querySelectorAll('.project-item')) as HTMLElement[];
+
+      // A. Sort
+      items.sort((a, b) => {
+        if (state.sort === 'a-z') {
+          return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+        }
+        return parseInt(b.dataset.date || '0') - parseInt(a.dataset.date || '0');
+      });
+
+      // B. Filter
+      const filteredItems = items.filter(item => {
+        const itemTags = item.dataset.tags?.split(',') || [];
+        return !state.filter || itemTags.includes(state.filter);
+      });
+
+      // C. Paginate (Slice)
+      const startIndex = (state.page - 1) * state.limit;
+      const endIndex = startIndex + state.limit;
+      const visibleItems = filteredItems.slice(startIndex, endIndex);
+
+      // D. Apply to DOM
+      // We loop through ALL items to ensure correct show/hide state
+      items.forEach(item => {
+         // It must be in the filtered set AND within the current page slice to be visible
+         const isVisible = visibleItems.includes(item);
+         if (isVisible) {
+             item.classList.remove('hidden');
+             parentContainer.appendChild(item); // Re-append triggers visual sort
+         } else {
+             item.classList.add('hidden');
+         }
+      });
+
+      return filteredItems.length;
+    };
+
+    // Run Logic
+    const listCount = processItems(listView);
+    const gridWrapper = gridView.querySelector('.masonry-grid') || gridView;
+    const gridCount = processItems(gridWrapper);
+
+    const totalResults = Math.max(listCount, gridCount);
+    updatePaginationUI(totalResults);
+
+    // No Results Handling
+    if (totalResults === 0 && noResults) {
+      noResults.classList.remove('hidden');
+    } else if (noResults) {
+      noResults.classList.add('hidden');
+    }
+  });
 </script>

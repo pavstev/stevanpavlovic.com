@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 import { NAV_ITEMS, PROFILE, SOCIALS } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
 import Spacer from "../atoms/spacer.astro";
@@ -7,7 +9,6 @@ import Container from "../molecules/container.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
 import LayoutWrapper from "./layout-wrapper.astro";
-import { Icon } from 'astro-icon/components';
 
 const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);

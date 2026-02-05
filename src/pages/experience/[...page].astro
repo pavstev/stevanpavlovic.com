@@ -19,13 +19,6 @@ const pageParam = Astro.url.searchParams.get('page');
 const sortParam = Astro.url.searchParams.get('sort') || 'newest';
 const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'list';
 
-// If no page parameter, redirect to first page
-if (!pageParam) {
-  const url = new URL(Astro.url);
-  url.searchParams.set('page', '1');
-  return Astro.redirect(url);
-}
-
 // Get and process experience
 const allExperience = await getCollection('experience');
 
@@ -140,7 +133,7 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
                   desc: exp.data.description,
                   href: `/experience/view/${exp.id}/`,
                   id: exp.id,
-                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                  meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
                   subtitle: exp.data.role,
                   tags: exp.data.skills || [],
                   title: exp.data.company,
@@ -157,7 +150,7 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
                     desc: exp.data.description,
                     href: `/experience/view/${exp.id}/`,
                     id: exp.id,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
                     subtitle: exp.data.role,
                     tags: exp.data.skills || [],
                     title: exp.data.company,
@@ -175,7 +168,7 @@ const baseUrl = buildUrl('/experience', { filter: filterParam || undefined, sort
                     desc: exp.data.description,
                     href: `/experience/view/${exp.id}/`,
                     id: exp.id,
-                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} · ${exp.data.location}`,
+                    meta: `${exp.data.startDate.getFullYear()} - ${exp.data.endDate ? exp.data.endDate.getFullYear() : 'Present'} \u00b7 ${exp.data.location}`,
                     subtitle: exp.data.role,
                     tags: exp.data.skills || [],
                     title: exp.data.company,

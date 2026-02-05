@@ -5,6 +5,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import { ClientRouter } from 'astro:transitions';
 
+import { cn } from '../../lib/cn';
 import ScrollToTop from '../atoms/scroll-to-top.astro';
 import Chatbot from '../molecules/chatbot.astro';
 // import Chatbot from '../molecules/chatbot.astro';
@@ -14,6 +15,7 @@ import Head from "./head.astro";
 import Header from './header.astro';
 
 interface Props {
+  class?: string;
   description: string;
   includeFooter?: boolean;
   includeHeader?: boolean;
@@ -21,6 +23,7 @@ interface Props {
 }
 
 const {
+  class: className,
   description,
   includeFooter = true,
   includeHeader = true,
@@ -66,7 +69,7 @@ const {
 
     <Container
       as="main"
-      class="relative z-10 pt-28"
+      class:list={cn("relative z-10 pt-28", className)}
       data-pagefind-body
       transition:name="main"
     >

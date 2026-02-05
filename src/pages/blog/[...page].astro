@@ -20,13 +20,6 @@ const filterParam = Astro.url.searchParams.get('filter');
 const sortParam = Astro.url.searchParams.get('sort') || 'newest';
 const viewParam = (Astro.url.searchParams.get('view') as ViewMode) || 'grid';
 
-// If no page parameter, redirect to first page
-if (!pageParam) {
-  const url = new URL(Astro.url);
-  url.searchParams.set('page', '1');
-  return Astro.redirect(url);
-}
-
 // Parse multi-select filters (comma-separated)
 const selectedFilters = filterParam ? filterParam.split(',').filter(Boolean) : [];
 

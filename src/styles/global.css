@@ -123,6 +123,10 @@
     --glow-primary: 0 0 20px hsl(250 100% 66% / 0.4);
     --glow-accent: 0 0 20px hsl(230 100% 68% / 0.3);
     --glow-subtle: 0 0 10px hsl(0 0% 100% / 0.08);
+
+    /* Shimmer Effects */
+    --shimmer-primary: hsl(250 100% 66%);
+    --shimmer-accent: hsl(230 100% 68%);
   }
 
   body {
@@ -133,48 +137,6 @@
     @apply font-heading font-semibold tracking-tight;
   }
 }
-
-
-  :root {
-    --shimmer-primary: hsl(250 100% 66%);
-    --shimmer-accent: hsl(230 100% 68%);
-  }
-
-  @keyframes shiny-text {
-    0%, 90%, 100% {
-      background-position: calc(-200% - 100px) 0;
-    }
-    30%, 60% {
-      background-position: calc(100% + 100px) 0;
-    }
-  }
-
-  .animate-shiny-text {
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      var(--shimmer-primary) 35%,
-      var(--shimmer-primary) 50%,
-      hsl(250 100% 80%) 65%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-    background-position: -100% 0;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shiny-text 8s infinite;
-  }
-
-  .avatar-stamp {
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
-  }
-
-  .avatar-stamp:hover {
-    transform: rotate-0 scale-105;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
-  }
-
 
 /* ==========================================================================
    Utilities
@@ -239,6 +201,43 @@
   .gap-md { gap: var(--spacing-md); }
   .gap-lg { gap: var(--spacing-lg); }
   .gap-xl { gap: var(--spacing-xl); }
+
+  /* Custom Animations & Effects */
+  @keyframes shiny-text {
+    0%, 90%, 100% {
+      background-position: calc(-200% - 100px) 0;
+    }
+    30%, 60% {
+      background-position: calc(100% + 100px) 0;
+    }
+  }
+
+  .animate-shiny-text {
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--shimmer-primary) 35%,
+      var(--shimmer-primary) 50%,
+      hsl(250 100% 80%) 65%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-position: -100% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shiny-text 8s infinite;
+  }
+
+  .avatar-stamp {
+    @apply transition-all duration-400;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .avatar-stamp:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
+  }
 }
 
 @import "./components.css";

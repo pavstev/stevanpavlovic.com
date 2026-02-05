@@ -7,8 +7,8 @@ export const SITE_CONFIG = {
   hero: {
     tagline: "a software engineer focused on distributed systems and backend architecture",
     title: {
-      main: "Stevan",
       highlight: "Pavlovic",
+      main: "Stevan",
     },
   },
   title: "Stevan Pavlovic - Senior Software Engineer",

@@ -25,7 +25,7 @@ const imageSrc = typeof src === 'string' ? src : src.src;
 
 <Button
   aria-label={`Zoom image: ${alt}`}
-  class:list={["group relative block h-auto w-full cursor-zoom-in overflow-hidden border-none bg-transparent p-0 hover:bg-transparent", className]}
+  class:list={["group relative block h-auto w-full cursor-zoom-in overflow-hidden border-none bg-transparent p-0", className]}
   onclick={`document.getElementById('${modalId}').showModal()`}
   variant="ghost"
 >

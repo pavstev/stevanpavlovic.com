@@ -1,7 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 
-import PostView from '../../components/organisms/post-view.astro';
+import PostView from '../../../components/organisms/post-view.astro';
 
 export const getStaticPaths = async () => {
   const experience = await getCollection('experience');

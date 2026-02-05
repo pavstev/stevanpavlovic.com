@@ -12,7 +12,8 @@ export interface FilterConfig {
   selectedValues?: string[];
 }
 
-export type ViewMode = 'list' | 'masonry-2' | 'masonry-3';
+export type ViewMode = 'grid' | 'list';
+export type PaginationType = 'path' | 'query';
 
 interface Props {
   baseUrl: string;
@@ -27,64 +28,99 @@ interface Props {
   totalItems?: number;
   totalPages: number;
   viewMode?: ViewMode;
+  paginationType?: PaginationType;
+  /** Optional: Direct URL for previous page (overrides auto-generation) */
+  prevUrl?: string;
+  /** Optional: Direct URL for next page (overrides auto-generation) */
+  nextUrl?: string;
 }
 
 const {
   baseUrl,
   currentPage,
   filters = [],
-  itemsPerPage = 9,
+  itemCountLabel,
+  itemsPerPage = 6,
   resetHref,
-  showItemsPerPage = true,
+  showItemCount = false,
+  showItemsPerPage = false,
   showViewToggle = true,
+  totalItems,
   totalPages,
   viewMode = 'list',
+  paginationType = 'path',
+  prevUrl,
+  nextUrl,
 } = Astro.props;
 
-// Helper to get pagination URL
-function getPageUrl(page: number): string {
-  const url = new URL(baseUrl, 'http://localhost');
-  if (page === 1) {
-    url.searchParams.delete('page');
-  } else {
-    url.searchParams.set('page', String(page));
-  }
-  if (viewMode !== 'list') {
-    url.searchParams.set('view', viewMode);
-  }
+// Get current search params to preserve filters/sorts
+const currentParams = new URLSearchParams(Astro.url.searchParams);
+
+/**
+ * Helper to build a URL by merging a base path with current query params and overrides.
+ */
+function buildUrl(path: string, paramsToSet: Record<string, string | number | undefined> = {}): string {
+  const url = new URL(path, Astro.url.origin);
+
+  // 1. Preserve existing params
+  currentParams.forEach((value, key) => {
+    // In query mode, we preserve 'page' unless it's explicitly being set
+    if (paginationType === 'path' && key === 'page') return;
+    url.searchParams.set(key, value);
+  });
+
+  // 2. Apply new overrides
+  Object.entries(paramsToSet).forEach(([key, value]) => {
+    if (value === undefined || value === null) {
+      url.searchParams.delete(key);
+    } else {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
   return url.pathname + url.search;
 }
 
-// Build view mode URLs
-function getViewUrl(mode: ViewMode): string {
-  const url = new URL(baseUrl, 'http://localhost');
-  url.searchParams.set('view', mode);
-  if (currentPage > 1) {
-    url.searchParams.set('page', String(currentPage));
+// --- Pagination Logic ---
+const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+
+const getPageUrl = (p: number) => {
+  if (paginationType === 'query') {
+    // Query mode: /projects?page=2
+    return buildUrl(cleanBaseUrl, { page: p });
+  } else {
+    // Path mode: /projects/2
+    // Note: We intentionally don't use buildUrl here to keep the path clean,
+    // but the button wrapper will apply buildUrl to ensure params stick.
+    return p === 1 ? cleanBaseUrl : `${cleanBaseUrl}/${p}`;
   }
-  return url.pathname + url.search;
-}
+};
+
+// Calculate Previous/Next Links
+const prevLink = prevUrl
+  ? buildUrl(prevUrl)
+  : currentPage > 1
+    ? (paginationType === 'query' ? getPageUrl(currentPage - 1) : buildUrl(getPageUrl(currentPage - 1)))
+    : undefined;
+
+const nextLink = nextUrl
+  ? buildUrl(nextUrl)
+  : currentPage < totalPages
+    ? (paginationType === 'query' ? getPageUrl(currentPage + 1) : buildUrl(getPageUrl(currentPage + 1)))
+    : undefined;
+
 
 const viewModes: { icon: string; label: string; mode: ViewMode; }[] = [
   { icon: 'mdi:format-list-bulleted', label: 'List', mode: 'list' },
-  { icon: 'mdi:view-column', label: '2 Columns', mode: 'masonry-2' },
-  { icon: 'mdi:view-dashboard', label: '3 Columns', mode: 'masonry-3' },
+  { icon: 'mdi:view-column', label: 'Grid', mode: 'grid' },
 ];
 
-// Items per page options
 const itemsPerPageOptions = [
   { label: '6', value: '6' },
   { label: '9', value: '9' },
   { label: '12', value: '12' },
   { label: '24', value: '24' },
 ];
-
-// Build items per page URL
-function getItemsPerPageHref(count: number): string {
-  const url = new URL(baseUrl, 'http://localhost');
-  url.searchParams.set('limit', String(count));
-  return url.pathname + url.search;
-}
 ---
 
 <div class="list-actions w-full">
@@ -121,8 +157,15 @@ function getItemsPerPageHref(count: number): string {
     {/* Spacer */}
     <div class="min-w-[1rem] flex-1"></div>
 
-    {/* Right: Pagination + Items per page + View toggle */}
+    {/* Right: Controls */}
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        {/* Total Count */}
+        {showItemCount && totalItems !== undefined && (
+            <span class="text-xs text-muted-foreground hidden sm:inline-block mr-2">
+                {totalItems} {itemCountLabel || 'items'}
+            </span>
+        )}
+
       {/* Items per page dropdown */}
       {showItemsPerPage && (
         <Dropdown
@@ -131,7 +174,7 @@ function getItemsPerPageHref(count: number): string {
           label={`${itemsPerPage}`}
           options={itemsPerPageOptions.map((opt) => ({
             ...opt,
-            href: getItemsPerPageHref(Number(opt.value)),
+            href: buildUrl(Astro.url.pathname, { limit: opt.value, page: 1 }), // Reset to page 1 on limit change
           }))}
           selectedValue={String(itemsPerPage)}
           size="sm"
@@ -146,8 +189,8 @@ function getItemsPerPageHref(count: number): string {
             <Button
               as="a"
               class="size-7 rounded-md p-0 sm:size-8"
-              disabled={currentPage === 1}
-              href={currentPage > 1 ? getPageUrl(currentPage - 1) : undefined}
+              disabled={!prevLink}
+              href={prevLink}
               size="icon"
               variant="ghost"
             >
@@ -170,8 +213,8 @@ function getItemsPerPageHref(count: number): string {
             <Button
               as="a"
               class="size-7 rounded-md p-0 sm:size-8"
-              disabled={currentPage === totalPages}
-              href={currentPage < totalPages ? getPageUrl(currentPage + 1) : undefined}
+              disabled={!nextLink}
+              href={nextLink}
               size="icon"
               variant="ghost"
             >
@@ -193,7 +236,7 @@ function getItemsPerPageHref(count: number): string {
                 'bg-accent text-accent-foreground shadow-sm': viewMode === mode,
                 'text-muted-foreground hover:bg-muted hover:text-foreground': viewMode !== mode,
               }]}
-              href={getViewUrl(mode)}
+              href={buildUrl(Astro.url.pathname, { view: mode })}
               size="icon"
               title={label}
               variant="ghost"

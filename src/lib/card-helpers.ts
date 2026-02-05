@@ -1,24 +1,25 @@
 import type { CollectionEntry } from "astro:content";
+
 import { cva } from "class-variance-authority";
 
 export const cardVariants = cva(
   "group/card relative flex w-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
-    variants: {
-      interactive: {
-        true: "cursor-pointer hover:-translate-y-1 hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
-        false: "",
-      },
-      variant: {
-        default: "",
-        glass: "glass text-foreground",
-        outline: "border border-border bg-transparent",
-        ghost: "border-transparent bg-transparent shadow-none",
-      },
-    },
     defaultVariants: {
       interactive: false,
       variant: "default",
+    },
+    variants: {
+      interactive: {
+        false: "",
+        true: "cursor-pointer hover:-translate-y-1 hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
+      },
+      variant: {
+        default: "",
+        ghost: "border-transparent bg-transparent shadow-none",
+        glass: "glass text-foreground",
+        outline: "border border-border bg-transparent",
+      },
     },
   },
 );

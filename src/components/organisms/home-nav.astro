@@ -1,22 +1,24 @@
 ---
 import { NAV_ITEMS } from '../../lib/config';
 import Card from '../molecules/card.astro';
-import Grid from '../molecules/grid.astro';
 
 const items = NAV_ITEMS.filter(i => i.label !== 'Home');
 ---
 
-<Grid cols={{ base: 2, sm: 2 }} gap={4}>
+<div class="grid h-full grid-cols-1 gap-4 sm:grid-cols-2">
   {
-    items.map((item) => (
+    items.map((item, index) => (
       <Card
-        class="h-full min-h-[160px]"
+        align="center"
+        class="flex h-full min-h-[140px] items-center justify-center bg-black/40 text-center backdrop-blur-md transition-all duration-300 hover:scale-[1.02] sm:min-h-[160px]"
+        delay={index * 100}
+        glowColor={item.color}
         href={item.href}
         icon={item.icon}
-        style="default"
         title={item.label}
         variant="icon"
+        visual="glass"
       />
     ))
   }
-</Grid>
+</div>

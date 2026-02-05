@@ -37,7 +37,7 @@ const { icon, items, label, mobileFullWidth = false } = Astro.props;
 
   <div
     class:list={[
-      "absolute top-full left-0 mt-2 hidden w-full origin-top scale-95 transform flex-col overflow-hidden rounded-xl border border-border bg-background/95 p-1.5 opacity-0 shadow-xl backdrop-blur-xl transition-all duration-200 ease-out md:w-auto",
+      "glass absolute top-full left-0 mt-2 hidden w-full origin-top scale-95 transform flex-col overflow-hidden rounded-xl border border-white/10 p-1.5 opacity-0 shadow-2xl transition-all duration-200 ease-out md:w-auto",
       {"min-w-[180px]": !mobileFullWidth, "min-w-[240px]": mobileFullWidth}
     ]}
     data-menu

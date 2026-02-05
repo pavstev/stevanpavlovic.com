@@ -10,7 +10,7 @@ import Pagefind from "astro-pagefind/components/Search";
     aria-expanded="false"
     aria-haspopup="dialog"
     aria-label="Search"
-    class="search-trigger flex h-6 w-full min-w-[120px] items-center justify-center gap-2 rounded-full bg-white/5 border border-white/5 px-3 text-xs text-muted-foreground transition-all duration-300 hover:bg-white/10 hover:text-foreground hover:border-white/10"
+    class="search-trigger flex h-6 w-full min-w-[120px] items-center justify-center gap-2 rounded-full border border-white/5 bg-white/5 px-3 text-xs text-muted-foreground transition-all duration-300 hover:border-white/10 hover:bg-white/10 hover:text-foreground"
     id="search-trigger"
     type="button"
   >
@@ -24,7 +24,7 @@ import Pagefind from "astro-pagefind/components/Search";
     <div class="absolute inset-0 bg-black/60 transition-opacity" id="search-backdrop"></div>
 
     {/* Search Modal */}
-    <div class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-2xl transition-all duration-300" id="search-modal">
+    <div class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl border border-white/10 bg-black/80 shadow-2xl backdrop-blur-xl transition-all duration-300" id="search-modal">
       <div class="p-4 sm:p-6">
         <Pagefind
           className="pagefind-ui"

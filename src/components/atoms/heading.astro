@@ -1,45 +1,47 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '../../lib/cn';
 
 const headingVariants = cva(
   'font-heading font-bold tracking-tight text-foreground',
   {
+    defaultVariants: {
+      size: 'xl',
+      variant: 'default',
+    },
     variants: {
       size: {
-        display: 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold',
-        hero: 'text-3xl sm:text-4xl md:text-5xl font-bold',
-        xl: 'text-2xl sm:text-3xl md:text-4xl',
+        display: 'text-4xl font-extrabold sm:text-5xl md:text-6xl lg:text-7xl',
+        hero: 'text-3xl font-bold sm:text-4xl md:text-5xl',
         lg: 'text-xl sm:text-2xl',
         md: 'text-lg sm:text-xl',
         sm: 'text-base sm:text-lg',
+        xl: 'text-2xl sm:text-3xl md:text-4xl',
         xs: 'text-sm sm:text-base',
       },
       variant: {
         default: 'text-foreground',
-        muted: 'text-muted-foreground',
-        primary: 'text-primary',
         gradient: 'text-gradient',
         'gradient-subtle': 'text-gradient-subtle',
+        muted: 'text-muted-foreground',
+        primary: 'text-primary',
       },
-    },
-    defaultVariants: {
-      size: 'xl',
-      variant: 'default',
     },
   }
 );
 
 export interface Props extends HTMLAttributes<'h1'>, VariantProps<typeof headingVariants> {
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
   as?: 1 | 2 | 3 | 4 | 5 | 6 | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const {
+  as,
   class: className,
   level = 1,
-  as,
   size,
   variant,
   ...props
@@ -49,6 +51,6 @@ const derivedLevel = as && typeof as === 'number' ? as : level;
 const Tag = `h${derivedLevel}` as any;
 ---
 
-<Tag class={cn(headingVariants({ size, variant, className }))} {...props}>
+<Tag class:list={cn(headingVariants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

@@ -1,34 +1,36 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '../../lib/cn';
 
 const textVariants = cva(
   'leading-relaxed break-words',
   {
+    defaultVariants: {
+      size: 'base',
+      variant: 'default',
+    },
     variants: {
-      variant: {
-        default: 'text-foreground',
-        muted: 'text-muted-foreground',
-        primary: 'text-primary font-medium',
-        secondary: 'text-secondary-foreground',
-        destructive: 'text-destructive',
-        gradient: 'text-gradient font-bold',
-      },
       size: {
-        xs: 'text-xs',
-        sm: 'text-sm',
-        base: 'text-base',
-        lg: 'text-lg font-medium',
-        xl: 'text-xl font-semibold',
         '2xl': 'text-2xl font-bold tracking-tight',
         '3xl': 'text-3xl font-bold tracking-tight',
         '4xl': 'text-4xl font-extrabold tracking-tight',
+        base: 'text-base',
+        lg: 'text-lg font-medium',
+        sm: 'text-sm',
+        xl: 'text-xl font-semibold',
+        xs: 'text-xs',
       },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'base',
+      variant: {
+        default: 'text-foreground',
+        destructive: 'text-destructive',
+        gradient: 'text-gradient font-bold',
+        muted: 'text-muted-foreground',
+        primary: 'font-medium text-primary',
+        secondary: 'text-secondary-foreground',
+      },
     },
   }
 );
@@ -37,10 +39,10 @@ export interface Props extends HTMLAttributes<'p'>, VariantProps<typeof textVari
   as?: string;
 }
 
-const { as = 'p', class: className, variant, size, ...props } = Astro.props;
+const { as = 'p', class: className, size, variant, ...props } = Astro.props;
 const Tag = as as any;
 ---
 
-<Tag class={cn(textVariants({ variant, size, className }))} {...props}>
+<Tag class:list={cn(textVariants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

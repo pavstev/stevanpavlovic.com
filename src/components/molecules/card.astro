@@ -1,13 +1,15 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import type { CollectionEntry } from 'astro:content';
+
 import { Icon } from 'astro-icon/components';
 import { type VariantProps } from 'class-variance-authority';
+
 import type { PortfolioItem } from '../../lib/portfolio';
+
 import { cardVariants, getCardData } from '../../lib/card-helpers';
 import { cn } from '../../lib/cn';
 import Badge from '../atoms/badge.astro';
-import Button from '../atoms/button.astro';
 import Heading from '../atoms/heading.astro';
 import IconBox from '../atoms/icon-box.astro';
 import Text from '../atoms/text.astro';
@@ -21,42 +23,42 @@ interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof card
   as?: string;
   glowColor?: string;
   href?: string;
+  visual?: 'default' | 'ghost' | 'glass' | 'outline';
 }
 
 interface ContentProps extends BaseProps {
-  variant: 'content';
-  post: CollectionEntry<'blog'> | CollectionEntry<'projects'> | CollectionEntry<'toys'>;
-  actionLabel?: string;
   actionIcon?: string;
+  actionLabel?: string;
   loading?: 'eager' | 'lazy';
-}
-
-interface IconProps extends BaseProps {
-  variant: 'icon';
-  icon: string;
-  title: string;
-  subtitle?: string;
-  align?: 'start' | 'center';
-  animate?: boolean;
-  delay?: number;
-}
-
-interface PortfolioProps extends BaseProps {
-  variant: 'portfolio';
-  portfolioItem: PortfolioItem;
-  headingLevel?: number;
+  post: CollectionEntry<'blog'> | CollectionEntry<'projects'> | CollectionEntry<'toys'>;
+  variant: 'content';
 }
 
 interface DefaultProps extends BaseProps {
-  variant?: 'default' | 'glass' | 'outline' | 'ghost'; // These match the generic variants in card-helpers
   children: any;
+  variant?: 'default'; // Only default variant here, visual handles style
 }
 
-type Props = ContentProps | IconProps | PortfolioProps | DefaultProps;
+interface IconProps extends BaseProps {
+  align?: 'center' | 'start';
+  animate?: boolean;
+  delay?: number;
+  icon: string;
+  subtitle?: string;
+  title: string;
+  variant: 'icon';
+}
+
+interface PortfolioProps extends BaseProps {
+  headingLevel?: number;
+  portfolioItem: PortfolioItem;
+  variant: 'portfolio';
+}
+
+type Props = ContentProps | DefaultProps | IconProps | PortfolioProps;
 
 const props = Astro.props;
-// Cast variant to any to satisfy the cva call which expects specific string union, but we handled types above
-const { variant = 'default', class: className, glowColor = 'var(--color-primary)', interactive, ...rest } = props;
+const { class: className, glowColor = 'var(--color-primary)', interactive, variant = 'default', visual = 'default', ...rest } = props;
 
 const isPortfolio = variant === 'portfolio';
 const isContent = variant === 'content';
@@ -69,25 +71,25 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 {/* DEFAULT CARD */}
 {(!isPortfolio && !isContent && !isIcon) && (
   <div
-    class={cn(cardVariants({ variant: variant as any, interactive, className }))}
+    class:list={cn(cardVariants({ className, interactive, variant: visual }))}
     style={{ '--glow-color': glowColor }}
     {...rest}
   >
     <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
-         style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+      style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
     <slot />
   </div>
 )}
 
 {/* ICON CARD */}
 {isIcon && (() => {
-  const { icon, title, subtitle, align = 'start', href, animate, delay = 0, ...iconProps } = props as IconProps;
+  const { align = 'start', animate, delay = 0, href, icon, subtitle, title, ...iconProps } = props as IconProps;
   const Element = getElement(href);
   return (
-    <Element href={href} class="group block h-full">
+    <Element class="group block h-full" href={href}>
       <div
-        class={cn(
-          cardVariants({ interactive: !!href, className }),
+        class:list={cn(
+          cardVariants({ className, interactive: !!href, variant: visual }),
           'flex h-full flex-col gap-4',
           align === 'center' ? 'items-center text-center' : 'items-start',
           animate && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
@@ -96,22 +98,22 @@ const getElement = (href?: string) => href ? 'a' : 'div';
         {...iconProps}
       >
         <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
-             style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
 
-        <IconBox variant="dimmed" size="md" class="transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/10 group-hover:text-primary">
+        <IconBox class="transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/10 group-hover:text-primary" size="md" variant="dimmed">
           <Icon name={icon} size={20} />
         </IconBox>
 
-        <Stack gap={1} align={align}>
-          <Heading level={3} size="md" class="group-hover:text-primary transition-colors">
+        <Stack align={align} gap={1}>
+          <Heading class="transition-colors group-hover:text-primary" level={3} size="md">
             {title}
           </Heading>
-          {subtitle && <Text variant="muted" size="sm">{subtitle}</Text>}
+          {subtitle && <Text size="sm" variant="muted">{subtitle}</Text>}
         </Stack>
 
         {href && (
-          <div class="absolute top-4 right-4 opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
-            <Icon name="mdi:arrow-top-right" class="text-muted-foreground" size={16} />
+          <div class="absolute top-4 right-4 -translate-y-1 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+            <Icon class="text-muted-foreground" name="mdi:arrow-top-right" size={16} />
           </div>
         )}
       </div>
@@ -121,31 +123,31 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
 {/* PORTFOLIO CARD */}
 {isPortfolio && (() => {
-  const { portfolioItem: item, headingLevel = 3, ...pProps } = props as PortfolioProps;
+  const { headingLevel = 3, portfolioItem: item, ...pProps } = props as PortfolioProps;
   const Element = getElement(item.href);
   return (
-    <Element href={item.href} class="group block h-full">
+    <Element class="group block h-full" href={item.href}>
       <div
-        class={cn(cardVariants({ interactive: !!item.href, className }), "h-full flex flex-col")}
+        class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "flex h-full flex-col")}
         style={{ '--glow-color': glowColor }}
         {...pProps}
       >
         <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
-             style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
 
-        <div class="flex flex-col sm:flex-row justify-between gap-4 mb-4">
+        <div class="mb-4 flex flex-col justify-between gap-4 sm:flex-row">
           <div>
-            <Heading level={headingLevel as any} size="lg" class="group-hover:text-primary transition-colors">
+            <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="lg">
               {item.title}
             </Heading>
-            <Text variant="muted" size="xs" class="font-mono uppercase tracking-wider mt-1">
+            <Text class="mt-1 font-mono tracking-wider uppercase" size="xs" variant="muted">
               {item.subtitle}
             </Text>
           </div>
           <div class="flex items-center gap-2 self-start sm:self-center">
             <Badge variant="secondary">{item.meta}</Badge>
             {item.href && (
-              <Icon name="mdi:arrow-top-right" class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              <Icon class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
             )}
           </div>
         </div>
@@ -153,7 +155,7 @@ const getElement = (href?: string) => href ? 'a' : 'div';
         <Text class="mb-6 line-clamp-3 flex-1" size="sm">{item.desc}</Text>
 
         <div class="mt-auto">
-          <Tags tags={item.tags} limit={3} />
+          <Tags limit={3} tags={item.tags} />
         </div>
       </div>
     </Element>
@@ -162,58 +164,58 @@ const getElement = (href?: string) => href ? 'a' : 'div';
 
 {/* CONTENT CARD */}
 {isContent && (() => {
-  const { post, actionLabel = 'Read Post', actionIcon = 'mdi:arrow-right', loading = 'lazy', ...cProps } = props as ContentProps;
+  const { actionIcon = 'mdi:arrow-right', actionLabel = 'Read Post', loading = 'lazy', post, ...cProps } = props as ContentProps;
   const { description, heroImage, postUrl, pubDate, subtitle, title } = getCardData(post);
 
   return (
-    <a href={postUrl} class="group block h-full">
+    <a class="group block h-full" href={postUrl}>
       <div
-        class={cn(cardVariants({ interactive: true, className }), "h-full flex flex-col")}
+        class:list={cn(cardVariants({ className, interactive: true, variant: visual }), "flex h-full flex-col")}
         style={{ '--glow-color': glowColor }}
         {...cProps}
       >
         <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
-             style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
 
         {heroImage && (
           <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-border/50 bg-muted">
-             <ZoomableImage
-               src={heroImage}
-               alt={title}
-               width={720}
-               height={360}
-               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-               loading={loading}
-             />
+            <ZoomableImage
+              alt={title}
+              class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+              height={360}
+              loading={loading}
+              src={heroImage}
+              width={720}
+            />
           </div>
         )}
 
-        <Stack gap={2} class="flex-1">
+        <Stack class="flex-1" gap={2}>
           <div class="flex items-center justify-between">
             {pubDate && (
-              <Text variant="muted" size="xs" class="font-mono uppercase tracking-wider">
+              <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
                 <FormattedDate date={pubDate} />
               </Text>
             )}
             {subtitle && (
-              <Text variant="primary" size="xs" class="font-mono uppercase tracking-wider">
+              <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
                 {subtitle}
               </Text>
             )}
           </div>
 
-          <Heading level={3} size="lg" class="group-hover:text-primary transition-colors line-clamp-2">
+          <Heading class="line-clamp-2 transition-colors group-hover:text-primary" level={3} size="lg">
             {title}
           </Heading>
 
           {description && (
-             <Text size="sm" class="line-clamp-2 text-muted-foreground">
-               {description}
-             </Text>
+            <Text class="line-clamp-2 text-muted-foreground" size="sm">
+              {description}
+            </Text>
           )}
         </Stack>
 
-        <div class="mt-6 flex items-center gap-2 text-sm font-medium text-primary opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+        <div class="mt-6 flex -translate-x-2 items-center gap-2 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
           {actionLabel}
           <Icon name={actionIcon} />
         </div>

@@ -37,10 +37,10 @@ const {
         items.map((item) => (
           <div class="masonry-item">
             <Card
+              class:list={itemClass}
               headingLevel={headingLevel}
               portfolioItem={item}
               variant="portfolio"
-              class={itemClass}
             />
           </div>
         ))

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+
 import { NAV_ITEMS, PROFILE } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
 import Spacer from "../atoms/spacer.astro";
@@ -18,7 +19,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
 <header
-  class="fixed top-4 z-50 w-full px-4 md:px-0 transition-all duration-500"
+  class="fixed top-4 z-50 w-full px-4 transition-all duration-500 md:px-0"
   id="site-header"
   transition:persist
 >
@@ -32,7 +33,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
           <InteractiveAvatar class="shrink-0" size="sm" slot="avatar" />
           <Text
             as="span"
-            class="hidden sm:block cursor-default text-sm font-bold tracking-tight text-foreground"
+            class="hidden cursor-default text-sm font-bold tracking-tight text-foreground sm:block"
             slot="name"
           >
             {PROFILE.name}
@@ -47,21 +48,24 @@ const isActive = (href: string) => isActivePath(pathname, href);
             const active = isActive(item.href);
             return (
               <a
-                href={item.href}
                 class:list={[
                   "relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition-all duration-300",
-                  active ? "bg-white/10 text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  {"bg-white/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-white/5 hover:text-foreground": !active}
                 ]}
+                data-nav-link
+                href={item.href}
               >
-                {active && <Icon name={item.icon} class="size-3" />}
+                <div class:list={["overflow-hidden transition-all duration-300", {"w-0 opacity-0": !active, "w-3 opacity-100": active}]} data-nav-icon>
+                  <Icon class="size-3" name={item.icon} />
+                </div>
                 {item.label}
               </a>
             );
           })}
         </nav>
 
-        <div class="hidden md:flex items-center gap-2 pr-2">
-           <SocialIcons />
+        <div class="hidden items-center gap-2 pr-2 md:flex">
+          <SocialIcons />
         </div>
 
         {/* Mobile Toggle */}
@@ -88,4 +92,5 @@ const isActive = (href: string) => isActivePath(pathname, href);
 
   init();
   document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:after-swap', updateActiveLinks); // Ensure updates on client nav
 </script>

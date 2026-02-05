@@ -1,11 +1,13 @@
 ---
 import type { ImageMetadata } from 'astro';
+
 import { Image } from 'astro:assets';
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '../../lib/cn';
 
 const avatarVariants = cva(
-  'relative overflow-hidden rounded-full bg-muted flex items-center justify-center',
+  'relative flex items-center justify-center overflow-hidden rounded-full bg-muted',
   {
     defaultVariants: {
       ring: false,
@@ -58,7 +60,7 @@ const sizeMap: Record<string, number> = {
 const imageSize = (size && typeof size === 'string' && sizeMap[size]) || 40;
 ---
 
-<div class={cn(avatarVariants({ className, ring, size }))}>
+<div class:list={cn(avatarVariants({ className, ring, size }))}>
   <Image
     alt={alt}
     class="size-full object-cover"

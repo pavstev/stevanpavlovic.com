@@ -12,16 +12,16 @@ import Container from '../molecules/container.astro';
         <Text class="font-bold tracking-tight" size="sm">
           &copy; {new Date().getFullYear()} {PROFILE.name}
         </Text>
-        <Text variant="muted" size="xs" class="font-mono uppercase tracking-widest">
+        <Text class="font-mono tracking-widest uppercase" size="xs" variant="muted">
           Crafted with precision
         </Text>
       </div>
 
       <nav class="flex items-center gap-6">
-        <a href="/rss.xml" class="text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+        <a class="font-mono text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/rss.xml">
           RSS
         </a>
-        <a href="/sitemap-index.xml" class="text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+        <a class="font-mono text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/sitemap-index.xml">
           Sitemap
         </a>
       </nav>

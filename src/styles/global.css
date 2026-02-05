@@ -7,35 +7,42 @@
 
 @theme {
   /* --------------------------------------------------------------------------
-     Colors - Design System (Geist/Zinc inspired)
+     Colors - Design System (Enhanced Dark Theme)
      -------------------------------------------------------------------------- */
-  --color-background: hsl(0 0% 0%); /* True Black */
-  --color-foreground: hsl(0 0% 93%);
+  /* Backgrounds - Richer blacks with subtle warmth */
+  --color-background: hsl(240 3% 3%); /* Deep dark with subtle blue undertone */
+  --color-foreground: hsl(0 0% 96%); /* Brighter white for better contrast */
 
-  --color-card: hsl(0 0% 3%);
-  --color-card-foreground: hsl(0 0% 93%);
+  --color-card: hsl(240 4% 6%); /* Slightly lighter than background */
+  --color-card-foreground: hsl(0 0% 94%);
 
-  --color-popover: hsl(0 0% 3%);
-  --color-popover-foreground: hsl(0 0% 93%);
+  --color-popover: hsl(240 5% 8%); /* Elevated surface */
+  --color-popover-foreground: hsl(0 0% 96%);
 
-  --color-primary: hsl(0 0% 98%);
-  --color-primary-foreground: hsl(0 0% 9%);
+  /* Primary - Vibrant purple accent */
+  --color-primary: hsl(270 80% 65%); /* Vibrant purple */
+  --color-primary-foreground: hsl(0 0% 100%);
 
-  --color-secondary: hsl(0 0% 15%);
-  --color-secondary-foreground: hsl(0 0% 98%);
+  /* Secondary - Rich dark surface with cyan accent */
+  --color-secondary: hsl(240 6% 12%); /* Richer dark gray */
+  --color-secondary-foreground: hsl(180 70% 75%); /* Cyan accent */
 
-  --color-muted: hsl(0 0% 15%);
-  --color-muted-foreground: hsl(0 0% 64%);
+  /* Muted elements - Better visibility */
+  --color-muted: hsl(240 5% 18%); /* Lighter than before for better contrast */
+  --color-muted-foreground: hsl(0 0% 68%); /* Improved readability */
 
-  --color-accent: hsl(0 0% 15%);
-  --color-accent-foreground: hsl(0 0% 98%);
+  /* Accent - Cyan/turquoise for interactive elements */
+  --color-accent: hsl(180 60% 50%); /* Vibrant cyan */
+  --color-accent-foreground: hsl(240 5% 8%); /* Dark text on bright accent */
 
-  --color-destructive: hsl(0 62.8% 30.6%);
-  --color-destructive-foreground: hsl(0 0% 98%);
+  /* Destructive - More vibrant red */
+  --color-destructive: hsl(0 72% 55%); /* Brighter, more visible red */
+  --color-destructive-foreground: hsl(0 0% 100%);
 
-  --color-border: hsl(0 0% 15%);
-  --color-input: hsl(0 0% 15%);
-  --color-ring: hsl(0 0% 83.1%);
+  /* Borders and inputs */
+  --color-border: hsl(240 4% 20%); /* More visible borders */
+  --color-input: hsl(240 5% 12%); /* Matches secondary */
+  --color-ring: hsl(270 80% 65%); /* Purple ring to match primary */
 
   /* --------------------------------------------------------------------------
      Typography
@@ -96,26 +103,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 93%;
-    --card: 0 0% 3%;
-    --card-foreground: 0 0% 93%;
-    --popover: 0 0% 3%;
-    --popover-foreground: 0 0% 93%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 83.1%;
+    /* Colors */
+    --background: 240 3% 3%;
+    --foreground: 0 0% 96%;
+    --card: 240 4% 6%;
+    --card-foreground: 0 0% 94%;
+    --popover: 240 5% 8%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 270 80% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 180 70% 75%;
+    --muted: 240 5% 18%;
+    --muted-foreground: 0 0% 68%;
+    --accent: 180 60% 50%;
+    --accent-foreground: 240 5% 8%;
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 4% 20%;
+    --input: 240 5% 12%;
+    --ring: 270 80% 65%;
     --radius: 0.5rem;
+
+    /* Spacing Scale */
+    --spacing-xs: 0.5rem;    /* 8px */
+    --spacing-sm: 0.75rem;   /* 12px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-2xl: 3rem;     /* 48px */
+    --spacing-3xl: 4rem;     /* 64px */
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+    /* Glow Effects */
+    --glow-primary: 0 0 20px hsl(270 80% 65% / 0.3);
+    --glow-accent: 0 0 20px hsl(180 60% 50% / 0.3);
+    --glow-subtle: 0 0 10px hsl(0 0% 100% / 0.1);
   }
 
   body {
@@ -132,21 +161,47 @@
    ========================================================================== */
 
 @layer utilities {
+  /* Glass Morphism */
   .glass {
-    @apply bg-black/60 backdrop-blur-xl border border-white/10;
+    @apply bg-black/40 backdrop-blur-xl border border-white/10;
   }
 
   .glass-hover {
     @apply hover:bg-white/5 hover:border-white/20 transition-all duration-300;
   }
 
+  .glass-strong {
+    @apply bg-black/60 backdrop-blur-2xl border border-white/15;
+  }
+
   /* Text Gradients */
   .text-gradient {
-    @apply bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent;
+    @apply bg-linear-to-b from-white to-white/70 bg-clip-text text-transparent;
   }
 
   .text-gradient-subtle {
-    @apply bg-gradient-to-b from-zinc-200 to-zinc-500 bg-clip-text text-transparent;
+    @apply bg-linear-to-b from-zinc-200 to-zinc-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-primary {
+    @apply bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-accent {
+    @apply bg-linear-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  /* Shadow Utilities */
+  .shadow-glow {
+    box-shadow: var(--glow-subtle);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: var(--glow-primary);
+  }
+
+  .shadow-glow-accent {
+    box-shadow: var(--glow-accent);
   }
 
   /* Hide Scrollbar */
@@ -157,6 +212,13 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Spacing Utilities */
+  .gap-xs { gap: var(--spacing-xs); }
+  .gap-sm { gap: var(--spacing-sm); }
+  .gap-md { gap: var(--spacing-md); }
+  .gap-lg { gap: var(--spacing-lg); }
+  .gap-xl { gap: var(--spacing-xl); }
 }
 
 @import "./components.css";

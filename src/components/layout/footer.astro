@@ -1,14 +1,16 @@
 ---
-
+import { Icon } from 'astro-icon/components';
 
 import { PROFILE, SITE_CONFIG, SOCIALS } from '../../lib/config';
 import Text from '../atoms/text.astro';
 import Container from '../molecules/container.astro';
 ---
 
-<footer class="relative w-full overflow-hidden border-t border-white/5 bg-black" transition:persist>
-  <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-  <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+<footer class="relative w-full overflow-hidden border-t border-white/5 bg-gradient-to-b from-background to-card" transition:persist>
+  {/* Different background pattern from main layout */}
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,119,198,0.05),transparent_50%)]"></div>
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+  <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
 
   <Container>
     <div class="relative z-10 flex flex-col items-start justify-between gap-8 py-12 sm:flex-row sm:items-center">
@@ -22,18 +24,19 @@ import Container from '../molecules/container.astro';
         </Text>
       </div>
 
-      {/* Simplified Links */}
-      <div class="flex flex-wrap items-center gap-6">
+      {/* Social Links with Icons and Borders */}
+      <div class="flex flex-wrap items-center gap-3">
         {
           SOCIALS.map((social) => (
             <a
-              class="text-sm font-medium text-muted-foreground transition-colors hover:text-white"
+              class="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-white/10 hover:text-white"
               data-tooltip={social.name}
               href={social.href}
               rel="noreferrer"
               target="_blank"
             >
-              {social.handle}
+              <Icon class="size-4 transition-transform group-hover:scale-110" name={social.icon} />
+              <span class="text-xs">{social.handle}</span>
             </a>
           ))
         }
@@ -41,7 +44,7 @@ import Container from '../molecules/container.astro';
     </div>
 
     {/* Bottom Bar */}
-    <div class="relative z-10 flex flex-col items-center justify-between gap-6 border-t border-white/5 py-8 sm:flex-row">
+    <div class="relative z-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 py-6 sm:flex-row">
       <Text size="sm" variant="muted">
         &copy; {new Date().getFullYear()}{" "}{PROFILE.name}. All rights reserved.
       </Text>

@@ -1,7 +1,8 @@
 ---
+import type { FilterConfig, ViewMode } from '../../lib/list';
 import Stack from '../atoms/stack.astro';
 import LayoutRoot from '../layout/layout-root.astro';
-import ListActions, { type FilterConfig, type ViewMode } from '../molecules/list-actions.astro';
+import ListActions from '../molecules/list-actions.astro';
 import MasonryGrid from '../molecules/masonry-grid.astro';
 import Card from '../organisms/card.astro';
 import SectionHeader from "../organisms/section-header.astro";
@@ -16,6 +17,7 @@ interface Props {
   filters: FilterConfig[];
 
   // Helpers to map generic items to Card props
+  // eslint-disable-next-line no-unused-vars
   getItemCardProps: (item: any) => any;
   headerDescription: string;
 
@@ -137,9 +139,7 @@ const isGrid = viewMode === 'grid';
   </Section>
 </LayoutRoot>
 
-<style is:global>
-  .hidden { display: none !important; }
-</style>
+
 
 <script>
   import { initInteractiveCards } from '../../lib/interactive-cards';

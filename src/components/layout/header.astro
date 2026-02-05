@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { NAV_ITEMS } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
 import Logo from "../atoms/logo.astro";
@@ -28,12 +29,34 @@ const isActive = (href: string) => isActivePath(pathname, href);
         </div>
 
         {/* Center: Search */}
-        <div class="absolute top-1/2 left-1/2 -translate-1/2">
-          <Search />
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:block">
+          <div class="group/search relative flex items-center transition-all duration-300">
+            <Icon class="absolute left-3 size-4 text-muted-foreground transition-colors group-focus-within/search:text-primary" name="mdi:magnify" />
+            <input
+              type="text"
+              placeholder="Search..."
+              id="header-search-input"
+              class="h-9 w-48 lg:w-64 rounded-full border border-white/10 bg-white/5 pl-9 pr-12 text-sm transition-all hover:bg-white/10 focus:border-primary/50 focus:bg-white/10 focus:ring-2 focus:ring-primary/20 outline-none"
+            />
+            <kbd class="absolute right-3 hidden h-5 items-center gap-1 rounded bg-white/10 px-1.5 font-mono text-[10px] font-medium opacity-50 sm:flex">
+              <span class="text-xs">⌘</span>K
+            </kbd>
+          </div>
         </div>
+
+        {/* Search Modal */}
+        <Search />
 
         {/* Right: Nav & Mobile Toggle */}
         <div class="flex items-center gap-2 pr-1">
+          {/* Mobile Search Toggle (Visible only on mobile) */}
+          <button
+            aria-label="Open search"
+            class="flex size-9 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground md:hidden"
+            id="mobile-search-trigger"
+          >
+            <Icon name="mdi:magnify" class="size-5" />
+          </button>
           {/* Desktop Nav */}
           <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
             {NAV_ITEMS.map((item) => {
@@ -68,9 +91,42 @@ const isActive = (href: string) => isActivePath(pathname, href);
 <script>
   import { initMobileMenu, updateActiveLinks } from '../../lib/mobile-menu';
 
+  const initSearchTrigger = () => {
+    const headerInput = document.getElementById('header-search-input') as HTMLInputElement;
+    const mobileTrigger = document.getElementById('mobile-search-trigger');
+    const modal = document.getElementById('search-modal') as HTMLDialogElement;
+
+    if (!modal) return;
+
+    const openModal = () => {
+      if (modal.open) return;
+      modal.showModal();
+      setTimeout(() => {
+        const modalInput = modal.querySelector('input');
+        if (modalInput) {
+          if (headerInput && headerInput.value) {
+            modalInput.value = headerInput.value;
+            // Trigger input event for Pagefind
+            modalInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          modalInput.focus();
+        }
+      }, 50);
+    };
+
+    if (headerInput) {
+      headerInput.addEventListener('click', openModal);
+    }
+
+    if (mobileTrigger) {
+      mobileTrigger.addEventListener('click', openModal);
+    }
+  };
+
   const init = () => {
     initMobileMenu();
     updateActiveLinks();
+    initSearchTrigger();
   };
 
   init();

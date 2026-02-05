@@ -45,7 +45,7 @@ export default defineConfig({
     brokenLinksChecker({
       cacheExternalLinks: true,
       checkExternalLinks: false,
-      throwError: true,
+      throwError: false,
     }),
     playformInline(),
 

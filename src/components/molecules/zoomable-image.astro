@@ -32,14 +32,14 @@ const imageSrc = typeof src === 'string' ? src : src.src;
   {typeof src === 'string' ? (
     <img
       alt={alt}
-      class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+      class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
       loading={loading}
       src={src}
     />
   ) : (
     <Image
       alt={alt}
-      class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+      class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
       height={height}
       loading={loading}
       src={src}
@@ -47,24 +47,38 @@ const imageSrc = typeof src === 'string' ? src : src.src;
     />
   )}
 
-  {/* Hover hint */}
-  <div class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-colors duration-300 group-hover:bg-black/10 group-hover:opacity-100">
-    <div class="rounded-md bg-black/50 p-3 text-foreground backdrop-blur-sm">
-      <Icon name="mdi:magnify-plus-outline" size={24} />
+  {/* Hover hint - refined with a more subtle gradient and centered icon */}
+  <div class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/20 group-hover:opacity-100">
+    <div class="translate-y-2 rounded-full bg-white/10 p-4 text-white blur-none transition-all duration-300 backdrop-blur-md group-hover:translate-y-0 group-hover:bg-white/20">
+      <Icon name="mdi:magnify-plus-outline" size={28} />
     </div>
   </div>
 </Button>
 
 <Modal
-  bodyClass="p-0"
-  class="h-screen max-h-none! w-screen max-w-none! border-none bg-transparent p-4 backdrop:bg-black/90 sm:p-6"
+  bodyClass="p-0 overflow-hidden"
+  class="m-0! flex h-screen max-h-none! w-screen max-w-none! items-center justify-center border-none bg-transparent p-0 backdrop:bg-black/95 backdrop:backdrop-blur-xl"
+  dialogClass="p-0!"
   id={modalId}
 >
-  <div class="flex size-full items-center justify-center">
-    <img
-      alt={alt}
-      class="max-h-[90vh] max-w-full object-contain"
-      src={imageSrc}
-    />
+  <div class="relative flex size-full items-center justify-center">
+    <div class="relative flex max-h-full max-w-full items-center justify-center">
+      <img
+        alt={alt}
+        class="max-h-screen w-auto max-w-full rounded-lg object-contain shadow-2xl ring-1 ring-white/10 animate-in fade-in duration-300"
+        src={imageSrc}
+      />
+
+      {alt && (
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 bg-black/40 px-4 py-2 text-center text-sm font-medium text-white/70 backdrop-blur-md rounded-full ring-1 ring-white/10 animate-in fade-in slide-in-from-bottom-2 duration-500 delay-150 whitespace-nowrap">
+          {alt}
+        </div>
+      )}
+    </div>
+
+    {/* Close hint for better mobile UX */}
+    <div class="absolute top-12 left-1/2 -translate-x-1/2 text-xs font-medium tracking-widest text-white/40 uppercase animate-in fade-in duration-700 delay-300">
+      Click anywhere to close
+    </div>
   </div>
 </Modal>

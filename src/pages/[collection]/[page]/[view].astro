@@ -173,10 +173,10 @@ const getItemCardProps = (item: any) => {
   if (collection === 'projects') {
     return {
       portfolioItem: {
-        desc: item.data.desc,
+        desc: item.data.description,
         href: `/projects/view/${item.id}/`,
         id: item.id,
-        meta: item.data.meta,
+        meta: item.data.pubDate ? new Date(item.data.pubDate).getFullYear().toString() : '',
         subtitle: item.data.subtitle,
         tags: item.data.tags,
         title: item.data.title,
@@ -188,15 +188,18 @@ const getItemCardProps = (item: any) => {
     return {
       portfolioItem: {
         company: item.data.company,
-        desc: item.data.desc,
+        desc: item.data.description,
         endDate: item.data.endDate,
         href: `/experience/view/${item.id}/`,
         id: item.id,
         location: item.data.location,
         logo: item.data.logo,
+        meta: `${new Date(item.data.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} — ${item.data.endDate ? new Date(item.data.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present'}`,
         role: item.data.role,
         startDate: item.data.startDate,
+        subtitle: item.data.company,
         tags: item.data.skills,
+        title: item.data.role,
       },
       variant: 'portfolio' // Reverting to portfolio as 'experience' variant not found in card.astro review
     };

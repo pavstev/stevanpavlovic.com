@@ -1,13 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import { PROFILE, SOCIALS } from '../../lib/config';
+import { SOCIALS } from '../../lib/config';
+import { getCopyrightText } from '../../lib/footer';
 import Text from '../atoms/text.astro';
 import Container from '../molecules/container.astro';
-
-function getCopyrightText(): string {
-  return `© ${new Date().getFullYear()} ${PROFILE.name}. All rights reserved.`;
-}
 ---
 
 <footer class="relative mt-8 mb-4 w-full px-4 md:px-0" transition:persist>

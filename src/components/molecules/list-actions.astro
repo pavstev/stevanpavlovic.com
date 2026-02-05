@@ -2,19 +2,17 @@
 import { Icon } from 'astro-icon/components';
 
 import Button from '../atoms/button.astro';
-import Dropdown, { type DropdownOption } from '../atoms/dropdown.astro';
-
-export interface FilterConfig {
-  id: string;
-  label: string;
-  options: DropdownOption[];
-  selectedValue?: string;
-  selectedValues?: string[];
-}
-
-export type ViewMode = 'grid' | 'list';
-
-type PaginationType = 'path' | 'query';
+import Dropdown from '../atoms/dropdown.astro';
+import {
+  type FilterConfig,
+  type ViewMode,
+  type PaginationType,
+  type ViewUrls,
+  VIEW_MODES,
+  ITEMS_PER_PAGE_OPTIONS,
+  buildListUrl,
+  getPaginationLinks,
+} from '../../lib/list';
 
 // @ts-expect-error "We need this one"
 interface Props {
@@ -22,6 +20,7 @@ interface Props {
   currentPage: number;
   filters?: FilterConfig[];
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
+  // eslint-disable-next-line no-unused-vars
   getPageUrl?: (page: number) => string;
   itemCountLabel?: string;
   itemsPerPage?: number;
@@ -39,11 +38,6 @@ interface Props {
   viewMode?: ViewMode;
   /** Optional: Explicit URLs for view toggles */
   viewUrls?: ViewUrls;
-}
-
-interface ViewUrls {
-  grid: string;
-  list: string;
 }
 
 const {
@@ -66,98 +60,23 @@ const {
   viewUrls,
 } = Astro.props;
 
-// Get current search params to preserve filters/sorts
-const currentParams = new URLSearchParams(Astro.url.searchParams);
+const { prevLink, nextLink } = getPaginationLinks({
+  currentUrl: Astro.url,
+  baseUrl,
+  paginationType,
+  currentPage,
+  totalPages,
+  customGetPageUrl,
+  prevUrl,
+  nextUrl,
+});
 
 /**
  * Helper to build a URL by merging a base path with current query params and overrides.
+ * Kept locally for compatibility with the markup calls.
  */
-function buildUrl(path: string, paramsToSet: Record<string, number | string | undefined> = {}): string {
-  const url = new URL(path, Astro.url.origin);
-
-  // 1. Preserve existing params
-  currentParams.forEach((value, key) => {
-    // In query mode, we preserve 'page' unless it's explicitly being set
-    if (paginationType === 'path' && key === 'page') return;
-    url.searchParams.set(key, value);
-  });
-
-  // 2. Apply new overrides
-  Object.entries(paramsToSet).forEach(([key, value]) => {
-    if (value === undefined || value === null) {
-      url.searchParams.delete(key);
-    } else {
-      url.searchParams.set(key, String(value));
-    }
-  });
-
-  return url.pathname + url.search;
-}
-
-// --- Pagination Logic ---
-const cleanBaseUrl = baseUrl.replace(/\/$/, '');
-
-const getPageUrl = (p: number) => {
-  if (customGetPageUrl) {
-    return customGetPageUrl(p);
-  }
-
-  if (paginationType === 'query') {
-    // Query mode: /projects?page=2
-    return buildUrl(cleanBaseUrl, { page: p });
-  } else {
-    // Path mode: /projects/2
-    // Note: We intentionally don't use buildUrl here to keep the path clean,
-    // but the button wrapper will apply buildUrl to ensure params stick.
-    return p === 1 ? cleanBaseUrl : `${cleanBaseUrl}/${p}`;
-  }
-};
-
-// Calculate Previous/Next Links
-// Note: If using customGetPageUrl, we assume it returns a full path which acts as the base.
-// We still might need to append current params if they aren't handled by customGetPageUrl.
-// For safety, if customGetPageUrl is used, we wrap it in buildUrl ONLY if it's meant to be a base.
-// But usually custom logic handles everything.
-// Let's assume getPageUrl returns the clean path, and we wrap it to add params.
-const resolveLink = (p: number) => {
-  const base = getPageUrl(p);
-  // If it's a query param style, it already has query params.
-  // If path style, it might need params.
-  // Safest check: does it include '?'?
-  if (base.includes('?')) {
-    // Assume logic handled it, but maybe we need to merge existing params?
-    // Let's rely on buildUrl merging.
-    // Complex. Let's assume default behavior for existing.
-    return base;
-  }
-  return buildUrl(base);
-};
-
-
-const prevLink = prevUrl
-  ? buildUrl(prevUrl)
-  : currentPage > 1
-    ? resolveLink(currentPage - 1)
-    : undefined;
-
-const nextLink = nextUrl
-  ? buildUrl(nextUrl)
-  : currentPage < totalPages
-    ? resolveLink(currentPage + 1)
-    : undefined;
-
-
-const viewModes: { icon: string; label: string; mode: ViewMode; }[] = [
-  { icon: 'mdi:format-list-bulleted', label: 'List', mode: 'list' },
-  { icon: 'mdi:view-column', label: 'Grid', mode: 'grid' },
-];
-
-const itemsPerPageOptions = [
-  { label: '6', value: '6' },
-  { label: '9', value: '9' },
-  { label: '12', value: '12' },
-  { label: '24', value: '24' },
-];
+const buildUrl = (path: string, paramsToSet: Record<string, number | string | undefined> = {}) =>
+  buildListUrl(Astro.url, paginationType, path, paramsToSet);
 ---
 
 <div class="list-actions w-full">
@@ -209,7 +128,7 @@ const itemsPerPageOptions = [
           align="right"
           id="items-per-page"
           label={`${itemsPerPage}`}
-          options={itemsPerPageOptions.map((opt) => ({
+          options={ITEMS_PER_PAGE_OPTIONS.map((opt) => ({
             ...opt,
             href: buildUrl(paginationType === 'path' ? baseUrl : Astro.url.pathname, { limit: opt.value, page: 1 }), // Reset to page 1 on limit change
           }))}
@@ -265,7 +184,7 @@ const itemsPerPageOptions = [
       {/* View toggle */}
       {showViewToggle && (
         <div class="flex items-center rounded-lg border border-border bg-background p-0.5 shadow-sm sm:p-1">
-          {viewModes.map(({ icon, label, mode }) => (
+          {VIEW_MODES.map(({ icon, label, mode }) => (
             <Button
               aria-pressed={viewMode === mode}
               as="a"

@@ -1,64 +1,40 @@
 ---
-import { Icon } from 'astro-icon/components';
 import Pagefind from "astro-pagefind/components/Search";
 
 import Modal from '../atoms/modal.astro';
-
-const { class: className } = Astro.props;
 ---
 
-<div class="search-wrapper group relative flex items-center">
-  {/* Search Trigger */}
-  <button
-    aria-label="Open search"
-    class:list={[
-      "group/search hover:shadow-glow-subtle flex h-9 w-10 items-center justify-center gap-2 rounded-full border border-white/5 bg-white/5 text-sm font-medium text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground sm:w-64 sm:justify-between sm:px-3",
-      className
-    ]}
-    id="search-trigger"
-  >
-    <div class="flex items-center gap-2">
-      <Icon class="size-4 opacity-50 transition-opacity group-hover/search:opacity-100" name="mdi:magnify" />
-      <span class="hidden sm:inline">Search...</span>
-    </div>
-    <kbd class="hidden h-5 items-center gap-1 rounded bg-white/5 px-1.5 font-mono text-[10px] font-medium opacity-50 sm:flex">
-      <span class="text-xs">⌘</span>K
-    </kbd>
-  </button>
 
-  <Modal
-    class="w-[90vw] max-w-sm sm:max-w-md md:max-w-xl"
-    id="search-modal"
-  >
-    <div class="flex max-h-[50vh] flex-col overflow-hidden sm:max-h-[60vh]">
-      <div class="max-h-[40vh] overflow-y-auto sm:max-h-[50vh]">
-        <Pagefind
-          className="pagefind-ui"
-          id="search"
-          uiOptions={{
-            showImages: false,
-            translations: {
-              placeholder: "Search..."
-            }
-          }}
-        />
-      </div>
-
-      <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
-        <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd> close</span>
-        <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd> navigate</span>
-        <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd> select</span>
-      </div>
+<Modal
+  class="w-[90vw] max-w-sm sm:max-w-md md:max-w-xl"
+  id="search-modal"
+>
+  <div class="flex max-h-[50vh] flex-col overflow-hidden sm:max-h-[60vh]">
+    <div class="max-h-[40vh] overflow-y-auto sm:max-h-[50vh]">
+      <Pagefind
+        className="pagefind-ui"
+        id="search"
+        uiOptions={{
+          showImages: false,
+          translations: {
+            placeholder: "Search..."
+          }
+        }}
+      />
     </div>
-  </Modal>
-</div>
+
+    <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
+      <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd> close</span>
+      <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd> navigate</span>
+      <span class="flex items-center gap-1"><kbd class="rounded bg-white/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd> select</span>
+    </div>
+  </div>
+</Modal>
 
 <script>
   function initSearch() {
-    const trigger = document.getElementById('search-trigger');
     const modal = document.getElementById('search-modal') as HTMLDialogElement;
-
-    if (!trigger || !modal) return;
+    if (!modal) return;
 
     // Constrain Pagefind width
     const pagefind = modal.querySelector('.pagefind-ui') as HTMLElement | null;
@@ -67,15 +43,6 @@ const { class: className } = Astro.props;
       const input = pagefind.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
       if (input) input.style.width = '100%';
     }
-
-    trigger.addEventListener('click', () => {
-      modal.showModal();
-      // Focus input after modal opens
-      setTimeout(() => {
-         const input = modal.querySelector('input');
-         if (input) input.focus();
-      }, 50);
-    });
 
     // Keyboard Shortcuts
     document.addEventListener('keydown', (e) => {

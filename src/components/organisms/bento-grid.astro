@@ -14,29 +14,26 @@ interface Props {
   items?: typeof NAV_ITEMS[number][];
 }
 
-const getGridClass = (index: number) => {
-  const pattern = [
-    'md:col-span-1 md:row-span-1',
-    'md:col-span-1 md:row-span-1',
-    'md:col-span-2 md:row-span-1',
-    'md:col-span-1 md:row-span-2',
-  ];
-  return pattern[index % pattern.length] || 'col-span-1';
-};
 
-const cardBaseStyles = "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md transition-all duration-300 hover:scale-[1.02]";
-const glowBaseStyles = "absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100";
-const blobBaseStyles = "absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[50px] transition-all duration-500";
 ---
 
-<div class="grid auto-rows-[minmax(180px,auto)] grid-cols-1 gap-4 pb-8 md:grid-cols-3">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-6 md:grid-rows-2">
   {/* Identity Tile - Main Feature */}
-  <div class:list={[cardBaseStyles, "items-center justify-center p-8 text-center md:col-span-2 md:row-span-2"]}>
+  <div class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-8 text-center backdrop-blur-md transition-all duration-300 hover:scale-[1.02] md:col-span-4 md:row-span-2">
     {/* Background Glow */}
-    <div class:list={[glowBaseStyles, "from-primary/10 to-transparent"]} />
-    <div class:list={[blobBaseStyles, "-top-20 -right-20 size-64 bg-primary/20 blur-[80px] group-hover:bg-primary/30"]} />
+    <div class="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+    <div class="absolute -top-20 -right-20 size-64 rounded-full bg-primary/20 blur-[80px] transition-all duration-500 group-hover:bg-primary/30" />
+    <div class="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay brightness-100 contrast-150 grayscale"></div>
 
-    <div class="relative z-10 flex flex-col items-center gap-4">
+    <div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
+      <div class="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1">
+        <span class="relative flex size-2">
+          <span class="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+        </span>
+        <span class="text-xs font-medium text-green-400">Open to Opportunities</span>
+      </div>
+
       <Heading class="leading-tight" level={1} size="hero">
         <GradientText variant="primary">
           {SITE_CONFIG.hero.title.main}
@@ -48,18 +45,17 @@ const blobBaseStyles = "absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[
       </Heading>
 
       <Text class="max-w-md text-balance" size="lg" variant="muted">
-        I'm Stevan, {SITE_CONFIG.hero.tagline}.
+          I'm Stevan, {SITE_CONFIG.hero.tagline}.
       </Text>
     </div>
   </div>
 
   {
-    items.map((item, index) => (
+    items.map((item) => (
       <Link
         class:list={[
-          cardBaseStyles,
-          getGridClass(index),
-          "p-6"
+          "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-all duration-300 hover:scale-[1.02]",
+          "md:col-span-2 md:row-span-1"
         ]}
         href={item.href}
         style={{
@@ -68,8 +64,9 @@ const blobBaseStyles = "absolute -right-12 -top-12 h-40 w-40 rounded-full blur-[
         variant="unstyled"
       >
         {/* Background Gradient/Glow Effect */}
-        <div class:list={[glowBaseStyles, "from-(--accent-color)/10 to-transparent"]} />
-        <div class:list={[blobBaseStyles, "bg-(--accent-color)/20 group-hover:bg-(--accent-color)/30"]} />
+        <div class="absolute inset-0 bg-linear-to-br from-(--accent-color)/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div class="absolute -top-12 -right-12 size-40 rounded-full bg-(--accent-color)/20 blur-[50px] transition-all duration-500 group-hover:bg-(--accent-color)/30" />
+        <div class="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay brightness-100 contrast-150 grayscale transition-opacity duration-300 group-hover:opacity-20"></div>
 
         <div class="relative z-10 flex w-full items-start justify-between">
           <IconBox

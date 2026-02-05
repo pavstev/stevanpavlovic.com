@@ -11,7 +11,6 @@ import InteractiveAvatar from "../molecules/interactive-avatar.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
 import Search from "../organisms/search.astro";
-import SocialIcons from "../molecules/social-icons.astro";
 
 const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
@@ -22,7 +21,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
   id="site-header"
   transition:persist
 >
-  <Container class="max-w-5xl">
+  <Container>
     <div class="relative flex flex-col items-center">
       {/* Main Bar */}
       <div class="glass flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
@@ -64,8 +63,6 @@ const isActive = (href: string) => isActivePath(pathname, href);
         </nav>
 
         <div class="hidden items-center gap-1 pr-1 md:flex">
-          <SocialIcons />
-          <div class="mx-1 h-4 w-px bg-white/10"></div>
           <Search />
         </div>
 

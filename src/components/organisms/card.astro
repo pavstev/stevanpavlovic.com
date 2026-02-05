@@ -10,13 +10,13 @@ import type { PortfolioItem } from '../../lib/portfolio';
 import { cardVariants, getCardData } from '../../lib/card-helpers';
 import { cn } from '../../lib/cn';
 import Badge from '../atoms/badge.astro';
+import FormattedDate from '../atoms/formatted-date.astro';
 import Heading from '../atoms/heading.astro';
 import IconBox from '../atoms/icon-box.astro';
-import Text from '../atoms/text.astro';
-import FormattedDate from '../atoms/formatted-date.astro';
 import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
 import Tags from '../molecules/tags.astro';
-import ZoomableImage from './zoomable-image.astro';
+import ZoomableImage from '../molecules/zoomable-image.astro';
 
 // Omit variant from BaseProps to avoid conflicts with specific variant strings
 interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof cardVariants>, 'variant'> {

@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon/components';
+
 
 import { PROFILE, SITE_CONFIG, SOCIALS } from '../../lib/config';
 import Text from '../atoms/text.astro';
@@ -8,54 +8,35 @@ import Container from '../molecules/container.astro';
 
 <footer class="relative w-full overflow-hidden border-t border-white/5 bg-black" transition:persist>
   <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-  <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+  <div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
   <Container>
-    <div class="relative z-10 grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="relative z-10 flex flex-col items-start justify-between gap-8 py-12 sm:flex-row sm:items-center">
       {/* Brand & Bio */}
-      <div class="flex flex-col gap-6 lg:col-span-2">
+      <div class="flex flex-col gap-2">
         <div class="flex items-center gap-3">
-          <div class="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 shadow-inner">
-            <span class="font-heading text-lg font-bold text-white">SP</span>
-          </div>
-          <div class="flex flex-col">
-            <Text class="font-bold tracking-tight text-white">{PROFILE.name}</Text>
-            <Text size="xs" variant="muted">{PROFILE.role}</Text>
-          </div>
+          <Text class="font-bold tracking-tight text-white">{PROFILE.name}</Text>
         </div>
-
-        <div class="flex flex-col gap-1">
-           <Text class="max-w-md leading-relaxed" size="sm" variant="muted">
-            {SITE_CONFIG.hero.tagline}
-          </Text>
-          <div class="mt-4 flex items-center gap-2 text-muted-foreground">
-            <Icon class="size-4" name="mdi:map-marker-outline" />
-            <Text size="xs" variant="muted">{PROFILE.location}</Text>
-          </div>
-        </div>
+        <Text class="max-w-sm" size="sm" variant="muted">
+          {SITE_CONFIG.hero.tagline}
+        </Text>
       </div>
 
-      {/* Socials & Links */}
-      <div class="flex flex-col gap-6 sm:items-end">
-        <div class="flex flex-col gap-3 sm:items-end">
-          <Text class="font-medium text-white">Connect</Text>
-          <div class="flex flex-col gap-2 sm:items-end">
-            {
-              SOCIALS.map((social) => (
-                <a
-                  class="group flex items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-muted-foreground transition-all hover:border-white/10 hover:bg-white/5 hover:text-white"
-                  href={social.href}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <span class="text-xs text-muted-foreground/50 transition-colors group-hover:text-muted-foreground">{social.handle}</span>
-                  <span class="font-medium">{social.name}</span>
-                  <Icon class="size-4 text-muted-foreground/50 transition-colors group-hover:text-white" name={social.icon} />
-                </a>
-              ))
-            }
-          </div>
-        </div>
+      {/* Simplified Links */}
+      <div class="flex flex-wrap items-center gap-6">
+        {
+          SOCIALS.map((social) => (
+            <a
+              class="text-sm font-medium text-muted-foreground transition-colors hover:text-white"
+              data-tooltip={social.name}
+              href={social.href}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {social.handle}
+            </a>
+          ))
+        }
       </div>
     </div>
 
@@ -66,12 +47,8 @@ import Container from '../molecules/container.astro';
       </Text>
 
       <div class="flex gap-6">
-        <a class="text-xs font-medium tracking-wider text-muted-foreground transition-colors hover:text-primary" href="/rss.xml">
-          RSS
-        </a>
-        <a class="text-xs font-medium tracking-wider text-muted-foreground transition-colors hover:text-primary" href="/sitemap-index.xml">
-          Sitemap
-        </a>
+        <a class="text-xs text-muted-foreground transition-colors hover:text-foreground" href="/rss.xml">RSS</a>
+        <a class="text-xs text-muted-foreground transition-colors hover:text-foreground" href="/sitemap-index.xml">Sitemap</a>
       </div>
     </div>
   </Container>

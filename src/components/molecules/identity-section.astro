@@ -2,16 +2,16 @@
 import type { HTMLAttributes } from 'astro/types';
 
 import { cn } from '../../lib/cn';
-import Stack from '../atoms/stack.astro';
+
 
 interface Props extends HTMLAttributes<'div'> {}
 
 const { class: className, ...rest } = Astro.props;
 ---
 
-<Stack align="center" class:list={cn("flex-row gap-3", className)} {...rest}>
+<div class:list={cn("group/identity flex items-center gap-3 rounded-full border border-transparent px-2 py-1 transition-all hover:border-white/10 hover:bg-white/5", className)} {...rest}>
   <slot name="avatar" />
-  <div class="hidden sm:block">
+  <div class="hidden flex-col sm:flex">
     <slot name="name" />
   </div>
-</Stack>
+</div>

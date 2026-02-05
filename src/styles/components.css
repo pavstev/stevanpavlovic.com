@@ -63,6 +63,7 @@
   font-weight: 600 !important;
   font-size: 0.9375rem !important;
   text-decoration: none !important;
+  width: 100%;
 }
 
 .pagefind-ui .pagefind-ui__result-excerpt {
@@ -100,4 +101,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Tooltip Styles */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-popover);
+  color: var(--color-popover-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 50;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
 }

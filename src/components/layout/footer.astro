@@ -4,30 +4,28 @@ import Text from '../atoms/text.astro';
 import Container from '../molecules/container.astro';
 ---
 
-<footer class="mt-auto w-full px-2 pt-16 pb-4 md:px-0 md:pb-8" transition:persist>
-  <Container>
-    <div class="pointer-events-auto relative flex min-h-12 w-full items-center justify-between gap-4 rounded-full border border-border/50 bg-background/60 px-6 py-2 shadow-xl ring-1 ring-black/5 backdrop-blur-md transition-all duration-500">
-      <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-b from-foreground/5 to-transparent opacity-50"></div>
+<footer class="mt-auto w-full py-8" transition:persist>
+  <Container class="max-w-5xl">
+    <div class="glass flex w-full flex-col items-center justify-between gap-4 rounded-3xl p-6 sm:flex-row sm:px-8">
 
-      <div class="flex flex-col items-start md:flex-row md:items-center md:gap-4">
-        <Text class="font-bold tracking-tight text-foreground/80" size="xs">
+      <div class="flex flex-col items-center gap-2 sm:items-start">
+        <Text class="font-bold tracking-tight" size="sm">
           &copy; {new Date().getFullYear()} {PROFILE.name}
         </Text>
-        <div class="hidden h-3 w-px bg-border/50 md:block"></div>
-        <Text class="hidden font-mono text-[9px] font-medium tracking-widest text-muted-foreground uppercase md:block">
+        <Text variant="muted" size="xs" class="font-mono uppercase tracking-widest">
           Crafted with precision
         </Text>
       </div>
 
-      <nav class="flex items-center gap-4">
-        <Text as="a" class="font-mono text-[10px] tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/rss.xml">
-          RSS Feed
-        </Text>
-        <div class="h-3 w-px bg-border/50"></div>
-        <Text as="a" class="font-mono text-[10px] tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/sitemap-index.xml">
+      <nav class="flex items-center gap-6">
+        <a href="/rss.xml" class="text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+          RSS
+        </a>
+        <a href="/sitemap-index.xml" class="text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
           Sitemap
-        </Text>
+        </a>
       </nav>
+
     </div>
   </Container>
 </footer>

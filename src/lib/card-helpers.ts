@@ -1,25 +1,24 @@
 import type { CollectionEntry } from "astro:content";
-
 import { cva } from "class-variance-authority";
-// Define types explicitly to avoid circular dependency issues if we imported back from card.astro
-// But ideally, we move types here entirely.
 
 export const cardVariants = cva(
-  "group/card relative flex w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-black/60 p-5 text-left backdrop-blur-2xl transition-all duration-500 ease-out sm:p-6 shadow-2xl",
+  "group/card relative flex w-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
-    defaultVariants: {
-      interactive: false,
-      style: "default",
-    },
     variants: {
       interactive: {
+        true: "cursor-pointer hover:-translate-y-1 hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
         false: "",
-        true: "cursor-pointer hover:-translate-y-1 hover:border-white/20 hover:bg-black/80 hover:shadow-emerald-900/10",
       },
-      style: {
+      variant: {
         default: "",
-        navigation: "!p-4 !sm:p-6 bg-black/40 border-white/5 hover:border-white/20 hover:bg-black/60",
+        glass: "glass text-foreground",
+        outline: "border border-border bg-transparent",
+        ghost: "border-transparent bg-transparent shadow-none",
       },
+    },
+    defaultVariants: {
+      interactive: false,
+      variant: "default",
     },
   },
 );

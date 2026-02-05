@@ -82,7 +82,7 @@ const description = 'description' in data ? data.description : ('desc' in data ?
     {type === 'project' && (
       <Stack align="center" direction="row" gap={3} slot="actions">
         {'demoUrl' in data && data.demoUrl && (
-          <Button as="a" href={data.demoUrl} variant="primary">
+          <Button as="a" href={data.demoUrl} variant="default">
             Live Demo
           </Button>
         )}

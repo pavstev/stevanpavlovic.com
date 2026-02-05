@@ -1,33 +1,14 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-
-import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '../../lib/cn';
 
-const container = cva('mx-auto w-full px-4');
-
-interface Props
-  extends HTMLAttributes<'div'>, VariantProps<typeof container> {
+interface Props extends HTMLAttributes<'div'> {
   as?: string;
-  maxWidth?: number | string;
 }
 
-const {
-  as: Tag = 'div',
-  class: className,
-  maxWidth = 1120,
-  ...rest
-} = Astro.props;
-
-const maxWidthValue =
-  typeof maxWidth === 'number' ? `${String(maxWidth)}px` : maxWidth;
+const { as: Tag = 'div', class: className, ...props } = Astro.props;
 ---
 
-<Tag
-  class:list={cn(container(), className)}
-  style={`max-width: ${maxWidthValue};`}
-  {...rest}
->
+<Tag class={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)} {...props}>
   <slot />
 </Tag>

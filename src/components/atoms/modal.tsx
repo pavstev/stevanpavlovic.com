@@ -4,6 +4,7 @@ import { cn } from "../../lib/cn";
 
 interface ModalProps {
   bodyClass?: string;
+  caption?: string;
   children: React.ReactNode;
   className?: string;
   closeOnBackdropClick?: boolean;
@@ -18,6 +19,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({
   bodyClass,
+  caption,
   children,
   className,
   closeOnBackdropClick = true,
@@ -138,10 +140,10 @@ const Modal: React.FC<ModalProps> = ({
         {showCloseButton && (
           <button
             aria-label="Close modal"
-            className="absolute top-4 right-4 z-50 flex size-10 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition-all hover:scale-110 hover:bg-foreground/20 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background focus:outline-none"
+            className="absolute -top-2 -right-2 z-50 flex size-10 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition-all hover:scale-110 hover:bg-foreground/20 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background"
             onClick={onClose}
           >
-            <svg className="size-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg className="size-5" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
               <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
@@ -151,6 +153,13 @@ const Modal: React.FC<ModalProps> = ({
         <div className={cn("flex-1 overflow-y-auto p-6", bodyClass)}>
           {children}
         </div>
+
+        {/* Caption */}
+        {caption && (
+          <div className="border-t border-foreground/5 px-6 py-3">
+            <p className="text-center text-sm text-muted-foreground">{caption}</p>
+          </div>
+        )}
 
         {/* Subtle bottom fade for long content */}
         <div className="pointer-events-none absolute bottom-0 left-0 h-12 w-full bg-linear-to-t from-black/20 to-transparent" />

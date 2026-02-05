@@ -97,7 +97,7 @@ const description = 'description' in data ? data.description : ('desc' in data ?
   </PageHero>
 
   {'heroImage' in data && data.heroImage && (
-    <div class="relative mx-auto mb-12 aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-foreground/10 shadow-2xl transition-all hover:border-foreground/20" slot="hero-image">
+    <div class="relative mx-auto mb-8 aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-foreground/10 shadow-2xl transition-all hover:border-foreground/20" slot="hero-image">
       <ZoomableImage
         alt={title}
         className="size-full object-cover"
@@ -110,14 +110,14 @@ const description = 'description' in data ? data.description : ('desc' in data ?
   )}
 
   {type === 'experience' && 'skills' in data && data.skills && (
-    <Stack class="mt-8" gap={3}>
+    <Stack class="mt-6" gap={2}>
       <Text class="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Skills</Text>
       <Tags tags={data.skills ?? []} />
     </Stack>
   )}
 
   {type === 'project' && 'tags' in data && data.tags && (
-    <Stack class="mt-8" gap={3}>
+    <Stack class="mt-6" gap={2}>
       <Text class="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Technologies</Text>
       <Tags tags={data.tags ?? []} />
     </Stack>

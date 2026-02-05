@@ -1,6 +1,7 @@
 ---
 import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
+import Button from "../atoms/button.astro";
 import Logo from "../atoms/logo.astro";
 import Container from "../molecules/container.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
@@ -20,15 +21,15 @@ const isActive = (href: string) => isActivePath(pathname, href);
   <Container>
     <LayoutWrapper class="items-center">
       {/* Main Bar */}
-      <div class="glass relative flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20">
+      <div class="glass relative flex h-14 w-full items-center rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20">
 
         {/* Left: Logo */}
-        <div class="shrink-0">
+        <div class="shrink-0 pl-1">
           <Logo />
         </div>
 
         {/* Center: Search - Desktop */}
-        <div class="absolute top-1/2 left-1/2 hidden -translate-1/2 md:block">
+        <div class="hidden flex-1 justify-center md:flex">
           <Search variant="desktop" />
         </div>
 
@@ -43,16 +44,24 @@ const isActive = (href: string) => isActivePath(pathname, href);
             {NAV_ITEMS_ARRAY.map((item) => {
               const active = isActive(item.href);
               return (
-                <a
+                <Button
+                  aria-current={active ? "page" : undefined}
                   class:list={[
-                    "relative rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-300",
-                    {"bg-foreground/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
+                    "relative rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300",
+                    {"bg-foreground/10 text-primary shadow-[0_0_48px_rgba(var(--color-primary-rgb),0.6)] ring-2 ring-primary/40": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
                   ]}
                   data-nav-link
                   href={item.href}
+                  variant="unstyled"
                 >
-                  {item.label}
-                </a>
+                  <span>
+                    {item.label}
+                  </span>
+                  <div class:list={[
+                    "absolute -bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
+                    !active && "scale-0 opacity-0"
+                  ]}></div>
+                </Button>
               );
             })}
           </nav>

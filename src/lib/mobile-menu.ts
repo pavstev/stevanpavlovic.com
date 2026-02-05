@@ -37,11 +37,12 @@ export const initMobileMenu = (): void => {
 };
 
 export const updateActiveLinks = (): void => {
-  const links = document.querySelectorAll("a[data-nav-link]");
+  const links = document.querySelectorAll("[data-nav-link]");
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
-  const activeClasses = ["bg-white/10", "text-foreground", "shadow-sm"];
-  const inactiveClasses = ["text-muted-foreground", "hover:text-foreground", "hover:bg-white/5"];
+  // Standardized classes to match server rendering
+  const activeClasses = ["bg-foreground/10", "text-foreground", "ring-1", "ring-foreground/20"];
+  const inactiveClasses = ["text-muted-foreground", "hover:bg-foreground/5", "hover:text-foreground"];
 
   for (const link of links) {
     const href = link.getAttribute("href");
@@ -49,25 +50,28 @@ export const updateActiveLinks = (): void => {
 
     const isActive = cleanHref === "/"
       ? currentPath === "/"
-      : currentPath.startsWith(cleanHref);
+      : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
 
-    const icon = link.querySelector("[data-nav-icon]");
+    const dot = link.querySelector(".rounded-full.bg-primary");
 
-    if (!isActive) {
-      link.classList.remove(...activeClasses);
-      link.classList.add(...inactiveClasses);
-      if (icon) {
-        icon.classList.remove("w-3", "opacity-100");
-        icon.classList.add("w-0", "opacity-0");
+    if (isActive) {
+      link.classList.add(...activeClasses);
+      link.classList.remove(...inactiveClasses);
+      link.setAttribute("aria-current", "page");
+
+      if (dot) {
+        dot.classList.remove("scale-0", "opacity-0");
       }
+
       continue;
     }
 
-    link.classList.add(...activeClasses);
-    link.classList.remove(...inactiveClasses);
-    if (icon) {
-      icon.classList.remove("w-0", "opacity-0");
-      icon.classList.add("w-3", "opacity-100");
+    link.classList.remove(...activeClasses);
+    link.classList.add(...inactiveClasses);
+    link.removeAttribute("aria-current");
+
+    if (dot) {
+      dot.classList.add("scale-0", "opacity-0");
     }
   }
 };

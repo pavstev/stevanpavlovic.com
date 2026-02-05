@@ -1,33 +1,41 @@
 ---
+import { Image } from "astro:assets";
+
 import { cn } from "../../lib/cn";
-import { PROFILE } from "../../lib/config";
+import { PROFILE, SITE_CONFIG } from "../../lib/config";
 import Button from "./button.astro";
-import Text from "./text.astro";
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
-
-const initials = PROFILE.name
-  .split(" ")
-  .map((n) => n[0])
-  .join("");
 ---
 
 <Button
-  class:list={cn("group inline-flex items-center no-underline", className)}
+  class:list={cn("group flex items-center gap-2.5 no-underline transition-opacity hover:opacity-90", className)}
   href="/"
   variant="unstyled"
 >
-  <div class="group-hover:shadow-glow-primary flex h-9 items-center gap-2 rounded-full bg-muted/30 px-3 text-sm font-bold tracking-tighter ring-1 ring-border/50 transition-all duration-500 group-hover:scale-105">
-    <span class="text-primary">{initials}</span>
-    <Text
-      as="span"
-      class="hidden text-muted-foreground transition-all duration-500 sm:inline"
-    >
-      {PROFILE.name}
-    </Text>
+  {/* Rounded Tinted Avatar */}
+  <div class="relative flex size-8 items-center justify-center overflow-hidden rounded-full ring-2 ring-foreground/10 transition-all duration-300 group-hover:ring-primary/40">
+    <Image
+      alt={SITE_CONFIG.author}
+      class="size-full object-cover"
+      src={PROFILE.avatar}
+    />
+
+    {/* Primary Tint Overlay */}
+    <div class="absolute inset-0 bg-primary/60 mix-blend-color transition-all duration-500 group-hover:opacity-40"></div>
+
+    {/* Shine effect */}
+    <div class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full"></div>
+  </div>
+
+  {/* Author Text Container */}
+  <div class="flex items-center">
+    <span class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-base font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-lg">
+      {SITE_CONFIG.author}
+    </span>
   </div>
 </Button>

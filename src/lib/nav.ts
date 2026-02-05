@@ -1,8 +1,10 @@
 export const isActivePath = (currentPath: string, href: string): boolean => {
-  if (href === "/") {
-    return currentPath === "/";
+  const cleanPath = currentPath.replace(/\/$/, "") || "/";
+  const cleanHref = href.replace(/\/$/, "") || "/";
+
+  if (cleanHref === "/") {
+    return cleanPath === "/";
   }
-  const cleanPath = currentPath.replace(/\/$/, "");
-  const cleanHref = href.replace(/\/$/, "");
-  return cleanPath.startsWith(cleanHref);
+
+  return cleanPath === cleanHref || cleanPath.startsWith(`${cleanHref}/`);
 };

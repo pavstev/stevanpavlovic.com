@@ -12,6 +12,7 @@ const avatarVariants = cva(
     defaultVariants: {
       ring: false,
       size: 'md',
+      tinted: false,
     },
     variants: {
       ring: {
@@ -25,6 +26,10 @@ const avatarVariants = cva(
         sm: 'size-8',
         xl: 'size-24',
         xs: 'size-6',
+      },
+      tinted: {
+        false: '',
+        true: 'grayscale transition-all duration-500 hover:grayscale-0',
       },
     },
   }
@@ -46,6 +51,7 @@ const {
   ring,
   size,
   src,
+  tinted,
 } = Astro.props;
 
 const sizeMap: Record<string, number> = {
@@ -60,7 +66,7 @@ const sizeMap: Record<string, number> = {
 const imageSize = (size && typeof size === 'string' && sizeMap[size]) || 40;
 ---
 
-<div class:list={cn(avatarVariants({ className, ring, size }))}>
+<div class:list={cn(avatarVariants({ className, ring, size, tinted }))}>
   <Image
     alt={alt}
     class="size-full object-cover"
@@ -70,4 +76,8 @@ const imageSize = (size && typeof size === 'string' && sizeMap[size]) || 40;
     src={src as any}
     width={imageSize}
   />
+
+  {tinted && (
+    <div class="absolute inset-0 bg-primary/40 opacity-100 mix-blend-color transition-opacity duration-500 group-hover:opacity-0"></div>
+  )}
 </div>

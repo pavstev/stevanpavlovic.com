@@ -34,5 +34,5 @@ export default defineUnlighthouseConfig({
     sitemap: ["/sitemap-index.xml", "/sitemap.xml"],
   },
 
-  site: "http://localhost:8787",
+  site: "https://spcom-final.staevage.workers.dev",
 });

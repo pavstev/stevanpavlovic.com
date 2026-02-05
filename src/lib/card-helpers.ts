@@ -12,7 +12,7 @@ export const cardVariants = cva(
     variants: {
       interactive: {
         false: "",
-        true: "cursor-pointer hover:-translate-y-1 hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
+        true: "cursor-pointer hover:-translate-y-0.5 hover:border-primary/10 hover:bg-card/70 hover:shadow-md hover:shadow-primary/5",
       },
       variant: {
         default: "",

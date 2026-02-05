@@ -54,7 +54,7 @@ const stats = [
       <div class="flex flex-wrap justify-start gap-4 pt-8 md:gap-8">
         {stats.map((stat) => (
           <Stat
-            class="scale-90 origin-left md:scale-100"
+            class="origin-left scale-90 md:scale-100"
             icon={stat.icon}
             label={stat.label}
             value={typeof stat.value === 'number' ? `${formatCompactNumber(stat.value)}+` : stat.value}
@@ -71,7 +71,7 @@ const stats = [
       <div class="absolute -inset-4 bg-primary/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"></div>
 
       {/* Image Container */}
-      <div class="relative overflow-hidden rounded-2xl border border-white/10 glass shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/30 group-hover:shadow-primary/10">
+      <div class="glass relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:scale-[1.02] group-hover:border-primary/30 group-hover:shadow-primary/10">
         <div class="aspect-4/5 w-48 md:w-56">
           <ZoomableImage
             alt={PROFILE.name}

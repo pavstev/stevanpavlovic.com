@@ -61,11 +61,11 @@ const isActive = (href: string) => isActivePath(pathname, href);
   <div class="absolute bottom-12 flex items-center gap-6">
     {SOCIALS.map((social) => (
       <a
-        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-white/10 hover:text-foreground hover:scale-110"
+        aria-label={social.name}
+        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-white/10 hover:text-foreground"
         href={social.href}
         rel="noreferrer"
         target="_blank"
-        aria-label={social.name}
       >
         <Icon class="size-6" name={social.icon} />
       </a>

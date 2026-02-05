@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+
 import { cn } from '../../lib/cn';
 import Heading from './heading.astro';
 import Text from './text.astro';
@@ -24,13 +25,13 @@ const {
 <dialog
   aria-describedby={description ? `${id}-description` : undefined}
   aria-labelledby={title ? `${id}-title` : undefined}
-  class="m-auto overflow-visible p-0 border-none bg-transparent outline-none backdrop:backdrop-blur-md backdrop:bg-black/80"
+  class="m-auto overflow-visible border-none bg-transparent p-0 outline-none backdrop:bg-black/80 backdrop:backdrop-blur-md"
   id={id}
 >
   <div
     class:list={cn(
-      "relative m-4 flex flex-col rounded-3xl border border-white/10 glass-strong shadow-2xl transition-all duration-500",
-      "max-h-[90vh] w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-xl",
+      "glass-strong relative flex flex-col rounded-3xl border border-white/10 shadow-2xl transition-all duration-500",
+      "max-h-[85vh] w-full max-w-[calc(100vw-2rem)] sm:max-w-lg md:max-w-xl",
       className
     )}
   >
@@ -51,17 +52,17 @@ const {
     )}
 
     {/* Close Button - Always present and positioned correctly */}
-    <form class="absolute right-4 top-4 z-51" method="dialog">
+    <form class="absolute top-4 right-4 z-51" method="dialog">
       <button
         aria-label="Close modal"
-        class="flex size-9 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background"
+        class="flex size-9 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background focus:outline-none"
       >
         <Icon class="size-5" name="mdi:close" />
       </button>
     </form>
 
     {/* Scrollable Content Body */}
-    <div class:list={cn("flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent", bodyClass)}>
+    <div class:list={cn("scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent flex-1 overflow-y-auto p-6", bodyClass)}>
       <slot />
     </div>
 
@@ -118,11 +119,25 @@ const {
 </script>
 
 <style>
-  /* Use fixed positioning with inset 0 for native dialog centering */
   dialog {
+    /* Use fixed positioning to cover the screen, but use flex to center content */
     position: fixed;
     inset: 0;
     z-index: 100;
+    display: flex; /* Flexbox for centering */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    background: transparent;
+    padding: 1rem; /* Safety padding from edges */
+  }
+
+  /* When closed, hide it completely (browser handles this usually, but safe to be explicit with display toggle) */
+  dialog:not([open]) {
+    display: none;
   }
 
   /* Backdrop standard styling */

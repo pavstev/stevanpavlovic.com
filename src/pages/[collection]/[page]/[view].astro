@@ -1,0 +1,233 @@
+---
+import { z } from 'astro/zod';
+import { getCollection } from 'astro:content';
+
+import CollectionPage from '../../../components/templates/collection-page.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
+import { sortPosts } from '../../../lib/cms';
+import { PROFILE } from '../../../lib/config';
+
+export const prerender = false;
+
+// Validation Schemas
+const paramsSchema = z.object({
+  collection: z.enum(['blog', 'projects', 'experience']),
+  page: z.coerce.number().int().positive(),
+  view: z.enum(['list', 'grid']),
+});
+
+const searchSchema = z.object({
+  filter: z.string().optional(),
+  limit: z.coerce.number().int().positive().optional(),
+  sort: z.enum(['newest', 'oldest', 'a-z']).optional().default('newest'),
+});
+
+// Validate Params
+const paramsResult = paramsSchema.safeParse(Astro.params);
+if (!paramsResult.success) {
+  return Astro.redirect('/404');
+}
+
+const { collection, page: pageNum, view } = paramsResult.data;
+
+// Validate Search Params
+const searchResult = searchSchema.safeParse(Object.fromEntries(Astro.url.searchParams));
+if (!searchResult.success) {
+  // Fallback to default sort if invalid query params
+  return Astro.redirect(`/${collection}/${pageNum}/${view}`);
+}
+
+const { filter: filterParam, limit: limitParam, sort: sortParam } = searchResult.data;
+
+
+// Data Fetching & Processing
+let allItems: any[] = [];
+if (collection === 'blog') {
+  const posts = await getCollection('blog');
+  allItems = sortPosts(posts); // Default sort (usually newest)
+} else if (collection === 'projects') {
+  const projects = await getCollection('projects');
+  allItems = [...projects];
+} else if (collection === 'experience') {
+  const experience = await getCollection('experience');
+  // Default experience sort (newest first)
+  allItems = [...experience].sort((a, b) => {
+    const dateA = a.data.startDate ? new Date(a.data.startDate).getTime() : 0;
+    const dateB = b.data.startDate ? new Date(b.data.startDate).getTime() : 0;
+    return dateB - dateA;
+  });
+}
+
+// Filter
+let filteredItems = allItems;
+if (filterParam) {
+  filteredItems = allItems.filter((item) => {
+    const tags = item.data.tags || item.data.skills || [];
+    return tags.includes(filterParam);
+  });
+}
+
+// Sort (if not already sorted by default or if overwriting default)
+// Note: Blog `sortPosts` already handles default date sort.
+// Projects/Experience default date sort handled above.
+// Only need to re-sort if user explicitly asks or for A-Z.
+if (sortParam === 'a-z') {
+  filteredItems.sort((a, b) => {
+    const titleA = (a.data.title || a.data.company || '').toLowerCase();
+    const titleB = (b.data.title || b.data.company || '').toLowerCase();
+    return titleA.localeCompare(titleB);
+  });
+} else if (sortParam === 'oldest') {
+  filteredItems.sort((a, b) => {
+    const dateA = a.data.pubDate ? new Date(a.data.pubDate).getTime() : (a.data.startDate ? new Date(a.data.startDate).getTime() : 0);
+    const dateB = b.data.pubDate ? new Date(b.data.pubDate).getTime() : (b.data.startDate ? new Date(b.data.startDate).getTime() : 0);
+    return dateA - dateB;
+  });
+} else if (sortParam === 'newest') {
+  filteredItems.sort((a, b) => {
+    const dateA = a.data.pubDate ? new Date(a.data.pubDate).getTime() : (a.data.startDate ? new Date(a.data.startDate).getTime() : 0);
+    const dateB = b.data.pubDate ? new Date(b.data.pubDate).getTime() : (b.data.startDate ? new Date(b.data.startDate).getTime() : 0);
+    return dateB - dateA;
+  });
+}
+
+// Pagination
+const initialPageSize = collection === 'blog' ? 8 : 6;
+const pageSize = limitParam || initialPageSize;
+const totalItems = filteredItems.length;
+const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+
+if (pageNum > totalPages) {
+  return Astro.redirect(`/${collection}/${totalPages}/${view}${Astro.url.search}`);
+}
+
+const startIndex = (pageNum - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const pageItems = filteredItems.slice(startIndex, endIndex);
+
+const prevUrl = pageNum > 1 ? `/${collection}/${pageNum - 1}/${view}${Astro.url.search}` : undefined;
+const nextUrl = pageNum < totalPages ? `/${collection}/${pageNum + 1}/${view}${Astro.url.search}` : undefined;
+
+
+// --- Collection Specific Configuration ---
+
+// 1. Title & Description
+let title = '';
+let description = '';
+let headerTitle = '';
+let headerDescription = '';
+let headerIcon = '';
+let baseUrl = `/${collection}`;
+
+if (collection === 'blog') {
+  title = `Blog | ${SITE_TITLE}`;
+  description = SITE_DESCRIPTION;
+  headerTitle = 'Blog Posts';
+  headerDescription = "Thoughts and tutorials on software engineering.";
+  headerIcon = "mdi:newspaper-variant-outline";
+} else if (collection === 'projects') {
+  title = `Projects | ${PROFILE.name}`;
+  description = `${PROFILE.name} - Projects & Portfolio`;
+  headerTitle = 'Projects';
+  headerDescription = "A collection of open-source libraries, applications, and experiments I've built.";
+  headerIcon = "mdi:console";
+} else if (collection === 'experience') {
+  title = `Experience | ${PROFILE.name}`;
+  description = `${PROFILE.name} - Work Experience`;
+  headerTitle = 'Experience';
+  headerDescription = "My professional journey and career highlights.";
+  headerIcon = "mdi:briefcase-outline";
+}
+
+// 2. Filters (for UI)
+// Recalculate allTags from *allItems* (not just filtered) so users see all options
+const allTags = [...new Set(allItems.flatMap((item: any) => item.data.tags || item.data.skills || []))].sort();
+
+const sortOptions = [
+  { href: `/${collection}/${pageNum}/${view}?sort=newest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Newest First', value: 'newest' },
+  ...(collection === 'blog' ? [{ href: `/${collection}/${pageNum}/${view}?sort=oldest${filterParam ? `&filter=${filterParam}` : ''}`, label: 'Oldest First', value: 'oldest' }] : []),
+  { href: `/${collection}/${pageNum}/${view}?sort=a-z${filterParam ? `&filter=${filterParam}` : ''}`, label: 'A-Z', value: 'a-z' },
+];
+
+const tagOptions = [
+  { href: `/${collection}/${pageNum}/${view}?sort=${sortParam}`, label: 'All Tags', value: '' },
+  ...allTags.map((tag: string) => ({
+    href: `/${collection}/${pageNum}/${view}?filter=${tag}&sort=${sortParam}`,
+    label: tag.charAt(0).toUpperCase() + tag.slice(1),
+    value: tag,
+  })),
+];
+
+const filters = [
+  { id: 'sort', label: 'Sort', options: sortOptions, selectedValue: sortParam },
+  ...(allTags.length > 0 ? [{ id: 'filter', label: 'Tag', options: tagOptions, selectedValue: filterParam || '' }] : []),
+];
+
+// 3. Item Props Helpers
+
+
+const getItemCardProps = (item: any) => {
+  if (collection === 'blog') {
+    return { post: item, variant: 'content' };
+  }
+  if (collection === 'projects') {
+    return {
+      portfolioItem: {
+        desc: item.data.desc,
+        href: `/projects/view/${item.id}/`,
+        id: item.id,
+        meta: item.data.meta,
+        subtitle: item.data.subtitle,
+        tags: item.data.tags,
+        title: item.data.title,
+      },
+      variant: 'portfolio'
+    };
+  }
+  if (collection === 'experience') {
+    return {
+      portfolioItem: {
+        company: item.data.company,
+        desc: item.data.desc,
+        endDate: item.data.endDate,
+        href: `/experience/view/${item.id}/`,
+        id: item.id,
+        location: item.data.location,
+        logo: item.data.logo,
+        role: item.data.role,
+        startDate: item.data.startDate,
+        tags: item.data.skills,
+      },
+      variant: 'portfolio' // Reverting to portfolio as 'experience' variant not found in card.astro review
+    };
+  }
+  return {};
+};
+
+const viewUrls = {
+  grid: `/${collection}/${pageNum}/grid${Astro.url.search}`,
+  list: `/${collection}/${pageNum}/list${Astro.url.search}`,
+};
+
+---
+
+<CollectionPage
+  baseUrl={baseUrl}
+  containerId={`${collection}-container`}
+  currentPage={pageNum}
+  description={description}
+  filters={filters}
+  getItemCardProps={getItemCardProps}
+  headerDescription={headerDescription}
+  headerIcon={headerIcon}
+  headerTitle={headerTitle}
+  initialPageSize={pageSize}
+  items={pageItems}
+  nextUrl={nextUrl}
+  prevUrl={prevUrl}
+  title={title}
+  totalItems={totalItems}
+  totalPages={totalPages}
+  viewMode={view}
+  viewUrls={viewUrls}
+/>

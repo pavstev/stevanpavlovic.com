@@ -31,8 +31,8 @@ const {
   <Stack align={{ base: 'start', sm: 'center' }} direction={{ base: 'col', sm: 'row' }} gap={8} justify="between">
     <Stack align="center" class="min-w-0" direction="row" gap={4}>
       {icon && (
-        <div class="flex size-12 items-center justify-center rounded-xl bg-muted/50 ring-1 ring-border/50 transition-colors hover:bg-muted">
-          <Icon class="text-muted-foreground" height={24} name={icon} width={24} />
+        <div class="shadow-glow hover:shadow-glow-primary flex size-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5 hover:text-primary">
+          <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size={24} />
         </div>
       )}
       <div class="min-w-0">

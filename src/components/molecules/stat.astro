@@ -15,7 +15,7 @@ const { class: className, icon, label, value } = Astro.props;
 
 <div class:list={["group flex items-center gap-3", className]}>
   {/* Icon Container */}
-  <div class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/20 backdrop-blur-md transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-glow-primary">
+  <div class="group-hover:shadow-glow-primary flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/20 backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
     <Icon class="size-5 md:size-6" name={icon} />
   </div>
 

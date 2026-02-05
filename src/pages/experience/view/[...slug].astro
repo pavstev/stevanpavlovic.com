@@ -3,6 +3,9 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 
 import PostView from '../../../components/organisms/post-view.astro';
 
+
+export const prerender = true;
+
 export const getStaticPaths = async () => {
   const experience = await getCollection('experience');
   return experience.map((exp) => ({

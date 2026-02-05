@@ -3,10 +3,6 @@ import { Icon } from 'astro-icon/components';
 
 import Button from '../atoms/button.astro';
 import Dropdown, { type DropdownOption } from '../atoms/dropdown.astro';
-import type { ViewMode } from '../../lib/list-logic';
-export type { ViewMode };
-
-export type PaginationType = 'path' | 'query';
 
 export interface FilterConfig {
   id: string;
@@ -16,15 +12,17 @@ export interface FilterConfig {
   selectedValues?: string[];
 }
 
-export interface ViewUrls {
-  grid: string;
-  list: string;
-}
+export type ViewMode = 'grid' | 'list';
 
-export interface Props {
+type PaginationType = 'path' | 'query';
+
+// @ts-expect-error "We need this one"
+interface Props {
   baseUrl: string;
   currentPage: number;
   filters?: FilterConfig[];
+  /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
+  getPageUrl?: (page: number) => string;
   itemCountLabel?: string;
   itemsPerPage?: number;
   /** Optional: Direct URL for next page (overrides auto-generation) */
@@ -41,14 +39,18 @@ export interface Props {
   viewMode?: ViewMode;
   /** Optional: Explicit URLs for view toggles */
   viewUrls?: ViewUrls;
-  /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
-  getPageUrl?: (page: number) => string;
+}
+
+interface ViewUrls {
+  grid: string;
+  list: string;
 }
 
 const {
   baseUrl,
   currentPage,
   filters = [],
+  getPageUrl: customGetPageUrl,
   itemCountLabel,
   itemsPerPage = 6,
   nextUrl,
@@ -62,7 +64,6 @@ const {
   totalPages,
   viewMode = 'list',
   viewUrls,
-  getPageUrl: customGetPageUrl,
 } = Astro.props;
 
 // Get current search params to preserve filters/sorts
@@ -119,17 +120,17 @@ const getPageUrl = (p: number) => {
 // But usually custom logic handles everything.
 // Let's assume getPageUrl returns the clean path, and we wrap it to add params.
 const resolveLink = (p: number) => {
-    const base = getPageUrl(p);
-    // If it's a query param style, it already has query params.
-    // If path style, it might need params.
-    // Safest check: does it include '?'?
-    if (base.includes('?')) {
-        // Assume logic handled it, but maybe we need to merge existing params?
-        // Let's rely on buildUrl merging.
-        // Complex. Let's assume default behavior for existing.
-        return base;
-    }
-    return buildUrl(base);
+  const base = getPageUrl(p);
+  // If it's a query param style, it already has query params.
+  // If path style, it might need params.
+  // Safest check: does it include '?'?
+  if (base.includes('?')) {
+    // Assume logic handled it, but maybe we need to merge existing params?
+    // Let's rely on buildUrl merging.
+    // Complex. Let's assume default behavior for existing.
+    return base;
+  }
+  return buildUrl(base);
 };
 
 
@@ -197,7 +198,7 @@ const itemsPerPageOptions = [
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
       {/* Total Count */}
       {showItemCount && totalItems !== undefined && (
-        <span id="total-items-count" class="mr-2 hidden text-xs text-muted-foreground sm:inline-block">
+        <span class="mr-2 hidden text-xs text-muted-foreground sm:inline-block" id="total-items-count">
           {totalItems} {itemCountLabel || 'items'}
         </span>
       )}
@@ -210,7 +211,7 @@ const itemsPerPageOptions = [
           label={`${itemsPerPage}`}
           options={itemsPerPageOptions.map((opt) => ({
             ...opt,
-            href: buildUrl(Astro.url.pathname, { limit: opt.value, page: 1 }), // Reset to page 1 on limit change
+            href: buildUrl(paginationType === 'path' ? baseUrl : Astro.url.pathname, { limit: opt.value, page: 1 }), // Reset to page 1 on limit change
           }))}
           selectedValue={String(itemsPerPage)}
           size="sm"

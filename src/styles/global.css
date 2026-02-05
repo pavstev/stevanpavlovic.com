@@ -120,8 +120,8 @@
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
     /* Glow Effects - Vercel violet */
-    --glow-primary: 0 0 20px hsl(250 100% 66% / 0.4);
-    --glow-accent: 0 0 20px hsl(230 100% 68% / 0.3);
+    --glow-primary: 0 0 20px hsl(250 100% 66% / 0.15);
+    --glow-accent: 0 0 20px hsl(230 100% 68% / 0.15);
     --glow-subtle: 0 0 10px hsl(0 0% 100% / 0.08);
 
     /* Shimmer Effects */

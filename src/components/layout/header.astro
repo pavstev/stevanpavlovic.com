@@ -1,10 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components';
-
-import { NAV_ITEMS, SOCIALS } from "../../lib/config";
+import { NAV_ITEMS } from "../../lib/config";
 import { isActivePath } from "../../lib/nav";
 import Logo from "../atoms/logo.astro";
-import Spacer from "../atoms/spacer.astro";
 import Container from "../molecules/container.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
@@ -23,54 +20,44 @@ const isActive = (href: string) => isActivePath(pathname, href);
   <Container>
     <LayoutWrapper class="items-center">
       {/* Main Bar */}
-      <div class="glass flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
+      <div class="glass relative flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
 
-        {/* Identity - Simplified with Initials */}
-        <Logo />
+        {/* Left: Logo */}
+        <div class="flex shrink-0 items-center pl-2">
+          <Logo />
+        </div>
 
-        <Spacer />
-
-        {/* Desktop Nav */}
-        <nav class="items-center gap-0.5 md:flex" id="desktop-nav">
-          {NAV_ITEMS.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <a
-                class:list={[
-                  "relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-300",
-                  {"bg-white/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-white/5 hover:text-foreground": !active}
-                ]}
-                data-nav-link
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
-
-        {/* Search */}
-        <div class="flex items-center gap-0.5 pr-1">
+        {/* Center: Search */}
+        <div class="absolute top-1/2 left-1/2 -translate-1/2">
           <Search />
         </div>
 
-        {/* Social Links */}
-        <div class="flex items-center gap-0.5 pr-1">
-          {SOCIALS.map((social) => (
-            <a
-              class="flex items-center rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
-              data-tooltip={social.name}
-              href={social.href}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <Icon class="size-4 md:size-4.5" name={social.icon} />
-            </a>
-          ))}
-        </div>
+        {/* Right: Nav & Mobile Toggle */}
+        <div class="flex items-center gap-2 pr-1">
+          {/* Desktop Nav */}
+          <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  class:list={[
+                    "relative rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-300",
+                    {"bg-white/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-white/5 hover:text-foreground": !active}
+                  ]}
+                  data-nav-link
+                  href={item.href}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
 
-        {/* Mobile Toggle */}
-        <MobileMenuToggle size="sm" />
+          {/* Socials Removed (Moved to Footer) */}
+
+          {/* Mobile Toggle */}
+          <MobileMenuToggle size="sm" />
+        </div>
       </div>
     </LayoutWrapper>
   </Container>

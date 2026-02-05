@@ -8,47 +8,53 @@ import SectionHeader from "../organisms/section-header.astro";
 import Section from "../organisms/section.astro";
 
 interface Props {
-  title: string;
-  description: string;
-  headerIcon: string;
-  headerTitle: string;
-  headerDescription: string;
-
-  // Data
-  items: any[]; // The collection items
-  totalItems: number;
-
-  // Configuration
-  viewMode: ViewMode;
   baseUrl: string;
+  // Script configuration
+  containerId: string;
+  currentPage?: number;
+  description: string;
   filters: FilterConfig[];
 
   // Helpers to map generic items to Card props
-  getItemDate: (item: any) => number;
-  getItemTags: (item: any) => string[];
   getItemCardProps: (item: any) => any;
+  headerDescription: string;
 
-  // Script configuration
-  containerId: string;
+  headerIcon: string;
+  headerTitle: string;
   initialPageSize?: number;
+  // Data
+  items: any[]; // The collection items
+  nextUrl?: string;
+  prevUrl?: string;
+  title: string;
+  totalItems: number;
+
+  totalPages?: number;
+
+  // Configuration
+  viewMode: ViewMode;
+  viewUrls?: { grid: string; list: string; };
 }
 
 const {
-  title,
+  baseUrl,
+  containerId,
+  currentPage = 1,
   description,
+  filters,
+  getItemCardProps,
+  headerDescription,
   headerIcon,
   headerTitle,
-  headerDescription,
+  initialPageSize = 6,
   items,
+  nextUrl,
+  prevUrl,
+  title,
   totalItems,
+  totalPages = 1,
   viewMode,
-  baseUrl,
-  filters,
-  getItemDate,
-  getItemTags,
-  getItemCardProps,
-  containerId,
-  initialPageSize = 6
+  viewUrls,
 } = Astro.props;
 
 // Determine if we should show List or Grid
@@ -68,30 +74,31 @@ const isGrid = viewMode === 'grid';
     <Stack gap={6}>
       <ListActions
         baseUrl={baseUrl}
-        currentPage={1}
+        currentPage={currentPage}
         filters={filters}
+        getPageUrl={(p: number) => `${baseUrl}/${p}/${viewMode}`}
         itemCountLabel="items"
         itemsPerPage={initialPageSize}
-        paginationType="query"
+        nextUrl={nextUrl}
+        paginationType="path"
+        prevUrl={prevUrl}
         showItemCount
         showItemsPerPage={true}
         showViewToggle
         totalItems={totalItems}
-        totalPages={1}
+        totalPages={totalPages}
         viewMode={viewMode}
+        viewUrls={viewUrls}
       />
 
-      <div class={`view-container min-h-[50vh]`} id={containerId} data-initial-page-size={initialPageSize}>
+      <div class:list={`view-container min-h-[50vh]`} data-initial-page-size={initialPageSize} id={containerId}>
 
         {/* VIEW MODE: LIST */}
         {isList && (
-          <div class="list-view flex flex-col gap-3 sm:gap-4 transition-opacity duration-300">
-            {items.map((item, index) => (
+          <div class="list-view flex flex-col gap-3 transition-opacity duration-300 sm:gap-4">
+            {items.map((item) => (
               <div
-                class:list={['list-item transition-all duration-300', { hidden: index >= initialPageSize }]}
-                data-date={getItemDate(item)}
-                data-tags={getItemTags(item).join(',')}
-                data-title={typeof item.data?.title === 'string' ? item.data.title : ''}
+                class="card-item transition-all duration-300"
               >
                 <Card list {...getItemCardProps(item)} />
               </div>
@@ -103,12 +110,9 @@ const isGrid = viewMode === 'grid';
         {isGrid && (
           <div class="grid-view transition-opacity duration-300">
             <MasonryGrid columns={2}>
-              {items.map((item, index) => (
+              {items.map((item) => (
                 <div
-                  class:list={['masonry-item list-item transition-all duration-300', { hidden: index >= initialPageSize }]}
-                  data-date={getItemDate(item)}
-                  data-tags={getItemTags(item).join(',')}
-                  data-title={typeof item.data?.title === 'string' ? item.data.title : ''}
+                  class="masonry-item card-item transition-all duration-300"
                 >
                   <Card {...getItemCardProps(item)} />
                 </div>
@@ -119,13 +123,13 @@ const isGrid = viewMode === 'grid';
 
         {/* No Results */}
         <div class="mt-12 hidden text-center text-gray-500" id="no-results">
-           <div class="flex flex-col items-center justify-center gap-2">
-             <span class="text-4xl">🔍</span>
-             <p class="text-lg font-medium">No results found.</p>
-             <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href={baseUrl}>
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="text-4xl">🔍</span>
+            <p class="text-lg font-medium">No results found.</p>
+            <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href={baseUrl}>
                 Clear Filters
-             </a>
-           </div>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -138,33 +142,10 @@ const isGrid = viewMode === 'grid';
 </style>
 
 <script>
-  import { initList } from '../../lib/list-logic';
   import { initInteractiveCards } from '../../lib/interactive-cards';
 
   const setup = () => {
     initInteractiveCards();
-
-    // Find the container to get configuration
-    // We look for elements that are list containers
-    const containers = document.querySelectorAll('.view-container');
-
-    containers.forEach(container => {
-        if (!(container instanceof HTMLElement)) return;
-
-        const containerId = container.id;
-        const initialPageSizeStr = container.dataset.initialPageSize;
-        const initialPageSize = initialPageSizeStr ? parseInt(initialPageSizeStr, 10) : 6;
-
-        if (containerId) {
-             initList({
-                containerId: containerId,
-                initialPageSize: initialPageSize,
-                selectors: {
-                    item: '.list-item',
-                }
-             });
-        }
-    });
   };
 
   setup();

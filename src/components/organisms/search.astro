@@ -10,15 +10,20 @@ const { class: className } = Astro.props;
 <div class="search-wrapper group relative flex items-center">
   {/* Search Trigger */}
   <button
+    aria-label="Open search"
     class:list={[
-      "group/search inline-flex items-center gap-1.5 rounded-full bg-transparent px-2.5 py-0.5 text-sm font-medium text-muted-foreground transition-all hover:bg-white/5 hover:text-foreground md:px-3 md:py-1",
+      "group/search hover:shadow-glow-subtle flex h-9 w-10 items-center justify-center gap-2 rounded-full border border-white/5 bg-white/5 text-sm font-medium text-muted-foreground transition-all hover:bg-white/10 hover:text-foreground sm:w-64 sm:justify-between sm:px-3",
       className
     ]}
     id="search-trigger"
-    aria-label="Open search"
   >
-    <Icon class="size-4 md:size-4.5" name="mdi:magnify" />
-    <span class="hidden sm:inline">Search</span>
+    <div class="flex items-center gap-2">
+      <Icon class="size-4 opacity-50 transition-opacity group-hover/search:opacity-100" name="mdi:magnify" />
+      <span class="hidden sm:inline">Search...</span>
+    </div>
+    <kbd class="hidden h-5 items-center gap-1 rounded bg-white/5 px-1.5 font-mono text-[10px] font-medium opacity-50 sm:flex">
+      <span class="text-xs">⌘</span>K
+    </kbd>
   </button>
 
   <Modal

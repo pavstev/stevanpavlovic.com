@@ -56,7 +56,6 @@ export default defineConfig({
       telemetry: false,
     }),
   ],
-
   markdown: {
     shikiConfig: {
       theme: "aurora-x",
@@ -64,6 +63,8 @@ export default defineConfig({
     },
     syntaxHighlight: "shiki",
   },
+
+  output: "server",
 
   prefetch: true,
   site: "https://localhost:4321",

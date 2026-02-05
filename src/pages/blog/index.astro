@@ -4,31 +4,24 @@ import { getCollection } from 'astro:content';
 export const prerender = false;
 
 import LayoutRoot from '../../components/layout/layout-root.astro';
-import Card from '../../components/molecules/card.astro';
 import Empty from '../../components/molecules/empty.astro';
-import FilterBar from '../../components/molecules/filter-bar.astro';
 import MasonryGrid from '../../components/molecules/masonry-grid.astro';
+import Card from '../../components/organisms/card.astro';
 import SectionHeader from "../../components/organisms/section-header.astro";
 import Section from "../../components/organisms/section.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import { filterPosts, getPagination, getUniqueTags, sortPosts } from '../../lib/cms';
-import { formatFilterLabel } from '../../lib/text';
+import { filterPosts, getPagination, sortPosts } from '../../lib/cms';
 
-// Get params
 const pageParam = Astro.url.searchParams.get('page');
 const filterParam = Astro.url.searchParams.get('filter');
 const sortParam = Astro.url.searchParams.get('sort') || 'newest';
 
-// Get all posts and process them
 const allPosts = await getCollection('blog');
-const tags = getUniqueTags(allPosts);
-const filters = tags.map(tag => ({ label: formatFilterLabel(tag), value: tag.toLowerCase() }));
+const filteredPosts = filterPosts(allPosts, filterParam);
+const sortedPosts = sortPosts(filteredPosts, sortParam);
 
-let filteredPosts = filterPosts(allPosts, filterParam);
-filteredPosts = sortPosts(filteredPosts, sortParam);
-
-const { currentPage, nextUrl, paginatedItems: paginatedPosts, prevUrl, totalPages } = getPagination(
-  filteredPosts,
+const { currentPage, nextUrl, paginatedItems, prevUrl, totalPages } = getPagination(
+  sortedPosts,
   pageParam,
   9,
   '/blog',
@@ -39,55 +32,36 @@ const { currentPage, nextUrl, paginatedItems: paginatedPosts, prevUrl, totalPage
 <LayoutRoot description={SITE_DESCRIPTION} title={`Blog | ${SITE_TITLE}`}>
   <Section>
     <SectionHeader
-      description="Thoughts, tutorials, and deep dives into software engineering and architecture."
-      icon="mdi:newspaper-variant-outline"
-      id="blog-heading"
+      description="Thoughts and tutorials on software engineering."
       title="Blog Posts"
     />
 
-    <FilterBar
-      activeFilter={filterParam || 'all'}
-      activeSort={sortParam}
-      baseUrl="/blog"
-      filters={filters}
-      pagination={{
-        currentPage,
-        nextUrl,
-        prevUrl,
-        totalPages
-      }}
-    />
+    {
+      paginatedItems.length > 0 ? (
+        <MasonryGrid>
+          {
+            paginatedItems.map((post) => (
+              <Card post={post} variant="content" />
+            ))
+          }
+        </MasonryGrid>
+      ) : (
+        <Empty
+          action={filterParam ? { href: '/blog', label: 'Clear Filter' } : undefined}
+          description={filterParam ? `No posts found with tag "${filterParam}".` : "No posts yet."}
+          title="No posts found"
+        />
+      )
+    }
 
-    {paginatedPosts.length > 0 ? (
-      <MasonryGrid class="mt-8">
-        {
-          paginatedPosts.map((post, index) => (
-            <div class="masonry-item">
-              <Card
-                loading={currentPage === 1 && index === 0 ? 'eager' : 'lazy'}
-                post={post}
-                variant="content"
-              />
-            </div>
-          ))
-        }
-      </MasonryGrid>
-    ) : (
-      <Empty
-        action={
-          filterParam
-            ? { href: '/blog', label: 'Clear Filter' }
-            : undefined
-        }
-        description={
-          filterParam
-            ? `No posts found with tag "${filterParam}". Try clearing the filter.`
-            : "We couldn't find any posts at the moment. Check back later!"
-        }
-        icon="mdi:newspaper-variant-outline"
-        title="No posts found"
-      />
-    )
+    {
+      totalPages > 1 && (
+        <div class="mt-8 flex justify-between">
+          <a href={prevUrl || '#'}>Previous</a>
+          <span>Page {currentPage} of {totalPages}</span>
+          <a href={nextUrl || '#'}>Next</a>
+        </div>
+      )
     }
   </Section>
 </LayoutRoot>

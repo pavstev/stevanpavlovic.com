@@ -6,100 +6,67 @@ import { isActivePath } from "../../lib/nav";
 import Spacer from "../atoms/spacer.astro";
 import Text from "../atoms/text.astro";
 import Container from "../molecules/container.astro";
-import InteractiveAvatar from "../molecules/interactive-avatar.astro";
+import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
-import Search from "../molecules/search.astro";
-import SocialIcons from "../molecules/social-icons.astro";
+import Search from "../organisms/search.astro";
 
 const { pathname } = Astro.url;
-
 const isActive = (href: string) => isActivePath(pathname, href);
-
-// Find the current active navigation item to determine the page's "accent" color
-const currentNavItem = NAV_ITEMS.find(item => isActive(item.href));
-const activeColor = currentNavItem ? currentNavItem.color : NAV_ITEMS.find(i => i.label === 'Home')?.color || "rgba(16, 185, 129, 0.4)";
 ---
 
 <header
-  class="pointer-events-none sticky top-2 z-50 w-full px-2 transition-all duration-500 md:top-4 md:px-0"
-  data-nav-items={JSON.stringify(NAV_ITEMS)}
+  class="fixed top-4 z-50 w-full px-4 transition-all duration-500 md:px-0"
   id="site-header"
-  style={`--page-accent-color: ${activeColor}`}
   transition:persist
 >
   <Container>
     <div class="relative flex flex-col items-center">
-      {/* Main Header Bar */}
-      <div class="pointer-events-auto relative z-20 flex h-12 w-full items-center justify-between gap-4 rounded-full border border-border/10 bg-background/80 px-2 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl transition-all duration-500 hover:ring-border" style="box-shadow: 0 10px 40px -10px var(--page-accent-color)">
-        <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-b from-(--page-accent-color)/10 to-transparent opacity-80"></div>
+      {/* Main Bar */}
+      <div class="glass flex h-14 w-full items-center justify-between gap-4 rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-white/20">
 
-        {/* Animated Glossy Border */}
-        <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-r from-primary/20 via-accent/20 to-destructive/20 opacity-30 blur-sm"></div>
-
-        {/* Identity Section */}
-        <div class="flex items-center gap-3">
-          <InteractiveAvatar class="shrink-0 ring-2 ring-border/50" size="sm" />
-          <div class="hidden sm:block">
-            <Text
-              as="span"
-              class="cursor-default text-sm font-black tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary"
-              variant="primary"
-            >
-              {PROFILE.name}
-            </Text>
+        {/* Identity - Simplified with Initials */}
+        <div class="flex items-center gap-3 pl-2">
+          <div class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold tracking-tighter text-primary ring-1 ring-primary/20">
+            SP
           </div>
+          <Text
+            as="span"
+            class="hidden cursor-default text-sm font-bold tracking-tight text-foreground sm:block"
+          >
+            {PROFILE.name}
+          </Text>
         </div>
 
         <Spacer />
 
-        {/* Desktop Navigation */}
-        <nav class="relative hidden items-center gap-1 rounded-full p-1 md:flex" id="desktop-nav">
-          {/* Sliding Selection Indicator - Glossy Gradient */}
-          <div
-            class="absolute top-1/2 left-0 -z-10 h-full w-0 -translate-y-1/2 rounded-full bg-linear-to-br from-primary/20 via-accent/20 to-destructive/20 opacity-0 shadow-lg ring-1 ring-border/20 backdrop-blur-md transition-all duration-300 ease-out"
-            id="nav-selection-indicator"
-          ></div>
-
-          {
-            NAV_ITEMS.map((item) => {
-              const isItemActive = isActive(item.href);
-
-              return (
-                <a
-                  class="group relative flex items-center justify-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold transition-colors duration-300 hover:text-foreground"
-                  data-active={String(isItemActive)}
-                  data-glow-color={item.color}
-                  data-label={item.label}
-                  href={item.href}
-                >
-                  <span class="icon-wrapper flex items-center justify-center overflow-hidden transition-[width,opacity,margin] duration-300 ease-in-out data-[visible=false]:mr-0 data-[visible=false]:w-0 data-[visible=false]:opacity-0 data-[visible=true]:mr-0 data-[visible=true]:w-4 data-[visible=true]:opacity-100">
-                    <Icon class="size-4 text-foreground drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" name={item.icon} />
-                  </span>
-                  <span class="relative z-10 text-muted-foreground transition-colors group-hover:text-foreground group-data-[active=true]:text-foreground">
-                    {item.label}
-                  </span>
-                </a>
-              )})
-          }
+        {/* Desktop Nav */}
+        <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
+          {NAV_ITEMS.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <a
+                class:list={[
+                  "relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition-all duration-300",
+                  {"bg-white/10 text-foreground shadow-sm": active, "text-muted-foreground hover:bg-white/5 hover:text-foreground": !active}
+                ]}
+                data-nav-link
+                href={item.href}
+              >
+                <div class:list={["overflow-hidden transition-all duration-300", {"w-0 opacity-0": !active, "w-3 opacity-100": active}]} data-nav-icon>
+                  <Icon class="size-3" name={item.icon} />
+                </div>
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
-        <SocialIcons class="hidden md:flex" />
+        <div class="hidden items-center gap-1 pr-1 md:flex">
+          <Search />
+        </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          aria-label="Menu"
-          class="group/toggle relative flex size-9 items-center justify-center rounded-full bg-muted/80 text-muted-foreground ring-1 ring-border/50 transition-colors hover:bg-muted hover:text-foreground md:hidden"
-          id="mobile-menu-toggle"
-        >
-          <Icon class="transition-transform duration-300 group-[.open]/toggle:scale-0" name="mdi:menu" size={20} />
-          <Icon class="absolute scale-0 transition-transform duration-300 group-[.open]/toggle:scale-100" name="mdi:close" size={20} />
-        </button>
-      </div>
-
-      {/* Attached Search Bar - More Glossy */}
-      <div class="pointer-events-auto absolute -bottom-10 z-10 flex h-10 items-center justify-center rounded-b-2xl border-x border-b border-border/50 bg-background/80 px-4 pt-2 pb-1 shadow-2xl ring-1 ring-border/20 backdrop-blur-2xl transition-all duration-300 hover:pt-3">
-        <div class="absolute inset-0 -z-10 rounded-b-2xl bg-linear-to-b from-(--page-accent-color)/10 to-transparent opacity-50"></div>
-        <Search />
+        {/* Mobile Toggle */}
+        <MobileMenuToggle size="sm" />
       </div>
     </div>
   </Container>
@@ -108,95 +75,14 @@ const activeColor = currentNavItem ? currentNavItem.color : NAV_ITEMS.find(i => 
 <MobileMenu navItems={NAV_ITEMS} />
 
 <script>
-  import { initMobileMenu, updateActiveLinks as updateMobileLinks } from '../../lib/mobile-menu';
+  import { initMobileMenu, updateActiveLinks } from '../../lib/mobile-menu';
 
-  function updateDesktopNav() {
-    const nav = document.getElementById('desktop-nav');
-    const indicator = document.getElementById('nav-selection-indicator');
-    const header = document.getElementById('site-header');
-
-    if (!nav || !indicator || !header) return;
-
-    // Parse Nav Items from DOM attribute to rebuild color map
-    const navItemsData = header.dataset.navItems;
-    let NAV_COLORS = {};
-    if (navItemsData) {
-        try {
-            const items = JSON.parse(navItemsData);
-            NAV_COLORS = items.reduce((acc: any, item: any) => {
-                acc[item.label] = item.color;
-                return acc;
-            }, {});
-        } catch (e) {
-            console.error("Failed to parse nav items", e);
-        }
-    }
-
-    const currentPath = window.location.pathname;
-    // Normalize path (remove trailing slash for comparison if needed, though exact match usually preferred)
-    const normalizedPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
-
-    const links = nav.querySelectorAll('a');
-    let activeLink: HTMLAnchorElement | null = null;
-
-    // 1. Find active link
-    links.forEach((link) => {
-        const href = link.getAttribute('href');
-        // Simple active check: Exact match or subpath match for non-home
-        const isActive = href === '/'
-            ? normalizedPath === '/'
-            : normalizedPath.startsWith(href || '');
-
-        link.dataset.active = String(isActive);
-
-        const iconWrapper = link.querySelector('.icon-wrapper') as HTMLElement;
-        if (iconWrapper) {
-            iconWrapper.dataset.visible = String(isActive);
-        }
-
-        if (isActive) {
-            activeLink = link;
-        }
-    });
-
-    // 2. Move indicator
-    if (activeLink) {
-        const linkRect = (activeLink as HTMLElement).getBoundingClientRect();
-        const navRect = nav.getBoundingClientRect();
-
-        const left = linkRect.left - navRect.left;
-        const width = linkRect.width;
-        // height is handled by CSS (h-full of parent, roughly) or fixed
-        // Let's set height to match link height roughly or just rely on top/bottom padding
-        const height = linkRect.height;
-        const top = linkRect.top - navRect.top;
-
-        indicator.style.opacity = '1';
-        indicator.style.transform = `translate(${left}px, ${top}px)`;
-        indicator.style.width = `${width}px`;
-        indicator.style.height = `${height}px`;
-
-        // 3. Update Page Accent Color
-        const label = (activeLink as HTMLElement).dataset.label || 'Home';
-        const color = (NAV_COLORS as any)[label] || (NAV_COLORS as any)['Home'];
-        header.style.setProperty('--page-accent-color', color);
-    } else {
-        indicator.style.opacity = '0';
-        header.style.setProperty('--page-accent-color', (NAV_COLORS as any)['Home'] || 'rgba(16, 185, 129, 0.4)');
-    }
-  }
-
-  // Initialize
-  function init() {
+  const init = () => {
     initMobileMenu();
-    updateMobileLinks();
-    updateDesktopNav();
-  }
+    updateActiveLinks();
+  };
 
-  // Run on load and transitions
   init();
   document.addEventListener('astro:page-load', init);
-  document.addEventListener('astro:after-swap', () => {
-    document.body.style.overflow = '';
-  });
+  document.addEventListener('astro:after-swap', updateActiveLinks); // Ensure updates on client nav
 </script>

@@ -12,14 +12,15 @@ export const initMobileMenu = (): void => {
 
   newToggle.addEventListener("click", () => {
     const isOpen = newToggle.classList.contains("open");
-    newToggle.classList.toggle("open");
 
     if (!isOpen) {
+      newToggle.classList.add("open");
       menu.setAttribute("data-open", "true");
       document.body.style.overflow = "hidden";
       return;
     }
 
+    newToggle.classList.remove("open");
     menu.setAttribute("data-open", "false");
     document.body.style.overflow = "";
   });
@@ -36,17 +37,37 @@ export const initMobileMenu = (): void => {
 };
 
 export const updateActiveLinks = (): void => {
-  const sections = document.querySelectorAll("a[data-active]");
+  const links = document.querySelectorAll("a[data-nav-link]");
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
-  for (const section of sections) {
-    const href = section.getAttribute("href");
+  const activeClasses = ["bg-white/10", "text-foreground", "shadow-sm"];
+  const inactiveClasses = ["text-muted-foreground", "hover:text-foreground", "hover:bg-white/5"];
+
+  for (const link of links) {
+    const href = link.getAttribute("href");
     const cleanHref = href?.replace(/\/$/, "") || "/";
 
     const isActive = cleanHref === "/"
       ? currentPath === "/"
       : currentPath.startsWith(cleanHref);
 
-    section.setAttribute("data-active", String(isActive));
+    const icon = link.querySelector("[data-nav-icon]");
+
+    if (!isActive) {
+      link.classList.remove(...activeClasses);
+      link.classList.add(...inactiveClasses);
+      if (icon) {
+        icon.classList.remove("w-3", "opacity-100");
+        icon.classList.add("w-0", "opacity-0");
+      }
+      continue;
+    }
+
+    link.classList.add(...activeClasses);
+    link.classList.remove(...inactiveClasses);
+    if (icon) {
+      icon.classList.remove("w-0", "opacity-0");
+      icon.classList.add("w-3", "opacity-100");
+    }
   }
 };

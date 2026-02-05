@@ -7,7 +7,7 @@ interface PaginationProps {
   totalPages: number;
 }
 
-type Post = CollectionEntry<"blog"> | CollectionEntry<"toys">;
+type Post = CollectionEntry<"blog">;
 
 export const sortPosts = <T extends Post>(posts: T[], sortParam = "newest"): T[] => {
   const sorted = [...posts];
@@ -74,5 +74,3 @@ export const getPagination = <T>(
     totalPages,
   };
 };
-
-export const getUniqueTags = (posts: Post[]): string[] => [...new Set(posts.flatMap(post => post.data.tags || []))].sort();

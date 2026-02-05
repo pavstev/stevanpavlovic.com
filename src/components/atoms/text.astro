@@ -3,39 +3,46 @@ import type { HTMLAttributes } from 'astro/types';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const text = cva('leading-relaxed transition-colors duration-300', {
-  variants: {
-    size: {
-      '2xl': 'text-2xl', // Added for larger copy
-      base: 'text-base',
-      lg: 'text-lg',
-      sm: 'text-sm',
-      xl: 'text-xl',
-      xs: 'text-xs',
-    },
-    variant: {
-      gradient: 'bg-linear-to-r from-foreground/80 to-muted-foreground bg-clip-text text-transparent',
-      highlight: 'font-medium text-foreground', // Important text
-      muted: 'text-muted-foreground',
-      primary: 'text-foreground/90', // Standard body text
-      secondary: 'text-muted-foreground', // Subtitles/descriptions
-    },
-  },
-});
+import { cn } from '../../lib/cn';
 
-interface Props extends HTMLAttributes<any>, VariantProps<typeof text> {
-  as?: any;
+const textVariants = cva(
+  'leading-relaxed break-words',
+  {
+    defaultVariants: {
+      size: 'base',
+      variant: 'default',
+    },
+    variants: {
+      size: {
+        '2xl': 'text-2xl font-bold tracking-tight',
+        '3xl': 'text-3xl font-bold tracking-tight',
+        '4xl': 'text-4xl font-extrabold tracking-tight',
+        base: 'text-base',
+        lg: 'text-lg font-medium',
+        sm: 'text-sm',
+        xl: 'text-xl font-semibold',
+        xs: 'text-xs',
+      },
+      variant: {
+        default: 'text-foreground',
+        destructive: 'text-destructive',
+        gradient: 'text-gradient font-bold',
+        muted: 'text-muted-foreground',
+        primary: 'font-medium text-primary',
+        secondary: 'text-secondary-foreground',
+      },
+    },
+  }
+);
+
+interface Props extends HTMLAttributes<'p'>, VariantProps<typeof textVariants> {
+  as?: string;
 }
 
-const {
-  as: Tag = 'p',
-  class: className,
-  size = 'base',
-  variant = 'secondary',
-  ...props
-} = Astro.props;
+const { as = 'p', class: className, size, variant, ...props } = Astro.props;
+const Tag = as as any;
 ---
 
-<Tag class:list={text({ class: className, size, variant })} {...props}>
+<Tag class:list={cn(textVariants({ className, size, variant }))} {...props}>
   <slot />
 </Tag>

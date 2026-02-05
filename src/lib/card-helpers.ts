@@ -1,30 +1,30 @@
 import type { CollectionEntry } from "astro:content";
 
 import { cva } from "class-variance-authority";
-// Define types explicitly to avoid circular dependency issues if we imported back from card.astro
-// But ideally, we move types here entirely.
 
 export const cardVariants = cva(
-  "group/card relative flex w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-black/60 p-5 text-left backdrop-blur-2xl transition-all duration-500 ease-out sm:p-6 shadow-2xl",
+  "group/card relative flex w-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
     defaultVariants: {
       interactive: false,
-      style: "default",
+      variant: "default",
     },
     variants: {
       interactive: {
         false: "",
-        true: "cursor-pointer hover:-translate-y-1 hover:border-white/20 hover:bg-black/80 hover:shadow-emerald-900/10",
+        true: "cursor-pointer hover:-translate-y-1 hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
       },
-      style: {
+      variant: {
         default: "",
-        navigation: "!p-4 !sm:p-6 bg-black/40 border-white/5 hover:border-white/20 hover:bg-black/60",
+        ghost: "border-transparent bg-transparent shadow-none",
+        glass: "glass text-foreground",
+        outline: "border border-border bg-transparent",
       },
     },
   },
 );
 
-type CardPost = CollectionEntry<"blog"> | CollectionEntry<"projects"> | CollectionEntry<"toys">;
+type CardPost = CollectionEntry<"blog"> | CollectionEntry<"projects">;
 
 export const getCardData = (post: CardPost): {
     description: string;
@@ -38,9 +38,7 @@ export const getCardData = (post: CardPost): {
   const postUrl
     = collection === "blog"
       ? `/blog/${post.id}/`
-      : collection === "toys"
-        ? `/playground/${post.id}/`
-        : `/projects/${post.id}/`;
+      : `/projects/${post.id}/`;
 
   const data = post.data;
   const heroImage

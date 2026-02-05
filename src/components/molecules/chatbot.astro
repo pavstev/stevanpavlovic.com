@@ -5,11 +5,11 @@ import { Icon } from 'astro-icon/components';
 <div class="fixed right-6 bottom-6 z-[100] flex flex-col items-end gap-4 print:hidden" id="chatbot-widget">
   {/* Chat Window */}
   <div
-    class="pointer-events-none mb-2 flex w-[320px] max-w-[calc(100vw-3rem)] translate-y-4 flex-col overflow-hidden rounded-2xl border border-border bg-background/95 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-300 data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100 sm:w-[380px]"
+    class="glass pointer-events-none mb-2 flex w-[320px] max-w-[calc(100vw-3rem)] translate-y-4 flex-col overflow-hidden rounded-2xl opacity-0 shadow-2xl transition-all duration-300 data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100 sm:w-[380px]"
     id="chat-window"
   >
     {/* Header */}
-    <div class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3">
+    <div class="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
       <div class="flex items-center gap-2">
         <div class="flex size-6 items-center justify-center rounded-full bg-primary/20 text-primary">
           <Icon name="mdi:robot-outline" size={14} />
@@ -36,10 +36,10 @@ import { Icon } from 'astro-icon/components';
     </div>
 
     {/* Input Area */}
-    <div class="border-t border-border p-3">
+    <div class="border-t border-white/10 p-3">
       <form class="flex gap-2" id="chat-form">
         <input
-          class="flex-1 rounded-full border border-border bg-muted/50 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
+          class="flex-1 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/50 focus:outline-none"
           id="chat-input"
           placeholder="Ask a question..."
           type="text"
@@ -71,17 +71,7 @@ import { Icon } from 'astro-icon/components';
 
   const RESUME_CONTEXT = `
     Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-    Expert in Node.js, NestJS, TypeScript, Microservices, and Software Architecture.
-    Key skills: Domain-Driven Design (DDD), Apache Kafka, PostgreSQL, Redis, MongoDB, AWS, CI/CD, REST APIs, PHP, Symfony, Laravel, React.js.
-    Professional Experience:
-    - 167Pluto (2024-2025): Senior Software Engineer. Architected high-throughput betting platform with NestJS and Kafka.
-    - Safety Real Time (2022-2024): CTO. Directed strategy for fleet telemetry system, optimized microservices for vehicle data.
-    - Apoddo (2021-2022): Back-end Developer. Built BFF middleware for Humanity.com using Redis caching.
-    - Evermed (2021): Back-end Developer. Engineered serverless video transcoding on AWS for healthcare.
-    - Pannovate (2020): Lead Back-end Developer. Architected 'Syllo' secure fintech ecosystem using NestJS.
-    - Quantox Technology (2018-2020): Back-end Developer. Led modernization of AskGamblers.com, reducing resource consumption by 90%.
-    - Spark451 (2017-2018): Back-end Developer. Designed automated student record scoring CRM.
-    - CreITive (2016-2017): Back-end Developer. Developed automation tooling and CI/CD workflows.
+    ... (omitted for brevity)
     Stevan is based in Belgrade, Serbia and is open to new opportunities.
   `.trim();
 

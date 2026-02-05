@@ -1,0 +1,272 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { CollectionEntry } from 'astro:content';
+
+import { Icon } from 'astro-icon/components';
+import { type VariantProps } from 'class-variance-authority';
+
+import type { PortfolioItem } from '../../lib/portfolio';
+
+import { cardVariants, getCardData } from '../../lib/card-helpers';
+import { cn } from '../../lib/cn';
+import Badge from '../atoms/badge.astro';
+import FormattedDate from '../atoms/formatted-date.astro';
+import Heading from '../atoms/heading.astro';
+import IconBox from '../atoms/icon-box.astro';
+import Stack from '../atoms/stack.astro';
+import Text from '../atoms/text.astro';
+import Tags from '../molecules/tags.astro';
+import ZoomableImage from '../molecules/zoomable-image.astro';
+
+// Omit variant from BaseProps to avoid conflicts with specific variant strings
+interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof cardVariants>, 'variant'> {
+  as?: string;
+  glowColor?: string;
+  href?: string;
+  visual?: 'default' | 'ghost' | 'glass' | 'outline';
+}
+
+interface ContentProps extends BaseProps {
+  actionIcon?: string;
+  actionLabel?: string;
+  loading?: 'eager' | 'lazy';
+  post: CollectionEntry<'blog'> | CollectionEntry<'projects'>;
+  variant: 'content';
+}
+
+interface DefaultProps extends BaseProps {
+  children: any;
+  variant?: 'default'; // Only default variant here, visual handles style
+}
+
+interface IconProps extends BaseProps {
+  align?: 'center' | 'start';
+  animate?: boolean;
+  delay?: number;
+  icon: string;
+  subtitle?: string;
+  title: string;
+  variant: 'icon';
+}
+
+interface PortfolioProps extends BaseProps {
+  headingLevel?: number;
+  list?: boolean;
+  portfolioItem: PortfolioItem;
+  variant: 'portfolio';
+}
+
+type Props = ContentProps | DefaultProps | IconProps | PortfolioProps;
+
+const props = Astro.props;
+const { class: className, glowColor = 'var(--color-primary)', interactive, variant = 'default', visual = 'default', ...rest } = props;
+
+const isPortfolio = variant === 'portfolio';
+const isContent = variant === 'content';
+const isIcon = variant === 'icon';
+
+// Helper to get element type
+const getElement = (href?: string) => href ? 'a' : 'div';
+---
+
+{/* DEFAULT CARD */}
+{(!isPortfolio && !isContent && !isIcon) && (
+  <div
+    class:list={cn(cardVariants({ className, interactive, variant: visual }))}
+    style={{ '--glow-color': glowColor }}
+    {...rest}
+  >
+    <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+      style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+    <slot />
+  </div>
+)}
+
+{/* ICON CARD */}
+{isIcon && (() => {
+  const { align = 'start', animate, delay = 0, href, icon, subtitle, title, ...iconProps } = props as IconProps;
+  const Element = getElement(href);
+  return (
+    <Element class="group block h-full" href={href}>
+      <div
+        class:list={cn(
+          cardVariants({ className, interactive: !!href, variant: visual }),
+          'flex h-full flex-col gap-4',
+          align === 'center' ? 'items-center text-center' : 'items-start',
+          animate && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
+        )}
+        style={{ '--glow-color': glowColor, animationDelay: `${delay}ms` }}
+        {...iconProps}
+      >
+        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+        <IconBox class="transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/10 group-hover:text-primary" size="md" variant="dimmed">
+          <Icon name={icon} size={20} />
+        </IconBox>
+
+        <Stack align={align} gap={1}>
+          <Heading class="transition-colors group-hover:text-primary" level={3} size="md">
+            {title}
+          </Heading>
+          {subtitle && <Text size="sm" variant="muted">{subtitle}</Text>}
+        </Stack>
+
+        {href && (
+          <div class="absolute top-4 right-4 -translate-y-1 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+            <Icon class="text-muted-foreground" name="mdi:arrow-top-right" size={16} />
+          </div>
+        )}
+      </div>
+    </Element>
+  );
+})()}
+
+{/* PORTFOLIO CARD */}
+{isPortfolio && (() => {
+  const { headingLevel = 3, list = false, portfolioItem: item, ...pProps } = props as PortfolioProps;
+  const Element = getElement(item.href);
+
+  // List variant - condensed single-column layout
+  if (list) {
+    return (
+      <Element class="group block" href={item.href}>
+        <div
+          class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "p-4!")}
+          style={{ '--glow-color': glowColor }}
+          {...pProps}
+        >
+          <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+            style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="md">
+                  {item.title}
+                </Heading>
+                {item.href && (
+                  <Icon class="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
+                )}
+              </div>
+              <Text class="mt-0.5 font-mono tracking-wider uppercase" size="xs" variant="muted">
+                {item.subtitle}
+              </Text>
+            </div>
+            <div class="flex items-center gap-2">
+              <Badge variant="secondary">{item.meta}</Badge>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <Tags limit={4} tags={item.tags} />
+          </div>
+        </div>
+      </Element>
+    );
+  }
+
+  // Default grid variant
+  return (
+    <Element class="group block h-full" href={item.href}>
+      <div
+        class:list={cn(cardVariants({ className, interactive: !!item.href, variant: visual }), "flex h-full flex-col")}
+        style={{ '--glow-color': glowColor }}
+        {...pProps}
+      >
+        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+        <div class="mb-4 flex flex-col justify-between gap-4 sm:flex-row">
+          <div>
+            <Heading class="transition-colors group-hover:text-primary" level={headingLevel as any} size="lg">
+              {item.title}
+            </Heading>
+            <Text class="mt-1 font-mono tracking-wider uppercase" size="xs" variant="muted">
+              {item.subtitle}
+            </Text>
+          </div>
+          <div class="flex items-center gap-2 self-start sm:self-center">
+            <Badge variant="secondary">{item.meta}</Badge>
+            {item.href && (
+              <Icon class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" name="mdi:arrow-top-right" />
+            )}
+          </div>
+        </div>
+
+        <Text class="mb-6 line-clamp-3 flex-1" size="sm">{item.desc}</Text>
+
+        <div class="mt-auto">
+          <Tags limit={3} tags={item.tags} />
+        </div>
+      </div>
+    </Element>
+  );
+})()}
+
+{/* CONTENT CARD */}
+{isContent && (() => {
+  const { actionIcon = 'mdi:arrow-right', actionLabel = 'Read Post', loading = 'lazy', post, ...cProps } = props as ContentProps;
+  const { description, heroImage, postUrl, pubDate, subtitle, title } = getCardData(post);
+
+  return (
+    <a class="group block h-full" href={postUrl}>
+      <div
+        class:list={cn(cardVariants({ className, interactive: true, variant: visual }), "flex h-full flex-col")}
+        style={{ '--glow-color': glowColor }}
+        {...cProps}
+      >
+        <div class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          style="background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%);"></div>
+
+        {heroImage && (
+          <div class="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-border/50 bg-muted">
+            <ZoomableImage
+              alt={title}
+              class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+              height={360}
+              loading={loading}
+              src={heroImage}
+              width={720}
+            />
+          </div>
+        )}
+
+        <Stack class="flex-1" gap={2}>
+          <div class="flex items-center justify-between">
+            {pubDate && (
+              <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+                <FormattedDate date={pubDate} />
+              </Text>
+            )}
+            {subtitle && (
+              <Text class="font-mono tracking-wider uppercase" size="xs" variant="primary">
+                {subtitle}
+              </Text>
+            )}
+          </div>
+
+          <Heading class="line-clamp-2 transition-colors group-hover:text-primary" level={3} size="lg">
+            {title}
+          </Heading>
+
+          {description && (
+            <Text class="line-clamp-2 text-muted-foreground" size="sm">
+              {description}
+            </Text>
+          )}
+        </Stack>
+
+        <div class="mt-6 flex -translate-x-2 items-center gap-2 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+          {actionLabel}
+          <Icon name={actionIcon} />
+        </div>
+      </div>
+    </a>
+  );
+})()}
+
+<script>
+  import { initInteractiveCards } from '../../lib/interactive-cards';
+  initInteractiveCards();
+</script>

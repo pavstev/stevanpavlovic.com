@@ -11,7 +11,6 @@ const config: KnipConfig = {
     "@typescript-eslint/eslint-plugin",
     "@typescript-eslint/parser",
     "astro-eslint-parser",
-    "eslint-plugin-jsx-a11y",
     "@iconify-json/mdi",
   ],
 };

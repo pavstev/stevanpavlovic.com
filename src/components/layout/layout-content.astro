@@ -20,27 +20,28 @@ const {
 ---
 
 <LayoutRoot description={description} title={title}>
-  <Container as="article" class="py-8" data-pagefind-body maxWidth="auto">
-    <slot name="back-link">
-      <div class="mb-6">
-        <Link href={backLink} icon="mdi:arrow-left" variant="back">
-          {backLabel}
-        </Link>
-      </div>
-    </slot>
+  <Container as="article" data-pagefind-body>
+    <div class="mx-auto">
+      <slot name="back-link">
+        <div class="mb-6">
+          <Link href={backLink} icon="mdi:arrow-left" variant="back">
+            {backLabel}
+          </Link>
+        </div>
+      </slot>
 
-    <header class="mb-10">
-      <slot name="header" />
-    </header>
+      <header class="mb-10">
+        <slot name="header" />
+      </header>
 
-    <slot name="hero-image" />
+      <slot name="hero-image" />
 
-    <div class="relative">
-      {/* Decorative vertical line */}
-      <VerticalGuideLine />
+      <div class="relative">
+        {/* Decorative vertical line */}
+        <VerticalGuideLine />
 
-      <div
-        class="prose prose-base max-w-none prose-invert
+        <div
+          class="prose prose-base max-w-none prose-invert
         prose-headings:scroll-mt-20 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
         prose-h2:mt-10 prose-h2:border-b prose-h2:border-border/50 prose-h2:pb-4 prose-h2:text-3xl
         prose-p:leading-7 prose-p:text-muted-foreground
@@ -50,12 +51,13 @@ const {
         prose-pre:border prose-pre:border-border prose-pre:bg-black/50 prose-pre:shadow-2xl
         prose-li:text-muted-foreground prose-li:marker:text-muted-foreground/60
         prose-img:rounded-lg prose-img:border prose-img:border-border/50 prose-img:shadow-xl"
-      >
-        <slot />
+        >
+          <slot />
+        </div>
       </div>
-    </div>
 
-    <slot name="footer">
-    </slot>
+      <slot name="footer">
+      </slot>
+    </div>
   </Container>
 </LayoutRoot>

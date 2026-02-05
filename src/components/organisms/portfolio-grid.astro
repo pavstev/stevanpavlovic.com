@@ -1,9 +1,9 @@
 ---
 import type { PortfolioItem } from '../../lib/portfolio';
 
-import Card from '../molecules/card.astro';
 import Empty from '../molecules/empty.astro';
 import MasonryGrid from '../molecules/masonry-grid.astro';
+import Card from './card.astro';
 
 interface Props {
   emptyAction?: {
@@ -17,6 +17,7 @@ interface Props {
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   itemClass?: string;
   items: PortfolioItem[];
+  layout?: 'grid' | 'list';
 }
 
 const {
@@ -27,25 +28,42 @@ const {
   headingLevel = 2,
   itemClass = 'portfolio-item',
   items,
+  layout = 'grid',
 } = Astro.props;
 ---
 
 {
   items.length > 0 ? (
-    <MasonryGrid columns={2}>
-      {
-        items.map((item) => (
-          <div class="masonry-item">
+    layout === 'list' ? (
+      <div class="flex flex-col gap-3">
+        {
+          items.map((item) => (
             <Card
+              class:list={itemClass}
               headingLevel={headingLevel}
-              itemClass={itemClass}
+              list={true}
               portfolioItem={item}
               variant="portfolio"
             />
-          </div>
-        ))
-      }
-    </MasonryGrid>
+          ))
+        }
+      </div>
+    ) : (
+      <MasonryGrid columns={2}>
+        {
+          items.map((item) => (
+            <div class="masonry-item">
+              <Card
+                class:list={itemClass}
+                headingLevel={headingLevel}
+                portfolioItem={item}
+                variant="portfolio"
+              />
+            </div>
+          ))
+        }
+      </MasonryGrid>
+    )
   ) : (
     <Empty
       action={emptyAction}

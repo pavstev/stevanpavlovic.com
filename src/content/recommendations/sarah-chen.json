@@ -1,0 +1,11 @@
+{
+  "avatar": "https://i.pravatar.cc/150?img=45",
+  "company": "167Pluto",
+  "context": "Sarah led the engineering organization at 167Pluto where Stevan architected the betting platform",
+  "date": "2025-06-15T00:00:00.000Z",
+  "linkedInProfile": "https://linkedin.com/in/sarachen",
+  "name": "Sarah Chen",
+  "relationship": "Manager",
+  "text": "Stevan joined 167Pluto as a Senior Software Engineer, but his contributions went\nfar beyond that title. He single-handedly architected our event-driven betting\nplatform from the ground up, making critical decisions about microservices\nboundaries, data consistency patterns, and infrastructure that positioned us for\nscale.\n\nThe technical challenges we faced were significant – building a betting platform\nthat could handle millions of concurrent users during major sporting events\nwhile maintaining data consistency and sub-100ms latency. Stevan's architecture\nusing NestJS microservices and Kafka event streaming proved to be exactly what\nwe needed. During our largest traffic event (World Cup final), the platform\nhandled 2M+ concurrent users without a single hiccup.\n\nWhat sets Stevan apart is his balance of pragmatism and technical excellence. He\nadvocated for best practices like comprehensive testing and CI/CD automation,\nbut he also knew when to ship and iterate rather than over-engineering. His\nCI/CD pipeline reduced our deployment time by 80% and enabled us to ship\nmultiple times daily with confidence.\n\nStevan also emerged as a natural technical leader. He mentored three mid-level\nengineers who all significantly improved under his guidance. His code reviews\nwere thorough yet constructive, and he established patterns and standards that\nthe entire team adopted.\n\nI cannot recommend Stevan highly enough. He's a rare combination of\narchitectural vision, hands-on execution, and leadership ability. Any company\nwould be fortunate to have him.",
+  "title": "CTO"
+}

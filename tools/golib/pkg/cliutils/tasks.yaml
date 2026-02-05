@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=./../../../eslint/schemas/tasks.schema.json
+vars:
+  # Directories
+  root_dir: .
+  golib_dir: tools/golib
+  pylib_dir: tools/pylib
+
+  # Base Commands
+  pnpm_exec: pnpm exec
+  go_cmd: go
+  uv_py: env -u VIRTUAL_ENV uv run --project tools/pylib
+  run_py_main: ${uv_py} python -m tools.pylib.main
+
+tasks:
+  lint_eslint:
+    name: ESLint
+    command: ${pnpm_exec} eslint .
+    cwd: ${root_dir}
+  lint_go:
+    name: Go linter
+    command: golangci-lint run --fix ./...
+    cwd: ${golib_dir}
+  lint_py:
+    name: Python Ruff
+    command: ${uv_py} ruff check --fix .
+    cwd: ${root_dir}
+  check_astro:
+    name: Astro Check
+    command: ${pnpm_exec} astro check
+    cwd: ${root_dir}
+  check_go:
+    name: Go Vet
+    command: ${go_cmd} vet ./...
+    cwd: ${golib_dir}
+  check_py:
+    name: Python mypy
+    command: ${uv_py} mypy --exclude cmd/generate_docs.py .
+    cwd: ${root_dir}
+  build_astro:
+    name: Astro Build
+    command: ${pnpm_exec} astro build
+    cwd: ${root_dir}
+  build_go:
+    name: Go Build
+    command: ${go_cmd} build -o ../../${golib_dir}/bin/gocli ./main.go
+    cwd: ${golib_dir}
+  build_py:
+    name: Python Build
+    command: echo 'Skipping Python build...'
+    cwd: ${root_dir}
+  test_vitest:
+    name: Vitest
+    command: ${pnpm_exec} vitest run
+    cwd: ${root_dir}
+  test_go:
+    name: Go Tests
+    command: ${go_cmd} test ./... -coverprofile=coverage.out -v
+    cwd: ${golib_dir}
+  test_py:
+    name: Python Tests
+    command: ${uv_py} pytest
+    cwd: ${root_dir}
+
+  # Format
+  format_svg:
+    name: SVG Optimization
+    command: ${run_py_main} svg 'src/assets/**/*.svg'
+    cwd: ${root_dir}
+  format_prettier:
+    name: Prettier
+    command: ${pnpm_exec} prettier -w --cache .
+    cwd: ${root_dir}
+  format_py:
+    name: Python Formatting
+    command: ${uv_py} ruff format ${pylib_dir}/
+    cwd: ${root_dir}
+
+  # Setup
+  setup_install_uv:
+    name: Install uv
+    command: curl -LsSf https://astral.sh/uv/install.sh | sh
+    cwd: ${root_dir}
+  setup_install_pnpm:
+    name: Install pnpm
+    command: npm install -g pnpm
+    cwd: ${root_dir}
+  setup_install:
+    name: Install
+    command: pnpm install
+    cwd: ${root_dir}
+  setup_uv_sync:
+    name: uv sync
+    command: uv sync
+    cwd: ${pylib_dir}
+  setup_wrangler_types:
+    name: Wrangler Types
+    command: ${pnpm_exec} wrangler types
+    cwd: ${root_dir}
+  ls_files:
+    name: List Files
+    command: git ls-files --exclude-standard -co | grep -vE "{{.ExcludePattern}}" | tree --fromfile .
+    cwd: ${root_dir}
+  resume_export:
+    name: Export Resume
+    command: ${pnpm_exec} resumed export -t jsonresume-theme-even -o resume.pdf resume.json
+    cwd: ${root_dir}
+  chmod_scripts:
+    name: Chmod
+    command: ${golib_dir}/bin/gocli chmod
+    cwd: ${root_dir}
+  clean_git:
+    name: Git Clean
+    command: git clean -Xfd -e .env.local
+    cwd: ${root_dir}
+  clean_install:
+    name: Install
+    command: pnpm install
+    cwd: ${root_dir}

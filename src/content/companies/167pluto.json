@@ -1,0 +1,33 @@
+{
+  "description": "High-throughput betting platform with extreme scalability for live sports betting",
+  "founded": "1970-01-01T00:00:02.023Z",
+  "fullDescription": "167pluto is a cutting-edge betting platform designed to handle extreme traffic\nspikes during live sports events. The platform processes millions of concurrent\ntransactions with millisecond latency across LATAM, Asia, and European markets.\n\n## Company Overview\n\n167pluto is a technology-driven betting platform founded in 2023 with a mission\nto revolutionize the sports betting industry through innovative technology and\nextreme scalability. The company specializes in high-throughput betting\nplatforms that can handle massive traffic spikes during live sports events.\n\n### Core Mission\n\nTo provide the most reliable, scalable, and performant betting platform for\nsports betting operators worldwide, enabling them to deliver exceptional user\nexperiences during peak traffic periods.\n\n## Technology Stack\n\n### Backend Architecture\n\n- **Node.js**: Event-driven, non-blocking I/O model for high-performance backend\n  services\n- **NestJS**: Enterprise-grade Node.js framework with TypeScript support\n- **Apache Kafka**: Distributed streaming platform for real-time data processing\n- **PostgreSQL**: Robust relational database for transactional data\n- **Redis**: In-memory data store for caching and session management\n- **AWS**: Cloud infrastructure with global deployment capabilities\n\n### Infrastructure\n\n- **Docker**: Containerization for consistent deployment across environments\n- **Kubernetes**: Container orchestration for scalable deployments\n- **TypeScript**: Type-safe JavaScript for better code quality and\n  maintainability\n- **GraphQL**: Flexible API layer for efficient data fetching\n\n## Notable Projects\n\n### High-Load Betting Platform\n\nA flagship betting platform capable of processing over 1 million concurrent\nusers during major sporting events. Features include:\n\n- **Real-time odds calculation** with sub-millisecond latency\n- **Live betting** with instant updates\n- **Multi-currency support** for global markets\n- **Advanced risk management** systems\n\n### Event-Driven Microservices\n\nScalable microservices architecture built on event-driven principles:\n\n- **Event sourcing** for audit trails and replay capabilities\n- **CQRS pattern** for separating read and write operations\n- **Event streaming** for real-time data processing\n- **Microservices orchestration** for complex business workflows\n\n### Real-Time Transaction Processing\n\nHigh-performance transaction processing system:\n\n- **ACID compliance** for financial transactions\n- **Distributed transaction management** across microservices\n- **Fraud detection** with real-time analysis\n- **Payment processing** integration with multiple providers\n\n### Global Odds Aggregator\n\nReal-time odds aggregation system:\n\n- **Multi-provider integration** for comprehensive odds coverage\n- **Real-time data processing** with sub-second updates\n- **Odds normalization** across different formats\n- **Historical data analysis** for trend prediction\n\n## Industry Focus\n\n### Sports Betting\n\nSpecialized in sports betting technology with expertise in:\n\n- **Live betting platforms** with real-time odds updates\n- **Sports data integration** from multiple providers\n- **Risk management systems** for betting operations\n- **User experience optimization** for betting interfaces\n\n### Gaming Technology\n\nAdvanced gaming technology solutions:\n\n- **High-frequency trading** systems for betting markets\n- **Real-time analytics** for user behavior and betting patterns\n- **Scalable architecture** for handling traffic spikes\n- **Security and compliance** for regulated markets\n\n## Market Presence\n\n167pluto serves clients across multiple continents with a focus on:\n\n- **LATAM markets**: Brazil, Argentina, Mexico, and other Latin American\n  countries\n- **Asian markets**: India, Japan, South Korea, and Southeast Asian countries\n- **European markets**: UK, Germany, France, and other European countries\n- **Global expansion**: Continuous expansion into new regulated markets\n\n## Awards and Recognition\n\n- **Best New Betting Platform 2024**: Recognized for innovative technology and\n  user experience\n- **Innovation in Real-Time Gaming 2024**: Awarded for advancements in real-time\n  gaming technology\n- **Scalability Excellence Award 2024**: Honored for exceptional scalability and\n  performance\n\n## Technology Leadership\n\n167pluto is at the forefront of betting technology innovation:\n\n- **Extreme scalability**: Platforms designed to handle millions of concurrent\n  users\n- **Real-time processing**: Sub-millisecond latency for critical operations\n- **Event-driven architecture**: Modern microservices architecture for\n  flexibility\n- **Global deployment**: Multi-region infrastructure for worldwide coverage\n\n## Future Vision\n\n167pluto continues to innovate in the betting technology space with focus on:\n\n- **AI-powered betting recommendations** for enhanced user experience\n- **Blockchain integration** for transparent and secure transactions\n- **Virtual and augmented reality** for immersive betting experiences\n- **Advanced analytics** for predictive modeling and risk management\n\n## Contact Information\n\nFor business inquiries and partnership opportunities:\n\n- **Website**: <https://167pluto.com>\n- **LinkedIn**: 167pluto LinkedIn\n- **Twitter**: 167pluto Twitter\n- **GitHub**: 167pluto GitHub",
+  "industry": "Software",
+  "logo": "../../assets/167pluto-logo.png",
+  "name": "167pluto",
+  "size": "Small Business",
+  "socialLinks": [
+    {
+      "type": "Website",
+      "handle": "167pluto.com",
+      "name": "167pluto"
+    },
+    {
+      "type": "LinkedIn",
+      "handle": "167pluto",
+      "name": "167pluto LinkedIn"
+    },
+    {
+      "type": "Twitter",
+      "handle": "167pluto",
+      "name": "167pluto Twitter"
+    },
+    {
+      "type": "GitHub",
+      "handle": "167pluto",
+      "name": "167pluto GitHub"
+    }
+  ],
+  "type": "Full-time",
+  "website": "https://167pluto.com"
+}

@@ -1,31 +1,21 @@
 ---
-import LayoutRoot from '../../components/layout/layout-root.astro';
-import PortfolioGrid from "../../components/organisms/portfolio-grid.astro";
-import SectionHeader from "../../components/organisms/section-header.astro";
-import Section from "../../components/organisms/section.astro";
-import { PROFILE } from '../../lib/config';
-import { getProjects } from '../../lib/portfolio';
+import ProjectListView from "@components/views/project-list-view.astro";
 
-const projects = await getProjects();
+export const prerender = true;
+
+export const getStaticPaths = async () => {
+  const { getCollection } = await import("astro:content");
+  const allEntries = await getCollection("projects");
+
+  return allEntries.map(() => ({
+    params: { page: "1" },
+    props: { page: 1 },
+  }));
+};
+
+type Props = { page: number };
+
+const { page } = Astro.props;
 ---
 
-<LayoutRoot
-  description={`${PROFILE.name} - Projects & Portfolio`}
-  includeFooter={true}
-  includeHeader={true}
-  title={`Projects | ${PROFILE.name}`}
->
-  <Section>
-    <SectionHeader
-      description="A collection of open-source libraries, applications, and experiments I've built."
-      icon="mdi:console"
-      id="projects-heading"
-      title="Projects"
-    />
-    <PortfolioGrid
-      headingLevel={2}
-      itemClass="project-card"
-      items={projects}
-    />
-  </Section>
-</LayoutRoot>
+<ProjectListView page={page} />

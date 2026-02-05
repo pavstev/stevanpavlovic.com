@@ -1,19 +1,29 @@
 ---
-import LayoutRoot from '../components/layout/layout-root.astro';
-import Empty from '../components/molecules/empty.astro';
-import Section from '../components/organisms/section.astro';
+import { ErrorPage } from "@components/custom/common/not-found";
+import { BackButton } from "@components/custom/navigation/back-button";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Button } from "@components/ui/button";
+import Icon from "@components/ui/icon.astro";
 
-const title = '404 - Page Not Found';
-const description = 'The page you requested could not be located or no longer exists.';
+const title: string = "404 - Lost in Space";
+const description: string = "The coordinates you entered do not correspond to a known sector.";
 ---
 
-<LayoutRoot description={description} title={title}>
-  <Section>
-    <Empty
-      action={{ href: '/', label: 'Back to Home' }}
-      description={description}
-      icon="mdi:compass-off-outline"
-      title="Page Not Found"
-    />
-  </Section>
-</LayoutRoot>
+<PageLayout description={description} slug="/404" title={title}>
+  <ErrorPage
+    className="min-h-[calc(100vh-12rem)]"
+    client:load
+    code="404"
+    description="The coordinates you provided lead to empty space. Recalibrating route to nearest outpost."
+    title="Signal Lost"
+  >
+    <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+      <Button asChild className="w-full sm:w-auto" size="lg">
+        <a href="/">
+          <Icon class="mr-2 size-5" name="mdi:home" /> Warp Home
+        </a>
+      </Button>
+      <BackButton client:load href="/" label="Go Back" />
+    </div>
+  </ErrorPage>
+</PageLayout>

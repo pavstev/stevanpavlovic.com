@@ -1,0 +1,9 @@
+{
+  "category": "APIs & Integrations",
+  "description": "Expertise and projects involving REST API.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with REST API in production environments, from architecture to deployment.",
+  "icon": "mdi:api",
+  "id": "rest-api",
+  "label": "REST API"
+}

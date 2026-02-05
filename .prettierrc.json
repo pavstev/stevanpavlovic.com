@@ -1,0 +1,86 @@
+{
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "jsxSingleQuote": false,
+  "overrides": [
+    {
+      "files": "*.svg",
+      "options": {
+        "parser": "xml",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro",
+        "printWidth": 100
+      }
+    },
+    {
+      "files": "*.{yml,yaml}",
+      "options": {
+        "singleQuote": false,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "printWidth": 80,
+        "proseWrap": "always"
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "*.toml",
+      "options": {
+        "printWidth": 100
+      }
+    },
+    {
+      "files": "package.json",
+      "options": {
+        "plugins": [
+          "prettier-plugin-astro",
+          "@prettier/plugin-xml",
+          "prettier-plugin-tailwindcss",
+          "prettier-plugin-sh",
+          "prettier-plugin-packagejson",
+          "prettier-plugin-yaml"
+        ]
+      }
+    },
+    {
+      "files": "*.{css,scss}",
+      "options": {
+        "singleQuote": false,
+        "printWidth": 100
+      }
+    }
+  ],
+  "plugins": [
+    "prettier-plugin-astro",
+    "@prettier/plugin-xml",
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-sh",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-sort-json",
+    "prettier-plugin-toml",
+    "prettier-plugin-yaml"
+  ],
+  "printWidth": 100,
+  "quoteProps": "as-needed",
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "useTabs": false
+}

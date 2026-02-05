@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { BackButton } from "@components/custom/navigation/back-button";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Badge } from "@components/ui/badge";
+import Icon from "@components/ui/icon.astro";
+import { getEntries, render } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"blog">;
+}
+
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const tags = entry.data.tags?.length ? await getEntries(entry.data.tags) : [];
+const resolvedTags = tags.filter((t) => !!t).map((t) => t.data);
+
+const title = entry.data.title ?? "";
+const description = entry.data.description ?? "";
+const image = entry.data.image;
+---
+
+<PageLayout align="left" description={description} slug={`/blog/${entry.id}`} {title}>
+  <div class="text-muted-foreground flex items-center gap-2 text-sm" slot="header-top">
+    <BackButton client:load href="/blog" label="Back to Blog" />
+  </div>
+
+  <article class="px-6 py-12 md:px-12">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
+      <div class="mx-auto max-w-4xl lg:col-span-12">
+        <div
+          class="prose prose-lg dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg max-w-none"
+        >
+          {
+            image && (
+              <img
+                alt={title}
+                class="mb-8 w-full rounded-xl object-cover"
+                src={typeof image === "string" ? image : image.src}
+              />
+            )
+          }
+          <Content />
+        </div>
+      </div>
+
+      {
+        resolvedTags.length > 0 && (
+          <aside class="space-y-8 lg:col-span-12">
+            <div class="w-full border-t pt-8">
+              <div class="flex flex-wrap gap-2">
+                {resolvedTags.map((tag) => (
+                  <a
+                    class="no-underline transition-opacity hover:opacity-80"
+                    href={`/tags/${tag.id}`}
+                  >
+                    <Badge className="gap-1.5 rounded-md pl-1.5" variant="secondary">
+                      {tag.icon && <Icon class="size-3.5" name={tag.icon} />}
+                      {tag.label || tag.id}
+                    </Badge>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </article>
+</PageLayout>
+
+<script>
+  import { initFocusMode } from "@client/dom";
+
+  const init: () => void = () => {
+    initFocusMode();
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

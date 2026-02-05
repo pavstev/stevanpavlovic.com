@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { InfoCard } from "@components/custom/common/info-card";
+import { ProjectActionButtons } from "@components/custom/common/project-action-buttons";
+import { BackButton } from "@components/custom/navigation/back-button";
+import PageLayout from "@components/layout/page-layout.astro";
+import { getEntries, render } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+}
+
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const tags = entry.data.tags?.length ? await getEntries(entry.data.tags) : [];
+const resolvedTags = tags.filter((t) => !!t).map((t) => t.data);
+
+const { demoUrl, duration, repoUrl, role, teamSize } = entry.data as {
+  demoUrl?: string;
+  duration?: string;
+  repoUrl?: string;
+  role?: string;
+  teamSize?: string;
+};
+
+const title = entry.data.title ?? "";
+const description = entry.data.description ?? "";
+const image = entry.data.image;
+---
+
+<PageLayout align="left" description={description} slug={`/projects/${entry.id}`} {title}>
+  <div class="text-muted-foreground flex items-center gap-2 text-sm" slot="header-top">
+    <BackButton client:load href="/projects" label="Back to Projects" />
+  </div>
+
+  <article class="px-6 py-12 md:px-12">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
+      {
+        demoUrl && (
+          <div class="lg:col-span-12">
+            <ProjectActionButtons demoUrl={demoUrl} repoUrl={repoUrl} />
+          </div>
+        )
+      }
+
+      <div class="lg:col-span-8">
+        <div
+          class="prose prose-lg dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg max-w-none"
+        >
+          {
+            image && (
+              <img
+                alt={title}
+                class="mb-8 w-full rounded-xl object-cover"
+                src={typeof image === "string" ? image : image.src}
+              />
+            )
+          }
+          <Content />
+        </div>
+      </div>
+
+      <aside class="space-y-8 lg:col-span-4">
+        <InfoCard
+          client:load
+          items={[
+            { label: "Role", value: role },
+            { label: "Team Size", value: teamSize },
+            { label: "Duration", value: duration },
+          ].filter((i) => !!i.value)}
+          tags={{
+            items: resolvedTags,
+            title: "Stack",
+          }}
+          title="Project Details"
+        />
+      </aside>
+    </div>
+  </article>
+</PageLayout>
+
+<script>
+  import { initFocusMode } from "@client/dom";
+
+  const init: () => void = () => {
+    initFocusMode();
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

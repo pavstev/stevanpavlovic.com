@@ -1,0 +1,46 @@
+{
+  "avatar": "../../assets/john-doe.png",
+  "description": "John Doe is a senior software engineer with over 8 years of experience in backend development. He specializes in Node.js, TypeScript, and microservices architecture.",
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "school": "University of Belgrade",
+      "year": "2012 — 2016"
+    }
+  ],
+  "email": "john.doe@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "location": "Belgrade, Serbia",
+  "skills": [
+    "Backend Development",
+    "Microservices Architecture",
+    "Cloud Infrastructure",
+    "DevOps Practices",
+    "API Design",
+    "Database Design"
+  ],
+  "socialLinks": [
+    {
+      "handle": "johndoe",
+      "name": "John Doe LinkedIn",
+      "type": "LinkedIn"
+    },
+    {
+      "handle": "johndoe",
+      "name": "John Doe GitHub",
+      "type": "GitHub"
+    },
+    {
+      "handle": "johndoe.dev",
+      "name": "John Doe Website",
+      "type": "Personal Website"
+    },
+    {
+      "handle": "johndoe",
+      "name": "John Doe Twitter",
+      "type": "Twitter"
+    }
+  ],
+  "title": "Senior Software Engineer"
+}

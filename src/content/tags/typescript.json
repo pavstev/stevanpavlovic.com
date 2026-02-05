@@ -1,0 +1,9 @@
+{
+  "category": "Programming Languages",
+  "description": "Expertise and projects involving TypeScript.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with TypeScript in production environments, from architecture to deployment.",
+  "icon": "mdi:language-typescript",
+  "id": "typescript",
+  "label": "TypeScript"
+}

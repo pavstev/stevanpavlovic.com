@@ -1,0 +1,9 @@
+{
+  "category": "Databases",
+  "description": "Expertise and projects involving MongoDB.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with MongoDB in production environments, from architecture to deployment.",
+  "icon": "mdi:database-search",
+  "id": "mongodb",
+  "label": "MongoDB"
+}

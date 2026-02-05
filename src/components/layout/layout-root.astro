@@ -1,72 +1,80 @@
 ---
-import '../../styles/global.css';
-import '@fontsource-variable/space-grotesk';
-import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
-import { ClientRouter } from 'astro:transitions';
+import type { HTMLAttributes } from "astro/types";
 
-import ScrollToTop from '../atoms/scroll-to-top.astro';
-import Chatbot from '../molecules/chatbot.astro';
-import Container from '../molecules/container.astro';
-import Footer from './footer.astro';
-import Head from "./head.astro";
-import Header from './header.astro';
+import { cn } from "@client/utils";
 
-interface Props {
+import "../../styles/global.css";
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import { ClientRouter } from "astro:transitions";
+
+import { MainLayout } from "./main-layout";
+
+interface Props extends HTMLAttributes<"html"> {
   description: string;
-  includeFooter?: boolean;
-  includeHeader?: boolean;
+  image?: URL;
+  intensity?: "high" | "low" | "medium";
+  isFullWidth?: boolean;
+  lang?: string;
+  slug?: string;
   title: string;
 }
 
-const {
-  description,
-  includeFooter = true,
-  includeHeader = true,
-  title,
-} = Astro.props;
+const { class: className, description, lang = "en", title, ...rest } = Astro.props;
 ---
 
 <!doctype html>
-<html class="scroll-smooth" lang="en">
+<html class="scroll-smooth" lang={lang} {...rest}>
   <head>
-    <Head description={description} title={title} />
+    <meta content="nosniff" http-equiv="X-Content-Type-Options" />
+    <meta content="DENY" http-equiv="X-Frame-Options" />
+    <meta content="camera=(), microphone=(), geolocation=()" http-equiv="Permissions-Policy" />
+    <meta content={description} name="description" />
+    <title>{title}</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <!-- Analytics removed placeholder -->
     <ClientRouter />
+    <script is:inline>
+      const getTheme = () => {
+        const localStorageTheme =
+          typeof localStorage !== "undefined" ? localStorage.getItem("theme") : null;
+        if (localStorageTheme && ["dark", "light"].includes(localStorageTheme)) {
+          return localStorageTheme;
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      };
+
+      const setDarkClass = () => {
+        const theme = getTheme();
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      };
+
+      setDarkClass();
+      document.addEventListener("astro:after-swap", setDarkClass);
+    </script>
+    <slot name="head" />
   </head>
   <body
-    class="bg-background font-body text-foreground antialiased selection:bg-primary/20 selection:text-primary"
+    class={cn(
+      "bg-background",
+      "text-foreground",
+      "antialiased",
+      "selection:bg-primary/20",
+      "selection:text-foreground",
+      className
+    )}
   >
-    {/* Grid Pattern Background */}
-    <div
-      class="pointer-events-none fixed inset-0 opacity-[0.03]"
-      style={{
-        backgroundImage:
-          'linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}
-    >
-    </div>
-
-    {/* Ambient Spotlight */}
-    <div
-      class="bg-radial-gradient pointer-events-none fixed inset-0 z-0 from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 sm:opacity-100"
-      style="background: radial-gradient(circle at 50% 0%, rgba(var(--primary), 0.08) 0%, transparent 60%);"
-    >
-    </div>
-
-    {includeHeader && <Header data-pagefind-ignore />}
-
-    <Container
-      as="main"
-      class="relative z-10"
-      data-pagefind-body
-      transition:name="main"
-    >
+    <MainLayout client:load>
       <slot />
-    </Container>
-
-    {includeFooter && <Footer data-pagefind-ignore />}
-    <ScrollToTop />
-    <Chatbot />
+    </MainLayout>
   </body>
 </html>

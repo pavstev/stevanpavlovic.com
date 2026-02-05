@@ -1,76 +1,102 @@
+import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
-import markdown from "@eslint/markdown";
-import stylistic from "@stylistic/eslint-plugin";
+import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginAstro from "eslint-plugin-astro";
 import tailwind from "eslint-plugin-better-tailwindcss";
-import checkFile from "eslint-plugin-check-file";
-// @ts-expect-error - No types for this plugin
-import editorconfig from "eslint-plugin-editorconfig";
-import eslintPluginJsonSchemaValidator from "eslint-plugin-json-schema-validator";
-// @ts-expect-error - No types for this plugin
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import importPlugin from "eslint-plugin-import";
+// @ts-expect-error "no types"
+import markdownlintPlugin from "eslint-plugin-markdownlint";
+// @ts-expect-error "no types"
+import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
+import * as mdx from "eslint-plugin-mdx";
+// @ts-expect-error "no types"
+import noComments from "eslint-plugin-no-comments";
 import perfectionist from "eslint-plugin-perfectionist";
+import prettier from "eslint-plugin-prettier";
+import reactPlugin from "eslint-plugin-react";
+import unicorn from "eslint-plugin-unicorn";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
 
-const tsFiles = {
-  files: ["**/*.ts", "**/*.tsx"],
-  ignores: ["**/*.md", "**/*.mdx", "**/*.json"],
-};
+import { allRules, files, globalIgnoresList, registerPlugin } from "./tools/eslint/index.ts";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const jsxA11yRules = jsxA11y.flatConfigs.recommended.rules as Record<string, unknown>;
+const localPlugin = registerPlugin({
+  name: "local",
+  project: {
+    extensions: ["astro", "tsx", "ts"],
+    sourceDirectories: ["src"],
+  },
+  rules: allRules,
+});
 
-const stylisticOptions = {
-  arrowParens: false,
-  commaDangle: "always-multiline",
-  experimental: true,
-  indent: 2,
-  jsx: false,
-  quotes: "double",
-  semi: true,
-  severity: "error",
-} as const;
+const fixedTailwind = fixupPluginRules(tailwind);
+const fixedMarkdownlint = fixupPluginRules(markdownlintPlugin);
+const fixedNoComments = fixupPluginRules(noComments);
+const fixedReact = fixupPluginRules(reactPlugin);
+
+if (mdx.flat?.plugins?.mdx) {
+  mdx.flat.plugins.mdx = fixupPluginRules(mdx.flat.plugins.mdx);
+}
 
 export default defineConfig(
-  globalIgnores([
-    "pnpm-lock.yaml",
-    "dist/**/*",
-    ".astro/**/*",
-    "node_modules/**/*",
-    ".wrangler/**/*",
-    "src/env.d.ts",
-    ".git/**/*",
-    ".unlighthouse/**/*",
-    "worker-configuration.d.ts",
-  ]),
-  { ...eslint.configs.recommended, ignores: ["**/*.md", "**/*.mdx"], name: "eslint" },
+  globalIgnores(globalIgnoresList),
+
+  eslint.configs.recommended,
+
+  perfectionist.configs["recommended-natural"],
+
+  ...tseslint.configs.recommended,
+
+  localPlugin.configs.recommended,
   {
-    ...perfectionist.configs["recommended-natural"],
-    ignores: ["**/*.md", "**/*.mdx"],
-    name: "perfectionist",
-  },
-  ...tseslint.configs.strictTypeChecked.map(config => ({
-    ...config,
-    ...tsFiles,
-  })),
-  ...eslintPluginAstro.configs.recommended.map(config => ({
-    ...config,
-    ignores: tsFiles.ignores,
-  })),
-  {
-    files: ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"],
-    name: "tailwindcss",
+    files: files.FRONTEND,
     plugins: {
-      "better-tailwindcss": tailwind,
+      import: importPlugin,
+      "no-comments": fixedNoComments,
+      unicorn,
     },
     rules: {
-      "better-tailwindcss/enforce-consistent-class-order": "warn",
-      "better-tailwindcss/enforce-shorthand-classes": "warn",
+      "no-comments/disallowComments": "error",
+      "no-restricted-syntax": [
+        "error",
+        {
+          message: "Use inline 'export const' instead of grouped exports.",
+          selector: "ExportNamedDeclaration[specifiers.length > 0]",
+        },
+      ],
+      "perfectionist/sort-exports": ["error", { order: "asc", type: "alphabetical" }],
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "kebabCase",
+        },
+      ],
+    },
+  },
+  {
+    files: files.ESLINT,
+    name: "tools-eslint",
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      "import/extensions": ["error", "ignorePackages"],
+    },
+  },
+
+  ...eslintPluginAstro.configs.recommended,
+
+  {
+    files: files.FRONTEND,
+    plugins: {
+      "better-tailwindcss": fixedTailwind,
+    },
+    rules: {
+      "better-tailwindcss/enforce-consistent-class-order": "off",
+      "better-tailwindcss/enforce-shorthand-classes": "error",
       "better-tailwindcss/no-conflicting-classes": "error",
       "better-tailwindcss/no-duplicate-classes": "error",
-      "better-tailwindcss/no-unnecessary-whitespace": "warn",
     },
     settings: {
       "better-tailwindcss": {
@@ -78,235 +104,147 @@ export default defineConfig(
       },
     },
   },
+
   {
-    files: ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"],
-    name: "jsx-a11y",
-    plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      "jsx-a11y": jsxA11y,
-    },
-    // @ts-expect-error - jsxA11yRules has broad types
-    rules: jsxA11yRules,
-  },
-  {
-    files: [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.astro",
-    ],
-    name: "editorconfig-general",
-    plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      editorconfig,
-    },
-    rules: {
-      "editorconfig/charset": "error",
-      "editorconfig/eol-last": "error",
-      "editorconfig/linebreak-style": "error",
-      "editorconfig/no-trailing-spaces": "error",
-    },
-  },
-  {
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"],
-    name: "editorconfig-indent",
-    plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      editorconfig,
-    },
-    rules: {
-      "editorconfig/indent": "error",
-    },
-  },
-  {
-    ...stylistic.configs.customize(stylisticOptions),
-    ...tsFiles,
-    name: "stylistic",
-    rules: {
-      ...stylistic.configs.customize(stylisticOptions).rules,
-      "@stylistic/indent": "off", // Handled by editorconfig/indent
-    },
-  },
-  {
-    ...tsFiles,
+    files: files.TS,
+    ignores: files.CONFIG,
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
       },
     },
     rules: {
-      // 4. Prefer `interface` instead of `type`
-      "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-
-      // Additional "great" TypeScript and quality rules
+      "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/consistent-type-imports": [
         "error",
-        {
-          fixStyle: "inline-type-imports",
-          prefer: "type-imports",
-        },
+        { fixStyle: "inline-type-imports", prefer: "type-imports" },
       ],
-      // 1. Require return types to be defined in functions
       "@typescript-eslint/explicit-function-return-type": "error",
-
-      "@typescript-eslint/method-signature-style": ["error", "property"],
-
       "@typescript-eslint/no-explicit-any": "error",
-
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-misused-promises": "error",
-      "@typescript-eslint/no-non-null-assertion": "error",
-      "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        {
-          argsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      // 3. Remove "return" syntax where possible (implicit return)
-      "arrow-body-style": ["error", "as-needed"],
-      // 5. Enforce curly braces for all control statements
-      "curly": ["error", "all"],
-      // 2. Only use arrow functions
-      "func-style": ["error", "expression"],
-      // 7. Enforce maximum nesting depth of 3
-      "max-depth": ["error", 3],
-
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-
-      // 6. Forbid 'else' and 'else if'
-      "no-restricted-syntax": [
-        "error",
-        {
-          message:
-            "Forbidden 'else' or 'else if'. Use early returns or guard clauses to keep code flat and readable.",
-          selector: "IfStatement[alternate]",
-        },
-        {
-          message: "Forbidden '.forEach'. Use 'for...of' loop or '.map()' instead.",
-          selector: "CallExpression[callee.property.name='forEach']",
-        },
-      ],
-
-      "prefer-arrow-callback": "error",
     },
   },
   {
-    files: ["**/*.astro"],
-    name: "astro",
+    files: files.UI_COMPONENTS,
     rules: {
-      // Astro components often don't have explicit return types for the script part
-      "@typescript-eslint/explicit-function-return-type": "off",
-      // Stylistic rules that might conflict with Astro templates
-      "@typescript-eslint/no-confusing-void-expression": "off",
-      "@typescript-eslint/no-floating-promises": "off",
-      // Disable type-aware rules that crash in Astro frontmatter
-      "@typescript-eslint/no-misused-promises": "off",
-      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
 
-      // Astro specific strict rules
+  {
+    files: files.REACT,
+    plugins: {
+      react: fixedReact,
+    },
+    rules: {
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "arrow-function",
+          unnamedComponents: "arrow-function",
+        },
+      ],
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+
+  {
+    files: files.ASTRO,
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_|^Astro$" },
+      ],
       "astro/no-set-html-directive": "error",
       "astro/no-unused-css-selector": "error",
-      "astro/no-unused-define-vars-in-style": "error",
-      "astro/prefer-class-list-directive": "error",
-      "astro/prefer-object-class-list": "error",
     },
   },
+
   {
-    files: ["src/components/**/*.astro"],
-    name: "components",
+    files: files.MARKDOWN,
+    languageOptions: {
+      parser: markdownlintParser,
+    },
     plugins: {
-      "check-file": checkFile,
+      markdownlint: fixedMarkdownlint,
     },
     rules: {
-      "check-file/filename-naming-convention": [
-        "error",
-        {
-          "**/*.{astro,ts,tsx}": "KEBAB_CASE",
-        },
-        {
-          ignoreMiddleExtensions: true,
-        },
-      ],
-      "check-file/folder-naming-convention": [
-        "error",
-        {
-          "src/components/**/": "KEBAB_CASE",
-        },
-      ],
+      ...markdownlintPlugin.configs.recommended.rules,
+      "markdownlint/md013": "off",
+      "markdownlint/md024": "off",
+      "markdownlint/md041": "off",
     },
   },
+
   {
-    files: ["scripts/**/*.ts"],
-    name: "scripts",
+    files: files.MDX,
+    ...mdx.flat,
+    processor: mdx.createRemarkProcessor({
+      lintCodeBlocks: false,
+    }),
     rules: {
-      "@typescript-eslint/no-deprecated": "off",
+      ...mdx.flat.rules,
+      "mdx/remark": "error",
+    },
+  },
+
+  {
+    files: files.MDX,
+    languageOptions: {
+      globals: {
+        alert: "readonly",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+
+  {
+    files: files.JSON,
+    languageOptions: {
+      parser: jsoncParser,
+    },
+  },
+
+  {
+    files: files.CONFIG,
+    rules: {
+      "@typescript-eslint/await-thenable": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
-      // Scripts often deal with raw data from APIs where types might be incomplete
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/require-await": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
+      "no-comments/disallowComments": "off",
     },
   },
+
   {
-    extends: ["markdown/recommended"],
-    files: ["**/*.md", "**/*.mdx"],
-    language: "markdown/gfm",
-    languageOptions: {
-      frontmatter: "yaml",
-    },
-    name: "markdown",
+    files: files.FRONTEND,
     plugins: {
-      markdown,
+      prettier,
     },
     rules: {
-      "markdown/heading-increment": "error",
-      "markdown/no-bare-urls": "error",
-      "markdown/no-duplicate-headings": "error",
-      "markdown/no-html": "error",
-      "no-irregular-whitespace": "off",
+      "prettier/prettier": "error",
     },
   },
-  {
-    files: ["**/*.mdx"],
-    name: "markdown-mdx-overrides",
-    rules: {
-      "markdown/no-html": "off",
-    },
-  },
-  // {
-  //   files: ['**/*.json'],
-  //   ignores: ['package-lock.json'],
-  //   plugins: { json },
-  //   language: 'json/json',
-  //   extends: ['json/recommended'],
-  // },
-  // {
-  //   files: ['**/*.jsonc'],
-  //   plugins: { json },
-  //   language: 'json/jsonc',
-  //   extends: ['json/recommended'],
-  // },
-  // {
-  //   files: ['**/*.json5'],
-  //   plugins: { json },
-  //   language: 'json/json5',
-  //   extends: ['json/recommended'],
-  // },
-  ...eslintPluginJsonSchemaValidator.configs.recommended.map(config => ({
-    ...config,
-    files: ["**/*.json"],
-    ignores: [
-      ".vscode/**/*",
-    ],
-    languageOptions: {
-      parser: jsoncParser, // Set this parser.
-    },
-  })),
+
+  eslintConfigPrettier
 );

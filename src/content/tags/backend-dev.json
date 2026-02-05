@@ -1,0 +1,8 @@
+{
+  "category": "Backend Development",
+  "description": "Backend Development related expertise and projects.",
+  "featured": false,
+  "icon": "mdi:tag-outline",
+  "id": "backend-dev",
+  "label": "Backend Development"
+}

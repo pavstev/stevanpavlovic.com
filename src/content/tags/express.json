@@ -1,0 +1,9 @@
+{
+  "category": "Backend Development",
+  "description": "Expertise and projects involving Express.js.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Express.js in production environments, from architecture to deployment.",
+  "icon": "mdi:nodejs",
+  "id": "express",
+  "label": "Express.js"
+}

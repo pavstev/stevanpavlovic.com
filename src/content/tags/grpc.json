@@ -1,0 +1,9 @@
+{
+  "category": "APIs & Integrations",
+  "description": "Expertise and projects involving gRPC.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with gRPC in production environments, from architecture to deployment.",
+  "icon": "mdi:api",
+  "id": "grpc",
+  "label": "gRPC"
+}

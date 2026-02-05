@@ -1,0 +1,14 @@
+{
+  "original_hash": "bc3ae8615d422b69cc2dd159ddc008b700a718bea1eed34f40e2b769c501b699",
+  "original_size": 77378,
+  "new_size": 77379,
+  "elapsed": 3.3946969509124756,
+  "no_deep": false,
+  "merge": "0.1mm",
+  "simplify": "0.05mm",
+  "stats": {
+    "attrs_removed": 3,
+    "groups_removed": 0,
+    "comments_removed": 0
+  }
+}

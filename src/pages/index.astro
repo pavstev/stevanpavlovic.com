@@ -1,19 +1,46 @@
 ---
-import LayoutRoot from '../components/layout/layout-root.astro';
-import Container from '../components/molecules/container.astro';
-import HomeDashboard from '../components/organisms/home-dashboard.astro';
-import { PROFILE } from '../lib/config';
+import { BentoGrid } from "@components/custom/bento/bento-grid";
+import PageLayout from "@components/layout/page-layout.astro";
+import { HyperText } from "@components/ui/hyper-text";
+import { Ripple } from "@components/ui/ripple";
+import { getIndexLoaderData } from "@server/index-loader";
+import { SITE_CONFIG } from "src/constants";
+
+const bentoItems = await getIndexLoaderData();
 ---
 
-<LayoutRoot
-  description={PROFILE.bio}
-  includeFooter={true}
-  includeHeader={true}
-  title={`${PROFILE.name} | Senior Software Engineer`}
->
-  <Container>
-    <div class="flex min-h-screen flex-col items-center justify-center py-12 lg:py-20">
-      <HomeDashboard />
+<PageLayout description={SITE_CONFIG.bio} hideHeader={true} slug="/" title={SITE_CONFIG.author}>
+  <div
+    class="bg-background relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden"
+  >
+    <div class="z-10 flex flex-col items-center gap-4 text-center">
+      <span
+        class="border-background relative inline-block overflow-hidden rounded-full border-4 shadow-xl transition-transform hover:scale-105"
+      >
+        <img
+          alt={SITE_CONFIG.author}
+          class="size-32 object-cover"
+          height={128}
+          src={SITE_CONFIG.avatar.src}
+          width={128}
+        />
+      </span>
+
+      <HyperText
+        className="text-foreground text-4xl font-bold tracking-tighter sm:text-6xl md:text-8xl"
+        client:load
+        text={SITE_CONFIG.author}
+      />
+
+      <p class="text-muted-foreground max-w-[600px] text-lg sm:text-xl">
+        {SITE_CONFIG.hero.title}
+      </p>
     </div>
-  </Container>
-</LayoutRoot>
+
+    <Ripple client:load mainCircleOpacity={0.15} mainCircleSize={150} numCircles={8} />
+  </div>
+
+  <div class="relative overflow-hidden px-6 pt-10 md:px-12">
+    <BentoGrid client:visible items={bentoItems} />
+  </div>
+</PageLayout>

@@ -1,0 +1,9 @@
+{
+  "category": "Architecture & Design",
+  "description": "Expertise and projects involving Architecture.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Architecture in production environments, from architecture to deployment.",
+  "icon": "mdi:sitemap",
+  "id": "architecture",
+  "label": "Architecture"
+}

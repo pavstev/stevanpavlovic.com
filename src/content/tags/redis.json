@@ -1,0 +1,9 @@
+{
+  "category": "Databases",
+  "description": "Expertise and projects involving Redis.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Redis in production environments, from architecture to deployment.",
+  "icon": "mdi:database",
+  "id": "redis",
+  "label": "Redis"
+}

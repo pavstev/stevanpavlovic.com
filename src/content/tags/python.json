@@ -1,0 +1,9 @@
+{
+  "category": "Programming Languages",
+  "description": "Expertise and projects involving Python.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Python in production environments, from architecture to deployment.",
+  "icon": "mdi:language-python",
+  "id": "python",
+  "label": "Python"
+}

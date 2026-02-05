@@ -1,0 +1,85 @@
+---
+import type { BentoItem } from "@components/custom/bento/bento-types";
+
+import { BentoGrid } from "@components/custom/bento/bento-grid";
+import { CollectionPagination } from "@components/custom/navigation/collection-pagination";
+import PageLayout from "@components/layout/page-layout.astro";
+import { getCollection, getEntries } from "astro:content";
+import { ITEMS_PER_PAGE, SITE_CONFIG } from "src/constants";
+
+interface Props {
+  page?: number | string;
+}
+
+const { page = 1 } = Astro.props;
+const currentPage = typeof page === "string" ? parseInt(page, 10) : page;
+
+const allEntries = await getCollection("blog");
+const sortedEntries = allEntries.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const totalItems = sortedEntries.length;
+const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+const endIndex = startIndex + ITEMS_PER_PAGE;
+const pageEntries = sortedEntries.slice(startIndex, endIndex);
+
+const bentoItems: BentoItem[] = await Promise.all(
+  pageEntries.map(async (entry, index) => {
+    const isFeatured = index === 0 && currentPage === 1;
+
+    const tags = entry.data.tags?.length
+      ? await getEntries(entry.data.tags).then((t) =>
+          t.filter((x) => !!x).map((x) => x.data.label || x.data.id)
+        )
+      : [];
+
+    const image = entry.data.image;
+    const imageSrc =
+      typeof image === "object" && image !== null && "src" in image
+        ? image.src
+        : (image as string | undefined);
+
+    return {
+      className: isFeatured ? "md:col-span-2 md:row-span-2" : "col-span-1",
+      cta: "Read More",
+      description: entry.data.description ?? "",
+      href: `/blog/${entry.id}`,
+      id: entry.id,
+      image: imageSrc,
+      tags,
+      tagsVariant: "default",
+      title: entry.data.title ?? entry.id,
+    };
+  })
+);
+
+const baseUrl = "/blog";
+const prevUrl =
+  currentPage > 1 ? (currentPage === 2 ? baseUrl : `${baseUrl}/${currentPage - 1}`) : undefined;
+const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : undefined;
+
+const title = currentPage === 1 ? "Blog" : `Blog - Page ${currentPage}`;
+const description = SITE_CONFIG.headline;
+---
+
+<PageLayout
+  description={description}
+  slug={currentPage === 1 ? "/blog" : `/blog/${currentPage}`}
+  {title}
+>
+  <div class="px-6 py-12 md:px-12">
+    <div class="flex flex-col gap-12">
+      <BentoGrid className="py-0 sm:py-0" client:visible items={bentoItems} />
+
+      <CollectionPagination
+        baseUrl={baseUrl}
+        currentPage={currentPage}
+        nextUrl={nextUrl}
+        prevUrl={prevUrl}
+        totalPages={totalPages}
+      />
+    </div>
+  </div>
+</PageLayout>

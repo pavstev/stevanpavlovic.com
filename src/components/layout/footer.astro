@@ -1,33 +1,34 @@
 ---
-import { PROFILE } from '../../lib/config';
-import Text from '../atoms/text.astro';
-import Container from '../molecules/container.astro';
+import { cn } from "@client/utils";
+import LogoIcon from "@components/ui/logo-icon.astro";
+
+import { fullName } from "../../constants";
+import CopyrightText from "../custom/common/copyright-text.astro";
+import { FooterSocials } from "./footer-socials";
+
+const gradientClass = "bg-linear-to-t from-primary/5 to-muted/20";
 ---
 
-<footer class="mt-auto w-full px-2 pt-16 pb-4 md:px-0 md:pb-8" transition:persist>
-  <Container>
-    <div class="pointer-events-auto relative flex min-h-12 w-full items-center justify-between gap-4 rounded-full border border-border/50 bg-background/60 px-6 py-2 shadow-xl ring-1 ring-black/5 backdrop-blur-md transition-all duration-500">
-      <div class="absolute inset-0 -z-10 rounded-full bg-linear-to-b from-foreground/5 to-transparent opacity-50"></div>
-
-      <div class="flex flex-col items-start md:flex-row md:items-center md:gap-4">
-        <Text class="font-bold tracking-tight text-foreground/80" size="xs">
-          &copy; {new Date().getFullYear()} {PROFILE.name}
-        </Text>
-        <div class="hidden h-3 w-px bg-border/50 md:block"></div>
-        <Text class="hidden font-mono text-[9px] font-medium tracking-widest text-muted-foreground uppercase md:block">
-          Crafted with precision
-        </Text>
+<footer
+  class="border-border dark:from-background/80 dark:to-muted/20 w-full border-t backdrop-blur-xl transition-all duration-300 ease-in-out"
+>
+  <div
+    class={cn(
+      "container mx-auto flex flex-col items-center justify-between gap-6 px-4 py-8 md:flex-row md:px-8",
+      gradientClass
+    )}
+  >
+    <div class="flex flex-col items-center gap-2 text-center md:items-start md:text-left">
+      <div class="flex items-center gap-2">
+        <LogoIcon class="text-foreground size-8" />
+        <span class="text-lg font-semibold">{fullName}</span>
       </div>
-
-      <nav class="flex items-center gap-4">
-        <Text as="a" class="font-mono text-[10px] tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/rss.xml">
-          RSS Feed
-        </Text>
-        <div class="h-3 w-px bg-border/50"></div>
-        <Text as="a" class="font-mono text-[10px] tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/sitemap-index.xml">
-          Sitemap
-        </Text>
-      </nav>
+      <CopyrightText class="mt-2 md:hidden" />
     </div>
-  </Container>
+
+    <div class="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+      <FooterSocials client:visible />
+      <CopyrightText class="hidden md:block" />
+    </div>
+  </div>
 </footer>

@@ -1,0 +1,9 @@
+{
+  "category": "Microservices",
+  "description": "Expertise and projects involving Microservices.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Microservices in production environments, from architecture to deployment.",
+  "icon": "mdi:puzzle",
+  "id": "microservices",
+  "label": "Microservices"
+}

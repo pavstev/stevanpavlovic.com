@@ -1,0 +1,9 @@
+{
+  "category": "Databases",
+  "description": "Expertise and projects involving PostgreSQL.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with PostgreSQL in production environments, from architecture to deployment.",
+  "icon": "simple-icons:postgresql",
+  "id": "postgresql",
+  "label": "PostgreSQL"
+}

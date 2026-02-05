@@ -1,0 +1,17 @@
+---
+import { cn } from "@client/utils";
+
+import { SITE_CONFIG } from "../../../constants";
+
+interface Props {
+  class?: string;
+  name?: string;
+}
+
+const { class: className, name = SITE_CONFIG.author } = Astro.props;
+---
+
+<p class={cn("text-muted-foreground text-xs", className)}>
+  &copy; {new Date().getFullYear()}
+  {name}. All rights reserved.
+</p>

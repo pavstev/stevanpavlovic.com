@@ -1,0 +1,40 @@
+{
+  "avatar": "../../assets/michael-rodriguez.png",
+  "description": "Michael Rodriguez is a Backend Engineer specializing in high-performance systems and distributed architectures. With 8 years of experience, he focuses on building scalable APIs and microservices for high-traffic applications.",
+  "email": "michael.rodriguez@example.com",
+  "firstName": "Michael",
+  "lastName": "Rodriguez",
+  "location": "Remote / Belgrade, Serbia",
+  "skills": [
+    "Node.js",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis",
+    "Kafka",
+    "AWS",
+    "Docker"
+  ],
+  "socialLinks": [
+    {
+      "handle": "michael-rodriguez-eng",
+      "name": "Michael Rodriguez LinkedIn",
+      "type": "LinkedIn"
+    },
+    {
+      "handle": "mrodriguez",
+      "name": "Michael Rodriguez GitHub",
+      "type": "GitHub"
+    },
+    {
+      "handle": "mrodriguez.dev",
+      "name": "Michael Rodriguez Website",
+      "type": "Personal Website"
+    },
+    {
+      "handle": "mrodriguez.dev/blog",
+      "name": "Michael Rodriguez Blog",
+      "type": "Blog"
+    }
+  ],
+  "title": "Backend Engineer"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "aliases": {
+    "components": "@components",
+    "utils": "@client/utils",
+    "ui": "@components/ui",
+    "lib": "@client",
+    "hooks": "@client/hooks"
+  },
+  "iconLibrary": "lucide",
+  "menuAccent": "bold",
+  "menuColor": "default",
+  "registries": {
+    "@21st": "https://21st.dev/r/{name}",
+    "@kokonutui": "https://kokonutui.com/r/{name}.json",
+    "@efferd": "https://efferd.com/r/{name}.json",
+    "@8starlabs-ui": "https://ui.8starlabs.com/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
+  },
+  "rsc": false,
+  "rtl": false,
+  "style": "new-york",
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/global.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "tsx": true
+}

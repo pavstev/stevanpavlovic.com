@@ -1,0 +1,9 @@
+{
+  "category": "Cloud & DevOps",
+  "description": "Expertise and projects involving GitHub Actions.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with GitHub Actions in production environments, from architecture to deployment.",
+  "icon": "mdi:github",
+  "id": "github-actions",
+  "label": "GitHub Actions"
+}

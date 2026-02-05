@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Validation schema for custom YAML task definitions",
+  "properties": {
+    "vars": {
+      "type": "object",
+      "description": "Global variables for command and path interpolation.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "description": "Definitions of runnable tasks.",
+      "patternProperties": {
+        "^[a-zA-Z0-9_\\-]+$": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Human-readable name of the task."
+            },
+            "command": {
+              "type": "string",
+              "description": "The command to execute. Supports variable interpolation (e.g., ${uv_py})."
+            },
+            "cwd": {
+              "type": "string",
+              "description": "The working directory to execute the command in."
+            }
+          },
+          "required": ["name", "command", "cwd"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["tasks"],
+  "title": "Task Runner Schema",
+  "type": "object"
+}

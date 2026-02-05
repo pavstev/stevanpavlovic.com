@@ -1,0 +1,51 @@
+---
+import { cn } from "@client/utils";
+import LayoutRoot from "@components/layout/layout-root.astro";
+import { PageHeader } from "@components/ui/page-header";
+
+import Footer from "./footer.astro";
+
+interface Props {
+  align?: "center" | "left";
+  className?: string;
+  description: string;
+  hideHeader?: boolean;
+  isFullWidth?: boolean;
+  slug?: string;
+  title: string;
+}
+
+const {
+  align = "center",
+  className,
+  description,
+  hideHeader = false,
+  isFullWidth = false,
+  slug,
+  title,
+} = Astro.props;
+---
+
+<LayoutRoot description={description} isFullWidth={isFullWidth} slug={slug} title={title}>
+  <div
+    class={cn(
+      "relative mx-auto flex min-h-screen flex-col border-neutral-200/60 dark:border-neutral-800/60",
+      !isFullWidth && "max-w-5xl border-x bg-background/50 backdrop-blur-sm",
+      className
+    )}
+  >
+    {
+      !hideHeader && (
+        <div class="px-6 py-12 md:px-12">
+          <PageHeader align={align} client:load description={description} title={title}>
+            <slot name="header-top" slot="topContent" />
+          </PageHeader>
+        </div>
+      )
+    }
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</LayoutRoot>

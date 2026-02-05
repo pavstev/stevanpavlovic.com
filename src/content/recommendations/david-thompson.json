@@ -1,0 +1,11 @@
+{
+  "avatar": "https://i.pravatar.cc/150?img=33",
+  "company": "Spark451 Inc.",
+  "context": "David worked extensively with Stevan on the Intelligent Admissions module at Spark451",
+  "date": "2018-07-10T00:00:00.000Z",
+  "linkedInProfile": "https://linkedin.com/in/davidthompson",
+  "name": "David Thompson",
+  "relationship": "Manager",
+  "text": "Working with Stevan on the Intelligent Admissions module was one of the\nhighlights of my product management career. This was an incredibly complex\nfeature – we needed to automate college admission evaluation across hundreds of\ninstitutions, each with unique criteria, while maintaining transparency and\ntrust from admission officers.\n\nStevan didn't just implement what was spec'd; he actively participated in\nproduct design, asking probing questions that improved the final solution. His\nsuggestion to build a visual rule configuration system instead of code-based\nrules was brilliant – it made the system accessible to non-technical\nadministrators and became a major selling point for Element451.\n\nThe technical execution was flawless. Stevan's scoring algorithm processed 200+\napplicant properties in sub-second time, and the system handled 50K+\napplications annually without issues. But what really impressed me was his focus\non user experience – he built comprehensive audit trails showing exactly why the\nsystem recommended each action, which was crucial for gaining trust from\nskeptical admission officers.\n\nStevan's communication skills were exceptional for an engineer. He could explain\ncomplex technical concepts to non-technical stakeholders and translated business\nrequirements into elegant technical solutions. He was always available for\nquestions and proactively raised concerns when he saw potential issues.\n\nI would enthusiastically work with Stevan again and recommend him for roles\nrequiring both technical depth and product thinking. He's a complete engineer\nwho understands that great software requires both technical excellence and\nsolving real user problems.",
+  "title": "Senior Product Manager"
+}

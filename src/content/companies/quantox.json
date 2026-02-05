@@ -1,0 +1,23 @@
+{
+  "description": "Software development company specializing in high-scale web performance and modernization",
+  "founded": "1970-01-01T00:00:02.005Z",
+  "fullDescription": "Quantox Technology is a software development company focused on high-scale web\nperformance and legacy system modernization. The company specializes in\nrefactoring complex monoliths and optimizing database performance for enterprise\napplications.",
+  "industry": "Software",
+  "logo": "../../assets/tech-logo.png",
+  "name": "Quantox Technology",
+  "size": "Small Business",
+  "socialLinks": [
+    {
+      "type": "Website",
+      "handle": "quantox.com",
+      "name": "Quantox"
+    },
+    {
+      "type": "LinkedIn",
+      "handle": "quantox",
+      "name": "Quantox LinkedIn"
+    }
+  ],
+  "type": "Full-time",
+  "website": "https://quantox.com"
+}

@@ -1,7 +1,9 @@
 ---
-import LayoutRoot from '../components/layout/layout-root.astro';
-import Empty from '../components/molecules/empty.astro';
-import Section from '../components/organisms/section.astro';
+import { ErrorPage } from "@components/custom/common/not-found";
+import { BackButton } from "@components/custom/navigation/back-button";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Button } from "@components/ui/button";
+import Icon from "@components/ui/icon.astro";
 
 interface Props {
   error: unknown;
@@ -9,18 +11,34 @@ interface Props {
 
 const { error } = Astro.props;
 
-const title = '500 - System Error';
-const description = 'An unexpected error occurred while processing your request.';
-const errorMessage = error instanceof Error ? error.message : "Unknown system exception";
+const title: string = "500 - System Critical";
+const description: string = "An unexpected error occurred while processing your request.";
+const errorMessage: string = error instanceof Error ? error.message : "Unknown System Exception";
 ---
 
-<LayoutRoot description={description} title={title}>
-  <Section>
-    <Empty
-      action={{ href: '/', label: 'Restart Session' }}
-      description={`${description} (${errorMessage})`}
-      icon="mdi:alert-octagon-outline"
-      title="System Error"
-    />
-  </Section>
-</LayoutRoot>
+<PageLayout description={description} slug="/500" title={title}>
+  <ErrorPage
+    className="min-h-[calc(100vh-12rem)]"
+    client:load
+    code="500"
+    description="The server successfully processed 0% of your request. An anomaly has been detected in the core logic."
+    title="System Malfunction"
+  >
+    <div class="flex flex-col items-center gap-4 text-center">
+      <div
+        class="border-border/50 bg-muted/30 text-destructive mt-2 rounded-lg border px-4 py-2 font-mono text-xs"
+      >
+        Error: {errorMessage}
+      </div>
+
+      <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+        <Button asChild className="w-full sm:w-auto" size="lg">
+          <a href="/">
+            <Icon class="mr-2 size-5" name="mdi:home" /> Return to Base
+          </a>
+        </Button>
+        <BackButton client:load href="/" label="Retry Sequence" />
+      </div>
+    </div>
+  </ErrorPage>
+</PageLayout>

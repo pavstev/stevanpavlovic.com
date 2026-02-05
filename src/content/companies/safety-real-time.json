@@ -1,0 +1,23 @@
+{
+  "description": "Real-time fleet telemetry and safety monitoring platform for logistics operations",
+  "founded": "1970-01-01T00:00:02.020Z",
+  "fullDescription": "Safety Real Time provides high-performance real-time fleet telemetry and safety\nmonitoring solutions. The platform processes high-frequency vehicle diagnostics\nand GPS telemetry from thousands of IoT devices, delivering sub-second latency\nvisualizations for mission-critical logistics operations.",
+  "industry": "Software",
+  "logo": "../../assets/safetyrealtime.png",
+  "name": "Safety Real Time",
+  "size": "Small Business",
+  "socialLinks": [
+    {
+      "type": "Website",
+      "handle": "safetyrealtime.com",
+      "name": "Safety Real Time"
+    },
+    {
+      "type": "LinkedIn",
+      "handle": "safetyrealtime",
+      "name": "Safety Real Time LinkedIn"
+    }
+  ],
+  "type": "Full-time",
+  "website": "http://safetyrealtime.com"
+}

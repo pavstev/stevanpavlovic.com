@@ -1,0 +1,40 @@
+{
+  "avatar": "../../assets/sarah-chen.png",
+  "description": "Sarah Chen is a Full Stack Developer with 6 years of experience building modern web applications. She specializes in React, TypeScript, and Node.js, with a strong focus on creating intuitive user experiences.",
+  "email": "sarah.chen@example.com",
+  "firstName": "Sarah",
+  "lastName": "Chen",
+  "location": "Belgrade, Serbia",
+  "skills": [
+    "React",
+    "TypeScript",
+    "Next.js",
+    "Node.js",
+    "Tailwind CSS",
+    "PostgreSQL",
+    "Docker"
+  ],
+  "socialLinks": [
+    {
+      "handle": "sarah-chen-dev",
+      "name": "Sarah Chen LinkedIn",
+      "type": "LinkedIn"
+    },
+    {
+      "handle": "sarahchen",
+      "name": "Sarah Chen GitHub",
+      "type": "GitHub"
+    },
+    {
+      "handle": "sarahchen_dev",
+      "name": "Sarah Chen Twitter",
+      "type": "Twitter"
+    },
+    {
+      "handle": "sarahchen.dev",
+      "name": "Sarah Chen Website",
+      "type": "Personal Website"
+    }
+  ],
+  "title": "Full Stack Developer"
+}

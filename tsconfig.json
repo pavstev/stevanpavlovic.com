@@ -1,21 +1,38 @@
 {
   "compilerOptions": {
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
+    "target": "es2022",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "paths": {
+      "@assets/*": ["./src/assets/*"],
+      "@client": ["./src/client/index.ts"],
+      "@client/*": ["./src/client/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants": ["./src/constants.ts"],
+      "@server/*": ["./src/server/*"]
+    },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
+    "strict": false,
     "strictNullChecks": true,
-    "types": [
-      "./worker-configuration.d.ts",
-      "node"
-    ]
+    "types": ["./worker-configuration.d.ts", "node"],
+    "noEmit": true
   },
-  "exclude": [
-    "dist"
-  ],
+  "exclude": ["dist", "api-bak", "node_modules"],
   "extends": "astro/tsconfigs/strict",
   "include": [
     ".astro/types.d.ts",
-    "**/*"
+    "src/**/*",
+    "tools/eslint/**/*",
+    "eslint.config.ts",
+    "**/*.d.ts"
   ]
 }

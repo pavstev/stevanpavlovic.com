@@ -1,5 +1,7 @@
 import { defineUnlighthouseConfig } from "unlighthouse/config";
 
+import config from "./astro.config";
+
 export default defineUnlighthouseConfig({
   ["server" as keyof Parameters<typeof defineUnlighthouseConfig>[0]]: {
     open: false,
@@ -10,10 +12,10 @@ export default defineUnlighthouseConfig({
 
   ci: {
     budget: {
-      "accessibility": 90,
+      accessibility: 90,
       "best-practices": 90,
-      "performance": 90,
-      "seo": 90,
+      performance: 90,
+      seo: 90,
     },
     buildStatic: true,
   },
@@ -34,5 +36,5 @@ export default defineUnlighthouseConfig({
     sitemap: ["/sitemap-index.xml", "/sitemap.xml"],
   },
 
-  site: "http://localhost:8787",
+  site: config.site,
 });

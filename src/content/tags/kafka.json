@@ -1,0 +1,9 @@
+{
+  "category": "Message Queues",
+  "description": "Expertise and projects involving Apache Kafka.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Apache Kafka in production environments, from architecture to deployment.",
+  "icon": "mdi:apache-kafka",
+  "id": "kafka",
+  "label": "Apache Kafka"
+}

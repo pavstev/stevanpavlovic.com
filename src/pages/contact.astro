@@ -1,0 +1,16 @@
+---
+import { ContactSection } from "@components/custom/contact/contact-section";
+import { BackButton } from "@components/custom/navigation/back-button";
+import PageLayout from "@components/layout/page-layout.astro";
+
+const title: string = "Contact";
+const description: string =
+  "Get in touch for collaborations, project inquiries, or professional networking.";
+---
+
+<PageLayout align="left" description={description} slug="/contact" title={title}>
+  <div class="text-muted-foreground flex items-center gap-2 text-sm" slot="header-top">
+    <BackButton client:load href="/" label="Back to Home" />
+  </div>
+  <ContactSection client:load />
+</PageLayout>

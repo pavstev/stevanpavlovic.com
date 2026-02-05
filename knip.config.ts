@@ -4,15 +4,17 @@ const config: KnipConfig = {
   astro: {},
   entry: [
     "unlighthouse.config.ts",
+    "tools/eslint/index.ts",
+    "src/**/*.{test,spec}.{ts,tsx}",
+    "src/test/setup.ts",
   ],
   ignoreBinaries: ["only-allow"],
   ignoreDependencies: [
     "sharp",
-    "@typescript-eslint/eslint-plugin",
-    "@typescript-eslint/parser",
+    "@iconify-json/*",
     "astro-eslint-parser",
-    "eslint-plugin-jsx-a11y",
-    "@iconify-json/mdi",
+    "@astrojs/check",
+    "resumed",
   ],
 };
 

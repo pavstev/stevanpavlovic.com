@@ -1,0 +1,9 @@
+{
+  "category": "Cloud & DevOps",
+  "description": "Expertise and projects involving Terraform.",
+  "featured": true,
+  "fullDescription": "Comprehensive experience with Terraform in production environments, from architecture to deployment.",
+  "icon": "mdi:terraform",
+  "id": "terraform",
+  "label": "Terraform"
+}

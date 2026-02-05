@@ -39,12 +39,6 @@ export const NAV_ITEMS = [
     icon: "mdi:newspaper-variant-outline",
     label: "Blog",
   },
-  {
-    color: "var(--color-destructive)",
-    href: "/playground",
-    icon: "mdi:flask-outline",
-    label: "Playground",
-  },
 ] as const;
 
 export const PROFILE = {

@@ -24,7 +24,7 @@ export const cardVariants = cva(
   },
 );
 
-type CardPost = CollectionEntry<"blog"> | CollectionEntry<"projects"> | CollectionEntry<"toys">;
+type CardPost = CollectionEntry<"blog"> | CollectionEntry<"projects">;
 
 export const getCardData = (post: CardPost): {
     description: string;
@@ -38,9 +38,7 @@ export const getCardData = (post: CardPost): {
   const postUrl
     = collection === "blog"
       ? `/blog/${post.id}/`
-      : collection === "toys"
-        ? `/playground/${post.id}/`
-        : `/projects/${post.id}/`;
+      : `/projects/${post.id}/`;
 
   const data = post.data;
   const heroImage

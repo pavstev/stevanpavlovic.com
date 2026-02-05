@@ -11,12 +11,12 @@ import LayoutContent from "../layout/layout-content.astro";
 import Tags from '../molecules/tags.astro';
 import PageHero from './page-hero.astro';
 
-type PostType = 'blog' | 'experience' | 'playground' | 'project';
+type PostType = 'blog' | 'experience' | 'project';
 
 interface Props {
   backLabel?: string;
   backLink?: string;
-  data: CollectionEntry<'blog'>['data'] | CollectionEntry<'experience'>['data'] | CollectionEntry<'projects'>['data'] | CollectionEntry<'toys'>['data'];
+  data: CollectionEntry<'blog'>['data'] | CollectionEntry<'experience'>['data'] | CollectionEntry<'projects'>['data'];
   type: PostType;
 }
 
@@ -29,13 +29,11 @@ const {
 
 const defaultBackLabel = type === 'blog' ? 'Back to Blog' :
   type === 'project' ? 'Back to Projects' :
-    type === 'playground' ? 'Back to Playground' :
-      'Back to Experience';
+    'Back to Experience';
 
 const defaultBackLink = type === 'blog' ? '/blog' :
   type === 'project' ? '/projects' :
-    type === 'playground' ? '/playground' :
-      '/experience';
+    '/experience';
 
 const finalBackLabel = backLabel || defaultBackLabel;
 const finalBackLink = backLink || defaultBackLink;

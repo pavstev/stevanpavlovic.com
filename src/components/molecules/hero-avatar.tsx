@@ -25,7 +25,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
         role="button"
         tabIndex={0}
       >
-        <div className="rounded">
+        <div className="rounded-sm">
           <img
             alt={PROFILE.name}
             className="aspect-4/5 w-full object-cover"
@@ -45,7 +45,7 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
         <div className="relative animate-zoom-in">
           <img
             alt={PROFILE.name}
-            className="max-h-[90vh] max-w-[90vw] rounded object-contain"
+            className="max-h-[90vh] max-w-[90vw] rounded-sm object-contain"
             src={profileImage.src}
           />
         </div>

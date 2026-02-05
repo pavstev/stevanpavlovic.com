@@ -4,6 +4,7 @@ interface Props {
 }
 
 import { Icon } from 'astro-icon/components';
+
 import { SOCIALS } from '../../lib/config';
 import { isActivePath } from '../../lib/nav';
 
@@ -13,7 +14,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
 <div
-  class="pointer-events-none fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center bg-background/95 backdrop-blur-lg opacity-0 transition-all duration-500 ease-out data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
+  class="pointer-events-none fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center bg-background/95 opacity-0 backdrop-blur-lg transition-all duration-500 ease-out data-[open=true]:pointer-events-auto data-[open=true]:translate-x-0 data-[open=true]:opacity-100 md:hidden"
   data-open="false"
   id="mobile-menu"
 >
@@ -22,7 +23,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
       <a
         class:list={[
           "text-xl font-medium transition-all duration-300",
-          { "text-foreground scale-105": isActive(item.href), "text-muted-foreground hover:text-foreground": !isActive(item.href) }
+          { "scale-105 text-foreground": isActive(item.href), "text-muted-foreground hover:text-foreground": !isActive(item.href) }
         ]}
         href={item.href}
       >

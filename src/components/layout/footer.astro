@@ -1,31 +1,101 @@
 ---
-import { PROFILE } from '../../lib/config';
+import { Icon } from 'astro-icon/components';
+
+import { NAV_ITEMS, PROFILE, SITE_CONFIG, SOCIALS } from '../../lib/config';
 import Text from '../atoms/text.astro';
 import Container from '../molecules/container.astro';
 ---
 
-<footer class="mt-auto w-full py-8" transition:persist>
-  <Container class="max-w-5xl">
-    <div class="glass flex w-full flex-col items-center justify-between gap-4 rounded-3xl p-6 sm:flex-row sm:px-8">
-
-      <div class="flex flex-col items-center gap-2 sm:items-start">
-        <Text class="font-bold tracking-tight" size="sm">
-          &copy; {new Date().getFullYear()} {PROFILE.name}
+<footer class="w-full border-t border-white/5 bg-black/40 backdrop-blur-xl" transition:persist>
+  <Container>
+    <div class="grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Brand & Bio */}
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+          <div class="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+            <span class="font-heading font-bold">SP</span>
+          </div>
+          <Text class="font-bold tracking-tight">{PROFILE.name}</Text>
+        </div>
+        <Text class="max-w-xs leading-relaxed" size="sm" variant="muted">
+          {SITE_CONFIG.hero.tagline}
         </Text>
-        <Text class="font-mono tracking-widest uppercase" size="xs" variant="muted">
-          Crafted with precision
-        </Text>
+        <div class="flex items-center gap-2 text-muted-foreground">
+          <Icon class="size-4" name="mdi:map-marker-outline" />
+          <Text size="xs" variant="muted">{PROFILE.location}</Text>
+        </div>
       </div>
 
-      <nav class="flex items-center gap-6">
-        <a class="font-mono text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/rss.xml">
-          RSS
-        </a>
-        <a class="font-mono text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-primary" href="/sitemap-index.xml">
-          Sitemap
-        </a>
-      </nav>
+      {/* Navigation */}
+      <div class="flex flex-col gap-4">
+        <Text class="font-bold tracking-tight">Navigation</Text>
+        <nav class="flex flex-col gap-2">
+          {
+            NAV_ITEMS.map((item) => (
+              <a
+                class="group flex w-max items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+                href={item.href}
+              >
+                <Icon class="size-4 transition-transform group-hover:translate-x-1" name="mdi:chevron-right" />
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
 
+      {/* Socials */}
+      <div class="flex flex-col gap-4">
+        <Text class="font-bold tracking-tight">Connect</Text>
+        <div class="flex flex-col gap-2">
+          {
+            SOCIALS.map((social) => (
+              <a
+                class="group flex w-max items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+                href={social.href}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <Icon class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" name="mdi:arrow-top-right" />
+                {social.name}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Status & Extra */}
+      <div class="flex flex-col gap-4">
+        <Text class="font-bold tracking-tight">Status</Text>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs text-green-500 w-max">
+            <span class="relative flex size-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+            </span>
+            {PROFILE.status}
+          </div>
+
+          <div class="flex gap-4">
+            <a class="text-xs font-medium text-muted-foreground uppercase tracking-wider transition-colors hover:text-primary" href="/rss.xml">
+              RSS
+            </a>
+            <a class="text-xs font-medium text-muted-foreground uppercase tracking-wider transition-colors hover:text-primary" href="/sitemap-index.xml">
+              Sitemap
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom Bar */}
+    <div class="flex flex-col items-center justify-between gap-4 border-t border-white/5 py-8 sm:flex-row">
+      <Text size="sm" variant="muted">
+        &copy; {new Date().getFullYear()} {PROFILE.name}. All rights reserved.
+      </Text>
+      <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+        Crafted with precision
+      </Text>
     </div>
   </Container>
 </footer>

@@ -13,7 +13,7 @@ const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
-<nav aria-label="Mobile navigation" class="flex flex-col gap-4">
+<nav aria-label="Mobile navigation" class="flex flex-col gap-4 md:hidden">
   {
     navItems.map((item) => (
       <Link

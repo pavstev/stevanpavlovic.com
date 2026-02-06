@@ -3,6 +3,7 @@ import { PROFILE, SOCIALS } from "../../config";
 import Avatar from "../atoms/Avatar.astro";
 import Heading from "../atoms/Heading.astro";
 import Icon from "../atoms/Icon.astro";
+import Separator from "../atoms/Separator.astro";
 import Stack from "../atoms/Stack.astro";
 import Text from "../atoms/Text.astro";
 
@@ -25,6 +26,8 @@ const { class: className } = Astro.props;
   <Text class="leading-relaxed" size="sm" variant="muted">
     {PROFILE.bio.split('.').slice(0, 2).join('.')}.
   </Text>
+
+  <Separator class="opacity-50" />
 
   <div class="flex gap-3">
     {SOCIALS.map(social => (

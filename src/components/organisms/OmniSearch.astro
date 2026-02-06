@@ -1,5 +1,6 @@
 ---
 import Input from "../atoms/Input.astro";
+import Kbd from "../atoms/Kbd.astro";
 import Stack from "../atoms/Stack.astro";
 import Text from "../atoms/Text.astro";
 import DialogShell from "../molecules/DialogShell.astro";
@@ -41,7 +42,7 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
           </div>
           
           <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 opacity-40">
-             <kbd class="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[10px] font-mono">ESC</kbd>
+             <Kbd>ESC</Kbd>
           </div>
         </div>
 
@@ -55,8 +56,8 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
           class="flex items-center justify-between border-t border-white/5 pt-4 text-[9px] font-bold tracking-widest text-muted-foreground/40 uppercase px-2"
         >
           <div class="flex gap-4">
-            <span class="flex items-center gap-1.5"><kbd class="rounded-sm bg-white/10 px-1 py-0.5 text-white/60">↑↓</kbd> Navigate</span>
-            <span class="flex items-center gap-1.5"><kbd class="rounded-sm bg-white/10 px-1 py-0.5 text-white/60">↵</kbd> Select</span>
+            <span class="flex items-center gap-1.5"><Kbd>↑↓</Kbd> Navigate</span>
+            <span class="flex items-center gap-1.5"><Kbd>↵</Kbd> Select</span>
           </div>
           <span>Command Palette</span>
         </div>

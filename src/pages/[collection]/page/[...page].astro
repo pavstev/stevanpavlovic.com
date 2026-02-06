@@ -3,7 +3,8 @@
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
-import CollectionPage from "../../../components/templates/collection-page.astro";
+import LayoutRoot from "../../../components/layout/layout-root.astro";
+import ResourceDiscovery from "../../../components/organisms/ResourceDiscovery.astro";
 import { ITEMS_PER_PAGE } from "../../../config";
 import { collections } from "../../../content.config";
 import { type DisplayMode, getCollectionData, getCollectionPageData } from "../../../lib";
@@ -67,19 +68,21 @@ const {
 } = pageData;
 ---
 
-<CollectionPage
-  {...config}
-  baseUrl={baseUrl}
-  collectionItems={collectionItems}
-  collectionKey={collection}
-  containerId={containerId}
-  currentPage={currentPage}
-  display={display}
-  displayUrls={displayUrls}
-  getItemCardProps={getItemCardProps}
-  initialPageSize={initialPageSize}
-  nextUrl={nextUrl}
-  prevUrl={prevUrl}
-  totalItems={totalItems}
-  totalPages={totalPages}
-/>
+<LayoutRoot description={config.description} slug={`/${collection}/${display}/${page}`} title={`${config.title} - Page ${page}`}>
+  <ResourceDiscovery
+    {...config}
+    baseUrl={baseUrl}
+    collectionItems={collectionItems}
+    collectionKey={collection}
+    containerId={containerId}
+    currentPage={currentPage}
+    display={display}
+    displayUrls={displayUrls}
+    getItemCardProps={getItemCardProps}
+    initialPageSize={initialPageSize}
+    nextUrl={nextUrl}
+    prevUrl={prevUrl}
+    totalItems={totalItems}
+    totalPages={totalPages}
+  />
+</LayoutRoot>

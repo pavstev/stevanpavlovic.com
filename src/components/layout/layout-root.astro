@@ -9,6 +9,8 @@ import { ClientRouter } from "astro:transitions";
 
 import Analytics from "../atoms/Analytics.astro";
 import MetaData from "../atoms/MetaData.astro";
+import Chatbot from "../molecules/chatbot.astro";
+import OmniSearch from "../organisms/OmniSearch.astro";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;
@@ -51,6 +53,8 @@ const {
     ]}
   >
     <slot />
+    <Chatbot />
+    <OmniSearch />
     
     <script>
       import { initEasterEggs } from "../../lib/easter-eggs";

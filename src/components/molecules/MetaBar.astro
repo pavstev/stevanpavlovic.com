@@ -2,7 +2,7 @@
 import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib";
 import Icon from "../atoms/Icon.astro";
 import Stack from "../atoms/Stack.astro";
-import BrandLogo from "./BrandLogo.astro";
+import BrandIdentity from "./BrandIdentity.astro";
 import BriefSummary from "./BriefSummary.astro";
 import LabelGroup from "./LabelGroup.astro";
 import PropertyField from "./PropertyField.astro";
@@ -40,17 +40,17 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
         <PropertyField class="min-w-0" label={item.label}>
           {item.type === "status" ? (
             <Stack align="center" direction="row" gap={2}>
-              <BrandLogo size="sm" variant="status" />
+              <BrandIdentity size="sm" variant="status" />
               <span class="text-sm font-semibold text-foreground">{item.value}</span>
             </Stack>
           ) : (
             <Stack align="center" direction="row" gap={2}>
               {item.logo && (
-                <BrandLogo
+                <BrandIdentity
                   alt={item.value}
                   size="sm"
                   src={item.logo}
-                  variant={item.type === "person" ? "person" : "organization"}
+                  variant={item.type === "person" ? "person" : "org"}
                 />
               )}
 

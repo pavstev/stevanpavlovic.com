@@ -116,5 +116,10 @@ export default defineConfig({
     ssr: {
       noExternal: ["astro-og-canvas", "canvaskit-wasm"],
     },
+    build: {
+      rollupOptions: {
+        external: ["/pagefind/pagefind.js"],
+      },
+    },
   },
 });

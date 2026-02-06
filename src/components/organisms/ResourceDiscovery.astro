@@ -1,10 +1,8 @@
 ---
 import type { CollectionKey } from "astro:content";
-
 import type { CollectionItem } from "../../lib/content/types";
 import type { DisplayMode } from "../../lib/list";
 import type { CardData } from "../organisms/card.astro";
-
 import Stack from "../atoms/Stack.astro";
 import Text from "../atoms/Text.astro";
 import ListActions from "../molecules/list-actions.astro";
@@ -71,14 +69,14 @@ const isGrid = display === "grid";
   </CollectionHeader>
 
   <Stack gap={12}>
-    <div
-      class:list={[
-        "view-container transition-all duration-500",
-        {"opacity-0": false} // Placeholder for skeleton loading logic
-      ]}
-      data-initial-page-size={initialPageSize}
-      id={containerId}
-    >
+    <div class="view-container transition-all duration-500" data-initial-page-size={initialPageSize} id={containerId}>
+      {/* Skeleton Loading State (Client-side) */}
+      <div id="skeleton-view" class="hidden flex-col gap-4 animate-pulse">
+        {[1, 2, 3].map(() => (
+          <div class="h-32 w-full bg-white/5 rounded-2xl border border-white/5"></div>
+        ))}
+      </div>
+
       {/* VIEW MODE: LIST */}
       {
         isList && (
@@ -130,11 +128,7 @@ const isGrid = display === "grid";
 <script>
   import { initInteractiveCards } from "../../lib/interactive-cards";
 
-  // Stateful UI Preservation
   const handleState = () => {
-    const url = new URL(window.location.href);
-    
-    // Sync View Mode
     const currentPath = window.location.pathname;
     const isGrid = currentPath.includes('/grid');
     const isList = currentPath.includes('/list');
@@ -142,21 +136,6 @@ const isGrid = display === "grid";
     if (isGrid) sessionStorage.setItem('preferred-view', 'grid');
     if (isList) sessionStorage.setItem('preferred-view', 'list');
 
-    // Handle deep linking for filters (if tags/categories are implemented as search params)
-    const filters = document.querySelectorAll('[data-filter-value]');
-    filters.forEach(filter => {
-      filter.addEventListener('click', () => {
-        const key = filter.getAttribute('data-filter-key');
-        const val = filter.getAttribute('data-filter-value');
-        if (key && val) {
-          const newUrl = new URL(window.location.href);
-          newUrl.searchParams.set(key, val);
-          window.history.pushState({}, '', newUrl);
-        }
-      });
-    });
-
-    // Handle smooth hydration after View Transitions
     window.addEventListener('astro:after-swap', () => {
       const savedScroll = sessionStorage.getItem('scroll-pos-' + currentPath);
       if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
@@ -177,7 +156,6 @@ const isGrid = display === "grid";
 </script>
 
 <style>
-  /* Fluid Cards via Container Queries */
   .card-item {
     container-type: inline-size;
   }

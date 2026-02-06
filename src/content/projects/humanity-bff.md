@@ -5,7 +5,21 @@ meta: "2021"
 desc: "Architected and optimized the Backend-for-Frontend (BFF) infrastructure for Humanity.com, facilitating seamless data orchestration and ultra-fast API responses for hundreds of thousands of daily mobile users."
 image: "../../assets/placeholder.png"
 demoUrl: "https://humanity.com"
-tags: ["Node.js", "Go", "Redis", "BFF", "Microservices", "Performance", "API Orchestration"]
+tags:
+  - id: nodejs
+    label: Node.js
+  - id: go
+    label: Go
+  - id: redis
+    label: Redis
+  - id: bff
+    label: BFF
+  - id: microservices
+    label: Microservices
+  - id: performance
+    label: Performance
+  - id: api-orchestration
+    label: API Orchestration
 featured: true
 duration: "14 months"
 teamSize: "Backend team of 5"

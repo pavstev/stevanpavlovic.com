@@ -28,17 +28,17 @@ const item: CollectionItem<CollectionName> = {
 
 const {
   author,
-  backLabel,
   backLink: defaultBackLink,
   description,
-  heroImage,
+  image: heroImage,
   tags,
-  tagsTitle,
   title,
   toolbarItems,
 } = getViewPageProps(item);
 
-const backLink = Astro.props.backLink || defaultBackLink;
+const backLink = Astro.props.backLink
+  ? { ...defaultBackLink, href: Astro.props.backLink }
+  : defaultBackLink;
 ---
 
 <LayoutContent description={description} title={title}>
@@ -51,13 +51,12 @@ const backLink = Astro.props.backLink || defaultBackLink;
 
       <PostToolbar
         author={author}
-        backLabel={backLabel}
-        backLink={backLink}
+        backLink={backLink.href}
         collection={collection}
         data={data}
         items={toolbarItems}
-        tags={tags}
-        tagsTitle={tagsTitle}
+        tags={tags.items}
+        tagsTitle={tags.title}
       />
 
       <!-- Description -->

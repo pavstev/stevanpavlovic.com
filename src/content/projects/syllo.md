@@ -5,7 +5,21 @@ meta: "2020"
 desc: "A secure, scalable fintech microservice ecosystem built with NestJS, implementing OAuth2/OIDC authentication, ACID-compliant transactions, and high-availability architecture for processing millions of payment transactions with zero data loss."
 image: "../../assets/placeholder.png"
 demoUrl: "https://syllo.com"
-tags: ["NestJS", "OAuth2", "ACID", "Microservices", "Fintech", "PostgreSQL", "Security"]
+tags:
+  - id: nestjs
+    label: NestJS
+  - id: oauth2
+    label: OAuth2
+  - id: acid
+    label: ACID
+  - id: microservices
+    label: Microservices
+  - id: fintech
+    label: Fintech
+  - id: postgresql
+    label: PostgreSQL
+  - id: security
+    label: Security
 featured: true
 duration: "8 months"
 teamSize: "3-member backend team"

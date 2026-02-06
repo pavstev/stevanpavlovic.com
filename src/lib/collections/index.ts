@@ -6,5 +6,6 @@ export * from "./guards";
 export * from "./projects";
 export * from "./props";
 export * from "./sorting";
+export * from "./toolbar-items";
 export * from "./types";
 export * from "./utils";

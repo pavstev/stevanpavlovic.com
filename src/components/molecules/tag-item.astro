@@ -1,0 +1,15 @@
+---
+import ToolbarItemComponent from "../atoms/toolbar-item.astro";
+
+interface Props {
+  id: string;
+  label: string;
+}
+
+const { id, label } = Astro.props;
+---
+
+<ToolbarItemComponent>
+  <span slot="label">{id}</span>
+  <span>{label}</span>
+</ToolbarItemComponent>

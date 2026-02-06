@@ -5,7 +5,21 @@ meta: "2023"
 desc: "A high-performance full-stack platform for real-time visualization of vehicle telemetry data, processing millions of GPS coordinates and sensor readings daily with sub-second latency through optimized microservices architecture and WebSocket streaming."
 image: "../../assets/placeholder.png"
 demoUrl: "https://telemetry.com"
-tags: ["React", "TypeScript", "Real-time", "WebSockets", "Maps", "Microservices", "Time-Series Data"]
+tags:
+  - id: react
+    label: React
+  - id: typescript
+    label: TypeScript
+  - id: real-time
+    label: Real-time
+  - id: websockets
+    label: WebSockets
+  - id: maps
+    label: Maps
+  - id: microservices
+    label: Microservices
+  - id: time-series-data
+    label: Time-Series Data
 featured: true
 duration: "10 months"
 teamSize: "5-member full-stack team"

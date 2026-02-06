@@ -6,13 +6,20 @@ startDate: 2020-01-01
 endDate: 2020-12-01
 type: Full-time
 skills:
-  - NestJS
-  - TypeScript
-  - PostgreSQL
-  - OAuth2 / OIDC
-  - Docker
-  - RabbitMQ
-  - Fintech
+  - id: nestjs
+    label: NestJS
+  - id: typescript
+    label: TypeScript
+  - id: postgresql
+    label: PostgreSQL
+  - id: oauth2-oidc
+    label: OAuth2 / OIDC
+  - id: docker
+    label: Docker
+  - id: rabbitmq
+    label: RabbitMQ
+  - id: fintech
+    label: Fintech
 description: "Architected 'Syllo', a highly secure and scalable fintech microservice ecosystem designed to process millions of payment transactions with sub-second latency. Enforced rigorous security standards by implementing full OAuth2 and OpenID Connect (OIDC) authentication flows for third-party integrations. Engineered ACID-compliant transactional flows across distributed services using PostgreSQL and RabbitMQ for reliable message delivery. Led the backend engineering team in delivering a mission-critical financial infrastructure, ensuring 99.99% uptime and zero-data-loss guarantees for volume payment processing."
 ---
 

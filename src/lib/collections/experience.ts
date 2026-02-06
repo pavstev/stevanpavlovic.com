@@ -49,15 +49,15 @@ export const getExperienceProps = (item: CollectionItem<"experience">): ViewPage
 
   return {
     author,
-    back: {
+    backLink: {
       href: "/experience",
       label: "Back to Experience",
     },
     description: item.data.description,
-    heroImage: undefined,
+    image: undefined,
     subtitle: typeof item.data.company === "string" ? item.data.company : item.data.company.name,
     tags: {
-      items: (item.data.skills || []).map((skill) => ({ id: skill, label: skill })),
+      items: item.data.skills || [],
       title: "Skills",
     },
     title: item.data.role,

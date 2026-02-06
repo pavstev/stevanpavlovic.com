@@ -10,6 +10,7 @@ export const getCollectionConfig = (
   headerDescription: string;
   headerIcon: string;
   headerTitle: string;
+  tagTitle: string;
   title: string;
 } => {
   const navItem = NAV_ITEMS[collection] as NavItem | undefined;

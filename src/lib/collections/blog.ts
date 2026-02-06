@@ -9,17 +9,16 @@ export const getPublishedToolbarItem = (item: CollectionItem<"blog">): ToolbarIt
 });
 
 export const getBlogProps = (item: CollectionItem<"blog">): ViewPageProps => {
-  const date = dayjs(item.data.pubDate).format("MMMM YYYY");
   const author = createAuthorItem(PROFILE);
 
   return {
     author,
-    back: {
+    backLink: {
       href: "/blog",
       label: "Back to Blog",
     },
     description: item.data.description,
-    heroImage: item.data.heroImage
+    image: item.data.heroImage
       ? {
           alt: item.data.title,
           height: 450,
@@ -29,7 +28,7 @@ export const getBlogProps = (item: CollectionItem<"blog">): ViewPageProps => {
       : undefined,
     subtitle: undefined,
     tags: {
-      items: (item.data.tags || []).map((tag) => ({ id: tag, label: tag })),
+      items: item.data.tags || [],
       title: "Tags",
     },
     title: item.data.title,

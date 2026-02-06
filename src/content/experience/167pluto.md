@@ -9,14 +9,22 @@ startDate: 2024-02-01
 endDate: 2025-06-01
 type: Full-time
 skills:
-  - Node.js
-  - NestJS
-  - Kafka
-  - PostgreSQL
-  - Redis
-  - AWS
-  - CI/CD
-  - Microservices
+  - id: nodejs
+    label: Node.js
+  - id: nestjs
+    label: NestJS
+  - id: kafka
+    label: Kafka
+  - id: postgresql
+    label: PostgreSQL
+  - id: redis
+    label: Redis
+  - id: aws
+    label: AWS
+  - id: ci-cd
+    label: CI/CD
+  - id: microservices
+    label: Microservices
 description: "Architected and spearheaded the development of a state-of-the-art, high-throughput betting platform leveraging a cutting-edge Node.js and NestJS microservices architecture. Engineering focus on extreme scalability and event-driven consistency, processing millions of concurrent transactions with millisecond latency. Implemented robust distributed systems patterns utilizing Apache Kafka for reliable event streaming, Redis for multi-tier caching, and PostgreSQL for ACID-compliant financial operations. Optimized platform performance through granular profiling, resulting in zero-downtime deployments and 99.99% system availability under massive concurrency loads. Developed sophisticated CI/CD pipelines to automate testing and deployment workflows for a highly distributed environment."
 ---
 

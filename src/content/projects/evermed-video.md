@@ -5,7 +5,21 @@ meta: "2021"
 desc: "Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance."
 image: "../../assets/placeholder.png"
 demoUrl: "https://evermed.com"
-tags: ["AWS Lambda", "S3", "MediaConvert", "Serverless", "Node.js", "Healthcare", "Video Streaming"]
+tags:
+  - id: aws-lambda
+    label: AWS Lambda
+  - id: s3
+    label: S3
+  - id: mediaconvert
+    label: MediaConvert
+  - id: serverless
+    label: Serverless
+  - id: nodejs
+    label: Node.js
+  - id: healthcare
+    label: Healthcare
+  - id: video-streaming
+    label: Video Streaming
 featured: true
 duration: "8 months"
 teamSize: "Backend dev + DevOps lead"

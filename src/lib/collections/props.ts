@@ -6,7 +6,6 @@ import { getExperienceProps } from "./experience";
 import { isBlog, isExperience, isProject } from "./guards";
 import { getProjectProps } from "./projects";
 import type { CollectionItem, CollectionName, ViewPageProps } from "./types";
-import type { CollectionEntry } from "astro:content";
 
 export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPageProps => {
   if (isBlog(item)) return getBlogProps(item);
@@ -14,7 +13,7 @@ export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPage
   if (isProject(item)) return getProjectProps(item);
 
   return {
-    back: { href: "/", label: "Back" },
+    backLink: { href: "/", label: "Back" },
     description: "",
     subtitle: "",
     tags: { items: [], title: "Tags" },
@@ -37,7 +36,7 @@ export const getItemCardProps = (
         date: data.pubDate,
         description: data.description,
         image: data.heroImage,
-        tags: data.tags,
+        tags: data.tags?.map((tag) => tag.label),
         title: data.title,
         url: `/blog/view/${item.id}`,
       },
@@ -50,8 +49,9 @@ export const getItemCardProps = (
       data: {
         description: data.description,
         footerMeta: `${dayjs(data.startDate).format("MMM YYYY")} — ${data.endDate ? dayjs(data.endDate).format("MMM YYYY") : "Present"}`,
+        logo: typeof data.company !== "string" ? data.company.logo : undefined,
         subtitle: typeof data.company === "string" ? data.company : data.company.name,
-        tags: data.skills,
+        tags: data.skills?.map((skill) => skill.label),
         title: data.role,
         url: `/experience/view/${item.id}`,
       },
@@ -66,7 +66,7 @@ export const getItemCardProps = (
         image: data.image,
         meta: data.meta,
         subtitle: data.subtitle,
-        tags: data.tags,
+        tags: data.tags?.map((tag) => tag.label),
         title: data.title,
         url: `/projects/view/${item.id}`,
       },

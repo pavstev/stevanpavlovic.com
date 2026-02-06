@@ -1,10 +1,9 @@
 ---
-import Stack from "../atoms/stack.astro";
-import Tags from "../molecules/tags.astro";
+import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 
 interface Props {
   heading: string;
-  tags: string[];
+  tags: { id: string; label: string }[];
   variant?: "default" | "elevated" | "subtle";
 }
 
@@ -23,7 +22,7 @@ const { heading, tags, variant = "default" } = Astro.props;
       <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
       {/* Content */}
-      <Stack class="relative" gap={3}>
+      <div class="relative flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <h6
             class:list={[
@@ -35,8 +34,15 @@ const { heading, tags, variant = "default" } = Astro.props;
           </h6>
           <slot name="action" />
         </div>
-        <Tags tags={tags} />
-      </Stack>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+          {tags.map((tag) => (
+            <ToolbarItemComponent>
+              <span slot="label">{tag.id}</span>
+              <span>{tag.label}</span>
+            </ToolbarItemComponent>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

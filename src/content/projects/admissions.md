@@ -5,7 +5,21 @@ meta: "2018"
 desc: "An innovative auto-evaluation system that transforms college admissions processing by analyzing hundreds of applicant properties, generating weighted scores, and automatically routing applications through customizable workflows, reducing manual review time by 75%."
 image: "../../assets/placeholder.png"
 demoUrl: "https://admissions.com"
-tags: ["Algorithms", "Automation", "CRM", "EdTech", "Node.js", "MongoDB", "Workflow Engine"]
+tags:
+  - id: algorithms
+    label: Algorithms
+  - id: automation
+    label: Automation
+  - id: crm
+    label: CRM
+  - id: edtech
+    label: EdTech
+  - id: nodejs
+    label: Node.js
+  - id: mongodb
+    label: MongoDB
+  - id: workflow-engine
+    label: Workflow Engine
 featured: true
 duration: "6 months"
 teamSize: "Solo project within 10-member team"

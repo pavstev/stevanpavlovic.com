@@ -5,7 +5,23 @@ meta: "2024"
 desc: "A state-of-the-art sports betting and gaming ecosystem architected for extreme concurrency, processing millions of real-time transactions with sub-millisecond latency using Node.js, NestJS, and Kafka event-driven patterns."
 image: "../../assets/placeholder.png"
 demoUrl: "https://167pluto.com"
-tags: ["Node.js", "NestJS", "Kafka", "Redis", "PostgreSQL", "Microservices", "Event Sourcing", "High Availability"]
+tags:
+  - id: nodejs
+    label: Node.js
+  - id: nestjs
+    label: NestJS
+  - id: kafka
+    label: Kafka
+  - id: redis
+    label: Redis
+  - id: postgresql
+    label: PostgreSQL
+  - id: microservices
+    label: Microservices
+  - id: event-sourcing
+    label: Event Sourcing
+  - id: high-availability
+    label: High Availability
 featured: true
 duration: "16 months"
 teamSize: "Backend core team of 8"

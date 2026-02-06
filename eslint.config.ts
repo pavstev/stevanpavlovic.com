@@ -21,7 +21,6 @@ const tsFiles = {
   ignores: ["**/*.md", "**/*.mdx", "**/*.json"],
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 const jsxA11yRules = jsxA11y.flatConfigs.recommended.rules as Record<string, unknown>;
 
 const stylisticOptions = {
@@ -88,7 +87,6 @@ export default defineConfig(
     files: ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"],
     name: "jsx-a11y",
     plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       "jsx-a11y": jsxA11y,
     },
     // @ts-expect-error - jsxA11yRules has broad types
@@ -98,7 +96,6 @@ export default defineConfig(
     files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"],
     name: "editorconfig-general",
     plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       editorconfig,
     },
     rules: {
@@ -112,7 +109,6 @@ export default defineConfig(
     files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"],
     name: "editorconfig-indent",
     plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       editorconfig,
     },
     rules: {
@@ -240,11 +236,12 @@ export default defineConfig(
     },
   },
   {
-    files: ["scripts/**/*.ts"],
+    files: ["**/*.ts"],
     name: "scripts",
     rules: {
       "@typescript-eslint/no-deprecated": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
       // Scripts often deal with raw data from APIs where types might be incomplete
       "@typescript-eslint/no-unsafe-assignment": "off",

@@ -1,16 +1,16 @@
 import type { ImageMetadata } from "astro";
 
+export interface Author extends ToolbarItem {
+  avatar: ImageMetadata;
+  name: string;
+  role: string;
+}
+
 export interface ToolbarItem {
   href?: string;
   label: string;
   logo?: ImageMetadata;
   value: string;
-}
-
-export interface Author extends ToolbarItem {
-  avatar: ImageMetadata;
-  name: string;
-  role: string;
 }
 
 export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; role: string }): Author => ({

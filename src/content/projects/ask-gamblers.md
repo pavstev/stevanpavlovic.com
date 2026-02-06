@@ -5,7 +5,21 @@ meta: "2019"
 desc: "Led the architectural overhaul of a global iGaming authority, refactoring core performance bottlenecks and implementing advanced search technologies to support 150,000+ active monthly users."
 image: "../../assets/placeholder.png"
 demoUrl: "https://askgamblers.com"
-tags: ["PHP", "Symfony", "MongoDB", "ElasticSearch", "Redis", "Varnish", "Performance Tuning"]
+tags:
+  - id: php
+    label: PHP
+  - id: symfony
+    label: Symfony
+  - id: mongodb
+    label: MongoDB
+  - id: elasticsearch
+    label: ElasticSearch
+  - id: redis
+    label: Redis
+  - id: varnish
+    label: Varnish
+  - id: performance-tuning
+    label: Performance Tuning
 featured: true
 duration: "14 months"
 teamSize: "Backend team of 6"

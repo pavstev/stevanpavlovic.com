@@ -3,35 +3,33 @@ import type { CollectionEntry } from "astro:content";
 
 import { type CollectionName, type ToolbarItem } from "../../lib/collection-pages";
 import BackButton from "../atoms/back-button.astro";
-import ToolbarFooter from "../atoms/toolbar-footer.astro";
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
 import PostActions from "./post-actions.astro";
 import PostAuthor from "./post-author.astro";
-import Tags from "./tags.astro";
+import TagItem from "./tag-item.astro";
 
 interface Props {
   author?: { avatar: ImageMetadata; name: string; role: string };
-  backLabel: string;
   backLink: string;
   collection: CollectionName;
   data: CollectionEntry<CollectionName>["data"];
   items: ToolbarItem[];
-  tags?: string[];
+  tags?: { id: string; label: string }[];
   tagsTitle?: string;
 }
 
-const { author, backLabel, backLink, collection, data, items = [], tags = [], tagsTitle = "Context" } = Astro.props;
+const { author, backLink, collection, data, items = [], tags = [] } = Astro.props;
 ---
 
 <div
-  class="group/toolbar sticky top-4 z-40 mb-12 flex flex-col gap-5 rounded-3xl border border-foreground/10 bg-background/60 px-4 py-3 shadow-md backdrop-blur-2xl transition-all duration-300 hover:border-foreground/20 hover:shadow-2xl hover:shadow-primary/5"
+  class="flex flex-col gap-5 border-t border-b border-foreground/10 py-4 my-6"
 >
   <div class="flex flex-wrap items-center justify-between gap-6">
     <div class="flex flex-wrap items-center gap-8 sm:gap-12">
       <div class="scale-90 sm:scale-100">
         <BackButton collection={collection} href={backLink}>
-          {backLabel}
+          Back
         </BackButton>
       </div>
 
@@ -71,9 +69,13 @@ const { author, backLabel, backLink, collection, data, items = [], tags = [], ta
 
   {
     tags && tags.length > 0 && (
-      <ToolbarFooter label={tagsTitle}>
-        <Tags tags={tags} />
-      </ToolbarFooter>
+      <div class="border-t border-foreground/10 pt-3 mt-1">
+        <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
+          {tags.map((tag) => (
+            <TagItem id={tag.id} label={tag.label} />
+          ))}
+        </div>
+      </div>
     )
   }
 </div>

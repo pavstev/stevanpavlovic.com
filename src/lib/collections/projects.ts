@@ -1,6 +1,7 @@
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
+
 import { PROFILE } from "../config";
 import { createAuthorItem } from "./toolbar-items";
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 
 export const getClassificationToolbarItem = (item: CollectionItem<"projects">): ToolbarItem | undefined => {
   if (!item.data.subtitle) return undefined;
@@ -25,22 +26,15 @@ export const getProjectProps = (item: CollectionItem<"projects">): ViewPageProps
 
   return {
     author,
-    back: {
+    backLink: {
       href: "/projects",
       label: "Back to Projects",
     },
     description: item.data.desc,
-    heroImage: item.data.image
-      ? {
-          alt: item.data.title,
-          height: 450,
-          src: item.data.image,
-          width: 800,
-        }
-      : undefined,
+    image: item.data.image,
     subtitle: item.data.subtitle,
     tags: {
-      items: (item.data.tags || []).map((tag) => ({ id: tag, label: tag })),
+      items: item.data.tags,
       title: "Technologies",
     },
     title: item.data.title,

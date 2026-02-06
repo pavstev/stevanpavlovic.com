@@ -3,6 +3,8 @@ import type { CollectionEntry } from "astro:content";
 
 import type { Author, ToolbarItem } from "./toolbar-items";
 
+export type { ToolbarItem };
+
 import { collections as baseCollections } from "../../content.config";
 
 const DISALLOWED_COLLECTIONS = ["recommendations"] as const;
@@ -40,9 +42,9 @@ export interface Tag {
 
 export interface ViewPageProps {
   author?: Author;
-  back: PostLink;
+  backLink: PostLink;
   description: string | undefined;
-  heroImage?: HeroImage;
+  image?: ImageMetadata;
   subtitle: string | undefined;
   tags: {
     items: Tag[];

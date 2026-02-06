@@ -46,6 +46,7 @@ export interface CardData {
   footerMeta?: string;
   icon?: string;
   image?: ImageMetadata | string;
+  logo?: ImageMetadata;
   meta?: string;
   subtitle?: string;
   tags?: string[];
@@ -95,6 +96,7 @@ const {
   footerMeta,
   icon,
   image,
+  logo,
   meta,
   subtitle,
   tags,
@@ -164,6 +166,16 @@ const isRowLayout = list && !icon;
               isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-2xl"
             }
           />
+        )}
+
+        {/* Media Section: Logo */}
+        {logo && (
+          <div class="relative">
+            <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+            <div class="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5">
+              <img alt={title || ""} class="h-full w-full object-contain p-2" src={logo.src} />
+            </div>
+          </div>
         )}
 
         {/* Content Section */}

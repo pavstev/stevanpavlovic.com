@@ -6,11 +6,16 @@ startDate: 2015-02-01
 endDate: 2016-04-01
 type: Freelance
 skills:
-  - PHP
-  - AJAX
-  - JavaScript
-  - MySQL
-  - Responsive Design
+  - id: php
+    label: PHP
+  - id: ajax
+    label: AJAX
+  - id: javascript
+    label: JavaScript
+  - id: mysql
+    label: MySQL
+  - id: responsive-design
+    label: Responsive Design
 description: "Delivered a wide range of custom, high-performance web architectures and bespoke content management systems for diverse international clients. Specialized in engineering lightweight, ultra-fast web applications using raw PHP and AJAX, intentionally bypassing heavy framework overhead to achieve maximum speed and performance. Developed custom media libraries, interactive contact systems, and data visualization tools tailored to specific client needs. Maintained a high standard of code quality and performance while managing the full software development lifecycle for multiple concurrent projects."
 ---
 

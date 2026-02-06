@@ -105,6 +105,11 @@ export default defineConfig({
   trailingSlash: "never",
 
   vite: {
+    build: {
+      rollupOptions: {
+        external: ["/pagefind/pagefind.js"],
+      },
+    },
     // 1. This defines __dirname as an empty string during the build,
     // preventing the "ReferenceError: __dirname is not defined" crash.
     define: {
@@ -115,11 +120,6 @@ export default defineConfig({
     // (Usually the define above is enough, but this can help with strict dep handling)
     ssr: {
       noExternal: ["canvaskit-wasm"],
-    },
-    build: {
-      rollupOptions: {
-        external: ["/pagefind/pagefind.js"],
-      },
     },
   },
 });

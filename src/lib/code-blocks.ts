@@ -10,24 +10,25 @@ export const initCodeBlocks = () => {
 
     // 2. Add Header HUD
     const lang = block.getAttribute("data-language") || "code";
-    
+
     const iconMap: Record<string, string> = {
-      'js': 'javascript',
-      'ts': 'typescript',
-      'tsx': 'react',
-      'jsx': 'react',
-      'html': 'html',
-      'css': 'css',
-      'bash': 'terminal',
-      'sh': 'terminal',
-      'json': 'code-json',
-      'md': 'markdown'
+      bash: "terminal",
+      css: "css",
+      html: "html",
+      js: "javascript",
+      json: "code-json",
+      jsx: "react",
+      md: "markdown",
+      sh: "terminal",
+      ts: "typescript",
+      tsx: "react",
     };
-    
-    const iconName = iconMap[lang.toLowerCase()] || 'code-braces';
+
+    const iconName = iconMap[lang.toLowerCase()] || "code-braces";
 
     const header = document.createElement("div");
-    header.className = "absolute top-0 right-0 flex items-center justify-between w-full px-4 py-2 border-b border-white/5 bg-white/5 opacity-0 group-hover/code:opacity-100 transition-opacity duration-300 pointer-events-none rounded-t-xl";
+    header.className =
+      "absolute top-0 right-0 flex items-center justify-between w-full px-4 py-2 border-b border-white/5 bg-white/5 opacity-0 group-hover/code:opacity-100 transition-opacity duration-300 pointer-events-none rounded-t-xl";
     header.innerHTML = `
       <div class="flex items-center gap-2">
         <svg class="size-3.5 text-muted-foreground/60"><use href="/icons.svg#${iconName}"></use></svg>
@@ -44,7 +45,7 @@ export const initCodeBlocks = () => {
     btn?.addEventListener("click", async () => {
       const code = block.querySelector("code")?.innerText || block.innerText;
       await navigator.clipboard.writeText(code);
-      
+
       // Feedback
       const originalIcon = btn.innerHTML;
       btn.innerHTML = `<svg class="size-3.5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"></path></svg>`;

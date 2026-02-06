@@ -65,26 +65,26 @@ const viewProps = await getViewPageProps(entry as any);
       </header>
 
       {/* Main Content & Contextual Sidebar */}
-      <ArticleRenderer class="p-0 border-0 bg-transparent shadow-none" showSidebar={headings.length > 0}>
+      <ArticleRenderer class="border-0 bg-transparent p-0 shadow-none" showSidebar={headings.length > 0}>
         {headings.length > 0 && <ProgressNavigation slot="toc" />}
-        
-        <div class="prose prose-invert prose-primary max-w-none prose-headings:font-bold prose-code:text-primary prose-a:text-primary hover:prose-a:brightness-125 transition-all">
+
+        <div class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary">
           <Content />
         </div>
 
-        <div slot="sidebar" class="sticky top-24 space-y-8">
+        <div class="sticky top-24 space-y-8" slot="sidebar">
           <AuthorBio />
-          
+
           {/* Immersive HUD */}
-          <div class="p-4 glass rounded-xl border-white/5 space-y-4">
-             <Text class="text-[10px] font-bold uppercase tracking-widest opacity-40">Reading Controls</Text>
-             <button 
-               id="toggle-focus"
-               class="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-primary/30 transition-all group"
-             >
-               <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
-               <kbd class="px-1.5 py-0.5 rounded bg-black/20 text-[9px] border border-white/10">F</kbd>
-             </button>
+          <div class="glass space-y-4 rounded-xl border-white/5 p-4">
+            <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
+            <button
+              class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
+              id="toggle-focus"
+            >
+              <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
+              <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
+            </button>
           </div>
         </div>
       </ArticleRenderer>
@@ -104,7 +104,7 @@ const viewProps = await getViewPageProps(entry as any);
     };
 
     focusBtn?.addEventListener('click', toggleFocus);
-    
+
     // Shortcut F for focus
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'f' && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) {
@@ -125,7 +125,7 @@ const viewProps = await getViewPageProps(entry as any);
     pointer-events: none !important;
     transition: all 0.5s ease;
   }
-  
+
   .focus-mode .prose {
     transform: translateY(-20px);
     transition: all 0.5s ease;

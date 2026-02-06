@@ -45,7 +45,9 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: "mdi:download",
     id: "action-download-resume",
     label: "Download Resume PDF",
-    onSelect: () => window.print(),
+    onSelect: () => {
+      window.print();
+    },
   },
   {
     category: "Action",
@@ -74,6 +76,26 @@ export class CommandPalette {
     if (this.modal) {
       this.init();
     }
+  }
+
+  public close() {
+    this.isOpen = false;
+    this.modal.classList.add("invisible", "opacity-0");
+    this.dropdown?.classList.add("scale-95", "translate-y-4");
+    document.body.style.overflow = "";
+  }
+
+  public open() {
+    this.isOpen = true;
+    this.modal.classList.remove("invisible", "opacity-0");
+    this.dropdown?.classList.remove("scale-95", "translate-y-4");
+    this.input.focus();
+    document.body.style.overflow = "hidden";
+    void this.loadPagefind();
+  }
+
+  public toggle() {
+    this.isOpen ? this.close() : this.open();
   }
 
   private async fetchResults(query: string) {
@@ -127,7 +149,9 @@ export class CommandPalette {
       }
     });
 
-    this.modal.addEventListener("keydown", (e) => this.handleKeyDown(e));
+    this.modal.addEventListener("keydown", (e) => {
+      this.handleKeyDown(e);
+    });
 
     // Close on backdrop click
     this.modal.addEventListener("click", (e) => {
@@ -139,7 +163,7 @@ export class CommandPalette {
 
   private async loadPagefind() {
     try {
-      this.pagefind = (await import(/* @vite-ignore */ "/pagefind/pagefind.js")) as any;
+      this.pagefind = await import(/* @vite-ignore */ "/pagefind/pagefind.js");
       this.pagefind?.options({ showImages: false });
     } catch (e) {
       console.warn("Pagefind failed to load", e);
@@ -220,26 +244,6 @@ export class CommandPalette {
       }
     });
   }
-
-  public close() {
-    this.isOpen = false;
-    this.modal.classList.add("invisible", "opacity-0");
-    this.dropdown?.classList.add("scale-95", "translate-y-4");
-    document.body.style.overflow = "";
-  }
-
-  public open() {
-    this.isOpen = true;
-    this.modal.classList.remove("invisible", "opacity-0");
-    this.dropdown?.classList.remove("scale-95", "translate-y-4");
-    this.input.focus();
-    document.body.style.overflow = "hidden";
-    void this.loadPagefind();
-  }
-
-  public toggle() {
-    this.isOpen ? this.close() : this.open();
-  }
 }
 
 export const initSearchDropdown = () => {
@@ -247,6 +251,8 @@ export const initSearchDropdown = () => {
 
   // Global search trigger buttons (if any)
   document.querySelectorAll("[data-search-trigger]").forEach((btn) => {
-    btn.addEventListener("click", () => palette.open());
+    btn.addEventListener("click", () => {
+      palette.open();
+    });
   });
 };

@@ -9,9 +9,9 @@ interface Props {
 const { class: className, content } = Astro.props;
 ---
 
-<span class="group relative inline-block cursor-help border-b border-dotted border-primary/50 hover:border-primary transition-colors" data-tooltip={content}>
+<span class="group relative inline-block cursor-help border-b border-dotted border-primary/50 transition-colors hover:border-primary" data-tooltip={content}>
   <slot />
-  <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 w-48 -translate-x-1/2 rounded-lg bg-card border border-white/10 p-2 text-xs text-muted-foreground opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-[-4px] z-50">
+  <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-48 -translate-x-1/2 rounded-lg border border-white/10 bg-card p-2 text-xs text-muted-foreground opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-300 group-hover:translate-y-[-4px] group-hover:opacity-100">
     {content}
     <span class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-card"></span>
   </span>

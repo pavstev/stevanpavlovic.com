@@ -13,14 +13,14 @@ interface Props {
 const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Astro.props;
 ---
 
-<div id={id} class="fixed inset-0 z-[200] flex items-start justify-center p-4 pt-[15vh] invisible opacity-0 transition-all duration-300 backdrop-blur-md bg-black/40">
-  <div class="w-full max-w-2xl origin-top scale-95 translate-y-4 transition-all duration-300" id="search-modal-container">
-    <DialogShell class="w-full shadow-2xl shadow-black/50 border-white/10" variant="plain">
+<div class="invisible fixed inset-0 z-[200] flex items-start justify-center bg-black/40 p-4 pt-[15vh] opacity-0 backdrop-blur-md transition-all duration-300" id={id}>
+  <div class="w-full max-w-2xl origin-top translate-y-4 scale-95 transition-all duration-300" id="search-modal-container">
+    <DialogShell class="w-full border-white/10 shadow-2xl shadow-black/50" variant="plain">
       <Stack class="p-4" gap={4}>
         <div class="group relative">
           <Input
             autocomplete="off"
-            class="h-14 rounded-2xl border-white/10 bg-white/5 pl-12 text-lg text-white focus:border-primary/50 transition-all placeholder:text-muted-foreground/50"
+            class="h-14 rounded-2xl border-white/10 bg-white/5 pl-12 text-lg text-white transition-all placeholder:text-muted-foreground/50 focus:border-primary/50"
             id="search-input"
             placeholder={placeholder}
           />
@@ -40,9 +40,9 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
             ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
             >
           </div>
-          
-          <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 opacity-40">
-             <Kbd>ESC</Kbd>
+
+          <div class="absolute top-1/2 right-4 hidden -translate-y-1/2 items-center gap-1 opacity-40 md:flex">
+            <Kbd>ESC</Kbd>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
 
         {/* Footer Info */}
         <div
-          class="flex items-center justify-between border-t border-white/5 pt-4 text-[9px] font-bold tracking-widest text-muted-foreground/40 uppercase px-2"
+          class="flex items-center justify-between border-t border-white/5 px-2 pt-4 text-[9px] font-bold tracking-widest text-muted-foreground/40 uppercase"
         >
           <div class="flex gap-4">
             <span class="flex items-center gap-1.5"><Kbd>↑↓</Kbd> Navigate</span>

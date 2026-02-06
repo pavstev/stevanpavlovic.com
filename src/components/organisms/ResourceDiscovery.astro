@@ -1,8 +1,10 @@
 ---
 import type { CollectionKey } from "astro:content";
+
 import type { CollectionItem } from "../../lib/content/types";
 import type { DisplayMode } from "../../lib/list";
 import type { CardData } from "../organisms/card.astro";
+
 import Stack from "../atoms/Stack.astro";
 import Text from "../atoms/Text.astro";
 import ListActions from "../molecules/list-actions.astro";
@@ -71,9 +73,9 @@ const isGrid = display === "grid";
   <Stack gap={12}>
     <div class="view-container transition-all duration-500" data-initial-page-size={initialPageSize} id={containerId}>
       {/* Skeleton Loading State (Client-side) */}
-      <div id="skeleton-view" class="hidden flex-col gap-4 animate-pulse">
+      <div class="hidden animate-pulse flex-col gap-4" id="skeleton-view">
         {[1, 2, 3].map(() => (
-          <div class="h-32 w-full bg-white/5 rounded-2xl border border-white/5"></div>
+          <div class="h-32 w-full rounded-2xl border border-white/5 bg-white/5"></div>
         ))}
       </div>
 
@@ -132,7 +134,7 @@ const isGrid = display === "grid";
     const currentPath = window.location.pathname;
     const isGrid = currentPath.includes('/grid');
     const isList = currentPath.includes('/list');
-    
+
     if (isGrid) sessionStorage.setItem('preferred-view', 'grid');
     if (isList) sessionStorage.setItem('preferred-view', 'list');
 

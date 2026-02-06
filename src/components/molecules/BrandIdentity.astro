@@ -70,7 +70,7 @@ const isStatus = variant === "status";
       <slot />
     </div>
   ) : (
-    <Button class:list={[cn(brandVariants({ variant }), className)]} href={href} transition:name="brand-identity" variant="ghost" data-magnetic>
+    <Button class:list={[cn(brandVariants({ variant }), className)]} data-magnetic href={href} transition:name="brand-identity" variant="ghost">
       <div class:list={[cn(logoVariants({ size, variant }))]}>
         {src && (
           <Image

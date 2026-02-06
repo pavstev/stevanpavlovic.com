@@ -1,6 +1,5 @@
 import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import eslint from "@eslint/js";
-import markdown from "@eslint/markdown";
 import stylistic from "@stylistic/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginAstro from "eslint-plugin-astro";
@@ -11,6 +10,10 @@ import editorconfig from "eslint-plugin-editorconfig";
 import eslintPluginJsonSchemaValidator from "eslint-plugin-json-schema-validator";
 // @ts-expect-error - No types for this plugin
 import jsxA11y from "eslint-plugin-jsx-a11y";
+// @ts-expect-error - No types for this plugin
+import markdownlintPlugin from "eslint-plugin-markdownlint";
+// @ts-expect-error - No types for this plugin
+import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
 import perfectionist from "eslint-plugin-perfectionist";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -40,6 +43,7 @@ export default defineConfig(
     "pnpm-lock.yaml",
     "dist/**/*",
     ".astro/**/*",
+    "**/*.mdx",
     "node_modules/**/*",
     "**/.eslintcache",
     ".wrangler/**/*",
@@ -255,29 +259,17 @@ export default defineConfig(
     },
   },
   {
-    extends: ["markdown/recommended"],
-    files: ["**/*.md", "**/*.mdx"],
-    language: "markdown/gfm",
+    files: ["**/*.md"],
     languageOptions: {
-      frontmatter: "yaml",
+      parser: markdownlintParser,
     },
-    name: "markdown",
     plugins: {
-      markdown,
+      markdownlint: markdownlintPlugin,
     },
     rules: {
-      "markdown/heading-increment": "error",
-      "markdown/no-bare-urls": "error",
-      "markdown/no-duplicate-headings": "error",
-      "markdown/no-html": "error",
-      "no-irregular-whitespace": "off",
-    },
-  },
-  {
-    files: ["**/*.mdx"],
-    name: "markdown-mdx-overrides",
-    rules: {
-      "markdown/no-html": "off",
+      ...markdownlintPlugin.configs.recommended.rules,
+      "markdownlint/md013": "off",
+      "markdownlint/md041": "off",
     },
   },
   // {
@@ -309,7 +301,12 @@ export default defineConfig(
   })),
   // Prettier must be last to override other formatting rules
   {
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro", "**/*.json", "**/*.md", "**/*.mdx"],
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro", "**/*.json"],
+    ignores: [
+      // TODO: Enable later
+      "**/*.md",
+      "**/*.mdx",
+    ],
     name: "prettier",
     plugins: {
       prettier: eslintPluginPrettier,

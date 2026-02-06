@@ -55,9 +55,9 @@ Humanity.com operates at a massive scale. Below is a breakdown of the traffic an
 
 To handle 100k+ RPM without overwhelming our Aurora PostgreSQL clusters, I implemented a multi-tier caching strategy dubbed "The Pyramid".
 
-1.  **L1 Cache (In-Memory)**: 500MB LRU cache local to each Node.js instance. Response time: **< 1ms**.
-2.  **L2 Cache (Distributed Redis)**: Global cluster across 3 nodes. Response time: **5-10ms**.
-3.  **L3 Cache (Write-Through)**: Specialized Redis layer for read-heavy financial reports. Response time: **15-20ms**.
+1. **L1 Cache (In-Memory)**: 500MB LRU cache local to each Node.js instance. Response time: **< 1ms**.
+2. **L2 Cache (Distributed Redis)**: Global cluster across 3 nodes. Response time: **5-10ms**.
+3. **L3 Cache (Write-Through)**: Specialized Redis layer for read-heavy financial reports. Response time: **15-20ms**.
 
 #### Performance Improvement Matrix
 

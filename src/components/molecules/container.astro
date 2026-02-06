@@ -8,6 +8,6 @@ interface Props extends HTMLAttributes<"div"> {
 const { as: Tag = "div", class: className, ...props } = Astro.props;
 ---
 
-<Tag class:list={["relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8", className]} {...props}>
+<Tag class:list={["relative mx-auto w-full max-w-6xl px-3 sm:px-5 lg:px-6", className]} {...props}>
   <slot />
 </Tag>

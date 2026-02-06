@@ -126,7 +126,7 @@ const isRowLayout = list && !icon;
       <div
         class:list={[
           cardClasses,
-          { "flex-row gap-3 p-3!": isRowLayout, "h-full flex-col gap-3 p-4 sm:p-5": !isRowLayout },
+          { "flex-row gap-2 p-2!": isRowLayout, "h-full flex-col gap-2 p-3 sm:p-4": !isRowLayout },
           {
             "items-center text-center": align === "center" && !isRowLayout,
             "items-start": !(align === "center" && !isRowLayout),
@@ -170,10 +170,10 @@ const isRowLayout = list && !icon;
           </div>
         )}
 
-        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-3": !isRowLayout }]}>
+        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-2": !isRowLayout }]}>
           <div
             class:list={[
-              "flex w-full justify-between gap-3",
+              "flex w-full justify-between gap-2",
               { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
             ]}
           >
@@ -244,7 +244,16 @@ const isRowLayout = list && !icon;
           )}
 
           <div
-            class:list={["mt-auto flex items-center", { "gap-2": isRowLayout, "w-full justify-between": !isRowLayout }]}
+            class:list={[
+              cardClasses,
+              { "flex-row gap-2 p-3.5": isRowLayout, "h-full flex-col gap-2 p-3.5 sm:p-4": !isRowLayout },
+              {
+                "items-center text-center": align === "center" && !isRowLayout,
+                "items-start": !(align === "center" && !isRowLayout),
+              },
+              animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
+            ]}
+            style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
           >
             {tags && tags.length > 0 && (
               <div class:list={[isRowLayout && "mt-2"]}>

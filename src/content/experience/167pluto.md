@@ -68,9 +68,9 @@ One of our greatest challenges was ensuring that a user's balance was correctly 
 
 The platform runs on a custom **AWS EKS (Kubernetes)** setup across multiple availability zones.
 
-1.  **Spot Instances**: Saved 60% on compute costs by using AWS Spot Instances for non-critical worker nodes.
-2.  **Auto-Scaling**: Custom Prometheus-based horizontal pod auto-scaler (HPA) that scales based on _Kafka Lag_ rather than just CPU/Memory.
-3.  **Database Sharding**: PostgreSQL database partitioned by `RegionID` and `UserID`, ensuring that no single database node processes more than 20% of the total load.
+1. **Spot Instances**: Saved 60% on compute costs by using AWS Spot Instances for non-critical worker nodes.
+2. **Auto-Scaling**: Custom Prometheus-based horizontal pod auto-scaler (HPA) that scales based on _Kafka Lag_ rather than just CPU/Memory.
+3. **Database Sharding**: PostgreSQL database partitioned by `RegionID` and `UserID`, ensuring that no single database node processes more than 20% of the total load.
 
 #### Infrastructure Reliability Stats
 

@@ -48,7 +48,7 @@ Follow the event definitions below to manually configure in GTM UI.
 
 #### `page_view`
 
-**Auto-tracked via GoogleTagManager.astro component**
+##### Auto-tracked via GoogleTagManager.astro component
 
 - **Trigger:** View Transitions (`astro:after-navigation`)
 - **Variables:**
@@ -76,6 +76,7 @@ Follow the event definitions below to manually configure in GTM UI.
 - `details` (string, optional): Additional context
 
 **Trigger Configuration:**
+
 | Action | Trigger Type | Conditions |
 |--------|--------------|------------|
 | `resume_download` | Click | Click URL contains `/resume.pdf` |

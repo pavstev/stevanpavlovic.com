@@ -56,9 +56,9 @@ The transition from a fixed-server monolith to a serverless model resulted in si
 
 Working in the medical industry requires 100% adherence to **HIPAA** and **GDPR** regulations. I implemented a multi-layered security model:
 
-1.  **IAM Zero Trust**: Every Lambda function has its own dedicated IAM role with the absolute minimum permissions required.
-2.  **Encrypted Data Rails**: All video fragments are encrypted at rest using AWS KMS (Key Management Service) with customer-managed keys.
-3.  **Audit Logging**: Every access attempt to medical content is logged via CloudWatch and exported to S3 for permanent auditing.
+1. **IAM Zero Trust**: Every Lambda function has its own dedicated IAM role with the absolute minimum permissions required.
+2. **Encrypted Data Rails**: All video fragments are encrypted at rest using AWS KMS (Key Management Service) with customer-managed keys.
+3. **Audit Logging**: Every access attempt to medical content is logged via CloudWatch and exported to S3 for permanent auditing.
 
 #### Security Compliance Matrix
 

@@ -59,11 +59,11 @@ Handling financial data requires the highest level of security. I spearheaded th
 
 A single payment request in Syllo triggers a complex chain of events across multiple services. Ensuring consistency was our #1 priority.
 
-1.  **Validation**: Verify user identity and session via Identity Core.
-2.  **Pre-Auth**: Check balance in Ledger and place a "Pending" hold.
-3.  **Vendor Call**: Execute the transaction via a third-party BaaS (e.g., Railsbank).
-4.  **Finalization**: Update the Ledger state to "Settled" or "Failed".
-5.  **Event Emission**: Notify the user and update the Audit Log via RabbitMQ.
+1. **Validation**: Verify user identity and session via Identity Core.
+2. **Pre-Auth**: Check balance in Ledger and place a "Pending" hold.
+3. **Vendor Call**: Execute the transaction via a third-party BaaS (e.g., Railsbank).
+4. **Finalization**: Update the Ledger state to "Settled" or "Failed".
+5. **Event Emission**: Notify the user and update the Audit Log via RabbitMQ.
 
 #### Performance & Reliability KPIs
 

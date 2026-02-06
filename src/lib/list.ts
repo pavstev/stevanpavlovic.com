@@ -1,11 +1,8 @@
-export type DisplayMode = "grid" | "list";
-
 export type PaginationType = "path" | "query";
 
-export interface ViewUrls {
-  grid: string;
-  list: string;
-}
+export type ViewUrls = {
+  [k in DisplayMode]: string;
+};
 
 // VIEW_MODES moved to src/config.ts
 

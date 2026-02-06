@@ -43,7 +43,7 @@ const blog = defineCollection({
       description: z.string(),
       heroImage: image().optional(),
       pubDate: z.coerce.date(),
-      tags: z.array(z.string()).optional(),
+      tags: z.array(z.string()),
       title: z.string(),
       updatedDate: z.coerce.date().optional(),
     }),
@@ -51,16 +51,24 @@ const blog = defineCollection({
 
 const experience = defineCollection({
   loader: glob({ base: "./src/content/experience", pattern: "**/*.md" }),
-  schema: z.object({
-    company: z.string(),
-    description: z.string(),
-    endDate: z.coerce.date().optional(),
-    location: z.string(),
-    role: z.string(),
-    skills: z.array(z.string()).optional(),
-    startDate: z.coerce.date(),
-    type: z.enum(["Full-time", "Contract", "Freelance"]).optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      company: z.union([
+        z.string(),
+        z.object({
+          logo: image().optional(),
+          name: z.string(),
+          website: z.string().url(),
+        }),
+      ]),
+      description: z.string(),
+      endDate: z.coerce.date().optional(),
+      location: z.string(),
+      role: z.string(),
+      skills: z.array(z.string()).optional(),
+      startDate: z.coerce.date(),
+      type: z.enum(["Full-time", "Contract", "Freelance"]).optional(),
+    }),
 });
 
 export const collections = {

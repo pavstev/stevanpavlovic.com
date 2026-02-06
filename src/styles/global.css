@@ -26,6 +26,9 @@
   --color-destructive: hsl(0 72% 55%);
   --color-destructive-foreground: hsl(0 0% 100%);
 
+  --color-danger: hsl(0 90% 60%);
+  --color-danger-foreground: hsl(0 0% 100%);
+
   --color-border: hsl(0 0% 3%);
   --color-input: hsl(0 0% 3%);
   --color-ring: hsl(210 100% 65%);
@@ -134,6 +137,7 @@
 
     --glow-primary: 0 0 35px hsl(210 100% 65% / 0.25);
     --glow-accent: 0 0 35px hsl(85 100% 55% / 0.25);
+    --glow-danger: 0 0 35px hsl(0 90% 60% / 0.35);
     --glow-subtle: 0 0 20px hsl(0 0% 100% / 0.05);
 
     --shimmer-primary: hsl(210 100% 65%);
@@ -203,6 +207,10 @@
     @apply bg-linear-to-br from-accent via-accent/80 to-accent/60 bg-clip-text text-transparent;
   }
 
+  .text-gradient-danger {
+    @apply bg-linear-to-br from-danger via-danger/80 to-danger/60 bg-clip-text text-transparent;
+  }
+
   .shadow-glow {
     box-shadow: var(--glow-subtle);
   }
@@ -213,6 +221,10 @@
 
   .shadow-glow-accent {
     box-shadow: var(--glow-accent);
+  }
+
+  .shadow-glow-danger {
+    box-shadow: var(--glow-danger);
   }
 
   .no-scrollbar::-webkit-scrollbar {

@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { Image } from "astro:assets";
+
+import type { CollectionName } from "../../lib/collection-pages";
+
+import FormattedDate from "../atoms/formatted-date.astro";
+
+interface Props {
+  collection: CollectionName;
+  company?:
+    | string
+    | {
+        logo?: ImageMetadata;
+        name: string;
+        website?: string;
+      };
+  data: CollectionEntry<CollectionName>["data"];
+}
+
+const { collection, company, data } = Astro.props;
+---
+
+<div
+  class="flex w-fit items-center gap-2 rounded-md border border-border/20 bg-muted/20 px-2 py-0.5 font-mono text-[10px] font-medium tracking-widest text-muted-foreground uppercase sm:hidden"
+>
+  {
+    collection === "blog" && "pubDate" in data && data.pubDate ? (
+      <FormattedDate date={data.pubDate} full />
+    ) : collection === "projects" && "subtitle" in data && data.subtitle ? (
+      <span class="text-primary">{data.subtitle}</span>
+    ) : collection === "experience" && company ? (
+      <div class="flex items-center gap-2">
+        {typeof company !== "string" && company.website ? (
+          <a class="flex items-center gap-1.5 hover:text-primary" href={company.website} target="_blank">
+            {company.logo && <Image alt={company.name} class="size-3.5 object-contain" src={company.logo} />}
+            <span class="text-primary">{company.name}</span>
+          </a>
+        ) : (
+          <span class="text-primary">{typeof company === "string" ? company : company.name}</span>
+        )}
+        {"location" in data && data.location && (
+          <span class="text-muted-foreground/60 opacity-60">• {data.location}</span>
+        )}
+      </div>
+    ) : null
+  }
+</div>

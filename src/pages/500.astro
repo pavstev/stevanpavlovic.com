@@ -1,7 +1,10 @@
 ---
+import Button from "../components/atoms/button.astro";
+import Heading from "../components/atoms/heading.astro";
+import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import Empty from "../components/molecules/empty.astro";
-import Section from "../components/organisms/section.astro";
+import { Meteors } from "../components/meteor";
+import Container from "../components/molecules/container.astro";
 
 interface Props {
   error: unknown;
@@ -9,18 +12,66 @@ interface Props {
 
 const { error } = Astro.props;
 
-const title = "500 - System Error";
+const title = "500 - System Critical";
 const description = "An unexpected error occurred while processing your request.";
-const errorMessage = error instanceof Error ? error.message : "Unknown system exception";
+const errorMessage = error instanceof Error ? error.message : "Unknown System Exception";
 ---
 
 <LayoutRoot description={description} title={title}>
-  <Section>
-    <Empty
-      action={{ href: "/", label: "Restart Session" }}
-      description={`${description} (${errorMessage})`}
-      icon="mdi:alert-octagon-outline"
-      title="System Error"
-    />
-  </Section>
+  <div class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center">
+    {/* Spotlight Effect */}
+    <div
+      class="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[800px] -translate-1/2 opacity-20"
+      style="background: radial-gradient(circle, var(--color-danger) 0%, transparent 70%);"
+    >
+    </div>
+
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <Meteors client:load number={40} />
+    </div>
+
+    <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">
+      <div
+        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-3xl border border-danger/20 p-8 text-center shadow-2xl shadow-danger/10 sm:p-12"
+      >
+        {/* Error Code */}
+        <div class="relative">
+          <Heading class="text-9xl font-black tracking-tighter opacity-90 sm:text-[12rem]" variant="gradient-danger">
+            500
+          </Heading>
+          <div class="shadow-glow-danger absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
+        </div>
+
+        {/* Text Content */}
+        <div class="flex flex-col items-center gap-4">
+          <Heading class="tracking-widest uppercase" level={2} size="h4" variant="danger"> System Malfunction </Heading>
+
+          <Text class="max-w-md text-balance" size="lg" variant="muted">
+            The server successfully processed 0% of your request. An anomaly has been detected in the core logic.
+          </Text>
+
+          <div class="mt-2 rounded-lg border border-white/5 bg-black/40 px-4 py-2 font-mono text-xs text-red-400">
+            Error: {errorMessage}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+          <Button
+            as="a"
+            class="w-full sm:w-auto"
+            href="/"
+            icon="mdi:home-lightning-bolt-outline"
+            size="lg"
+            variant="danger"
+          >
+            Return to Base
+          </Button>
+          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:restart" size="lg" variant="glass">
+            Retry Sequence
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </div>
 </LayoutRoot>

@@ -1,0 +1,28 @@
+---
+import { cn } from "../../lib/cn";
+
+interface Props {
+  className?: string;
+  label: string;
+}
+
+const { className, label } = Astro.props;
+---
+
+<div
+  class:list={cn(
+    "flex items-center gap-6 border-t-2 border-foreground/15 pt-4 transition-all duration-500 group-hover/toolbar:border-primary/30",
+    className,
+  )}
+>
+  <span class="shrink-0 font-mono text-[10px] font-extrabold tracking-[0.2em] text-muted-foreground/50 uppercase">
+    {label}
+  </span>
+  <div
+    class="flex-1 transition-all duration-700 group-hover/toolbar:brightness-110 group-hover/toolbar:drop-shadow-[0_0_15px_rgba(77,171,255,0.4)]"
+  >
+    <div class="origin-left scale-90">
+      <slot />
+    </div>
+  </div>
+</div>

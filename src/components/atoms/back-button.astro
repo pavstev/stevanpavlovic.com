@@ -1,15 +1,18 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import { Icon } from "astro-icon/components";
 
 import type { CollectionName } from "../../lib/collection-pages";
 
+import { cn } from "../../lib/cn";
 import Button from "./button.astro";
 
-interface Props {
+interface Props extends HTMLAttributes<"a"> {
   collection?: CollectionName;
 }
 
-const { collection } = Astro.props;
+const { class: className, collection, type, ...props } = Astro.props;
 
 const backLabel =
   collection === "blog"
@@ -32,11 +35,15 @@ const backLink =
 
 <Button
   as="a"
-  class="group mb-4 font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
+  class:list={cn(
+    "group rounded-full font-mono text-xs font-bold tracking-widest text-foreground uppercase transition-all hover:bg-muted/30 hover:no-underline",
+    className,
+  )}
   href={backLink}
   size="sm"
-  variant="back"
+  variant="outline"
+  {...props}
 >
-  <Icon class="mr-1 size-4 transition-transform group-hover:-translate-x-1" name="mdi:arrow-left" />
+  <Icon class="mr-1.5 size-3.5 transition-transform group-hover:-translate-x-1" name="mdi:arrow-left" />
   <slot>{backLabel}</slot>
 </Button>

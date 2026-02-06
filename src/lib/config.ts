@@ -16,6 +16,7 @@ export interface NavItem {
   icon: `mdi:${string}`;
   label: string;
   order: number;
+  tagTitle: string;
 }
 
 export const NAV_ITEMS: Record<string, NavItem> = {
@@ -27,6 +28,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     icon: "mdi:newspaper-variant-outline",
     label: "Blog",
     order: 4,
+    tagTitle: "Tags",
   },
   experience: {
     color: "var(--color-primary)",
@@ -36,6 +38,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     icon: "mdi:briefcase-outline",
     label: "Experience",
     order: 3,
+    tagTitle: "Skills",
   },
   home: {
     color: "var(--color-primary)",
@@ -45,6 +48,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     icon: "mdi:home-variant-outline",
     label: "Home",
     order: 1,
+    tagTitle: "Context",
   },
   projects: {
     color: "var(--color-primary)",
@@ -54,6 +58,7 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     icon: "mdi:console",
     label: "Projects",
     order: 2,
+    tagTitle: "Technologies",
   },
 } as const;
 
@@ -101,6 +106,6 @@ interface Stat {
 export const STATS: Stat[] = [
   { icon: "mdi:clock-time-eight-outline", label: "Years Exp.", value: 12 },
   { icon: "mdi:server-network", label: "Systems", value: 24 },
-  { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "+", value: 120000 },
+  { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },
   { icon: "mdi:earth", label: "Countries", value: 15 },
 ] as const;

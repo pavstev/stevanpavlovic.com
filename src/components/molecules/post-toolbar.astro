@@ -1,0 +1,79 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { type CollectionName, type ToolbarItem } from "../../lib/collection-pages";
+import BackButton from "../atoms/back-button.astro";
+import ToolbarFooter from "../atoms/toolbar-footer.astro";
+import ToolbarItemComponent from "../atoms/toolbar-item.astro";
+import ToolbarLogo from "../atoms/toolbar-logo.astro";
+import PostActions from "./post-actions.astro";
+import PostAuthor from "./post-author.astro";
+import Tags from "./tags.astro";
+
+interface Props {
+  author?: { avatar: ImageMetadata; name: string; role: string };
+  backLabel: string;
+  backLink: string;
+  collection: CollectionName;
+  data: CollectionEntry<CollectionName>["data"];
+  items: ToolbarItem[];
+  tags?: string[];
+  tagsTitle?: string;
+}
+
+const { author, backLabel, backLink, collection, data, items = [], tags = [], tagsTitle = "Context" } = Astro.props;
+---
+
+<div
+  class="group/toolbar sticky top-4 z-40 mb-12 flex flex-col gap-5 rounded-3xl border border-foreground/10 bg-background/60 px-4 py-3 shadow-md backdrop-blur-2xl transition-all duration-300 hover:border-foreground/20 hover:shadow-2xl hover:shadow-primary/5"
+>
+  <div class="flex flex-wrap items-center justify-between gap-6">
+    <div class="flex flex-wrap items-center gap-8 sm:gap-12">
+      <div class="scale-90 sm:scale-100">
+        <BackButton collection={collection} href={backLink}>
+          {backLabel}
+        </BackButton>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
+        {
+          items.map((item) => (
+            <ToolbarItemComponent>
+              <span slot="label">{item.label}</span>
+              <div class="flex items-center gap-2">
+                {item.href ? (
+                  <a
+                    class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
+                    href={item.href}
+                    target="_blank"
+                  >
+                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                    <span>{item.value}</span>
+                  </a>
+                ) : (
+                  <div class="flex items-center gap-2.5">
+                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                    <span>{item.value}</span>
+                  </div>
+                )}
+              </div>
+            </ToolbarItemComponent>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="flex items-center gap-6 sm:gap-10">
+      <PostAuthor author={author} />
+      <PostActions collection={collection} data={data} />
+    </div>
+  </div>
+
+  {
+    tags && tags.length > 0 && (
+      <ToolbarFooter label={tagsTitle}>
+        <Tags tags={tags} />
+      </ToolbarFooter>
+    )
+  }
+</div>

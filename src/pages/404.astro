@@ -1,19 +1,66 @@
 ---
+import Button from "../components/atoms/button.astro";
+import Heading from "../components/atoms/heading.astro";
+import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import Empty from "../components/molecules/empty.astro";
-import Section from "../components/organisms/section.astro";
+import { Meteors } from "../components/meteor";
+import Container from "../components/molecules/container.astro";
 
-const title = "404 - Page Not Found";
-const description = "The page you requested could not be located or no longer exists.";
+const title = "404 - Lost in Space";
+const description = "The coordinates you entered do not correspond to a known sector.";
 ---
 
 <LayoutRoot description={description} title={title}>
-  <Section>
-    <Empty
-      action={{ href: "/", label: "Back to Home" }}
-      description={description}
-      icon="mdi:compass-off-outline"
-      title="Page Not Found"
-    />
-  </Section>
+  <div class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center">
+    {/* Spotlight Effect */}
+    <div
+      class="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[800px] -translate-1/2 opacity-20"
+      style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
+    >
+    </div>
+
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <Meteors client:load number={40} />
+    </div>
+
+    <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">
+      <div
+        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-3xl border border-accent/20 p-8 text-center shadow-2xl shadow-accent/10 sm:p-12"
+      >
+        {/* Error Code */}
+        <div class="relative">
+          <Heading class="text-9xl font-black tracking-tighter opacity-90 sm:text-[12rem]" variant="gradient-accent">
+            404
+          </Heading>
+          <div class="shadow-glow-accent absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
+        </div>
+
+        {/* Text Content */}
+        <div class="flex flex-col items-center gap-4">
+          <Heading class="tracking-widest uppercase" level={2} size="h4" variant="accent"> Signal Lost </Heading>
+
+          <Text class="max-w-md text-balance" size="lg" variant="muted">
+            The coordinates you provided lead to empty space. Recalibrating route to nearest outpost.
+          </Text>
+        </div>
+
+        {/* Actions */}
+        <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:rocket-launch-outline" size="lg" variant="accent">
+            Warp Home
+          </Button>
+          <Button
+            as="a"
+            class="w-full sm:w-auto"
+            href="javascript:history.back()"
+            icon="mdi:arrow-u-left-bottom"
+            size="lg"
+            variant="glass"
+          >
+            Go Back
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </div>
 </LayoutRoot>

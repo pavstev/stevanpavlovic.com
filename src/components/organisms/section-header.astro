@@ -4,23 +4,7 @@ import { Icon } from "astro-icon/components";
 import Heading from "../atoms/heading.astro";
 import Stack from "../atoms/stack.astro";
 import Text from "../atoms/text.astro";
-import PostTags from "../molecules/post-tags.astro";
 
-/**
- * Section Header Component
- *
- * A standardized header component for section pages with title, subtitle,
- * description, icon, and optional tags. Includes a back button and action slot.
- *
- * @param title - Main title of the section
- * @param subtitle - Secondary subtitle text
- * @param description - Detailed description text
- * @param icon - Optional icon name from astro-icon
- * @param level - Heading level (1-6), defaults to 2
- * @param tags - Optional array of tags to display
- * @param backUrl - Optional URL for back button
- * @param backText - Optional text for back button, defaults to "Back"
- */
 interface Props {
   backText?: string;
   backUrl?: string;
@@ -28,11 +12,10 @@ interface Props {
   icon?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   subtitle?: string;
-  tags?: string[];
   title: string;
 }
 
-const { backText = "Back", backUrl, description, icon, level = 2, subtitle, tags, title } = Astro.props;
+const { backText = "Back", backUrl, description, icon, level = 2, subtitle, title } = Astro.props;
 ---
 
 <div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
@@ -76,8 +59,6 @@ const { backText = "Back", backUrl, description, icon, level = 2, subtitle, tags
           </Text>
         )
       }
-
-      {tags && tags.length > 0 && <PostTags heading="Tags" tags={tags} />}
     </div>
   </Stack>
 

@@ -245,9 +245,8 @@ const isRowLayout = list && !icon;
 
           {/* Footer Section */}
           <div class:list={cn("mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between")}>
-            {/* Tags */}
             {tags && tags.length > 0 && (
-              <div class:list={cn(isRowLayout ? "mt-2" : "")}>
+              <div class:list={[{ "mt-2": isRowLayout }]}>
                 <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
               </div>
             )}

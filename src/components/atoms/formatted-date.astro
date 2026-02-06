@@ -9,6 +9,6 @@ interface Props {
 const { date, full = false } = Astro.props;
 ---
 
-<time datetime={dayjs(date).toISOString()}>
+<time datetime={dayjs(date).toISOString()} title={dayjs(date).format("MMMM D, YYYY")}>
   {full ? dayjs(date).format("MMMM D, YYYY") : dayjs(date).format("MMM YYYY")}
 </time>

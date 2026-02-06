@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+
+import { cn } from "../../lib/cn";
+
+interface Props {
+  alt: string;
+  className?: string;
+  size?: "md" | "sm";
+  src: ImageMetadata;
+}
+
+const { alt, className, size = "md", src } = Astro.props;
+
+const sizeClasses = {
+  md: "size-6 rounded-full p-0.5 ring-1 ring-foreground/50",
+  sm: "size-3.5 rounded-xs p-0.5",
+};
+---
+
+<div class:list={cn("shrink-0 overflow-hidden bg-muted-foreground/10", sizeClasses[size], className)}>
+  <Image alt={alt} class="size-full object-contain" src={src} />
+</div>

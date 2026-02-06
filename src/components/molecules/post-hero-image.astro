@@ -1,0 +1,33 @@
+---
+import ZoomableImage from "./zoomable-image.tsx";
+
+interface Props {
+  heroImage?: {
+    alt: string;
+    height: number;
+    src: ImageMetadata | string;
+    width: number;
+  };
+}
+
+const { heroImage } = Astro.props;
+---
+
+{
+  heroImage && (
+    <div
+      class="relative mx-auto mb-12 aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border/50 bg-muted shadow-2xl shadow-primary/5 transition-all sm:rounded-3xl"
+      slot="hero-image"
+    >
+      <ZoomableImage
+        alt={heroImage.alt}
+        className="size-full object-cover"
+        client:load
+        height={heroImage.height}
+        src={heroImage.src}
+        width={heroImage.width}
+      />
+      <div class="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset sm:rounded-3xl" />
+    </div>
+  )
+}

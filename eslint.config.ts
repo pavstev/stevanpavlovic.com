@@ -46,6 +46,7 @@ export default defineConfig(
     ".git/**/*",
     ".unlighthouse/**/*",
     "worker-configuration.d.ts",
+    ".vscode/**/*",
   ]),
   { ...eslint.configs.recommended, ignores: ["**/*.md", "**/*.mdx"], name: "eslint" },
   {

@@ -2,13 +2,12 @@
 import type { CollectionEntry } from "astro:content";
 
 import { type CollectionItem, type CollectionName, getViewPageProps } from "../../lib/collection-pages";
-import BackButton from "../atoms/back-button.astro";
+import Heading from "../atoms/heading.astro";
+import Stack from "../atoms/stack.astro";
+import BodyText from "../atoms/text.astro";
 import LayoutContent from "../layout/layout-content.astro";
-import CollectionActions from "./collection-actions.astro";
-import CollectionEyebrow from "./collection-eyebrow.astro";
-import CollectionHeader from "./collection-header.astro";
-import CollectionHeroImage from "./collection-hero-image.astro";
-import CollectionTags from "./collection-tags.astro";
+import PostHeroImage from "../molecules/post-hero-image.astro";
+import PostToolbar from "../molecules/post-toolbar.astro";
 
 interface Props {
   backLink?: string;
@@ -27,21 +26,52 @@ const item: CollectionItem<CollectionName> = {
   id,
 };
 
-const { description, title } = getViewPageProps(item);
+const {
+  author,
+  backLabel,
+  backLink: defaultBackLink,
+  description,
+  heroImage,
+  tags,
+  tagsTitle,
+  title,
+  toolbarItems,
+} = getViewPageProps(item);
+
+const backLink = Astro.props.backLink || defaultBackLink;
 ---
 
 <LayoutContent description={description} title={title}>
-  <BackButton collection={collection} />
+  <!-- Condensed Header Content (Left Aligned) -->
+  <div class="mb-12" slot="header">
+    <Stack gap={10}>
+      <Heading level={1} size="hero">
+        {title}
+      </Heading>
 
-  <CollectionHeader description={description} level={1} title={title} />
+      <PostToolbar
+        author={author}
+        backLabel={backLabel}
+        backLink={backLink}
+        collection={collection}
+        data={data}
+        items={toolbarItems}
+        tags={tags}
+        tagsTitle={tagsTitle}
+      />
 
-  <CollectionEyebrow collection={collection} item={item} />
+      <!-- Description -->
+      {
+        description && (
+          <BodyText class="max-w-3xl text-lg leading-relaxed sm:text-xl" variant="muted">
+            {description}
+          </BodyText>
+        )
+      }
+    </Stack>
+  </div>
 
-  <CollectionActions collection={collection} item={item} />
-
-  <CollectionHeroImage collection={collection} data={data} title={title} />
-
-  <CollectionTags collection={collection} data={data} />
+  <PostHeroImage heroImage={heroImage} />
 
   <slot />
 </LayoutContent>

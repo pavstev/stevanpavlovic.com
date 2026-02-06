@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import type { CollectionName } from "../../lib/collection-pages";
+
+import Button from "../atoms/button.astro";
+
+interface Props {
+  collection: CollectionName;
+  data: CollectionEntry<CollectionName>["data"];
+}
+
+const { collection, data } = Astro.props;
+---
+
+{
+  collection === "projects" && (
+    <>
+      {"demoUrl" in data && data.demoUrl && (
+        <Button as="a" href={data.demoUrl} size="sm" variant="default">
+          Live Demo
+        </Button>
+      )}
+      {"repoUrl" in data && data.repoUrl && (
+        <Button as="a" href={data.repoUrl} size="sm" variant="outline">
+          Source
+        </Button>
+      )}
+    </>
+  )
+}

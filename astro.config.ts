@@ -83,15 +83,16 @@ export default defineConfig({
   trailingSlash: "never",
 
   vite: {
-    assetsInclude: ["**/*.wasm"],
-    build: {
-      rollupOptions: {
-        // external: ["@resvg/resvg-wasm"],
-      },
-    },
-    optimizeDeps: {
-      exclude: ['canvaskit-wasm'],
+    // 1. This defines __dirname as an empty string during the build,
+    // preventing the "ReferenceError: __dirname is not defined" crash.
+    define: {
+      __dirname: JSON.stringify(""),
     },
     plugins: [tailwindcss()],
+    // 2. Ensure the WASM library is properly optimized/externalized if needed.
+    // (Usually the define above is enough, but this can help with strict dep handling)
+    ssr: {
+      noExternal: ["astro-og-canvas", "canvaskit-wasm"],
+    },
   },
 });

@@ -1,7 +1,7 @@
 ---
 name: Freelance
 website: https://example.com
-logo: N/A
+logo: ../../assets/tech-logo.png
 description: Independent software development consultant delivering custom web solutions
 industry: Software
 founded: 2015

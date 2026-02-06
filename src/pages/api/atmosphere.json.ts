@@ -1,19 +1,20 @@
-import type { APIRoute } from 'astro';
-import { fetchWeatherApi } from 'openmeteo';
+import type { APIRoute } from "astro";
+
+import { fetchWeatherApi } from "openmeteo";
 
 export const GET: APIRoute = async () => {
   // Belgrade Coordinates
   const lat = 44.7866;
   const lon = 20.4489;
-  const url = 'https://api.open-meteo.com/v1/forecast';
+  const url = "https://api.open-meteo.com/v1/forecast";
 
   // Define parameters strictly.
   // IMPORTANT: The order of variables in 'current' determines the index later.
   const params = {
+    current: "temperature_2m,is_day,weather_code,precipitation",
     latitude: [lat],
     longitude: [lon],
-    current: 'temperature_2m,is_day,weather_code,precipitation',
-    timezone: 'Europe/Belgrade',
+    timezone: "Europe/Belgrade",
   };
 
   try {
@@ -27,7 +28,7 @@ export const GET: APIRoute = async () => {
     const current = response.current();
 
     if (!current) {
-      throw new Error('No current weather data received');
+      throw new Error("No current weather data received");
     }
 
     // 4. Extract values by index matching the 'current' string above
@@ -47,26 +48,28 @@ export const GET: APIRoute = async () => {
     // 11 PM - 7 AM = Sleeping
     const isSleeping = hour >= 23 || hour < 7;
 
-    return new Response(JSON.stringify({
-      temp: Math.round(temperature),
-      isDay: !!isDayVal, // Convert 1/0 number to boolean
-      code: weatherCode,
-      precip: precipitation,
-      localTime: belgradeTime,
-      status: isSleeping ? 'sleeping' : 'active'
-    }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=300'
-      }
-    });
-
+    return new Response(
+      JSON.stringify({
+        code: weatherCode,
+        isDay: !!isDayVal, // Convert 1/0 number to boolean
+        localTime: belgradeTime,
+        precip: precipitation,
+        status: isSleeping ? "sleeping" : "active",
+        temp: Math.round(temperature),
+      }),
+      {
+        headers: {
+          "Cache-Control": "public, max-age=300",
+          "Content-Type": "application/json",
+        },
+        status: 200,
+      },
+    );
   } catch (e) {
-    console.error('Weather API Error:', e);
-    return new Response(JSON.stringify({ error: 'Weather unavailable' }), {
+    console.error("Weather API Error:", e);
+    return new Response(JSON.stringify({ error: "Weather unavailable" }), {
+      headers: { "Content-Type": "application/json" },
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
     });
   }
 };

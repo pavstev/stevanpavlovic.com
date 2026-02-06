@@ -28,6 +28,8 @@ export const getCollectionData = async <CN extends CollectionKey>(collection: CN
 
 export const getViewPageProps = async (item: CollectionItem): Promise<ViewPageProps> => {
   const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
+
+  // console.log({adapters: Object.keys(adapters), item,} )
   if (!adapter) {
     throw new Error(`No adapter found for collection: ${item.collection}`);
   }

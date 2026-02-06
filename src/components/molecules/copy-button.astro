@@ -65,7 +65,7 @@ import Button from "../atoms/button.astro";
             button.classList.remove("border-green-500/50");
           }, 2000);
         } catch (err) {
-          console.error("Failed to copy code:", err);
+          throw new Error("Failed to copy code:", err);
         }
       });
     });

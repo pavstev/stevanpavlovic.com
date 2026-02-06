@@ -1,18 +1,11 @@
 import { OGImageRoute } from "astro-og-canvas";
-import { getCollection, type CollectionKey } from "astro:content";
+import { type CollectionKey, getCollection } from "astro:content";
 import dayjs from "dayjs";
 
 /**
  * Define which collections we want to generate OG images for.
  */
-const collectionsToMap: CollectionKey[] = [
-  "blog",
-  "projects",
-  "experience",
-  "people",
-  "recommendations",
-  "companies",
-];
+const collectionsToMap: CollectionKey[] = ["blog", "projects", "experience", "people", "recommendations", "companies"];
 
 /**
  * Fetch all entries across collections in parallel.
@@ -21,7 +14,7 @@ const collectionResults = await Promise.all(
   collectionsToMap.map(async (collection) => {
     const entries = await getCollection(collection);
     return { collection, entries };
-  })
+  }),
 );
 
 /**
@@ -68,45 +61,56 @@ const pages = Object.fromEntries(
       return [
         `${collection}/${entry.id}`,
         {
-          title,
+          collection,
           description: data.description || "",
           meta,
-          collection,
+          title,
         },
       ];
-    })
-  )
+    }),),
 );
 
 /**
  * Generate the final routes and images.
  */
-export const { getStaticPaths, GET } = await OGImageRoute({
-  param: "slug",
-  pages: pages,
-
+export const { GET, getStaticPaths } = await OGImageRoute({
   getImageOptions: (_path, page) => {
     // Brand identity mapping via collection keys
     const themeMap: Record<string, [number, number, number]> = {
-      blog: [59, 130, 246],            // Blue
-      projects: [16, 185, 129],        // Emerald
-      experience: [139, 92, 246],      // Violet
-      people: [244, 63, 94],           // Rose
+      blog: [59, 130, 246], // Blue
+      companies: [100, 116, 139], // Slate
+      experience: [139, 92, 246], // Violet
+      people: [244, 63, 94], // Rose
+      projects: [16, 185, 129], // Emerald
       recommendations: [245, 158, 11], // Amber
-      companies: [100, 116, 139],      // Slate
     };
 
     const accentColor = themeMap[page.collection] || [100, 116, 139];
 
     return {
-      title: page.title,
+      bgGradient: [[255, 255, 255]],
+      border: {
+        color: accentColor,
+        side: "inline-start",
+        width: 24,
+      },
+
       // Enhanced visual hierarchy: Description | Metadata | Brand
       description: `${page.description}\n\n${page.meta}\n\nstevan.dev`,
 
-      // Personal branding: profile/logo at the top
-      logo: {
-        path: "./src/assets/profile.jpeg",
-        size: [80],
+      font: {
+        description: {
+          color: [71, 85, 107], // Slate 600
+          families: ["Inter"],
+          lineHeight: 1.4,
+          size: 36,
+        },
+        title: {
+          color: [15, 23, 42], // Slate 900
+          families: ["Inter"],
+          size: 78,
+          weight: "Bold",
+        },
       },
 
       // High-performance CDN fonts for serverless/edge compatibility
@@ -114,28 +118,20 @@ export const { getStaticPaths, GET } = await OGImageRoute({
         "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff",
         "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-700-normal.woff",
       ],
-
-      bgGradient: [[255, 255, 255]],
-      border: {
-        color: accentColor,
-        width: 24,
-        side: "inline-start",
+      // Personal branding: profile/logo at the top
+      logo: {
+        path: "./src/assets/profile.jpeg",
+        size: [80],
       },
       padding: 80,
-      font: {
-        title: {
-          color: [15, 23, 42], // Slate 900
-          size: 78,
-          weight: "Bold",
-          families: ["Inter"],
-        },
-        description: {
-          color: [71, 85, 107], // Slate 600
-          size: 36,
-          lineHeight: 1.4,
-          families: ["Inter"],
-        },
-      },
+      title: page.title,
     };
   },
+  getSlug: (path, _page) => {
+    console.log(path, _page.meta);
+    return path;
+  },
+  pages: pages,
+
+  param: "slug",
 });

@@ -24,14 +24,14 @@ tags.forEach((tag) => {
   const id = `tag-${safeId(tag.id)}`;
   tagMap.set(tag.id, id);
   nodes.push({
-    id,
-    type: "tag",
-    label: tag.data.label,
     baseRadius: 4,
-    radius: 4, // Will grow with connections
-    colorToken: "--muted-foreground",
     bgToken: "--muted",
+    colorToken: "--muted-foreground",
     data: { description: tag.data.description },
+    id,
+    label: tag.data.label,
+    radius: 4, // Will grow with connections
+    type: "tag",
   });
 });
 
@@ -39,18 +39,18 @@ tags.forEach((tag) => {
 projects.forEach((project) => {
   const id = `proj-${safeId(project.id)}`;
   nodes.push({
-    id,
-    type: "project",
-    label: project.data.title,
     baseRadius: 10,
-    radius: 10,
-    colorToken: "--primary-foreground",
     bgToken: "--primary",
+    colorToken: "--primary-foreground",
     data: {
       desc: project.data.description,
-      role: project.data.role,
       link: project.data.demoUrl || project.data.repoUrl,
+      role: project.data.role,
     },
+    id,
+    label: project.data.title,
+    radius: 10,
+    type: "project",
   });
 
   // Link Project -> Tags
@@ -67,14 +67,14 @@ projects.forEach((project) => {
 experience.forEach((job) => {
   const id = `exp-${safeId(job.id)}`;
   nodes.push({
-    id,
-    type: "experience",
-    label: job.data.role,
     baseRadius: 12,
-    radius: 12,
-    colorToken: "--accent-foreground",
     bgToken: "--accent",
+    colorToken: "--accent-foreground",
     data: { desc: job.data.description },
+    id,
+    label: job.data.role,
+    radius: 12,
+    type: "experience",
   });
 
   // Link Job -> Tags
@@ -87,37 +87,37 @@ experience.forEach((job) => {
   });
 });
 
-const graphData = { nodes, links };
+const graphData = { links, nodes };
 ---
 
 <section
-  class="relative w-full h-[600px] md:h-[800px] bg-background border border-border rounded-xl overflow-hidden group select-none shadow-sm"
+  class="group relative h-[600px] w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm select-none md:h-[800px]"
   id="graph-container"
 >
   <!-- Canvas Layer -->
-  <canvas id="knowledge-graph" class="absolute inset-0 block outline-none cursor-grab active:cursor-grabbing"></canvas>
+  <canvas class="absolute inset-0 block cursor-grab outline-none active:cursor-grabbing" id="knowledge-graph"></canvas>
 
   <!-- UI Overlay: Controls -->
-  <div class="absolute bottom-4 left-4 flex flex-col gap-2 z-10 pointer-events-none">
+  <div class="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-col gap-2">
     <!-- Legend -->
     <div
-      class="px-3 py-2 bg-card/80 text-card-foreground text-[10px] font-medium uppercase tracking-wider rounded-md border border-border backdrop-blur-sm shadow-sm pointer-events-auto"
+      class="pointer-events-auto rounded-md border border-border bg-card/80 px-3 py-2 text-[10px] font-medium tracking-wider text-card-foreground uppercase shadow-sm backdrop-blur-sm"
     >
-      <div class="flex items-center gap-2 mb-1">
-        <span class="w-2 h-2 rounded-sm bg-primary"></span> Project
+      <div class="mb-1 flex items-center gap-2">
+        <span class="size-2 rounded-sm bg-primary"></span> Project
       </div>
-      <div class="flex items-center gap-2 mb-1">
-        <span class="w-2 h-2 rounded-full bg-accent border border-border"></span> Job
+      <div class="mb-1 flex items-center gap-2">
+        <span class="size-2 rounded-full border border-border bg-accent"></span> Job
       </div>
       <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-muted border border-border"></span> Skill
+        <span class="size-2 rounded-full border border-border bg-muted"></span> Skill
       </div>
     </div>
 
     <!-- Reset Button -->
     <button
+      class="pointer-events-auto self-start rounded-md border border-border bg-secondary px-3 py-1.5 text-[10px] font-bold tracking-wider text-secondary-foreground uppercase shadow-sm transition-colors hover:bg-secondary/80"
       id="reset-cam"
-      class="self-start px-3 py-1.5 bg-secondary text-secondary-foreground text-[10px] font-bold uppercase tracking-wider rounded-md border border-border hover:bg-secondary/80 transition-colors pointer-events-auto shadow-sm"
     >
       Reset View
     </button>
@@ -125,19 +125,19 @@ const graphData = { nodes, links };
 
   <!-- UI Overlay: Node Tooltip (Shadcn Popover Style) -->
   <div
+    class="pointer-events-none absolute top-0 left-0 z-50 max-w-[280px] rounded-lg border border-border bg-popover p-4 text-popover-foreground opacity-0 shadow-md transition-opacity duration-200"
     id="node-tooltip"
-    class="absolute top-0 left-0 max-w-[280px] p-4 bg-popover text-popover-foreground rounded-lg border border-border shadow-md pointer-events-none opacity-0 transition-opacity duration-200 z-50"
     style="will-change: transform, opacity;"
   >
     <div class="flex flex-col gap-1">
-      <span class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground" id="tt-type">Type</span>
-      <h3 class="text-sm font-semibold leading-none tracking-tight" id="tt-title">Title</h3>
-      <p class="text-xs text-muted-foreground leading-relaxed line-clamp-4 mt-1" id="tt-desc">Description</p>
+      <span class="text-[10px] font-bold tracking-wider text-muted-foreground uppercase" id="tt-type">Type</span>
+      <h3 class="text-sm leading-none font-semibold tracking-tight" id="tt-title">Title</h3>
+      <p class="mt-1 line-clamp-4 text-xs leading-relaxed text-muted-foreground" id="tt-desc">Description</p>
     </div>
   </div>
 </section>
 
-<script is:inline define:vars={{ graphData }}>
+<script define:vars={{ graphData }} is:inline>
   /**
    * KNOWLEDGE GRAPH ENGINE
    * Force-directed graph using HTML5 Canvas with Shadcn styling.

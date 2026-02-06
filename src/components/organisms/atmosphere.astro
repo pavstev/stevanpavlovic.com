@@ -2,177 +2,275 @@
 import AppIcon from "../atoms/app-icon.astro";
 ---
 
-<div id="atmosphere-widget" class="atmosphere-card group">
-  <!-- Status Dot with Ping Animation -->
-  <div class="status-container">
-    <span id="atmo-ping" class="ping-effect"></span>
-    <span id="atmo-dot" class="status-dot"></span>
-  </div>
+<div class="group/widget relative">
+  <!-- Main Widget -->
+  <button
+    aria-label="Check availability and time"
+    class="atmosphere-card group flex items-center gap-3 rounded-full border border-(--color-border) bg-(--color-card) px-4 py-2 backdrop-blur-md transition-all hover:border-(--color-ring) hover:shadow-lg focus:ring-2 focus:ring-(--color-ring) focus:outline-none"
+    id="atmosphere-trigger"
+  >
+    <!-- Status Dot -->
+    <div class="status-container relative flex size-2">
+      <span class="ping-effect absolute inline-flex size-full animate-ping rounded-full opacity-75" id="atmo-ping"
+      ></span>
+      <span class="status-dot relative inline-flex size-2 rounded-full transition-colors duration-500" id="atmo-dot"
+      ></span>
+    </div>
 
-  <!-- Text Content -->
-  <div class="content-wrapper">
-    <span id="atmo-time" class="time-text">Loading...</span>
-    <span id="atmo-weather" class="weather-text">Belgrade, RS</span>
-  </div>
+    <!-- Text Content -->
+    <div class="content-wrapper flex flex-col items-start leading-none">
+      <span class="time-text text-xs font-bold text-(--color-foreground) tabular-nums" id="atmo-time">Loading...</span>
+      <span class="weather-text mt-0.5 text-[10px] text-(--color-muted-foreground)" id="atmo-status"
+        >Checking status...</span
+      >
+    </div>
 
-  <!-- Icon -->
-  <div class="icon-wrapper text-muted-foreground transition-colors duration-300 group-hover:text-primary">
-    <AppIcon name="mdi:earth" size="sm" />
+    <!-- Globe Icon -->
+    <div class="icon-wrapper text-(--color-muted-foreground) transition-colors group-hover:text-(--color-primary)">
+      <AppIcon name="mdi:earth" size="sm" />
+    </div>
+  </button>
+
+  <!-- Time Zone Popover -->
+  <div
+    class="invisible absolute right-0 bottom-full z-50 mb-3 w-72 origin-bottom-right scale-95 overflow-hidden rounded-xl border border-(--color-border) bg-(--color-popover) opacity-0 shadow-xl transition-all duration-200 ease-out"
+    id="timezone-popover"
+  >
+    <div class="space-y-4 p-4">
+      <div class="flex items-center justify-between border-b border-(--color-border) pb-3">
+        <h4 class="text-sm font-bold text-(--color-foreground)">Time Check</h4>
+        <span class="rounded-full bg-(--color-secondary) px-2 py-0.5 text-[10px] text-(--color-secondary-foreground)"
+          >Belgrade, RS</span
+        >
+      </div>
+
+      <!-- Comparison Visualizer -->
+      <div class="space-y-3">
+        <!-- My Time -->
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <AppIcon class="text-(--color-primary)" name="mdi:account-circle" size="sm" />
+            <span class="font-medium text-(--color-foreground)">Stevan</span>
+          </div>
+          <span class="font-mono text-(--color-muted-foreground)" id="popover-stevan-time">--:--</span>
+        </div>
+
+        <!-- Connection Line -->
+        <div class="relative h-1 w-full overflow-hidden rounded-full bg-(--color-secondary)">
+          <div
+            class="absolute top-0 left-0 h-full w-1/2 bg-(--color-primary) transition-all duration-500"
+            id="time-overlap-bar"
+          >
+          </div>
+        </div>
+
+        <!-- User Time -->
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <AppIcon class="text-(--color-muted-foreground)" name="mdi:account-outline" size="sm" />
+            <span class="font-medium text-(--color-foreground)">You</span>
+          </div>
+          <span class="font-mono text-(--color-muted-foreground)" id="popover-user-time">--:--</span>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button
+          class="tz-btn group flex flex-col items-center justify-center gap-1 rounded-lg bg-(--color-secondary) p-2 text-xs transition-colors hover:bg-(--color-accent)"
+          data-offset="-6"
+        >
+          <AppIcon
+            class="text-(--color-muted-foreground) group-hover:text-(--color-primary)"
+            name="mdi:briefcase-clock"
+            size="sm"
+          />
+          <span class="text-(--color-foreground)">New York</span>
+        </button>
+        <button
+          class="tz-btn group flex flex-col items-center justify-center gap-1 rounded-lg bg-(--color-secondary) p-2 text-xs transition-colors hover:bg-(--color-accent)"
+          data-offset="8"
+        >
+          <AppIcon
+            class="text-(--color-muted-foreground) group-hover:text-(--color-primary)"
+            name="mdi:weather-sunset"
+            size="sm"
+          />
+          <span class="text-(--color-foreground)">Tokyo</span>
+        </button>
+      </div>
+
+      <p class="text-center text-[10px] text-(--color-muted-foreground) italic" id="availability-msg">
+        "Usually available for calls 2pm-6pm CET"
+      </p>
+    </div>
   </div>
 </div>
 
 <script>
-  // Define response type locally or import if shared
   interface AtmosphereResponse {
     temp: number;
-    isDay: boolean;
-    code: number;
-    precip: number;
     localTime: string;
     status: "sleeping" | "active";
   }
 
-  const updateAtmosphere = async () => {
-    const timeEl = document.getElementById("atmo-time");
-    const weatherEl = document.getElementById("atmo-weather");
-    const dot = document.getElementById("atmo-dot");
-    const ping = document.getElementById("atmo-ping");
+  class AtmosphereWidget {
+    private els = {
+      trigger: document.getElementById("atmosphere-trigger"),
+      popover: document.getElementById("timezone-popover"),
+      time: document.getElementById("atmo-time"),
+      status: document.getElementById("atmo-status"),
+      dot: document.getElementById("atmo-dot"),
+      ping: document.getElementById("atmo-ping"),
+      stevanTime: document.getElementById("popover-stevan-time"),
+      userTime: document.getElementById("popover-user-time"),
+      overlap: document.getElementById("time-overlap-bar"),
+      msg: document.getElementById("availability-msg"),
+    };
 
-    if (!timeEl || !weatherEl || !dot || !ping) return;
+    private isOpen = false;
+    private belgradeTime: Date | null = null;
 
-    try {
-      const res = await fetch("/api/atmosphere.json");
-      if (!res.ok) throw new Error("API Error");
+    constructor() {
+      this.init();
+      this.bindEvents();
+    }
 
-      const data = (await res.json()) as AtmosphereResponse;
+    private async init() {
+      try {
+        const res = await fetch("/api/atmosphere.json");
+        if (!res.ok) throw new Error("Failed");
+        const data = (await res.json()) as AtmosphereResponse;
 
-      // Time Formatting
-      const time = new Date(data.localTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      timeEl.innerText = `${time} in Belgrade`;
+        this.belgradeTime = new Date(data.localTime);
+        this.updateUI(data);
+        this.startClock();
+      } catch (e) {
+        if (this.els.status) this.els.status.innerText = "Offline";
+      }
+    }
 
-      // Status Logic (Colors handled via classes)
-      if (data.status === "sleeping") {
-        dot.classList.add("sleeping");
-        ping.classList.add("hidden");
-        weatherEl.innerText = `Stevan is likely sleeping (${data.temp}°C)`;
+    private updateUI(data: AtmosphereResponse) {
+      if (!this.els.time || !this.els.status || !this.els.dot) return;
+
+      // Status Colors
+      const isSleeping = data.status === "sleeping";
+      const activeColor = "#10b981"; // Emerald
+      const sleepColor = "#f59e0b"; // Amber
+
+      this.els.dot.style.backgroundColor = isSleeping ? sleepColor : activeColor;
+      if (this.els.ping) this.els.ping.style.backgroundColor = isSleeping ? sleepColor : activeColor;
+
+      if (isSleeping) {
+        this.els.ping?.classList.add("hidden");
+        this.els.status.innerText = `Stevan is likely sleeping (${data.temp}°C)`;
       } else {
-        dot.classList.add("active");
-        ping.classList.add("active");
-        weatherEl.innerText = `Stevan is active (${data.temp}°C)`;
+        this.els.ping?.classList.remove("hidden");
+        this.els.status.innerText = `Stevan is active (${data.temp}°C)`;
       }
-
-      // Rain / Snow context
-      // Codes: 51-67 (Rain), 71-77 (Snow)
-      if (data.code >= 51 && data.code <= 67) {
-        weatherEl.innerText += " • Raining";
-      } else if (data.code >= 71 && data.code <= 77) {
-        weatherEl.innerText += " • Snowing";
-      }
-    } catch (e) {
-      console.error("Atmosphere widget failed to load", e);
-      timeEl.innerText = "Belgrade, RS";
-      weatherEl.innerText = "Unavailable";
     }
-  };
 
-  // Run immediately
-  updateAtmosphere();
+    private startClock() {
+      setInterval(() => {
+        if (!this.belgradeTime) return;
+        // Advance time manually since we fetched a snapshot
+        this.belgradeTime.setSeconds(this.belgradeTime.getSeconds() + 1);
+
+        const fmt = (d: Date) => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        if (this.els.time) this.els.time.innerText = fmt(this.belgradeTime);
+        if (this.els.stevanTime) this.els.stevanTime.innerText = fmt(this.belgradeTime);
+        if (this.els.userTime) this.els.userTime.innerText = fmt(new Date());
+      }, 1000);
+    }
+
+    private bindEvents() {
+      // Toggle Popover
+      this.els.trigger?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.toggle();
+      });
+
+      // Close on outside click
+      document.addEventListener("click", (e) => {
+        if (
+          this.isOpen &&
+          !this.els.popover?.contains(e.target as Node) &&
+          !this.els.trigger?.contains(e.target as Node)
+        ) {
+          this.toggle(false);
+        }
+      });
+
+      // Timezone Simulation Buttons
+      document.querySelectorAll(".tz-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const offset = parseInt((e.currentTarget as HTMLElement).dataset.offset || "0");
+          this.simulateZone(offset);
+        });
+      });
+    }
+
+    private toggle(force?: boolean) {
+      this.isOpen = force !== undefined ? force : !this.isOpen;
+
+      if (this.isOpen) {
+        this.els.popover?.classList.remove("invisible", "opacity-0", "scale-95");
+        this.els.popover?.classList.add("opacity-100", "scale-100");
+        // Initial simulation for current user time
+        // Rough estimate, better to just show current local time
+        this.simulateZone(0, true);
+      } else {
+        this.els.popover?.classList.remove("opacity-100", "scale-100");
+        this.els.popover?.classList.add("opacity-0", "scale-95");
+        setTimeout(() => this.els.popover?.classList.add("invisible"), 200);
+      }
+    }
+
+    private simulateZone(offset: number, isLocal = false) {
+      let simulatedTime: Date;
+
+      if (isLocal) {
+        simulatedTime = new Date();
+      } else {
+        // Just a visual simulation for the "You" time in the popover
+        const now = new Date();
+        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        simulatedTime = new Date(utc + 3600000 * offset);
+      }
+
+      if (this.els.userTime) {
+        this.els.userTime.innerText =
+          simulatedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + (isLocal ? "" : " (Sim)");
+        this.els.userTime.classList.add("text-[var(--color-primary)]");
+      }
+
+      // Calculate overlap logic (simple heuristic)
+      if (this.belgradeTime) {
+        const diff = Math.abs(this.belgradeTime.getHours() - simulatedTime.getHours());
+        // Simple overlap visual: If diff is small, bars overlap more
+        // Normalize diff to 0-1 range where 0 diff = 100% width
+        const overlapPercent = Math.max(10, 100 - diff * 4);
+
+        if (this.els.overlap) {
+          this.els.overlap.style.width = `${overlapPercent}%`;
+          // Color code based on "good time to call" (9am-5pm overlap)
+          // This is a rough heuristic
+          const isGood = diff < 4;
+          this.els.overlap.style.backgroundColor = isGood ? "var(--color-primary)" : "var(--color-muted)";
+        }
+
+        if (this.els.msg) {
+          const isGood = diff < 4;
+          this.els.msg.innerText = isGood
+            ? "Great overlap! Good time to connect."
+            : "Significant time difference. Expect async replies.";
+          this.els.msg.style.color = isGood ? "var(--color-primary)" : "var(--color-destructive)";
+        }
+      }
+    }
+  }
+
+  // Init
+  new AtmosphereWidget();
 </script>
-
-<style>
-  .atmosphere-card {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem; /* 12px */
-    padding: 0.5rem 1rem; /* 8px 16px */
-    border-radius: 9999px;
-    border: 1px solid var(--color-border);
-    background-color: var(--color-card);
-    color: var(--color-card-foreground);
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
-    cursor: default;
-    width: fit-content;
-  }
-
-  .atmosphere-card:hover {
-    background-color: var(--color-accent);
-    border-color: var(--color-ring);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  .status-container {
-    position: relative;
-    display: flex;
-    height: 0.5rem; /* 8px */
-    width: 0.5rem;
-  }
-
-  .status-dot {
-    position: relative;
-    display: inline-flex;
-    height: 0.5rem;
-    width: 0.5rem;
-    border-radius: 50%;
-    background-color: var(--color-muted-foreground); /* Default gray */
-  }
-
-  .status-dot.active {
-    background-color: #10b981; /* Emerald-500 - hardcoded for status semantic meaning */
-  }
-
-  .status-dot.sleeping {
-    background-color: #f59e0b; /* Amber-500 */
-  }
-
-  .ping-effect {
-    position: absolute;
-    display: inline-flex;
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    opacity: 0.75;
-    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  .ping-effect.active {
-    background-color: #34d399; /* Emerald-400 */
-  }
-
-  .ping-effect.hidden {
-    display: none;
-  }
-
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-  }
-
-  .time-text {
-    font-weight: 600;
-    font-size: 0.75rem; /* 12px */
-    color: var(--color-foreground);
-  }
-
-  .weather-text {
-    font-size: 0.625rem; /* 10px */
-    color: var(--color-muted-foreground);
-    margin-top: 2px;
-  }
-
-  .icon-wrapper {
-    margin-left: 0.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  @keyframes ping {
-    75%,
-    100% {
-      transform: scale(2);
-      opacity: 0;
-    }
-  }
-</style>

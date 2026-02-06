@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
 
-const variants = cva("leading-relaxed", {
+const textVariants = cva("leading-relaxed", {
   defaultVariants: {
     size: "base",
     variant: "default",
@@ -26,13 +26,13 @@ const variants = cva("leading-relaxed", {
   },
 });
 
-interface Props extends HTMLAttributes<"a">, VariantProps<typeof variants> {
-  as?: string;
+export interface Props extends HTMLAttributes<"p">, VariantProps<typeof textVariants> {
+  as?: any;
 }
 
 const { as: Tag = "p", class: className, size, variant, ...props } = Astro.props;
 ---
 
-<Tag class:list={[cn(variants({ size, variant }), className)]} {...props}>
+<Tag class:list={[cn(textVariants({ size, variant }), className)]} {...props}>
   <slot />
 </Tag>

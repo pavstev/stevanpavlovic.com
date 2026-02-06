@@ -1,5 +1,5 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
+import Icon from "../atoms/icon.astro";
 ---
 
 <div class="group/widget relative">
@@ -21,13 +21,13 @@ import AppIcon from "../atoms/app-icon.astro";
     <div class="content-wrapper flex flex-col items-start leading-none">
       <span class="time-text text-xs font-bold text-(--color-foreground) tabular-nums" id="atmo-time">Loading...</span>
       <span class="weather-text mt-0.5 text-[10px] text-(--color-muted-foreground)" id="atmo-status"
-        >Checking status...</span
+      >Checking status...</span
       >
     </div>
 
     <!-- Globe Icon -->
     <div class="icon-wrapper text-(--color-muted-foreground) transition-colors group-hover:text-(--color-primary)">
-      <AppIcon name="mdi:earth" size="sm" />
+      <Icon name="mdi:earth" size="sm" />
     </div>
   </button>
 
@@ -40,7 +40,7 @@ import AppIcon from "../atoms/app-icon.astro";
       <div class="flex items-center justify-between border-b border-(--color-border) pb-3">
         <h4 class="text-sm font-bold text-(--color-foreground)">Time Check</h4>
         <span class="rounded-full bg-(--color-secondary) px-2 py-0.5 text-[10px] text-(--color-secondary-foreground)"
-          >Belgrade, RS</span
+        >Belgrade, RS</span
         >
       </div>
 
@@ -49,7 +49,7 @@ import AppIcon from "../atoms/app-icon.astro";
         <!-- My Time -->
         <div class="flex items-center justify-between text-xs">
           <div class="flex items-center gap-2">
-            <AppIcon class="text-(--color-primary)" name="mdi:account-circle" size="sm" />
+            <Icon class="text-(--color-primary)" name="mdi:account-circle" size="sm" />
             <span class="font-medium text-(--color-foreground)">Stevan</span>
           </div>
           <span class="font-mono text-(--color-muted-foreground)" id="popover-stevan-time">--:--</span>
@@ -67,7 +67,7 @@ import AppIcon from "../atoms/app-icon.astro";
         <!-- User Time -->
         <div class="flex items-center justify-between text-xs">
           <div class="flex items-center gap-2">
-            <AppIcon class="text-(--color-muted-foreground)" name="mdi:account-outline" size="sm" />
+            <Icon class="text-(--color-muted-foreground)" name="mdi:account-outline" size="sm" />
             <span class="font-medium text-(--color-foreground)">You</span>
           </div>
           <span class="font-mono text-(--color-muted-foreground)" id="popover-user-time">--:--</span>
@@ -80,7 +80,7 @@ import AppIcon from "../atoms/app-icon.astro";
           class="tz-btn group flex flex-col items-center justify-center gap-1 rounded-lg bg-(--color-secondary) p-2 text-xs transition-colors hover:bg-(--color-accent)"
           data-offset="-6"
         >
-          <AppIcon
+          <Icon
             class="text-(--color-muted-foreground) group-hover:text-(--color-primary)"
             name="mdi:briefcase-clock"
             size="sm"
@@ -91,7 +91,7 @@ import AppIcon from "../atoms/app-icon.astro";
           class="tz-btn group flex flex-col items-center justify-center gap-1 rounded-lg bg-(--color-secondary) p-2 text-xs transition-colors hover:bg-(--color-accent)"
           data-offset="8"
         >
-          <AppIcon
+          <Icon
             class="text-(--color-muted-foreground) group-hover:text-(--color-primary)"
             name="mdi:weather-sunset"
             size="sm"

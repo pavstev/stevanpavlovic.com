@@ -1,10 +1,10 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Icon as AstroIcon } from "astro-icon/components";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
 
-const variants = cva("shrink-0 transition-all duration-300", {
+const iconVariants = cva("shrink-0 transition-all duration-300", {
   defaultVariants: {
     size: "md",
     variant: "default",
@@ -26,7 +26,7 @@ const variants = cva("shrink-0 transition-all duration-300", {
   },
 });
 
-interface Props extends VariantProps<typeof variants> {
+export interface Props extends VariantProps<typeof iconVariants> {
   class?: string;
   name: string;
 }
@@ -34,4 +34,4 @@ interface Props extends VariantProps<typeof variants> {
 const { class: className, name, size, variant, ...props } = Astro.props;
 ---
 
-<Icon class:list={[cn(variants({ size, variant }), className)]} name={name} {...props} />
+<AstroIcon class:list={[cn(iconVariants({ size, variant }), className)]} name={name} {...props} />

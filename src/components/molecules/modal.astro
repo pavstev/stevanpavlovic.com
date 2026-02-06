@@ -1,6 +1,6 @@
 ---
 import { cn } from "../../lib/cn";
-import AppIcon from "./app-icon.astro";
+import Icon from "./icon.astro";
 
 interface Props {
   caption?: string;
@@ -50,7 +50,7 @@ const { caption, class: className, contentClass, id, showCloseButton = true, var
             )}
             type="button"
           >
-            <AppIcon name="mdi:close" size={variant === "card" ? "lg" : "xl"} />
+            <Icon name="mdi:close" size={variant === "card" ? "lg" : "xl"} />
           </button>
         )
       }

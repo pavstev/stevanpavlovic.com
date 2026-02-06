@@ -1,5 +1,13 @@
 import Worker from "./ai/worker?worker";
 
+interface MessageData {
+  message?: string;
+  progress?: number;
+  response?: string;
+  sources?: Source[];
+  status: string;
+}
+
 interface Source {
   title: string;
 }
@@ -85,9 +93,13 @@ export class RagChat {
             ${text}
           </div>
         `;
-    } else {
-      msg.className = "flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300";
-      msg.innerHTML = `
+      this.ui.messages?.appendChild(msg);
+      this.scrollToBottom();
+      return;
+    }
+
+    msg.className = "flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300";
+    msg.innerHTML = `
           <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive mt-1">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z" /></svg>
           </div>
@@ -95,8 +107,6 @@ export class RagChat {
             ${text}
           </div>
         `;
-    }
-
     this.ui.messages?.appendChild(msg);
     this.scrollToBottom();
   }
@@ -113,7 +123,7 @@ export class RagChat {
     });
   }
 
-  private handleMessage(e: MessageEvent): void {
+  private handleMessage(e: MessageEvent<MessageData>): void {
     const { message, progress, response, sources, status } = e.data;
 
     switch (status) {
@@ -125,7 +135,7 @@ export class RagChat {
         this.updateStatus("thinking");
         return;
       case "loading":
-        this.updateLoader(progress || 0, message);
+        this.updateLoader(progress || 0, String(message));
         return;
       case "ready":
         if (!this.isReady) {
@@ -147,7 +157,7 @@ export class RagChat {
 
     if (response) {
       // Add the bot response with typing effect
-      this.addBotResponse(response, sources);
+      this.addBotResponse(response, sources || []);
     }
   }
 
@@ -183,7 +193,7 @@ export class RagChat {
 
     this.worker = new Worker();
 
-    this.worker.addEventListener("message", (e) => {
+    this.worker.addEventListener("message", (e: MessageEvent<MessageData>) => {
       this.handleMessage(e);
     });
 
@@ -204,11 +214,13 @@ export class RagChat {
       this.ui.window?.classList.remove("invisible", "opacity-0", "translate-y-8", "scale-95");
       this.ui.toggle?.classList.add("scale-0", "opacity-0");
 
-      if (!this.worker) this.initWorker();
-      else
-        setTimeout(() => {
-          this.ui.input.focus();
-        }, 100);
+      if (!this.worker) {
+        this.initWorker();
+        return;
+      }
+      setTimeout(() => {
+        this.ui.input.focus();
+      }, 100);
       return;
     }
 
@@ -220,6 +232,7 @@ export class RagChat {
   }
 
   private updateLoader(progress: number, message: string): void {
+    if (!this.ui.loaderBar) return;
     this.ui.loaderBar.style.width = `${progress}%`;
     if (this.ui.loaderText) this.ui.loaderText.textContent = message;
   }

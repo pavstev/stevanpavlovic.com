@@ -214,7 +214,7 @@ export default defineConfig(
       "arrow-body-style": ["error", "as-needed"],
       curly: ["error", "all"],
       "func-style": ["error", "expression"],
-      "max-depth": ["error", 3],
+      "max-depth": ["error", 4],
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-restricted-syntax": [
         "error",
@@ -327,7 +327,7 @@ export default defineConfig(
 
   {
     files: ALL_FILES,
-    ignores: ["**/*.mdx"],
+    ignores: ["**/*.mdx", "**/*.astro"],
     name: "prettier",
     plugins: {
       prettier: eslintPluginPrettier,

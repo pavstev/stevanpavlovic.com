@@ -10,7 +10,9 @@
       {
         "name": "@astrojs/ts-plugin"
       }
-    ]
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   },
   "exclude": ["dist"],
   "extends": "astro/tsconfigs/strict",

@@ -45,9 +45,9 @@ const animateValue = (obj: HTMLElement, start: number, end: number, duration: nu
 
     if (progress < 1) {
       window.requestAnimationFrame(step);
-    } else {
-      obj.textContent = end.toFixed(decimalPlaces);
+      return;
     }
+    obj.textContent = end.toFixed(decimalPlaces);
   };
   window.requestAnimationFrame(step);
 };

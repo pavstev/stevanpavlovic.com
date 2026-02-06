@@ -4,10 +4,9 @@ import type { HTMLAttributes } from "astro/types";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
-import AppIcon from "./app-icon.astro";
 
-const variants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
+const buttonVariants = cva(
+  "inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
   {
     defaultVariants: {
       size: "md",
@@ -37,53 +36,22 @@ const variants = cva(
   },
 );
 
-interface Props extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type">, VariantProps<typeof variants> {
+export interface Props
+  extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type">, VariantProps<typeof buttonVariants> {
   as?: any;
-  external?: boolean;
-  icon?: string;
-  withArrow?: boolean;
 }
 
-const { as, class: className, external, href, icon, size, variant, withArrow, ...props } = Astro.props;
+const { as, class: className, href, size, variant, ...props } = Astro.props;
 
-const Element = as || (href ? "a" : "button");
-const hrefString = typeof href === "string" ? href : href?.toString();
-const isExternal = external ?? (hrefString?.startsWith("http") || hrefString?.startsWith("mailto"));
-const target = isExternal ? "_blank" : undefined;
-const rel = isExternal ? "noopener noreferrer" : undefined;
-
-const Tag = Element as any;
-const elementProps = {
-  href,
-  rel,
-  target,
-  ...props,
-};
-
-if (Element === "button" && !elementProps.type) {
-  elementProps["type"] = "button";
-}
+const Tag = as || (href ? "a" : "button");
+const isButton = Tag === "button";
 ---
 
-<Tag class:list={[cn(variants({ size, variant }), { group: icon || withArrow }), className]} {...elementProps}>
-  {
-    icon && (
-      <AppIcon
-        class="transition-transform duration-300 group-hover:scale-110"
-        name={icon}
-        size={size === "sm" ? "sm" : "md"}
-      />
-    )
-  }
+<Tag
+  class:list={[cn(buttonVariants({ size, variant }), className)]}
+  href={href}
+  type={isButton ? "button" : undefined}
+  {...props}
+>
   <slot />
-  {
-    withArrow && (
-      <AppIcon
-        class="text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-        name="mdi:arrow-top-right"
-        size="sm"
-      />
-    )
-  }
-  {isExternal && !withArrow && size !== "icon" && <span class="sr-only">(opens in new tab)</span>}
 </Tag>

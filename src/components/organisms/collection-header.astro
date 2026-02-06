@@ -1,6 +1,6 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
 import Heading from "../atoms/heading.astro";
+import Icon from "../atoms/icon.astro";
 import Stack from "../atoms/stack.astro";
 import Text from "../atoms/text.astro";
 
@@ -19,7 +19,7 @@ const { description, icon, level = 1, title } = Astro.props;
     {
       icon && (
         <div class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
-          <AppIcon name={icon} size="lg" />
+          <Icon name={icon} size="lg" />
         </div>
       )
     }

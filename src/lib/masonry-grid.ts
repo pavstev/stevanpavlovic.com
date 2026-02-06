@@ -13,9 +13,8 @@ export const initMasonry = (): void => {
       // On mobile, just ensure items are direct children
       const items = Array.from(grid.querySelectorAll(".masonry-item"));
       for (const item of items) {
-        if (item.parentElement !== grid) {
-          grid.appendChild(item);
-        }
+        if (item.parentElement === grid) continue;
+        grid.appendChild(item);
       }
       grid.style.setProperty("--masonry-cols", "1");
       continue;

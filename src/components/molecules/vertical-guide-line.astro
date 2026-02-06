@@ -1,0 +1,15 @@
+---
+import { cn } from "../../lib/cn";
+import Separator from "../atoms/separator.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Separator
+  class:list={[cn("absolute top-0 bottom-0 -left-8 hidden bg-border/50 xl:block", className)]}
+  orientation="vertical"
+/>

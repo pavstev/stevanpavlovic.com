@@ -1,5 +1,5 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
+import Icon from "../atoms/icon.astro";
 
 interface Props {
   variant?: "desktop" | "mobile";
@@ -12,7 +12,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
 <div class="search-dropdown-container relative" data-search-variant={variant} id={`${id}-container`}>
   {/* Search Input */}
   <div class="group/search relative flex items-center transition-all duration-300">
-    <AppIcon
+    <Icon
       class="absolute left-3 transition-colors group-focus-within/search:text-primary md:size-4"
       name="mdi:magnify"
       size="lg"
@@ -33,7 +33,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
         id={`${id}-clear`}
         type="button"
       >
-        <AppIcon name="mdi:close" size="sm" />
+        <Icon name="mdi:close" size="sm" />
       </button>
       <div class="mx-2 h-4 w-px bg-foreground/10"></div>
       <kbd

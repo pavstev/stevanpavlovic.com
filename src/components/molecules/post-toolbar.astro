@@ -1,10 +1,10 @@
 ---
 import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib";
-import AppIcon from "../atoms/app-icon.astro";
-import ToolbarItem from "../atoms/toolbar-item.astro";
-import ToolbarLogo from "../atoms/toolbar-logo.astro";
+import Icon from "../atoms/icon.astro";
 import PostDescription from "./post-description.astro";
 import PostTags from "./post-tags.astro";
+import ToolbarItem from "./toolbar-item.astro";
+import ToolbarLogo from "./toolbar-logo.astro";
 
 interface Props {
   description?: string;
@@ -60,7 +60,7 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
                   target="_blank"
                 >
                   <span class="truncate">{item.value}</span>
-                  <AppIcon
+                  <Icon
                     class="size-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
                     name="mdi:arrow-top-right"
                   />

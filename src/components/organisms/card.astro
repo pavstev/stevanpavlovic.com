@@ -6,14 +6,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import type { Tag } from "../../lib";
 
-import AppIcon from "../atoms/app-icon.astro";
 import Badge from "../atoms/badge.astro";
-import FormattedDate from "../atoms/formatted-date.astro";
+import CardSpotlight from "../atoms/card-spotlight.astro";
 import Heading from "../atoms/heading.astro";
-import IconBox from "../atoms/icon-box.astro";
+import Icon from "../atoms/icon.astro";
 import Text from "../atoms/text.astro";
 import CardImage from "../molecules/card-image.astro";
-import CardSpotlight from "../molecules/card-spotlight.astro";
+import FormattedDate from "../molecules/formatted-date.astro";
+import IconBox from "../molecules/icon-box.astro";
 import Tags from "../molecules/tags.astro";
 
 const variants = cva(
@@ -216,12 +216,12 @@ const isRowLayout = list && !icon;
                       },
                     ]}
                   >
-                    <AppIcon name="mdi:arrow-top-right" size="sm" />
+                    <Icon name="mdi:arrow-top-right" size="sm" />
                   </div>
                   {actionLabel && (
                     <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                       {actionLabel}
-                      <AppIcon name={actionIcon} size="sm" />
+                      <Icon name={actionIcon} size="sm" />
                     </div>
                   )}
                 </div>
@@ -270,7 +270,7 @@ const isRowLayout = list && !icon;
             )}
 
             {icon && url && (
-              <AppIcon
+              <Icon
                 class="ml-auto text-muted-foreground group-hover:text-primary"
                 name="mdi:arrow-top-right"
                 size="sm"

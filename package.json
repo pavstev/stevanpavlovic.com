@@ -28,7 +28,8 @@
     "validate": "pnpm lint && pnpm check && pnpm knip",
     "all": "pnpm validate && pnpm build",
     "unlighthouse": "unlighthouse",
-    "extract-links": "tsx scripts/extract-links.ts"
+    "extract-links": "tsx scripts/extract-links.ts",
+    "mini-all": "pnpm eslint ./src/components/ --cache --fix --max-warnings 0 && pnpm check && pnpm knip"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",

@@ -17,14 +17,18 @@ export const setupDescriptionToggles = (): void => {
     // Check if text is truncated
     const isTruncated = text.scrollHeight > text.offsetHeight;
 
-    if (isTruncated) {
-      toggleWrapper.classList.remove("hidden");
-      toggleWrapper.classList.add("flex");
-    } else {
+    if (!isTruncated) {
       toggleWrapper.classList.add("hidden");
       toggleWrapper.classList.remove("flex");
       (details.querySelector("summary") as HTMLElement).style.cursor = "default";
+      if (isCurrentlyOpen) {
+        (details as HTMLDetailsElement).open = true;
+      }
+      continue;
     }
+
+    toggleWrapper.classList.remove("hidden");
+    toggleWrapper.classList.add("flex");
 
     // Restore state
     if (isCurrentlyOpen) {

@@ -1,10 +1,11 @@
 ---
 import Button from "../components/atoms/button.astro";
+import Container from "../components/atoms/container.astro";
 import Heading from "../components/atoms/heading.astro";
+import Icon from "../components/atoms/icon.astro";
+import Meteors from "../components/atoms/meteors.astro";
 import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import Meteors from "../components/meteor.astro";
-import Container from "../components/molecules/container.astro";
 
 const title = "404 - Lost in Space";
 const description = "The coordinates you entered do not correspond to a known sector.";
@@ -46,17 +47,12 @@ const description = "The coordinates you entered do not correspond to a known se
 
         {/* Actions */}
         <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:rocket-launch-outline" size="lg" variant="primary">
+          <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="primary">
+            <Icon name="mdi:rocket-launch-outline" size="md" />
             Warp Home
           </Button>
-          <Button
-            as="a"
-            class="w-full sm:w-auto"
-            href="javascript:history.back()"
-            icon="mdi:arrow-u-left-bottom"
-            size="lg"
-            variant="outline"
-          >
+          <Button as="a" class="w-full sm:w-auto" href="javascript:history.back()" size="lg" variant="outline">
+            <Icon name="mdi:arrow-u-left-bottom" size="md" />
             Go Back
           </Button>
         </div>

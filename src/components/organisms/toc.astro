@@ -1,5 +1,5 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
+import Icon from "../atoms/icon.astro";
 import Text from "../atoms/text.astro";
 
 interface Props {
@@ -15,7 +15,7 @@ const filteredHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
   class="toc-container glass sticky top-24 hidden w-full max-w-[260px] rounded-2xl border border-white/5 p-5 shadow-lg lg:block"
 >
   <div class="mb-4 flex items-center gap-2 border-b border-border/50 pb-2">
-    <AppIcon class="text-primary" name="mdi:table-of-contents" size="sm" />
+    <Icon class="text-primary" name="mdi:table-of-contents" size="sm" />
     <Text class="font-bold tracking-widest uppercase" size="xs" variant="muted"> On This Page </Text>
   </div>
 

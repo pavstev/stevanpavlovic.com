@@ -1,10 +1,11 @@
 ---
 import Button from "../atoms/button.astro";
+import Container from "../atoms/container.astro";
 import Heading from "../atoms/heading.astro";
+import Icon from "../atoms/icon.astro";
+import Meteors from "../atoms/meteors.astro";
 import Text from "../atoms/text.astro";
 import LayoutRoot from "../layout/layout-root.astro";
-import Meteors from "../meteor.astro";
-import Container from "../molecules/container.astro";
 
 interface Props {
   code: number | string;
@@ -106,17 +107,12 @@ const errorMessage = error instanceof Error ? error.message : typeof error === "
         {/* Actions */}
         <slot name="actions">
           <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:home" size="lg" variant="primary">
+            <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="primary">
+              <Icon name="mdi:home" size="md" />
               Return Home
             </Button>
-            <Button
-              as="a"
-              class="w-full sm:w-auto"
-              href="javascript:history.back()"
-              icon="mdi:arrow-left"
-              size="lg"
-              variant="outline"
-            >
+            <Button as="a" class="w-full sm:w-auto" href="javascript:history.back()" size="lg" variant="outline">
+              <Icon name="mdi:arrow-left" size="md" />
               Go Back
             </Button>
           </div>

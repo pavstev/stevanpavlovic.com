@@ -20,27 +20,23 @@ export const initCopyButtons = (): void => {
     const button = idleTemplate.cloneNode(true) as HTMLButtonElement;
     codeBlock.appendChild(button);
 
-    button.addEventListener("click", async () => {
+    button.addEventListener("click", () => {
       const code = codeBlock.querySelector("code");
       if (!code) return;
 
-      try {
-        await navigator.clipboard.writeText(code.innerText);
+      void navigator.clipboard.writeText(code.innerText);
 
-        // Swap to success state by cloning the success template's inner content
-        const originalHTML = button.innerHTML;
-        const successHTML = successTemplate.innerHTML;
+      // Swap to success state by cloning the success template's inner content
+      const originalHTML = button.innerHTML;
+      const successHTML = successTemplate.innerHTML;
 
-        button.innerHTML = successHTML;
-        button.classList.add("border-green-500/50");
+      button.innerHTML = successHTML;
+      button.classList.add("border-green-500/50");
 
-        setTimeout(() => {
-          button.innerHTML = originalHTML;
-          button.classList.remove("border-green-500/50");
-        }, 2000);
-      } catch {
-        console.warn("Failed to copy code to clipboard");
-      }
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.classList.remove("border-green-500/50");
+      }, 2000);
     });
   }
 };

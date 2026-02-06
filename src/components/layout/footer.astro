@@ -1,9 +1,9 @@
 ---
 import { SOCIALS } from "../../config";
 import { getCopyrightText } from "../../lib/footer";
-import AppIcon from "../atoms/app-icon.astro";
+import Container from "../atoms/container.astro";
+import Icon from "../atoms/icon.astro";
 import Text from "../atoms/text.astro";
-import Container from "../molecules/container.astro";
 ---
 
 <footer class="relative mt-6 mb-3 w-full px-4 md:px-0" transition:persist>
@@ -28,7 +28,7 @@ import Container from "../molecules/container.astro";
                 rel="noreferrer"
                 target="_blank"
               >
-                <AppIcon
+                <Icon
                   class="group-hover:text-accent group-hover:drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
                   name={social.icon}
                   size="md"
@@ -43,14 +43,14 @@ import Container from "../molecules/container.astro";
           data-tooltip="RSS Feed"
           href="/rss.xml"
         >
-          <AppIcon name="mdi:rss" size="md" />
+          <Icon name="mdi:rss" size="md" />
         </a>
         <a
           class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
           data-tooltip="Sitemap"
           href="/sitemap-index.xml"
         >
-          <AppIcon name="mdi:sitemap" size="md" />
+          <Icon name="mdi:sitemap" size="md" />
         </a>
       </div>
     </div>

@@ -1,6 +1,6 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
-import ToolbarItem from "../atoms/toolbar-item.astro";
+import Icon from "../atoms/icon.astro";
+import ToolbarItem from "./toolbar-item.astro";
 
 interface Props {
   description: string | undefined;
@@ -24,13 +24,13 @@ const { description } = Astro.props;
                   <div class="inline-flex items-center gap-2 border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-primary uppercase transition-all duration-300 hover:bg-primary/10 hover:shadow-[0_0_15px_var(--color-primary)]">
                     <span class="size-1 animate-pulse-neon rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
                     Expand Record
-                    <AppIcon name="mdi:chevron-down" size="sm" />
+                    <Icon name="mdi:chevron-down" size="sm" />
                   </div>
                 </div>
                 <div class="hidden group-open/description:block">
                   <div class="inline-flex items-center gap-2 border border-foreground/10 bg-foreground/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-foreground/50 uppercase transition-all duration-300 hover:border-primary/20 hover:text-primary">
                     Collapse
-                    <AppIcon name="mdi:chevron-up" size="sm" />
+                    <Icon name="mdi:chevron-up" size="sm" />
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 ---
-import AppIcon from "../atoms/app-icon.astro";
+import Icon from "../atoms/icon.astro";
 
 /**
  * RAG Chatbot UI
@@ -21,7 +21,7 @@ import AppIcon from "../atoms/app-icon.astro";
         <div
           class="relative flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-border/50"
         >
-          <AppIcon class="size-6" name="mdi:robot-happy-outline" />
+          <Icon class="size-6" name="mdi:robot-happy-outline" />
           <span
             class="absolute right-0 bottom-0 block size-2.5 rounded-full bg-green-500 ring-2 ring-card"
             id="rag-status-indicator"></span>
@@ -35,7 +35,7 @@ import AppIcon from "../atoms/app-icon.astro";
         class="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         id="rag-close"
       >
-        <AppIcon name="mdi:close" size="sm" />
+        <Icon name="mdi:close" size="sm" />
       </button>
     </div>
 
@@ -47,7 +47,7 @@ import AppIcon from "../atoms/app-icon.astro";
       <!-- Intro Message -->
       <div class="animate-in fade-in slide-in-from-bottom-2 flex gap-3 duration-500">
         <div class="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-          <AppIcon name="mdi:robot" size="sm" />
+          <Icon name="mdi:robot" size="sm" />
         </div>
         <div
           class="max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-4 py-3 text-sm leading-relaxed text-foreground shadow-sm"
@@ -77,7 +77,7 @@ import AppIcon from "../atoms/app-icon.astro";
           id="rag-submit"
           type="submit"
         >
-          <AppIcon name="mdi:send" size="sm" />
+          <Icon name="mdi:send" size="sm" />
         </button>
       </form>
       <div class="mt-2 flex justify-center">
@@ -104,7 +104,7 @@ import AppIcon from "../atoms/app-icon.astro";
     class="group pointer-events-auto flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_4px_14px_0_rgba(0,0,0,0.39)] transition-all duration-300 hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.23)] active:scale-95"
     id="rag-toggle"
   >
-    <AppIcon class="size-6 transition-transform duration-500 group-hover:rotate-12" name="mdi:sparkles" />
+    <Icon class="size-6 transition-transform duration-500 group-hover:rotate-12" name="mdi:sparkles" />
   </button>
 </div>
 

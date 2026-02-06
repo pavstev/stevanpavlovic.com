@@ -29,12 +29,11 @@ export const initModals = (): void => {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === "attributes" && mutation.attributeName === "open") {
-          if (dialog.open) {
-            document.body.style.overflow = "hidden";
-            // force focus?
-          } else {
+          if (!dialog.open) {
             document.body.style.overflow = "";
+            continue;
           }
+          document.body.style.overflow = "hidden";
         }
       }
     });

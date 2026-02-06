@@ -184,11 +184,11 @@ const mergedConfig = { ...{ injectGlobalStyles: true, locale: "en-US", themeTogg
 
 // Helper to determine status color
 const getStatusColor = (status: string) => {
-    switch(status) {
-        case 'available': return { bg: 'bg-green-100 dark:bg-green-900/30', dot: 'bg-green-500', ping: 'bg-green-400', text: 'text-green-700 dark:text-green-400' };
-        case 'busy': return { bg: 'bg-red-100 dark:bg-red-900/30', dot: 'bg-red-500', ping: 'bg-red-400', text: 'text-red-700 dark:text-red-400' };
-        default: return { bg: 'bg-yellow-100 dark:bg-yellow-900/30', dot: 'bg-yellow-500', ping: 'bg-yellow-400', text: 'text-yellow-700 dark:text-yellow-400' };
-    }
+  switch(status) {
+  case 'available': return { bg: 'bg-green-100 dark:bg-green-900/30', dot: 'bg-green-500', ping: 'bg-green-400', text: 'text-green-700 dark:text-green-400' };
+  case 'busy': return { bg: 'bg-red-100 dark:bg-red-900/30', dot: 'bg-red-500', ping: 'bg-red-400', text: 'text-red-700 dark:text-red-400' };
+  default: return { bg: 'bg-yellow-100 dark:bg-yellow-900/30', dot: 'bg-yellow-500', ping: 'bg-yellow-400', text: 'text-yellow-700 dark:text-yellow-400' };
+  }
 };
 const statusColors = getStatusColor(mergedProfile.status || 'available');
 ---
@@ -198,7 +198,7 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
   Based on Shadcn UI (Zinc Theme).
 -->
 {mergedConfig.injectGlobalStyles && (
-<style is:global>
+  <style is:global>
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -250,7 +250,7 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
   .text-foreground { color: hsl(var(--foreground)); }
   .text-muted-foreground { color: hsl(var(--muted-foreground)); }
   .border-border { border-color: hsl(var(--border)); }
-</style>
+  </style>
 )}
 
 <!-- Load Icons (Phosphor) -->
@@ -280,8 +280,8 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
           </div>
           {mergedConfig.themeToggleEnabled && (
             <button aria-label="Toggle theme" class="cursor-pointer rounded-full bg-[hsl(var(--secondary))] p-2 text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--muted))]" id="theme-toggle">
-                <i class="ph-fill ph-moon text-xl dark:hidden"></i>
-                <i class="ph-fill ph-sun hidden text-xl dark:block"></i>
+              <i class="ph-fill ph-moon text-xl dark:hidden"></i>
+              <i class="ph-fill ph-sun hidden text-xl dark:block"></i>
             </button>
           )}
         </div>
@@ -298,15 +298,15 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
         <div class="mt-8 flex gap-3">
           {mergedProfile.buttons?.downloadCv?.show && (
             <a class="inline-flex items-center justify-center rounded-md bg-[hsl(var(--primary))] px-6 py-2.5 text-sm font-medium text-[hsl(var(--primary-foreground))] shadow-sm transition-colors hover:bg-[hsl(var(--primary))]/90 focus-visible:ring-1 focus-visible:ring-[hsl(var(--ring))] focus-visible:outline-none" href={mergedProfile.cvLink}>
-                {mergedProfile.buttons.downloadCv.label}
+              {mergedProfile.buttons.downloadCv.label}
             </a>
           )}
           {mergedProfile.buttons?.copyEmail?.show && (
             <button
-                class="inline-flex cursor-pointer items-center justify-center rounded-md border border-[hsl(var(--input))] bg-transparent px-6 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
-                data-email={mergedProfile.email}
-                onclick="navigator.clipboard.writeText(this.dataset.email); const original = this.innerText; this.innerText = 'Copied!'; setTimeout(() => this.innerText = original, 2000);">
-                {mergedProfile.buttons.copyEmail.label}
+              class="inline-flex cursor-pointer items-center justify-center rounded-md border border-[hsl(var(--input))] bg-transparent px-6 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
+              data-email={mergedProfile.email}
+              onclick="navigator.clipboard.writeText(this.dataset.email); const original = this.innerText; this.innerText = 'Copied!'; setTimeout(() => this.innerText = original, 2000);">
+              {mergedProfile.buttons.copyEmail.label}
             </button>
           )}
         </div>
@@ -318,9 +318,9 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
       <!-- Interactive Map Background -->
       {location.mapImage && <div class="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
         <img
-            alt="Location Map"
-            class="size-full object-cover opacity-80 grayscale transition-all group-hover:grayscale-0 dark:opacity-50"
-            src={location.mapImage}
+          alt="Location Map"
+          class="size-full object-cover opacity-80 grayscale transition-all group-hover:grayscale-0 dark:opacity-50"
+          src={location.mapImage}
         />
       </div>}
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -354,72 +354,72 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
 
       <div class="mt-4 grid grid-cols-4 gap-4">
         {stack.items.map((tech) => (
-            <div
-                class:list={`group flex aspect-square items-center justify-center rounded-md bg-[hsl(var(--secondary))] text-2xl transition-colors ${tech.colorClass || 'hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--primary-foreground))]'}`}
-                title={tech.name}
-            >
-                <i class:list={`ph-fill ${tech.icon}`}></i>
-            </div>
+          <div
+            class:list={`group flex aspect-square items-center justify-center rounded-md bg-[hsl(var(--secondary))] text-2xl transition-colors ${tech.colorClass || 'hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--primary-foreground))]'}`}
+            title={tech.name}
+          >
+            <i class:list={`ph-fill ${tech.icon}`}></i>
+          </div>
         ))}
       </div>
     </div>
 
     <!-- 4. Spotify / Activity (Tall) -->
     {mergedMusic.enabled && (
-    <div class="relative col-span-1 row-span-2 overflow-hidden rounded-(--radius) bg-zinc-900 p-6 text-white shadow-xl md:col-span-1">
+      <div class="relative col-span-1 row-span-2 overflow-hidden rounded-(--radius) bg-zinc-900 p-6 text-white shadow-xl md:col-span-1">
         <!-- Animated visualizer background -->
         <div class="absolute right-0 bottom-0 left-0 h-32 bg-gradient-to-t from-green-500/20 to-transparent"></div>
 
         <div class="relative z-10 flex h-full flex-col">
-            <div class="mb-6 flex items-center justify-between">
-                <i class="ph-fill ph-spotify-logo text-3xl text-[#1DB954]"></i>
-                {mergedMusic.isPlaying && (
-                    <div class="flex h-3 items-end gap-1">
-                        <span class="w-1 animate-[music-bar_1s_ease-in-out_infinite] bg-[#1DB954]"></span>
-                        <span class="w-1 animate-[music-bar_1.2s_ease-in-out_infinite_0.1s] bg-[#1DB954]"></span>
-                        <span class="w-1 animate-[music-bar_0.8s_ease-in-out_infinite_0.2s] bg-[#1DB954]"></span>
-                    </div>
-                )}
-            </div>
+          <div class="mb-6 flex items-center justify-between">
+            <i class="ph-fill ph-spotify-logo text-3xl text-[#1DB954]"></i>
+            {mergedMusic.isPlaying && (
+              <div class="flex h-3 items-end gap-1">
+                <span class="w-1 animate-[music-bar_1s_ease-in-out_infinite] bg-[#1DB954]"></span>
+                <span class="w-1 animate-[music-bar_1.2s_ease-in-out_infinite_0.1s] bg-[#1DB954]"></span>
+                <span class="w-1 animate-[music-bar_0.8s_ease-in-out_infinite_0.2s] bg-[#1DB954]"></span>
+              </div>
+            )}
+          </div>
 
             <!-- Album Art with Spin -->
             <div class="group relative mx-auto mb-6 size-32">
-                <div class="absolute inset-0 rounded-full bg-white/10 opacity-50 blur-md transition-opacity group-hover:opacity-100"></div>
-                <img
-                    alt="Album Art"
-                    class:list={[`size-full rounded-full border-2 border-white/10 object-cover shadow-2xl`,{"animate-[spin_8s_linear_infinite]": mergedMusic.isPlaying}]}
-                    src={mergedMusic.cover}
-                />
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="size-4 rounded-full border border-white/20 bg-zinc-900"></div>
-                </div>
+              <div class="absolute inset-0 rounded-full bg-white/10 opacity-50 blur-md transition-opacity group-hover:opacity-100"></div>
+              <img
+                alt="Album Art"
+                class:list={[`size-full rounded-full border-2 border-white/10 object-cover shadow-2xl`,{"animate-[spin_8s_linear_infinite]": mergedMusic.isPlaying}]}
+                src={mergedMusic.cover}
+              />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="size-4 rounded-full border border-white/20 bg-zinc-900"></div>
+              </div>
             </div>
 
             <div class="mt-auto space-y-2 text-center">
-                <h3 class="truncate text-lg font-bold">{mergedMusic.song}</h3>
-                <p class="text-sm text-white/60">{mergedMusic.artist}</p>
+              <h3 class="truncate text-lg font-bold">{mergedMusic.song}</h3>
+              <p class="text-sm text-white/60">{mergedMusic.artist}</p>
 
-                <div class="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/10">
-                    <div class="h-full w-[60%] rounded-full bg-[#1DB954]"></div>
-                </div>
+              <div class="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                <div class="h-full w-[60%] rounded-full bg-[#1DB954]"></div>
+              </div>
 
-                <div class="mt-4 flex items-center justify-center gap-4 pt-2">
-                    <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-back text-xl"></i></button>
-                    <button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-105">
-                        <i class:list={[`ph-fill text-xl`,{"ph-pause": mergedMusic.isPlaying, "ph-play": !mergedMusic.isPlaying}]}></i>
-                    </button>
-                    <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-forward text-xl"></i></button>
-                </div>
+              <div class="mt-4 flex items-center justify-center gap-4 pt-2">
+                <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-back text-xl"></i></button>
+                <button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-105">
+                  <i class:list={[`ph-fill text-xl`,{"ph-pause": mergedMusic.isPlaying, "ph-play": !mergedMusic.isPlaying}]}></i>
+                </button>
+                <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-forward text-xl"></i></button>
+              </div>
             </div>
         </div>
-    </div>
+      </div>
     )}
 
     <!-- 5. Projects Link -->
     <a class="group relative col-span-1 row-span-1 flex flex-col justify-between overflow-hidden rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 transition-all hover:bg-[hsl(var(--accent))]" href={mergedProjects.url}>
       <div class="flex items-start justify-between">
         <div class="rounded-full bg-[hsl(var(--secondary))] p-2.5">
-            <i class:list={`ph-duotone ${mergedProjects.icon} text-xl text-[hsl(var(--foreground))]`}></i>
+          <i class:list={`ph-duotone ${mergedProjects.icon} text-xl text-[hsl(var(--foreground))]`}></i>
         </div>
         <i class="ph-bold ph-arrow-up-right text-[hsl(var(--muted-foreground))] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
       </div>
@@ -431,31 +431,31 @@ const statusColors = getStatusColor(mergedProfile.status || 'available');
 
     <!-- 6. Connect / Socials -->
     <div class="col-span-1 row-span-1 flex flex-col justify-center gap-3 rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
-        {socials.map(social => (
-            <a class="flex items-center gap-3 rounded-lg border border-transparent p-2 transition-colors hover:bg-[hsl(var(--secondary))]" href={social.url}>
-                <i class:list={`ph-fill ${social.icon} text-xl ${social.colorClass || 'text-[hsl(var(--foreground))]'}`}></i>
-                <span class="text-sm font-medium text-[hsl(var(--foreground))]">{social.name}</span>
-                <i class="ph-bold ph-arrow-right ml-auto text-xs text-[hsl(var(--muted-foreground))]"></i>
-            </a>
-        ))}
+      {socials.map(social => (
+        <a class="flex items-center gap-3 rounded-lg border border-transparent p-2 transition-colors hover:bg-[hsl(var(--secondary))]" href={social.url}>
+          <i class:list={`ph-fill ${social.icon} text-xl ${social.colorClass || 'text-[hsl(var(--foreground))]'}`}></i>
+          <span class="text-sm font-medium text-[hsl(var(--foreground))]">{social.name}</span>
+          <i class="ph-bold ph-arrow-right ml-auto text-xs text-[hsl(var(--muted-foreground))]"></i>
+        </a>
+      ))}
     </div>
 
     <!-- 7. Newsletter (Wide) -->
     {mergedNewsletter.enabled && (
-    <div class="col-span-1 flex flex-col items-center justify-between gap-6 rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--primary))] p-8 text-[hsl(var(--primary-foreground))] shadow-lg md:col-span-2 md:flex-row lg:col-span-2">
-      <div class="space-y-2">
-        <h3 class="text-2xl font-bold">{mergedNewsletter.title}</h3>
-        <p class="max-w-sm text-[hsl(var(--primary-foreground))]/80">
-          {mergedNewsletter.description}
-        </p>
-      </div>
-      <div class="flex w-full max-w-sm items-center space-x-2">
-        <input class="flex h-10 w-full rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 py-2 text-sm text-[hsl(var(--foreground))] ring-offset-[hsl(var(--background))] file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" placeholder={mergedNewsletter.placeholder} type="email" />
-        <button class="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-[hsl(var(--secondary))] px-4 py-2 font-medium text-[hsl(var(--secondary-foreground))] transition-colors hover:bg-[hsl(var(--secondary))]/80">
+      <div class="col-span-1 flex flex-col items-center justify-between gap-6 rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--primary))] p-8 text-[hsl(var(--primary-foreground))] shadow-lg md:col-span-2 md:flex-row lg:col-span-2">
+        <div class="space-y-2">
+          <h3 class="text-2xl font-bold">{mergedNewsletter.title}</h3>
+          <p class="max-w-sm text-[hsl(var(--primary-foreground))]/80">
+            {mergedNewsletter.description}
+          </p>
+        </div>
+        <div class="flex w-full max-w-sm items-center space-x-2">
+          <input class="flex h-10 w-full rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 py-2 text-sm text-[hsl(var(--foreground))] ring-offset-[hsl(var(--background))] file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" placeholder={mergedNewsletter.placeholder} type="email" />
+          <button class="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-[hsl(var(--secondary))] px-4 py-2 font-medium text-[hsl(var(--secondary-foreground))] transition-colors hover:bg-[hsl(var(--secondary))]/80">
             {mergedNewsletter.buttonText}
-        </button>
+          </button>
+        </div>
       </div>
-    </div>
     )}
 
   </div>

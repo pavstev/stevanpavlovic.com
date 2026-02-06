@@ -1,4 +1,6 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import "../../styles/global.css";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/inter";
@@ -8,25 +10,45 @@ import { ClientRouter } from "astro:transitions";
 import Analytics from "../atoms/Analytics.astro";
 import MetaData from "../atoms/MetaData.astro";
 
-export interface Props {
+export interface Props extends HTMLAttributes<"html"> {
   description: string;
   image?: URL;
   lang?: string;
   title: string;
 }
 
-const { description, image, lang = "en", title } = Astro.props;
+const {
+  class: className,
+  description,
+  image,
+  lang = "en",
+  title,
+  ...rest
+} = Astro.props;
 ---
 
 <!doctype html>
-<html class="scroll-smooth" lang={lang}>
+<html
+  class="scroll-smooth"
+  lang={lang}
+  {...rest}
+>
   <head>
     <MetaData description={description} image={image} title={title} />
     <Analytics />
     <ClientRouter />
     <slot name="head" />
   </head>
-  <body class="bg-(--color-background) text-(--color-foreground) antialiased selection:bg-(--color-primary/20)">
+  <body
+    class:list={[
+      "bg-(--color-background)",
+      "text-(--color-foreground)",
+      "antialiased",
+      "selection:bg-(--color-primary/20)",
+      "selection:text-(--color-foreground)",
+      className,
+    ]}
+  >
     <slot />
   </body>
 </html>

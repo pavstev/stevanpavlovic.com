@@ -1,38 +1,94 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 import Container from "../atoms/Container.astro";
 import Grid from "../atoms/Grid.astro";
 import Stack from "../atoms/Stack.astro";
 
-export interface Props {
+export interface Props extends HTMLAttributes<"section"> {
   as?: "article" | "div" | "main" | "section";
   class?: string;
   gap?: number;
 }
 
-const { as: Tag = "section", class: className, gap = 8 } = Astro.props;
+const {
+  as: Tag = "section",
+  class: className,
+  gap = 8,
+  ...rest
+} = Astro.props;
+
 const hasSidebar = Astro.slots.has("sidebar");
+const hasCenteredContent = !hasSidebar;
 ---
 
-<Container as={Tag} class:list={[cn("relative z-10", className)]}>
+<Container
+  as={Tag}
+  class:list={[
+    cn(
+      "relative",
+      "z-10",
+      className,
+    ),
+  ]}
+  {...rest}
+>
   {hasSidebar ? (
     /* Smart Layout: Sidebar Detected → 4/8 Column Split */
-    <Grid class="items-start" cols={{ base: 1, lg: 12 }} gap={gap}>
-      {/* Dynamic Content Region (8 columns) */}
-      <div class="flex flex-col gap-12 lg:col-span-8">
+    <Grid
+      class="items-start"
+      cols={{ base: 1, lg: 12 }}
+      gap={gap}
+    >
+      <!-- Dynamic Content Region (8 columns) -->
+      <div
+        class:list={[
+          "flex",
+          "flex-col",
+          "gap-12",
+          "lg:col-span-8",
+        ]}
+      >
         <slot />
       </div>
 
-      {/* Dynamic Sidebar Region (4 columns) */}
-      <aside class="h-fit lg:sticky lg:top-24 lg:col-span-4">
-        <Stack class="glass rounded-2xl border-white/5 p-6" gap={6}>
+      <!-- Dynamic Sidebar Region (4 columns) -->
+      <aside
+        class:list={[
+          "h-fit",
+          "lg:sticky",
+          "lg:top-24",
+          "lg:col-span-4",
+        ]}
+      >
+        <Stack
+          class:list={[
+            "glass",
+            "glass-strong",
+            "rounded-2xl",
+            "border-white/5",
+            "p-6",
+            "backdrop-blur-md",
+          ]}
+          gap={6}
+        >
           <slot name="sidebar" />
         </Stack>
       </aside>
     </Grid>
   ) : (
     /* Fallback Layout: No Sidebar → Centered Content */
-    <div class="mx-auto flex max-w-4xl flex-col gap-12">
+    <div
+      class:list={[
+        "mx-auto",
+        "flex",
+        "flex-col",
+        "gap-12",
+        "max-w-4xl",
+        "w-full",
+      ]}
+    >
       <slot />
     </div>
   )}

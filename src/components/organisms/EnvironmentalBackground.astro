@@ -1,14 +1,20 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 import MeteorEffect from "../atoms/MeteorEffect.astro";
 import SpotlightEffect from "../atoms/SpotlightEffect.astro";
 
-export interface Props {
+export interface Props extends HTMLAttributes<"div"> {
   class?: string;
   intensity?: "high" | "low" | "medium";
 }
 
-const { class: className, intensity = "medium" } = Astro.props;
+const {
+  class: className,
+  intensity = "medium",
+  ...rest
+} = Astro.props;
 
 const meteorConfig = {
   high: 50,
@@ -19,41 +25,95 @@ const meteorConfig = {
 
 <div
   class:list={[
-    cn("pointer-events-none fixed inset-0 -z-50 overflow-hidden", className),
+    cn(
+      "pointer-events-none",
+      "fixed",
+      "inset-0",
+      "-z-50",
+      "overflow-hidden",
+      className,
+    ),
   ]}
+  {...rest}
 >
-  {/* Base Deep Space Gradient System */}
-  <div aria-hidden="true" class="absolute inset-0 bg-black/98"></div>
+  <!-- Layer 1: Base Deep Space Gradient -->
   <div
     aria-hidden="true"
-    class="absolute inset-0 bg-linear-to-b from-transparent via-(--color-primary/5) to-(--color-accent/5)"
+    class:list={[
+      "absolute",
+      "inset-0",
+      "bg-black/98",
+    ]}
   ></div>
 
-  {/* Distant Nebulae (Animated Glow Spheres) */}
+  <!-- Layer 2: Ambient Gradient Flow -->
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute top-[-20%] left-[-10%] size-[80%] animate-pulse rounded-full bg-(--color-primary/10) opacity-30 blur-[120px]"
-  >
-  </div>
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute right-[-10%] bottom-[-20%] size-[70%] animate-pulse rounded-full bg-(--color-accent/10) opacity-20 blur-[100px]"
-  >
-  </div>
+    class:list={[
+      "absolute",
+      "inset-0",
+      "bg-linear-to-b",
+      "from-transparent",
+      "via-(--color-primary/5)",
+      "to-(--color-accent/5)",
+    ]}
+  ></div>
 
-  {/* Visual DNA: Structural Grid Pattern */}
+  <!-- Layer 3: Distant Nebulae (Animated Glow Spheres) -->
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute inset-0 opacity-[0.03]"
+    class:list={[
+      "pointer-events-none",
+      "absolute",
+      "top-[-20%]",
+      "left-[-10%]",
+      "size-[80%]",
+      "animate-pulse",
+      "rounded-full",
+      "bg-(--color-primary/10)",
+      "opacity-30",
+      "blur-[120px]",
+    ]}
+  ></div>
+
+  <div
+    aria-hidden="true"
+    class:list={[
+      "pointer-events-none",
+      "absolute",
+      "bottom-[-20%]",
+      "right-[-10%]",
+      "size-[70%]",
+      "animate-pulse",
+      "rounded-full",
+      "bg-(--color-accent/10)",
+      "opacity-20",
+      "blur-[100px]",
+    ]}
+  ></div>
+
+  <!-- Layer 4: Visual DNA: Structural Grid Pattern -->
+  <div
+    aria-hidden="true"
+    class:list={[
+      "pointer-events-none",
+      "absolute",
+      "inset-0",
+      "opacity-[0.03]",
+    ]}
     style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 64px 64px;"
-  >
-  </div>
+  ></div>
 
-  {/* Meteor Layer */}
+  <!-- Layer 5: Meteor Layer -->
   <MeteorEffect number={meteorConfig} />
 
-  {/* Spotlight Effect Integration */}
-  <SpotlightEffect class="opacity-20" />
+  <!-- Layer 6: Spotlight Effect Integration -->
+  <SpotlightEffect
+    class:list={[
+      "opacity-20",
+      "pointer-events-none",
+    ]}
+  />
 
   <slot />
 </div>

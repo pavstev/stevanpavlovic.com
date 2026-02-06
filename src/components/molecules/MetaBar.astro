@@ -1,6 +1,7 @@
 ---
 import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib";
 import Icon from "../atoms/Icon.astro";
+import Tooltip from "../atoms/Tooltip.astro";
 import Stack from "../atoms/Stack.astro";
 import BrandIdentity from "./BrandIdentity.astro";
 import BriefSummary from "./BriefSummary.astro";
@@ -41,7 +42,9 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
           {item.type === "status" ? (
             <Stack align="center" direction="row" gap={2}>
               <BrandIdentity size="sm" variant="status" />
-              <span class="text-sm font-semibold text-foreground">{item.value}</span>
+              <Tooltip content="Live Availability Status">
+                <span class="text-sm font-semibold text-foreground">{item.value}</span>
+              </Tooltip>
             </Stack>
           ) : (
             <Stack align="center" direction="row" gap={2}>

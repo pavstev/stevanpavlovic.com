@@ -135,7 +135,6 @@ const blog = defineCollection({
       pubDate: z.coerce.date(),
       tags: z.array(reference("tags")),
       title: z.string(),
-      updatedDate: z.coerce.date().optional(),
     }),
 });
 
@@ -146,8 +145,6 @@ const experience = defineCollection({
       company: reference("companies"),
       description: z.string(),
       endDate: z.coerce.date().optional(),
-      location: reference("locations"),
-      recommendations: z.array(reference("recommendations")).optional(),
       role: z.string(),
       startDate: z.coerce.date(),
       tags: z.array(reference("tags")).optional(),

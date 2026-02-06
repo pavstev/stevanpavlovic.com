@@ -62,7 +62,7 @@ export default defineConfig({
       name: PROFILE.name,
       short_name: PROFILE.name.split(" ").at(0) ?? "",
     }),
-    (await import("@playform/compress")).default(),
+    // (await import("@playform/compress")).default(),
     icon(),
     partytown({
       config: {
@@ -77,7 +77,7 @@ export default defineConfig({
       checkExternalLinks: false,
       throwError: false,
     }),
-    playformInline(),
+    // playformInline(),
     sentry({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "sp-05",

@@ -11,6 +11,8 @@ import Analytics from "../atoms/Analytics.astro";
 import MetaData from "../atoms/MetaData.astro";
 import Chatbot from "../molecules/chatbot.astro";
 import OmniSearch from "../organisms/OmniSearch.astro";
+import Header from "./header.astro";
+import Footer from "./footer.astro";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;
@@ -37,6 +39,9 @@ const {
   {...rest}
 >
   <head>
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
     <MetaData description={description} image={image} title={title} />
     <Analytics />
     <ClientRouter />
@@ -52,7 +57,9 @@ const {
       className,
     ]}
   >
+    <Header />
     <slot />
+    <Footer />
     <Chatbot />
     <OmniSearch />
 

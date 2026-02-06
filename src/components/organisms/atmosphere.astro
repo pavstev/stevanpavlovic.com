@@ -1,0 +1,178 @@
+---
+import AppIcon from "../atoms/app-icon.astro";
+---
+
+<div id="atmosphere-widget" class="atmosphere-card group">
+  <!-- Status Dot with Ping Animation -->
+  <div class="status-container">
+    <span id="atmo-ping" class="ping-effect"></span>
+    <span id="atmo-dot" class="status-dot"></span>
+  </div>
+
+  <!-- Text Content -->
+  <div class="content-wrapper">
+    <span id="atmo-time" class="time-text">Loading...</span>
+    <span id="atmo-weather" class="weather-text">Belgrade, RS</span>
+  </div>
+
+  <!-- Icon -->
+  <div class="icon-wrapper text-muted-foreground transition-colors duration-300 group-hover:text-primary">
+    <AppIcon name="mdi:earth" size="sm" />
+  </div>
+</div>
+
+<script>
+  // Define response type locally or import if shared
+  interface AtmosphereResponse {
+    temp: number;
+    isDay: boolean;
+    code: number;
+    precip: number;
+    localTime: string;
+    status: "sleeping" | "active";
+  }
+
+  const updateAtmosphere = async () => {
+    const timeEl = document.getElementById("atmo-time");
+    const weatherEl = document.getElementById("atmo-weather");
+    const dot = document.getElementById("atmo-dot");
+    const ping = document.getElementById("atmo-ping");
+
+    if (!timeEl || !weatherEl || !dot || !ping) return;
+
+    try {
+      const res = await fetch("/api/atmosphere.json");
+      if (!res.ok) throw new Error("API Error");
+
+      const data = (await res.json()) as AtmosphereResponse;
+
+      // Time Formatting
+      const time = new Date(data.localTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      timeEl.innerText = `${time} in Belgrade`;
+
+      // Status Logic (Colors handled via classes)
+      if (data.status === "sleeping") {
+        dot.classList.add("sleeping");
+        ping.classList.add("hidden");
+        weatherEl.innerText = `Stevan is likely sleeping (${data.temp}°C)`;
+      } else {
+        dot.classList.add("active");
+        ping.classList.add("active");
+        weatherEl.innerText = `Stevan is active (${data.temp}°C)`;
+      }
+
+      // Rain / Snow context
+      // Codes: 51-67 (Rain), 71-77 (Snow)
+      if (data.code >= 51 && data.code <= 67) {
+        weatherEl.innerText += " • Raining";
+      } else if (data.code >= 71 && data.code <= 77) {
+        weatherEl.innerText += " • Snowing";
+      }
+    } catch (e) {
+      console.error("Atmosphere widget failed to load", e);
+      timeEl.innerText = "Belgrade, RS";
+      weatherEl.innerText = "Unavailable";
+    }
+  };
+
+  // Run immediately
+  updateAtmosphere();
+</script>
+
+<style>
+  .atmosphere-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* 12px */
+    padding: 0.5rem 1rem; /* 8px 16px */
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-card);
+    color: var(--color-card-foreground);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    cursor: default;
+    width: fit-content;
+  }
+
+  .atmosphere-card:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-ring);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .status-container {
+    position: relative;
+    display: flex;
+    height: 0.5rem; /* 8px */
+    width: 0.5rem;
+  }
+
+  .status-dot {
+    position: relative;
+    display: inline-flex;
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--color-muted-foreground); /* Default gray */
+  }
+
+  .status-dot.active {
+    background-color: #10b981; /* Emerald-500 - hardcoded for status semantic meaning */
+  }
+
+  .status-dot.sleeping {
+    background-color: #f59e0b; /* Amber-500 */
+  }
+
+  .ping-effect {
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    opacity: 0.75;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .ping-effect.active {
+    background-color: #34d399; /* Emerald-400 */
+  }
+
+  .ping-effect.hidden {
+    display: none;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .time-text {
+    font-weight: 600;
+    font-size: 0.75rem; /* 12px */
+    color: var(--color-foreground);
+  }
+
+  .weather-text {
+    font-size: 0.625rem; /* 10px */
+    color: var(--color-muted-foreground);
+    margin-top: 2px;
+  }
+
+  .icon-wrapper {
+    margin-left: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,43 +1,69 @@
 import type { APIRoute } from 'astro';
+import { fetchWeatherApi } from 'openmeteo';
 
 export const GET: APIRoute = async () => {
-  // Belgrade Coordinates: 44.7866° N, 20.4489° E
+  // Belgrade Coordinates
   const lat = 44.7866;
   const lon = 20.4489;
+  const url = 'https://api.open-meteo.com/v1/forecast';
+
+  // Define parameters strictly.
+  // IMPORTANT: The order of variables in 'current' determines the index later.
+  const params = {
+    latitude: [lat],
+    longitude: [lon],
+    current: 'temperature_2m,is_day,weather_code,precipitation',
+    timezone: 'Europe/Belgrade',
+  };
 
   try {
-    const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,precipitation,weather_code&timezone=Europe%2FBelgrade`
-    );
+    // 1. Fetch data using the SDK
+    const responses = await fetchWeatherApi(url, params);
 
-    if (!res.ok) throw new Error('Weather API failed');
+    // 2. Process the location (we only requested one)
+    const response = responses[0];
 
-    const data = await res.json();
+    // 3. Extract the current weather block
+    const current = response.current();
 
-    // Calculate local time manually to be precise server-side
-    const belgradeTime = new Date().toLocaleString("en-US", {timeZone: "Europe/Belgrade"});
+    if (!current) {
+      throw new Error('No current weather data received');
+    }
+
+    // 4. Extract values by index matching the 'current' string above
+    // Index 0: temperature_2m
+    // Index 1: is_day
+    // Index 2: weather_code
+    // Index 3: precipitation
+    const temperature = current.variables(0)!.value();
+    const isDayVal = current.variables(1)!.value();
+    const weatherCode = current.variables(2)!.value();
+    const precipitation = current.variables(3)!.value();
+
+    // 5. Logic for local time and status (kept from your original code)
+    const belgradeTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" });
     const hour = new Date(belgradeTime).getHours();
 
-    // Determine status based on time
     // 11 PM - 7 AM = Sleeping
     const isSleeping = hour >= 23 || hour < 7;
 
     return new Response(JSON.stringify({
-      temp: Math.round(data.current.temperature_2m),
-      isDay: !!data.current.is_day,
-      code: data.current.weather_code,
-      precip: data.current.precipitation,
+      temp: Math.round(temperature),
+      isDay: !!isDayVal, // Convert 1/0 number to boolean
+      code: weatherCode,
+      precip: precipitation,
       localTime: belgradeTime,
       status: isSleeping ? 'sleeping' : 'active'
     }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=300' // Cache 5 mins
+        'Cache-Control': 'public, max-age=300'
       }
     });
+
   } catch (e) {
-    console.error(e);
+    console.error('Weather API Error:', e);
     return new Response(JSON.stringify({ error: 'Weather unavailable' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

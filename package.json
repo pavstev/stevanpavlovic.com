@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm cf-typegen",
     "clean": "tsx scripts/clean.ts && pnpm install && pnpm build",
     "dev": "astro dev",
     "build": "astro build",
@@ -59,6 +60,7 @@
     "dayjs": "^1.11.19",
     "lenis": "^1.3.17",
     "mdast-util-to-string": "^4.0.0",
+    "openmeteo": "^1.2.3",
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",

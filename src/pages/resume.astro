@@ -1,7 +1,8 @@
 ---
+import { getCollection, getEntry } from "astro:content";
+
 import LayoutRoot from "../components/layout/layout-root.astro";
 import DocumentAssembler from "../components/organisms/DocumentAssembler.astro";
-import { getCollection, getEntry } from "astro:content";
 
 const stevan = await getEntry("people", "stevan-pavlovic");
 const experiences = await getCollection("experience");
@@ -9,6 +10,13 @@ const experiences = await getCollection("experience");
 if (!stevan) throw new Error("Stevan profile not found");
 
 const data = {
+  education: stevan.data.education || [],
+  experience: experiences.map((job) => ({
+    company: job.data.company,
+    description: job.data.description,
+    period: `${new Date(job.data.startDate).getFullYear()} — ${job.data.endDate ? new Date(job.data.endDate).getFullYear() : "Present"}`,
+    role: job.data.role,
+  })),
   profile: {
     email: stevan.data.email,
     location: stevan.data.location,
@@ -18,14 +26,7 @@ const data = {
     summary: stevan.body,
     website: "stevan.dev",
   },
-  experience: experiences.map((job) => ({
-    company: job.data.company,
-    description: job.data.description,
-    period: `${new Date(job.data.startDate).getFullYear()} — ${job.data.endDate ? new Date(job.data.endDate).getFullYear() : "Present"}`,
-    role: job.data.role,
-  })),
   skills: stevan.data.skills || [],
-  education: stevan.data.education || [],
 };
 ---
 

@@ -1,13 +1,30 @@
 /** @type { import('@storybook/html').Preview } */
 const preview = {
-  parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
+  decorators: [
+    (Story, context) => {
+      const theme = context.globals.theme || "dark";
+      return `
+        <div class="min-h-[200px] flex items-center justify-center p-6 transition-colors duration-300 ${theme === "dark" ? "bg-[hsl(240_30%_2%)]" : "bg-white"}">
+          <div class="w-full max-w-xl">
+            ${Story()}
+          </div>
+        </div>
+      `;
+    },
+  ],
+  globalTypes: {
+    theme: {
+      defaultValue: "dark",
+      description: "Global theme for components",
+      toolbar: {
+        dynamicTitle: true,
+        icon: "circlehollow",
+        items: ["dark", "light"],
+        title: "Theme",
       },
     },
-    layout: "centered",
+  },
+  parameters: {
     backgrounds: {
       default: "dark",
       values: [
@@ -17,11 +34,18 @@ const preview = {
         { name: "muted", value: "hsl(240 10% 8%)" },
       ],
     },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
     docs: {
       description: {
         component: "Atom components for the SPCOM design system",
       },
     },
+    layout: "centered",
     options: {
       storySort: {
         order: [
@@ -42,30 +66,6 @@ const preview = {
     },
   },
   tags: ["autodocs"],
-  globalTypes: {
-    theme: {
-      description: "Global theme for components",
-      defaultValue: "dark",
-      toolbar: {
-        title: "Theme",
-        icon: "circlehollow",
-        items: ["dark", "light"],
-        dynamicTitle: true,
-      },
-    },
-  },
-  decorators: [
-    (Story, context) => {
-      const theme = context.globals.theme || "dark";
-      return `
-        <div class="min-h-[200px] flex items-center justify-center p-6 transition-colors duration-300 ${theme === "dark" ? "bg-[hsl(240_30%_2%)]" : "bg-white"}">
-          <div class="w-full max-w-xl">
-            ${Story()}
-          </div>
-        </div>
-      `;
-    },
-  ],
 };
 
 export default preview;

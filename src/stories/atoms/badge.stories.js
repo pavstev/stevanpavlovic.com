@@ -4,27 +4,18 @@
  */
 
 export default {
-  title: "Atoms/Badge",
-  component: "badge",
-  tags: ["autodocs"],
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "primary", "accent", "cyber"],
-      description: "The visual style variant",
-    },
     children: {
       control: "text",
       description: "Badge content",
     },
-  },
-  parameters: {
-    docs: {
-      description: {
-        component: "A versatile badge component with glowing effects and cyber aesthetics.",
-      },
+    variant: {
+      control: "select",
+      description: "The visual style variant",
+      options: ["default", "primary", "accent", "cyber"],
     },
   },
+  component: "badge",
   decorators: [
     (Story) => `
       <div class="flex flex-wrap gap-3 p-6 bg-card rounded-xl border border-border">
@@ -32,6 +23,15 @@ export default {
       </div>
     `,
   ],
+  parameters: {
+    docs: {
+      description: {
+        component: "A versatile badge component with glowing effects and cyber aesthetics.",
+      },
+    },
+  },
+  tags: ["autodocs"],
+  title: "Atoms/Badge",
 };
 
 /**
@@ -39,8 +39,8 @@ export default {
  */
 export const Default = {
   args: {
-    variant: "default",
     children: "Default",
+    variant: "default",
   },
   render: (args) => `
     <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none border-border/50 bg-foreground/5 text-muted-foreground hover:border-primary/30">

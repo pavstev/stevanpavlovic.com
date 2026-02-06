@@ -26,11 +26,11 @@ const hasToc = Astro.slots.has("toc");
     }
 
     {/* Primary Layout Engine (12-Col) */}
-    <div class:list={["grid gap-12", hasSidebar || hasToc ? "lg:grid-cols-12" : "max-w-4xl mx-auto w-full"]}>
+    <div class:list={["grid gap-12", {"lg:grid-cols-12": hasSidebar || hasToc, "mx-auto w-full max-w-4xl": !(hasSidebar || hasToc)}]}>
       {/* Position: Left Sidebar (TOC) */}
       {
         hasToc && (
-          <aside class="hidden lg:block lg:col-span-3">
+          <aside class="hidden lg:col-span-3 lg:block">
             <div class="sticky top-24">
               <slot name="toc" />
             </div>
@@ -52,7 +52,7 @@ const hasToc = Astro.slots.has("toc");
         {/* Named Slot: Footer (Related, Navigation) */}
         {
           Astro.slots.has("footer") && (
-            <footer class="mt-20 pt-10 border-t border-white/5">
+            <footer class="mt-20 border-t border-white/5 pt-10">
               <slot name="footer" />
             </footer>
           )

@@ -4,20 +4,7 @@
  */
 
 export default {
-  title: "Atoms/Button",
-  component: "button",
-  tags: ["autodocs"],
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["primary", "secondary", "outline", "ghost", "glass", "destructive"],
-      description: "The visual style variant",
-    },
-    size: {
-      control: "select",
-      options: ["sm", "md", "lg", "icon"],
-      description: "The size of the button",
-    },
     children: {
       control: "text",
       description: "Button content",
@@ -26,7 +13,18 @@ export default {
       control: "boolean",
       description: "Whether the button is disabled",
     },
+    size: {
+      control: "select",
+      description: "The size of the button",
+      options: ["sm", "md", "lg", "icon"],
+    },
+    variant: {
+      control: "select",
+      description: "The visual style variant",
+      options: ["primary", "secondary", "outline", "ghost", "glass", "destructive"],
+    },
   },
+  component: "button",
   parameters: {
     docs: {
       description: {
@@ -34,6 +32,8 @@ export default {
       },
     },
   },
+  tags: ["autodocs"],
+  title: "Atoms/Button",
 };
 
 /**
@@ -41,10 +41,10 @@ export default {
  */
 export const Primary = {
   args: {
-    variant: "primary",
-    size: "md",
     children: "Primary Button",
     disabled: false,
+    size: "md",
+    variant: "primary",
   },
   render: (args) => `
     <button

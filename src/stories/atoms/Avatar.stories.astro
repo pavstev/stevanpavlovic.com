@@ -1,18 +1,18 @@
 ---
 import Badge from "../../components/atoms/Badge.astro";
-import Text from "../../components/atoms/Text.astro";
-import Heading from "../../components/atoms/Heading.astro";
 import Container from "../../components/atoms/Container.astro";
+import Heading from "../../components/atoms/Heading.astro";
 import Stack from "../../components/atoms/Stack.astro";
+import Text from "../../components/atoms/Text.astro";
 ---
 
 <Container>
   <Stack gap={6}>
-    <Stack gap={4} align="center">
+    <Stack align="center" gap={4}>
       <Heading level={1} size="lg" variant="primary">
         Avatar
       </Heading>
-      <Text size="lg" variant="muted" class="text-center max-w-2xl">
+      <Text class="max-w-2xl text-center" size="lg" variant="muted">
         Displays user profile images or fallback initials with various sizes and variants.
       </Text>
       <Badge variant="cyber">Atoms</Badge>
@@ -29,48 +29,48 @@ import Stack from "../../components/atoms/Stack.astro";
         Five size options from extra small to extra large.
       </Text>
 
-      <Stack gap={2} align="center">
+      <Stack align="center" gap={2}>
         <div class="flex items-end gap-4">
-          <Stack gap={2} align="center">
-            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-6">
+          <Stack align="center" gap={2}>
+            <div class="relative flex size-6 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
               <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-                <span class="select-none text-[10px]">XS</span>
+                <span class="text-[10px] select-none">XS</span>
               </div>
             </div>
             <Text size="xs" variant="muted">6px</Text>
           </Stack>
 
-          <Stack gap={2} align="center">
-            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-8">
+          <Stack align="center" gap={2}>
+            <div class="relative flex size-8 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
               <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-                <span class="select-none text-xs">SM</span>
+                <span class="text-xs select-none">SM</span>
               </div>
             </div>
             <Text size="xs" variant="muted">8px</Text>
           </Stack>
 
-          <Stack gap={2} align="center">
-            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-10">
+          <Stack align="center" gap={2}>
+            <div class="relative flex size-10 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
               <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-                <span class="select-none text-sm">MD</span>
+                <span class="text-sm select-none">MD</span>
               </div>
             </div>
             <Text size="xs" variant="muted">10px</Text>
           </Stack>
 
-          <Stack gap={2} align="center">
-            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-12">
+          <Stack align="center" gap={2}>
+            <div class="relative flex size-12 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
               <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-                <span class="select-none text-base">LG</span>
+                <span class="text-base select-none">LG</span>
               </div>
             </div>
             <Text size="xs" variant="muted">12px</Text>
           </Stack>
 
-          <Stack gap={2} align="center">
-            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-16">
+          <Stack align="center" gap={2}>
+            <div class="relative flex size-16 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
               <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-                <span class="select-none text-xl">XL</span>
+                <span class="text-xl select-none">XL</span>
               </div>
             </div>
             <Text size="xs" variant="muted">16px</Text>
@@ -85,29 +85,29 @@ import Stack from "../../components/atoms/Stack.astro";
         Variants
       </Heading>
 
-      <Stack gap={3} direction="row" wrap="wrap">
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-12">
+      <Stack direction="row" gap={3} wrap="wrap">
+        <Stack align="center" gap={2}>
+          <div class="relative flex size-12 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
             <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-              <span class="select-none text-sm">DF</span>
+              <span class="text-sm select-none">DF</span>
             </div>
           </div>
           <Text size="xs" variant="muted">Default</Text>
         </Stack>
 
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full glass border-white/10 bg-white/5 size-12">
+        <Stack align="center" gap={2}>
+          <div class="glass relative flex size-12 shrink-0 overflow-hidden rounded-full border-white/10 bg-white/5">
             <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-              <span class="select-none text-sm">GL</span>
+              <span class="text-sm select-none">GL</span>
             </div>
           </div>
           <Text size="xs" variant="muted">Glass</Text>
         </Stack>
 
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full shadow-glow-primary border border-primary/30 bg-primary/10 size-12">
+        <Stack align="center" gap={2}>
+          <div class="shadow-glow-primary relative flex size-12 shrink-0 overflow-hidden rounded-full border border-primary/30 bg-primary/10">
             <div class="flex size-full items-center justify-center bg-primary/20 font-medium text-primary uppercase">
-              <span class="select-none text-sm">PR</span>
+              <span class="text-sm select-none">PR</span>
             </div>
           </div>
           <Text size="xs" variant="muted">Primary</Text>
@@ -121,23 +121,23 @@ import Stack from "../../components/atoms/Stack.astro";
         With Images
       </Heading>
 
-      <Stack gap={3} direction="row" wrap="wrap">
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-16">
+      <Stack direction="row" gap={3} wrap="wrap">
+        <Stack align="center" gap={2}>
+          <div class="relative flex size-16 shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20">
             <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" />
           </div>
           <Text size="xs" variant="muted">Default</Text>
         </Stack>
 
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full glass border-white/10 bg-white/5 size-16">
+        <Stack align="center" gap={2}>
+          <div class="glass relative flex size-16 shrink-0 overflow-hidden rounded-full border-white/10 bg-white/5">
             <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
           </div>
           <Text size="xs" variant="muted">Glass</Text>
         </Stack>
 
-        <Stack gap={2} align="center">
-          <div class="relative flex shrink-0 overflow-hidden rounded-full shadow-glow-primary border border-primary/30 bg-primary/10 size-16">
+        <Stack align="center" gap={2}>
+          <div class="shadow-glow-primary relative flex size-16 shrink-0 overflow-hidden rounded-full border border-primary/30 bg-primary/10">
             <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" />
           </div>
           <Text size="xs" variant="muted">Primary</Text>
@@ -152,27 +152,27 @@ import Stack from "../../components/atoms/Stack.astro";
       </Heading>
 
       <div class="flex -space-x-3">
-        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+        <div class="shadow-glow-subtle relative flex size-12 shrink-0 overflow-hidden rounded-full border-2 border-card ring-2 ring-background transition-all duration-300">
           <div class="flex size-full items-center justify-center bg-primary/20 font-medium text-primary uppercase">
-            <span class="select-none text-sm">A</span>
+            <span class="text-sm select-none">A</span>
           </div>
         </div>
-        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+        <div class="shadow-glow-subtle relative flex size-12 shrink-0 overflow-hidden rounded-full border-2 border-card ring-2 ring-background transition-all duration-300">
           <div class="flex size-full items-center justify-center bg-secondary/20 font-medium text-secondary uppercase">
-            <span class="select-none text-sm">B</span>
+            <span class="text-sm select-none">B</span>
           </div>
         </div>
-        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+        <div class="shadow-glow-subtle relative flex size-12 shrink-0 overflow-hidden rounded-full border-2 border-card ring-2 ring-background transition-all duration-300">
           <div class="flex size-full items-center justify-center bg-accent/20 font-medium text-accent uppercase">
-            <span class="select-none text-sm">C</span>
+            <span class="text-sm select-none">C</span>
           </div>
         </div>
-        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+        <div class="shadow-glow-subtle relative flex size-12 shrink-0 overflow-hidden rounded-full border-2 border-card ring-2 ring-background transition-all duration-300">
           <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
         </div>
-        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card bg-muted/50 shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+        <div class="shadow-glow-subtle relative flex size-12 shrink-0 overflow-hidden rounded-full border-2 border-card bg-muted/50 ring-2 ring-background transition-all duration-300">
           <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-            <span class="select-none text-sm">+3</span>
+            <span class="text-sm select-none">+3</span>
           </div>
         </div>
       </div>

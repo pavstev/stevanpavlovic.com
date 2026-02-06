@@ -4,29 +4,34 @@
  */
 
 export default {
-  title: "Atoms/Avatar",
-  component: "avatar",
-  tags: ["autodocs"],
   argTypes: {
-    size: {
-      control: "select",
-      options: ["xs", "sm", "md", "lg", "xl"],
-      description: "The size of the avatar",
-    },
-    variant: {
-      control: "select",
-      options: ["default", "glass", "primary"],
-      description: "The visual style variant",
-    },
     fallback: {
       control: "text",
       description: "Fallback initials when no image is provided",
+    },
+    size: {
+      control: "select",
+      description: "The size of the avatar",
+      options: ["xs", "sm", "md", "lg", "xl"],
     },
     src: {
       control: "text",
       description: "Image source URL",
     },
+    variant: {
+      control: "select",
+      description: "The visual style variant",
+      options: ["default", "glass", "primary"],
+    },
   },
+  component: "avatar",
+  decorators: [
+    (Story) => `
+      <div class="flex items-center gap-4 p-6 bg-card rounded-xl border border-border">
+        ${Story()}
+      </div>
+    `,
+  ],
   parameters: {
     docs: {
       description: {
@@ -35,13 +40,8 @@ export default {
       },
     },
   },
-  decorators: [
-    (Story) => `
-      <div class="flex items-center gap-4 p-6 bg-card rounded-xl border border-border">
-        ${Story()}
-      </div>
-    `,
-  ],
+  tags: ["autodocs"],
+  title: "Atoms/Avatar",
 };
 
 /**
@@ -49,9 +49,9 @@ export default {
  */
 export const Default = {
   args: {
+    fallback: "JD",
     size: "md",
     variant: "default",
-    fallback: "JD",
   },
   render: (args) => `
     <div class="relative flex shrink-0 overflow-hidden rounded-full transition-all duration-300 ${args.size === "xs" ? "size-6" : args.size === "sm" ? "size-8" : args.size === "md" ? "size-10" : args.size === "lg" ? "size-12" : "size-16"} ${args.variant === "default" ? "border border-border/50 bg-muted/20" : args.variant === "glass" ? "glass border-white/10 bg-white/5" : "shadow-glow-primary border border-primary/30 bg-primary/10"}">
@@ -67,10 +67,10 @@ export const Default = {
  */
 export const WithImage = {
   args: {
-    size: "lg",
-    variant: "default",
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
     fallback: "JD",
+    size: "lg",
+    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    variant: "default",
   },
   render: (args) => `
     <div class="relative flex shrink-0 overflow-hidden rounded-full transition-all duration-300 ${args.size === "xs" ? "size-6" : args.size === "sm" ? "size-8" : args.size === "md" ? "size-10" : args.size === "lg" ? "size-12" : "size-16"} ${args.variant === "default" ? "border border-border/50 bg-muted/20" : args.variant === "glass" ? "glass border-white/10 bg-white/5" : "shadow-glow-primary border border-primary/30 bg-primary/10"}">

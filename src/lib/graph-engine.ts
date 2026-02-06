@@ -2,12 +2,9 @@
  * Force-directed graph engine for RelationalDataGraph
  */
 
-export interface GraphNode {
-  id: string;
-  label: string;
-  type: string;
-  data?: any;
-  [key: string]: any;
+export interface GraphData {
+  links: GraphLink[];
+  nodes: GraphNode[];
 }
 
 export interface GraphLink {
@@ -15,38 +12,41 @@ export interface GraphLink {
   target: string;
 }
 
-export interface GraphData {
-  nodes: GraphNode[];
-  links: GraphLink[];
+export interface GraphNode {
+  [key: string]: any;
+  data?: any;
+  id: string;
+  label: string;
+  type: string;
 }
 
 export interface ThemeConfig {
   color: string;
-  radius: number;
-  icon?: string;
   colorToken?: string;
+  icon?: string;
+  radius: number;
 }
 
 export type ThemeMap = Record<string, ThemeConfig>;
 
 export class GraphEngine {
+  // Camera state
+  private cam = { targetX: 0, targetY: 0, targetZoom: 0.8, x: 0, y: 0, zoom: 0.8 };
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private data: GraphData;
-  private themeMap: ThemeMap;
+
+  private dragNode: any = null;
+  private height: number = 0;
+  private hoverNode: any = null;
+  private isDragging = false;
+  private links: any[] = [];
 
   // Physics state
   private nodes: any[] = [];
-  private links: any[] = [];
   private particles: any[] = [];
+  private themeMap: ThemeMap;
   private width: number = 0;
-  private height: number = 0;
-
-  // Camera state
-  private cam = { x: 0, y: 0, zoom: 0.8, targetX: 0, targetY: 0, targetZoom: 0.8 };
-  private isDragging = false;
-  private dragNode: any = null;
-  private hoverNode: any = null;
 
   constructor(canvas: HTMLCanvasElement, data: GraphData, themeMap: ThemeMap) {
     this.canvas = canvas;
@@ -59,6 +59,61 @@ export class GraphEngine {
     this.init();
   }
 
+  public resetView() {
+    this.cam.targetX = this.width / 2;
+    this.cam.targetY = this.height / 2;
+    this.cam.targetZoom = 0.8;
+  }
+
+  private draw() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.save();
+
+    this.ctx.translate(this.width / 2, this.height / 2);
+    this.ctx.scale(this.cam.zoom, this.cam.zoom);
+    this.ctx.translate(-this.width / 2 + this.cam.x, -this.height / 2 + this.cam.y);
+
+    // Links
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = this.getThemeColor("--color-border");
+    this.ctx.beginPath();
+    this.links.forEach((link: any) => {
+      this.ctx.moveTo(link.source.x, link.source.y);
+      this.ctx.lineTo(link.target.x, link.target.y);
+    });
+    this.ctx.stroke();
+
+    // Nodes
+    this.nodes.forEach((node) => {
+      const isHover = node === this.hoverNode;
+      const r = node.radius + (isHover ? 4 : 0);
+
+      if (isHover) {
+        this.ctx.shadowColor = node.bg;
+        this.ctx.shadowBlur = 15;
+      }
+
+      this.ctx.fillStyle = node.bg;
+      this.ctx.strokeStyle = isHover ? this.getThemeColor("--color-primary") : node.border;
+      this.ctx.lineWidth = isHover ? 2 : 1;
+
+      this.ctx.beginPath();
+      this.ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.stroke();
+      this.ctx.shadowBlur = 0;
+
+      if (r > 8 || isHover) {
+        this.ctx.font = isHover ? "600 12px Inter, sans-serif" : "500 10px Inter, sans-serif";
+        this.ctx.textAlign = "center";
+        this.ctx.fillStyle = this.getThemeColor("--color-foreground");
+        this.ctx.fillText(node.label, node.x, node.y + r + 15);
+      }
+    });
+
+    this.ctx.restore();
+  }
+
   private getThemeColor(varName: string): string {
     if (varName.startsWith("#") || varName.startsWith("hsl") || varName.startsWith("rgb")) {
       return varName;
@@ -67,6 +122,19 @@ export class GraphEngine {
     const hsl = root.getPropertyValue(varName).trim();
     if (!hsl) return "#888";
     return `hsl(${hsl})`;
+  }
+
+  private getWorldPos(clientX: number, clientY: number) {
+    const rect = this.canvas.getBoundingClientRect();
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    const mx = clientX - rect.left;
+    const my = clientY - rect.top;
+
+    return {
+      x: (mx - cx) / this.cam.zoom - (this.cam.x - cx) + cx,
+      y: (my - cy) / this.cam.zoom - (this.cam.y - cy) + cy,
+    };
   }
 
   private init() {
@@ -84,29 +152,37 @@ export class GraphEngine {
     this.canvas.height = this.height * dpr;
     this.ctx.scale(dpr, dpr);
 
-    this.nodes = this.data.nodes.map(n => {
+    this.nodes = this.data.nodes.map((n) => {
       const config = this.themeMap[n.type] || { color: "var(--color-primary)", radius: 10 };
       const color = this.getThemeColor(config.color);
 
       return {
         ...n,
-        x: Math.random() * this.width,
-        y: Math.random() * this.height,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        radius: config.radius,
         bg: color,
         border: this.getThemeColor("--color-border"),
+        radius: config.radius,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        x: Math.random() * this.width,
+        y: Math.random() * this.height,
       };
     });
 
-    const nodeMap = new Map(this.nodes.map(n => [n.id, n]));
+    const nodeMap = new Map(this.nodes.map((n) => [n.id, n]));
     this.links = this.data.links
-      .map(l => ({ source: nodeMap.get(l.source), target: nodeMap.get(l.target) }))
-      .filter(l => l.source && l.target);
+      .map((l) => ({ source: nodeMap.get(l.source), target: nodeMap.get(l.target) }))
+      .filter((l) => l.source && l.target);
 
     this.setupListeners();
     this.render();
+  }
+
+  private render() {
+    this.update();
+    this.draw();
+    requestAnimationFrame(() => {
+      this.render();
+    });
   }
 
   private setupListeners() {
@@ -152,35 +228,20 @@ export class GraphEngine {
 
       // Dispatch event for tooltip
       const event = new CustomEvent("graph-hover", {
-        detail: { node: this.hoverNode, x: e.clientX, y: e.clientY }
+        detail: { node: this.hoverNode, x: e.clientX, y: e.clientY },
       });
       this.canvas.dispatchEvent(event);
     });
 
-    this.canvas.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      this.cam.targetZoom += e.deltaY * -0.001;
-      this.cam.targetZoom = Math.min(Math.max(0.1, this.cam.targetZoom), 4);
-    }, { passive: false });
-  }
-
-  private getWorldPos(clientX: number, clientY: number) {
-    const rect = this.canvas.getBoundingClientRect();
-    const cx = this.width / 2;
-    const cy = this.height / 2;
-    const mx = clientX - rect.left;
-    const my = clientY - rect.top;
-
-    return {
-      x: (mx - cx) / this.cam.zoom - (this.cam.x - cx) + cx,
-      y: (my - cy) / this.cam.zoom - (this.cam.y - cy) + cy,
-    };
-  }
-
-  public resetView() {
-    this.cam.targetX = this.width / 2;
-    this.cam.targetY = this.height / 2;
-    this.cam.targetZoom = 0.8;
+    this.canvas.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        this.cam.targetZoom += e.deltaY * -0.001;
+        this.cam.targetZoom = Math.min(Math.max(0.1, this.cam.targetZoom), 4);
+      },
+      { passive: false },
+    );
   }
 
   private update() {
@@ -195,106 +256,51 @@ export class GraphEngine {
     const linkDistance = 120;
 
     for (let i = 0; i < this.nodes.length; i++) {
-        let node = this.nodes[i];
-        node.vx -= (node.x - this.width/2) * gravity * 0.05;
-        node.vy -= (node.y - this.height/2) * gravity * 0.05;
+      const node = this.nodes[i];
+      node.vx -= (node.x - this.width / 2) * gravity * 0.05;
+      node.vy -= (node.y - this.height / 2) * gravity * 0.05;
 
-        for (let j = i + 1; j < this.nodes.length; j++) {
-            let other = this.nodes[j];
-            let dx = other.x - node.x;
-            let dy = other.y - node.y;
-            let distSq = dx * dx + dy * dy || 1;
+      for (let j = i + 1; j < this.nodes.length; j++) {
+        const other = this.nodes[j];
+        const dx = other.x - node.x;
+        const dy = other.y - node.y;
+        const distSq = dx * dx + dy * dy || 1;
 
-            if (distSq < 100000) {
-                let force = (repulsion * 50) / distSq;
-                let angle = Math.atan2(dy, dx);
-                let fx = Math.cos(angle) * force;
-                let fy = Math.sin(angle) * force;
+        if (distSq < 100000) {
+          const force = (repulsion * 50) / distSq;
+          const angle = Math.atan2(dy, dx);
+          const fx = Math.cos(angle) * force;
+          const fy = Math.sin(angle) * force;
 
-                node.vx -= fx;
-                node.vy -= fy;
-                other.vx += fx;
-                other.vy += fy;
-            }
+          node.vx -= fx;
+          node.vy -= fy;
+          other.vx += fx;
+          other.vy += fy;
         }
+      }
     }
 
     this.links.forEach((link: any) => {
-        let dx = link.target.x - link.source.x;
-        let dy = link.target.y - link.source.y;
-        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        let force = (dist - linkDistance) * spring;
-        let angle = Math.atan2(dy, dx);
-        let fx = Math.cos(angle) * force;
-        let fy = Math.sin(angle) * force;
+      const dx = link.target.x - link.source.x;
+      const dy = link.target.y - link.source.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const force = (dist - linkDistance) * spring;
+      const angle = Math.atan2(dy, dx);
+      const fx = Math.cos(angle) * force;
+      const fy = Math.sin(angle) * force;
 
-        link.source.vx += fx;
-        link.source.vy += fy;
-        link.target.vx -= fx;
-        link.target.vy -= fy;
+      link.source.vx += fx;
+      link.source.vy += fy;
+      link.target.vx -= fx;
+      link.target.vy -= fy;
     });
 
-    this.nodes.forEach(node => {
-        if (node === this.dragNode) return;
-        node.vx *= friction;
-        node.vy *= friction;
-        node.x += node.vx;
-        node.y += node.vy;
+    this.nodes.forEach((node) => {
+      if (node === this.dragNode) return;
+      node.vx *= friction;
+      node.vy *= friction;
+      node.x += node.vx;
+      node.y += node.vy;
     });
-  }
-
-  private draw() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.save();
-
-    this.ctx.translate(this.width / 2, this.height / 2);
-    this.ctx.scale(this.cam.zoom, this.cam.zoom);
-    this.ctx.translate(-this.width / 2 + this.cam.x, -this.height / 2 + this.cam.y);
-
-    // Links
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeStyle = this.getThemeColor("--color-border");
-    this.ctx.beginPath();
-    this.links.forEach((link: any) => {
-        this.ctx.moveTo(link.source.x, link.source.y);
-        this.ctx.lineTo(link.target.x, link.target.y);
-    });
-    this.ctx.stroke();
-
-    // Nodes
-    this.nodes.forEach(node => {
-        const isHover = node === this.hoverNode;
-        const r = node.radius + (isHover ? 4 : 0);
-
-        if (isHover) {
-            this.ctx.shadowColor = node.bg;
-            this.ctx.shadowBlur = 15;
-        }
-
-        this.ctx.fillStyle = node.bg;
-        this.ctx.strokeStyle = isHover ? this.getThemeColor("--color-primary") : node.border;
-        this.ctx.lineWidth = isHover ? 2 : 1;
-
-        this.ctx.beginPath();
-        this.ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-        this.ctx.fill();
-        this.ctx.stroke();
-        this.ctx.shadowBlur = 0;
-
-        if (r > 8 || isHover) {
-            this.ctx.font = isHover ? "600 12px Inter, sans-serif" : "500 10px Inter, sans-serif";
-            this.ctx.textAlign = "center";
-            this.ctx.fillStyle = this.getThemeColor("--color-foreground");
-            this.ctx.fillText(node.label, node.x, node.y + r + 15);
-        }
-    });
-
-    this.ctx.restore();
-  }
-
-  private render() {
-    this.update();
-    this.draw();
-    requestAnimationFrame(() => this.render());
   }
 }

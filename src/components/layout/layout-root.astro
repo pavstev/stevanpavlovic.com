@@ -5,17 +5,17 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import MetaData from "../atoms/MetaData.astro";
 import Analytics from "../atoms/Analytics.astro";
+import MetaData from "../atoms/MetaData.astro";
 
 export interface Props {
-  title: string;
   description: string;
   image?: URL;
   lang?: string;
+  title: string;
 }
 
-const { title, description, image, lang = "en" } = Astro.props;
+const { description, image, lang = "en", title } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,7 +26,7 @@ const { title, description, image, lang = "en" } = Astro.props;
     <ClientRouter />
     <slot name="head" />
   </head>
-  <body class="bg-background text-foreground antialiased selection:bg-primary/20">
+  <body class="bg-(--color-background) text-(--color-foreground) antialiased selection:bg-(--color-primary/20)">
     <slot />
   </body>
 </html>

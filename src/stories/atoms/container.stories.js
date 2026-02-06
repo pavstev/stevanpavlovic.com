@@ -4,16 +4,7 @@
  */
 
 export default {
-  title: "Atoms/Container",
   component: "container",
-  tags: ["autodocs"],
-  parameters: {
-    docs: {
-      description: {
-        component: "A responsive container that constrains content width with consistent padding.",
-      },
-    },
-  },
   decorators: [
     (Story) => `
       <div class="w-full bg-muted/20 rounded-lg p-4">
@@ -23,6 +14,15 @@ export default {
       </div>
     `,
   ],
+  parameters: {
+    docs: {
+      description: {
+        component: "A responsive container that constrains content width with consistent padding.",
+      },
+    },
+  },
+  tags: ["autodocs"],
+  title: "Atoms/Container",
 };
 
 /**

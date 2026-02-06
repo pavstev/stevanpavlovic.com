@@ -4,16 +4,7 @@
  */
 
 export default {
-  title: "Atoms/CardSpotlight",
   component: "card-spotlight",
-  tags: ["autodocs"],
-  parameters: {
-    docs: {
-      description: {
-        component: "A card component with a dynamic spotlight effect that follows the mouse cursor.",
-      },
-    },
-  },
   decorators: [
     (Story) => `
       <div class="group/card relative w-full max-w-sm overflow-hidden rounded-xl border border-border bg-card shadow-glow-subtle transition-all duration-300 hover:border-primary/30">
@@ -24,6 +15,15 @@ export default {
       </div>
     `,
   ],
+  parameters: {
+    docs: {
+      description: {
+        component: "A card component with a dynamic spotlight effect that follows the mouse cursor.",
+      },
+    },
+  },
+  tags: ["autodocs"],
+  title: "Atoms/CardSpotlight",
 };
 
 /**

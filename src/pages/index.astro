@@ -1,11 +1,11 @@
 ---
-import LayoutRoot from "../components/layout/layout-root.astro";
-import EnvironmentalBackground from "../components/organisms/EnvironmentalBackground.astro";
-import CompositionGrid from "../components/organisms/CompositionGrid.astro";
-import GridTile from "../components/molecules/GridTile.astro";
 import Heading from "../components/atoms/Heading.astro";
 import Text from "../components/atoms/Text.astro";
-import { PROFILE, NAV_ITEMS_ARRAY } from "../config";
+import LayoutRoot from "../components/layout/layout-root.astro";
+import GridTile from "../components/molecules/GridTile.astro";
+import CompositionGrid from "../components/organisms/CompositionGrid.astro";
+import EnvironmentalBackground from "../components/organisms/EnvironmentalBackground.astro";
+import { NAV_ITEMS_ARRAY, PROFILE } from "../config";
 
 const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
 ---
@@ -14,13 +14,13 @@ const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
   <EnvironmentalBackground density={0.4} />
 
   <CompositionGrid class="relative z-10 pt-10 md:pt-20">
-    <GridTile cols="lg:col-span-12" class="p-12 md:p-16">
+    <GridTile class="p-12 md:p-16" cols="lg:col-span-12">
       <div class="max-w-3xl space-y-8">
         <Heading level={1} size="display" variant="primary">
           Helping brands scale with <br />
           <span class="text-white">Future-Proof Architecture.</span>
         </Heading>
-        <Text variant="muted" class="text-xl max-w-2xl leading-relaxed">
+        <Text class="max-w-2xl text-xl leading-relaxed" variant="muted">
           {PROFILE.bio}
         </Text>
       </div>
@@ -29,9 +29,9 @@ const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
     {
       navItems.map((item) => (
         <GridTile>
-          <div class="flex flex-col justify-between h-full gap-8">
-            <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="flex h-full flex-col justify-between gap-8">
+            <div class="flex size-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
+              <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d={item.icon || "M12 2v20M2 12h20"} />
               </svg>
             </div>
@@ -39,13 +39,13 @@ const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
               <Heading level={3} size="sm">
                 {item.label}
               </Heading>
-              <Text variant="muted" size="sm">
+              <Text size="sm" variant="muted">
                 {item.description}
               </Text>
             </div>
             <a
+              class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-white"
               href={item.href}
-              class="text-sm font-bold tracking-widest uppercase text-primary hover:text-white transition-colors"
             >
               Explore Item
             </a>

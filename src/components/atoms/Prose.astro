@@ -1,10 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 
 interface Props extends HTMLAttributes<"div"> {
   as?: any;
-  variant?: "default" | "cyber" | "simple";
+  variant?: "cyber" | "default" | "simple";
 }
 
 const { as: Tag = "div", class: className, variant = "default", ...props } = Astro.props;

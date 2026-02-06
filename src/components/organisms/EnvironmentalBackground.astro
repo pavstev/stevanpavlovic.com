@@ -1,48 +1,59 @@
 ---
 import { cn } from "../../lib/cn";
 import MeteorEffect from "../atoms/MeteorEffect.astro";
+import SpotlightEffect from "../atoms/SpotlightEffect.astro";
 
 export interface Props {
   class?: string;
-  intensity?: "low" | "medium" | "high";
+  intensity?: "high" | "low" | "medium";
 }
 
 const { class: className, intensity = "medium" } = Astro.props;
 
-const meteorCount = {
+const meteorConfig = {
+  high: 50,
   low: 10,
   medium: 25,
-  high: 50,
 }[intensity];
 ---
 
-<div class:list={[cn("pointer-events-none fixed inset-0 -z-50 overflow-hidden", className)]}>
+<div
+  class:list={[
+    cn("pointer-events-none fixed inset-0 -z-50 overflow-hidden", className),
+  ]}
+>
   {/* Base Deep Space Gradient System */}
-  <div class="absolute inset-0 bg-black/98" aria-hidden="true"></div>
-  <div class="absolute inset-0 bg-linear-to-b from-transparent via-primary/5 to-accent/5" aria-hidden="true"></div>
+  <div aria-hidden="true" class="absolute inset-0 bg-black/98"></div>
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 bg-linear-to-b from-transparent via-(--color-primary/5) to-(--color-accent/5)"
+  ></div>
 
   {/* Distant Nebulae (Animated Glow Spheres) */}
   <div
-    class="absolute top-[-20%] left-[-10%] size-[80%] rounded-full bg-primary/10 opacity-30 blur-[120px] animate-pulse pointer-events-none"
     aria-hidden="true"
+    class="pointer-events-none absolute top-[-20%] left-[-10%] size-[80%] animate-pulse rounded-full bg-(--color-primary/10) opacity-30 blur-[120px]"
   >
   </div>
   <div
-    class="absolute right-[-10%] bottom-[-20%] size-[70%] rounded-full bg-accent/10 opacity-20 blur-[100px] animate-pulse pointer-events-none"
     aria-hidden="true"
+    class="pointer-events-none absolute right-[-10%] bottom-[-20%] size-[70%] animate-pulse rounded-full bg-(--color-accent/10) opacity-20 blur-[100px]"
   >
   </div>
 
   {/* Visual DNA: Structural Grid Pattern */}
   <div
-    class="absolute inset-0 opacity-[0.03] pointer-events-none"
-    style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 64px 64px;"
     aria-hidden="true"
+    class="pointer-events-none absolute inset-0 opacity-[0.03]"
+    style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 64px 64px;"
   >
   </div>
 
   {/* Meteor Layer */}
-  <MeteorEffect number={meteorCount} />
+  <MeteorEffect number={meteorConfig} />
+
+  {/* Spotlight Effect Integration */}
+  <SpotlightEffect class="opacity-20" />
 
   <slot />
 </div>

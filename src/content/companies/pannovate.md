@@ -3,9 +3,9 @@ name: Pannovate
 website: https://pannovate.net
 logo: ../../assets/placeholder.png
 description: Fintech middleware orchestration platform enabling rapid banking app deployment
-industry: Finance, Fintech, Banking Technology
+industry: Software
 founded: 2015
-size: Mid-size (50-200 employees)
+size: Small Business
 type: Full-time
 socialLinks:
   - type: Website
@@ -20,41 +20,6 @@ socialLinks:
   - type: GitHub
     handle: pannovate
     name: Pannovate GitHub
-notableProjects:
-  - Syllo Digital Banking Platform
-  - Fintech Orchestration Layer
-  - PCI-DSS Compliant Systems
-  - Multi-Vendor Banking Integration
-  - Transaction Processing Engine
-  - Banking-as-a-Service Platform
-  - Digital Wallet Solutions
-  - Payment Gateway Integration
-  - Regulatory Compliance Systems
-technologies:
-  - NestJS
-  - TypeScript
-  - PostgreSQL
-  - OAuth2/OIDC
-  - Docker
-  - RabbitMQ
-  - Fintech
-  - AWS
-  - Kubernetes
-  - Redis
-  - GraphQL
-  - Microservices
-  - Event-Driven Architecture
-clients:
-  - European Banks
-  - Financial Institutions
-  - Banking-as-a-Service Providers
-  - Neobanks
-  - Payment Processors
-  - Financial Technology Companies
-awards:
-  - Best Fintech Middleware 2023
-  - Banking Innovation Award 2022
-  - Financial Technology Excellence 2021
 ---
 
 Pannovate provides "digital bank in a box" solutions, enabling financial institutions to rapidly deploy branded banking applications. Their Syllo platform serves as middleware for multiple European fintechs, processing $500M+ in transaction volume.

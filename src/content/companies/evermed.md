@@ -3,9 +3,9 @@ name: Evermed
 website: https://evermedtv.com
 logo: ../../assets/placeholder.png
 description: Specialized video streaming platform for healthcare and life sciences professionals
-industry: Healthcare, Medical Technology, Video Streaming
+industry: Software
 founded: 2018
-size: Startup (10-50 employees)
+size: Small Business
 type: Contract
 socialLinks:
   - type: Website
@@ -23,39 +23,6 @@ socialLinks:
   - type: GitHub
     handle: evermed
     name: Evermed GitHub
-notableProjects:
-  - Serverless Video Transcoding
-  - HIPAA-Compliant Streaming
-  - Adaptive Bitrate Streaming
-  - Cloud-Native Architecture
-  - Medical Content Management System
-  - Real-time Analytics Dashboard
-technologies:
-  - AWS Lambda
-  - Serverless
-  - PHP
-  - Symfony
-  - AWS Elemental MediaConvert
-  - PostgreSQL
-  - Redis
-  - AWS S3
-  - CloudFront
-  - Docker
-  - Kubernetes
-  - TypeScript
-  - React
-  - Node.js
-clients:
-  - Healthcare Organizations
-  - Medical Education Providers
-  - Life Sciences Companies
-  - Pharmaceutical Companies
-  - Medical Device Manufacturers
-  - Healthcare Associations
-awards:
-  - Best Healthcare Innovation 2022
-  - Medical Technology Excellence Award 2021
-  - Healthcare Startup of the Year 2020
 ---
 
 Evermed is a "Netflix for Doctors" providing specialized video streaming solutions for healthcare professionals. The platform delivers medical education content to 15K+ active doctors daily, processing 500+ TB of medical video content annually.

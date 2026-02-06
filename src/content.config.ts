@@ -148,19 +148,15 @@ const companies = defineCollection({
   loader: glob({ base: "./src/content/companies", pattern: "**/*.md" }),
   schema: ({ image }) =>
     z.object({
-      awards: z.array(z.string()).optional(),
-      clients: z.array(z.string()).optional(),
       description: z.string().optional(),
       founded: z.coerce.date().optional(),
       headquarters: reference("locations").optional(),
       industry: Industry.optional(),
       logo: image().optional(),
       name: z.string(),
-      notableProjects: z.array(reference("projects")).optional(),
       recommendations: z.array(reference("recommendations")).optional(),
       size: CompanySize.optional(),
       socialLinks: CompanySocialLinks,
-      technologies: z.array(z.string()).optional(),
       type: CompanyType.optional(),
     }),
 });

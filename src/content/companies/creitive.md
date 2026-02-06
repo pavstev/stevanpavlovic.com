@@ -3,9 +3,9 @@ name: CreITive
 website: https://creitive.com
 logo: ../../assets/placeholder.png
 description: Global digital agency providing web solutions and e-commerce development
-industry: Design, Development, E-commerce
+industry: Software
 founded: 2010
-size: Mid-size (100-500 employees)
+size: Small Business
 type: Full-time
 socialLinks:
   - type: Website
@@ -23,43 +23,6 @@ socialLinks:
   - type: Twitter
     handle: creitive
     name: CreITive Twitter
-notableProjects:
-  - Custom E-commerce Solutions
-  - WordPress/WooCommerce Development
-  - Automation Tooling
-  - CI/CD Workflow Implementation
-  - Performance Optimization
-  - Process Automation
-  - Mobile App Development
-  - SaaS Platform Development
-  - Digital Transformation Projects
-technologies:
-  - PHP
-  - MySQL
-  - WordPress
-  - WooCommerce
-  - Laravel
-  - React
-  - Vue.js
-  - Node.js
-  - CI/CD
-  - Process Automation
-  - Docker
-  - AWS
-  - Google Cloud
-  - Azure
-clients:
-  - Global Client Base
-  - Agency Clients
-  - E-commerce Businesses
-  - Startups
-  - Enterprise Companies
-  - Non-profit Organizations
-awards:
-  - Best Digital Agency 2023
-  - E-commerce Excellence Award 2022
-  - Innovation in Web Development 2021
-  - Client Satisfaction Award 2020
 ---
 
 CreITive is a global digital agency founded in 2010, specializing in custom web solutions, e-commerce development, and process automation. The company delivers high-quality web architectures for a diverse international client base.

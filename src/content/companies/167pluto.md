@@ -3,9 +3,9 @@ name: 167pluto
 website: https://167pluto.com
 logo: ../../assets/167pluto-logo.png
 description: High-throughput betting platform with extreme scalability for live sports betting
-industry: Gaming
+industry: Software
 founded: 2023
-size: Startup
+size: Small Business
 type: Full-time
 socialLinks:
   - type: Website
@@ -20,34 +20,6 @@ socialLinks:
   - type: GitHub
     handle: 167pluto
     name: 167pluto GitHub
-notableProjects:
-  - High-Load Betting Platform
-  - Event-Driven Microservices
-  - Real-Time Transaction Processing
-  - Global Odds Aggregator
-  - Live Sports Analytics
-  - Multi-Region Deployment
-technologies:
-  - Node.js
-  - NestJS
-  - Kafka
-  - PostgreSQL
-  - Redis
-  - AWS
-  - Docker
-  - Kubernetes
-  - TypeScript
-  - GraphQL
-clients:
-  - Sports Betting Operators
-  - Gaming Companies
-  - LATAM, Asia, Europe Markets
-  - Online Casinos
-  - Sportsbooks
-awards:
-  - Best New Betting Platform 2024
-  - Innovation in Real-Time Gaming 2024
-  - Scalability Excellence Award 2024
 ---
 
 167pluto is a cutting-edge betting platform designed to handle extreme traffic spikes during live sports events. The platform processes millions of concurrent transactions with millisecond latency across LATAM, Asia, and European markets.

@@ -3,9 +3,9 @@ name: Apoddo
 website: https://apoddo.com
 logo: ../../assets/placeholder.png
 description: Backend-for-Frontend (BFF) infrastructure and API orchestration specialist
-industry: Software, API Development, Mobile Technology
+industry: Software
 founded: 2020
-size: Small Business (10-25 employees)
+size: Small Business
 type: Contract
 socialLinks:
   - type: Website
@@ -21,44 +21,8 @@ socialLinks:
     handle: apoddo
     name: Apoddo GitHub
   - type: Medium
-    handle: @apoddo
+    handle: "@apoddo"
     name: Apoddo Medium
-notableProjects:
-  - Humanity.com BFF Layer
-  - Mobile API Optimization
-  - GraphQL Gateway
-  - Multi-Tier Caching
-  - Microservices Architecture
-  - API Gateway Implementation
-  - Real-time Data Synchronization
-  - Mobile Performance Optimization
-  - API Rate Limiting and Throttling
-technologies:
-  - Node.js
-  - Go
-  - Redis
-  - REST APIs
-  - GraphQL
-  - Microservices
-  - Docker
-  - Kubernetes
-  - AWS
-  - PostgreSQL
-  - MongoDB
-  - Nginx
-  - Express.js
-  - Apollo Server
-clients:
-  - Humanity.com
-  - Mobile Application Providers
-  - Enterprise API Services
-  - E-commerce Platforms
-  - SaaS Companies
-  - Healthcare Applications
-awards:
-  - Best API Infrastructure 2023
-  - Mobile Performance Excellence 2022
-  - API Architecture Innovation 2021
 ---
 
 Apoddo specializes in Backend-for-Frontend (BFF) infrastructure and API orchestration, helping companies optimize their mobile application performance through sophisticated caching strategies and protocol optimization.

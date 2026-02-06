@@ -69,21 +69,12 @@ export default defineConfig({
     // #10 VS-Code Caliber Syntax Highlighting
     syntaxHighlight: "shiki",
   },
-  markdown: {
-    shikiConfig: {
-      theme: "aurora-x",
-      wrap: true,
-    },
-    syntaxHighlight: "shiki",
-  },
   output: "static",
   prefetch: {
     defaultStrategy: "hover",
     // #20 Pre-fetching links for instant navigation
     prefetchAll: true,
   },
-
-  prefetch: true,
 
   site: "https://localhost:4321",
   trailingSlash: "never",

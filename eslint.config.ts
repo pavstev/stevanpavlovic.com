@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import markdown from "@eslint/markdown";
 import stylistic from "@stylistic/eslint-plugin";
+import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginAstro from "eslint-plugin-astro";
 import tailwind from "eslint-plugin-better-tailwindcss";
 import checkFile from "eslint-plugin-check-file";
@@ -10,6 +11,7 @@ import eslintPluginJsonSchemaValidator from "eslint-plugin-json-schema-validator
 // @ts-expect-error - No types for this plugin
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import perfectionist from "eslint-plugin-perfectionist";
+import eslintPluginPrettier from "eslint-plugin-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
@@ -304,4 +306,17 @@ export default defineConfig(
       parser: jsoncParser, // Set this parser.
     },
   })),
+  // Prettier must be last to override other formatting rules
+  {
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro", "**/*.json", "**/*.md", "**/*.mdx"],
+    name: "prettier",
+    plugins: {
+      prettier: eslintPluginPrettier,
+    },
+    rules: {
+      ...eslintConfigPrettier.rules,
+      "editorconfig/indent": "off", // Prettier handles formatting
+      "prettier/prettier": "error",
+    },
+  },
 );

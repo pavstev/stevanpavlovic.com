@@ -17,7 +17,7 @@ interface Props
   wrap?: ResponsiveValue<"nowrap" | "wrap" | "wrap-reverse">;
 }
 
-const { align, as: Tag = "div", class: className, direction = "col", gap = 4, justify, wrap, ...rest } = Astro.props;
+const { align, as: Tag = "div", class: className, direction = "col", gap = 3, justify, wrap, ...rest } = Astro.props;
 
 const directionClass = buildResponsiveClasses(direction, "flex");
 const gapClass = buildResponsiveClasses(gap, "gap");

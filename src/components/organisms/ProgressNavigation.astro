@@ -1,0 +1,57 @@
+---
+import { cn } from "../../lib/cn";
+import Icon from "../atoms/Icon.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+
+const { class: className, title = "Table of Contents" } = Astro.props;
+---
+
+<nav class:list={[cn("js-toc-container flex flex-col gap-6", className)]}>
+  <Stack class="border-b border-white/5 pb-4" gap={2}>
+    <div class="flex items-center gap-2 text-primary">
+      <Icon name="mdi:format-list-bulleted" size="sm" />
+      <Text class="text-[10px] font-bold tracking-[0.2em] uppercase" variant="accent">{title}</Text>
+    </div>
+  </Stack>
+
+  <div class="js-toc toc">
+    {/* Tocbot will inject the content here */}
+  </div>
+</nav>
+
+<script>
+  import { setupTOC } from "../../lib/toc";
+
+  function init() {
+    setupTOC();
+  }
+
+  document.addEventListener("astro:page-load", init);
+  init();
+</script>
+
+<style is:global>
+  /* Custom Tocbot Styles */
+  .toc-link {
+    @apply block border-l-2 border-transparent py-1 pl-4 text-muted-foreground transition-all duration-300;
+  }
+
+  .is-active-link {
+    @apply border-primary font-semibold text-primary;
+  }
+
+  .toc-link:hover {
+    @apply text-foreground;
+  }
+
+  /* Indentation for h3 */
+  .node-name--H3 {
+    @apply pl-4;
+  }
+</style>

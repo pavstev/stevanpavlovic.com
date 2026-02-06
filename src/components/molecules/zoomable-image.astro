@@ -2,9 +2,9 @@
 import type { ImageMetadata } from "astro";
 
 import { generateId } from "../../lib/dom";
-import Badge from "../atoms/badge.astro";
-import Button from "../atoms/button.astro";
-import Text from "../atoms/text.astro";
+import Badge from "../atoms/Badge.astro";
+import Button from "../atoms/Button.astro";
+import Text from "../atoms/Text.astro";
 import MagnifyOverlay from "./magnify-overlay.astro";
 import Modal from "./modal.astro";
 
@@ -26,7 +26,7 @@ const modalId = `zoom-modal-${uniqueId}`;
 const triggerId = `zoom-trigger-${uniqueId}`;
 
 const displayCaption = caption || alt;
-import Slider from "../atoms/slider.astro";
+import Slider from "../atoms/Slider.astro";
 ---
 
 <div

@@ -1,0 +1,109 @@
+---
+import type { GraphData, ThemeMap } from "../../lib/graph-engine";
+
+import { cn } from "../../lib/cn";
+import Badge from "../atoms/Badge.astro";
+import Button from "../atoms/Button.astro";
+
+interface Props {
+  class?: string;
+  data: GraphData;
+  themeMap: ThemeMap;
+  title?: string;
+}
+
+const { class: className, data, themeMap, title } = Astro.props;
+---
+
+<section
+  class:list={[
+    cn(
+      "group relative h-[600px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 shadow-2xl backdrop-blur-md select-none md:h-[800px]",
+      className,
+    ),
+  ]}
+  id="graph-container"
+>
+  {/* Canvas Layer */}
+  <canvas
+    class="absolute inset-0 block cursor-grab outline-none active:cursor-grabbing"
+    data-graph={JSON.stringify(data)}
+    data-theme={JSON.stringify(themeMap)}
+    id="relational-graph"></canvas>
+
+  {/* UI Overlay: Controls & Legend */}
+  <div class="pointer-events-none absolute bottom-6 left-6 z-10 flex flex-col gap-4">
+    {title && <h3 class="text-lg font-bold tracking-tight text-foreground/80">{title}</h3>}
+
+    <div
+      class="pointer-events-auto flex flex-col gap-2 rounded-xl border border-white/5 bg-black/40 p-4 backdrop-blur-xl"
+    >
+      <div class="flex flex-col gap-2">
+        {
+          Object.entries(themeMap).map(([type, config]) => (
+            <div class="flex items-center gap-2">
+              <Badge style={{ borderColor: `${config.color}40`, color: config.color }} variant="outline">
+                <span class="mr-2 size-2 rounded-full" style={{ backgroundColor: config.color }} />
+                {type}
+              </Badge>
+            </div>
+          ))
+        }
+      </div>
+
+      <Button class="mt-2 w-full border-white/5 text-[10px]" id="reset-graph" size="xs" variant="glass">
+        Reset View
+      </Button>
+    </div>
+  </div>
+
+  {/* Tooltip Shell */}
+  <div
+    class="pointer-events-none absolute top-0 left-0 z-50 max-w-[280px] rounded-lg border border-white/10 bg-black/60 p-4 text-foreground opacity-0 shadow-2xl backdrop-blur-xl transition-opacity duration-200"
+    id="graph-tooltip"
+  >
+    <div class="flex flex-col gap-1" id="tooltip-content">
+      {/* Dynamic content from script */}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { GraphEngine } from "../../lib/graph-engine";
+
+  function init() {
+    const canvas = document.getElementById("relational-graph") as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const data = JSON.parse(canvas.dataset.graph || "{}");
+    const theme = JSON.parse(canvas.dataset.theme || "{}");
+    const tooltip = document.getElementById("graph-tooltip");
+    const tooltipContent = document.getElementById("tooltip-content");
+    const resetBtn = document.getElementById("reset-graph");
+
+    const engine = new GraphEngine(canvas, data, theme);
+
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => engine.resetView());
+    }
+
+    canvas.addEventListener("graph-hover", (e: any) => {
+      const { node, x, y } = e.detail;
+      if (node && tooltip && tooltipContent) {
+        tooltip.style.opacity = "1";
+        tooltip.style.transform = `translate(${x + 20}px, ${y + 20}px)`;
+
+        tooltipContent.innerHTML = `
+          <span class="text-[10px] font-bold tracking-widest uppercase" style="color: ${node.bg}">${node.type}</span>
+          <h4 class="text-sm font-semibold">${node.label}</h4>
+          ${node.data?.desc ? `<p class="mt-1 text-xs text-muted-foreground line-clamp-3">${node.data.desc}</p>` : ""}
+        `;
+      } else if (tooltip) {
+        tooltip.style.opacity = "0";
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", init);
+  init();
+</script>

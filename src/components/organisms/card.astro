@@ -6,15 +6,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import type { Tag } from "../../lib";
 
-import Badge from "../atoms/badge.astro";
-import CardSpotlight from "../atoms/card-spotlight.astro";
-import Heading from "../atoms/heading.astro";
-import Icon from "../atoms/icon.astro";
-import Text from "../atoms/text.astro";
+import Badge from "../atoms/Badge.astro";
+import DateTime from "../atoms/DateTime.astro";
+import Heading from "../atoms/Heading.astro";
+import Icon from "../atoms/Icon.astro";
+import CardSpotlight from "../atoms/SpotlightEffect.astro";
+import Text from "../atoms/Text.astro";
 import CardImage from "../molecules/card-image.astro";
-import DateTime from "../atoms/date-time.astro";
 import IconBox from "../molecules/icon-box.astro";
-import Tags from "../molecules/tags.astro";
+import LabelGroup from "../molecules/LabelGroup.astro";
 
 const variants = cva(
   "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border transition-all duration-300",
@@ -255,7 +255,7 @@ const isRowLayout = list && !icon;
           >
             {tags && tags.length > 0 && (
               <div class:list={[isRowLayout && "mt-2"]}>
-                <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
+                <LabelGroup items={tags} limit={isRowLayout ? 4 : 3} />
               </div>
             )}
 

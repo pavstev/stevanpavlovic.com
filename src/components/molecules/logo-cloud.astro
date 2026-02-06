@@ -1,7 +1,8 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
-import Icon from "../atoms/icon.astro";
+import Icon from "../atoms/Icon.astro";
 
 interface Logo {
   href?: string;
@@ -17,21 +18,21 @@ interface Props extends HTMLAttributes<"div"> {
 const { class: className, logos, title, ...props } = Astro.props;
 ---
 
-<div class={cn("flex flex-col gap-4", className)} {...props}>
+<div class:list={cn("flex flex-col gap-4", className)} {...props}>
   {title && <span class="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{title}</span>}
 
   <div class="flex flex-wrap items-center gap-6 md:gap-8">
     {
       logos.map((logo) => (
         <a
-          class="group relative flex items-center justify-center grayscale transition-all duration-300 hover:grayscale-0 hover:scale-110"
-          href={logo.href}
           aria-label={logo.label}
-          target="_blank"
+          class="group relative flex items-center justify-center grayscale transition-all duration-300 hover:scale-110 hover:grayscale-0"
+          href={logo.href}
           rel="noopener noreferrer"
+          target="_blank"
         >
           <Icon
-            class="text-muted-foreground group-hover:text-foreground transition-colors"
+            class="text-muted-foreground transition-colors group-hover:text-foreground"
             name={logo.icon}
             size="lg"
           />

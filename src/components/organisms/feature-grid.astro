@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 import FeatureCard from "../molecules/feature-card.astro";
 
@@ -19,7 +20,7 @@ interface Props extends HTMLAttributes<"div"> {
 const { class: className, projects, ...props } = Astro.props;
 ---
 
-<div class={cn("flex flex-col gap-4", className)} {...props}>
+<div class:list={cn("flex flex-col gap-4", className)} {...props}>
   {
     projects.map((project) => (
       <FeatureCard

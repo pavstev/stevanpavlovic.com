@@ -1,17 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import type { PostLink } from "../../lib";
-
 import { cn } from "../../lib/cn";
-import Button from "../atoms/button.astro";
-import Icon from "../atoms/icon.astro";
+import Button from "../atoms/Button.astro";
+import Icon from "../atoms/Icon.astro";
 
 interface Props extends HTMLAttributes<"a"> {
-  link: PostLink;
+  href: string;
+  label: string;
 }
 
-const { class: className, link, ...props } = Astro.props;
+const { class: className, href, label, ...props } = Astro.props;
 ---
 
 <Button
@@ -22,16 +21,15 @@ const { class: className, link, ...props } = Astro.props;
       className,
     ),
   ]}
-  href={link.href}
+  href={href}
   size="sm"
   variant="glass"
   {...props}
-  type="button"
 >
   <Icon
     class="text-primary transition-transform duration-300 group-hover:-translate-x-1"
     name="mdi:arrow-left"
     size="sm"
   />
-  <span class="ml-1">{link.label}</span>
+  <span class="ml-1">{label}</span>
 </Button>

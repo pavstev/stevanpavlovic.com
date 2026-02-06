@@ -1,10 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
-import Badge from "../atoms/badge.astro";
-import Heading from "../atoms/heading.astro";
-import Icon from "../atoms/icon.astro";
-import Text from "../atoms/text.astro";
+import Badge from "../atoms/Badge.astro";
+import Heading from "../atoms/Heading.astro";
+import Icon from "../atoms/Icon.astro";
+import Text from "../atoms/Text.astro";
 import IconBox from "./icon-box.astro";
 
 interface Props extends HTMLAttributes<"div"> {
@@ -22,7 +23,7 @@ const Tag = href ? "a" : "div";
 ---
 
 <Tag
-  class={cn(
+  class:list={cn(
     "group relative flex flex-col gap-6 rounded-2xl border border-white/5 bg-white/2 p-6 transition-all duration-500 hover:border-white/10 hover:bg-white/4 hover:shadow-2xl",
     href && "cursor-pointer",
     className,
@@ -32,7 +33,7 @@ const Tag = href ? "a" : "div";
 >
   {/* Hover Glow Effect */}
   <div
-    class="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-radial-gradient(400px_at_center,rgba(255,255,255,0.05),transparent)"
+    class="bg-radial-gradient(400px_at_center,rgba(255,255,255,0.05),transparent) pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
   >
   </div>
 
@@ -46,13 +47,13 @@ const Tag = href ? "a" : "div";
 
       <div class="flex flex-col gap-1.5">
         <div class="flex items-center gap-2">
-          <Heading class="text-white group-hover:text-primary transition-colors" level={3} size="md">
+          <Heading class="text-white transition-colors group-hover:text-primary" level={3} size="md">
             {title}
           </Heading>
           {
             href && (
               <Icon
-                class="opacity-0 -translate-x-2 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 text-white/40"
+                class="-translate-x-2 translate-y-2 text-white/40 opacity-0 transition-all duration-300 group-hover:translate-0 group-hover:opacity-100"
                 name="mdi:arrow-top-right"
                 size="sm"
               />

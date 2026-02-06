@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "../../lib/cn";
+import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/styles";
+
+export interface Props extends HTMLAttributes<"div"> {
+  align?: ResponsiveValue<"baseline" | "center" | "end" | "start" | "stretch">;
+  as?: any;
+  cols?: ResponsiveValue<number | string>;
+  gap?: ResponsiveValue<number | string>;
+  justify?: ResponsiveValue<"around" | "between" | "center" | "end" | "evenly" | "start">;
+  rows?: ResponsiveValue<number | string>;
+}
+
+const { align, as: Tag = "div", class: className, cols = 1, gap = 4, justify, rows, ...props } = Astro.props;
+
+const colsClass = buildResponsiveClasses(cols, "grid-cols");
+const rowsClass = rows ? buildResponsiveClasses(rows, "grid-rows") : "";
+const gapClass = buildResponsiveClasses(gap, "gap");
+const alignClass = align ? buildResponsiveClasses(align, "items") : "";
+const justifyClass = justify ? buildResponsiveClasses(justify, "justify") : "";
+---
+
+<Tag class:list={[cn("grid", colsClass, rowsClass, gapClass, alignClass, justifyClass, className)]} {...props}>
+  <slot />
+</Tag>

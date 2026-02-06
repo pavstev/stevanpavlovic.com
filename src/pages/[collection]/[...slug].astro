@@ -1,19 +1,17 @@
 ---
 import type { GetStaticPathsItem, GetStaticPathsResult } from "astro";
 import type { CollectionEntry, CollectionKey } from "astro:content";
-
 import { getCollection, render } from "astro:content";
 
-import type { Params as BaseParams } from "./index.astro";
-
-import PostView from "../../components/organisms/post-view.astro";
+import LayoutRoot from "../../components/layout/layout-root.astro";
+import ArticleRenderer from "../../components/organisms/ArticleRenderer.astro";
+import ProgressNavigation from "../../components/organisms/ProgressNavigation.astro";
+import MetaBar from "../../components/molecules/MetaBar.astro";
+import Heading from "../../components/atoms/Heading.astro";
 import { collections } from "../../lib";
+import { getViewPageProps } from "../../lib/content/api";
 
 export const prerender = true;
-
-interface Params extends BaseParams {
-  slug: string;
-}
 
 type Props = CollectionEntry<CollectionKey>;
 
@@ -35,16 +33,29 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   return result.flat();
 }
 
-const { collection } = Astro.params as unknown as Params;
 const entry = Astro.props as Props;
+const { collection } = Astro.params;
 
 if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const viewProps = await getViewPageProps(entry as any);
 ---
 
-<PostView collection={collection} entry={entry}>
-  <Content />
-</PostView>
+<LayoutRoot title={viewProps.title} description={viewProps.description || ""} slug={`/${collection}/${entry.id}`}>
+  <ArticleRenderer>
+    <div slot="header" class="space-y-6">
+      <Heading level={1} size="display" class="max-w-4xl">
+        {viewProps.title}
+      </Heading>
+
+      <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
+    </div>
+
+    {headings.length > 0 && <ProgressNavigation slot="toc" />}
+
+    <Content />
+  </ArticleRenderer>
+</LayoutRoot>

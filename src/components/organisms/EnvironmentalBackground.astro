@@ -1,0 +1,54 @@
+---
+import { cn } from "../../lib/cn";
+import MeteorEffect from "../atoms/MeteorEffect.astro";
+
+interface Props {
+  class?: string;
+  density?: number; // 0 to 1
+  showStars?: boolean;
+  variant?: "cyber" | "deep" | "glass";
+}
+
+const { class: className, density = 0.5, showStars = true, variant = "deep" } = Astro.props;
+
+// Density mapped to meteor count (max 50)
+const meteorCount = Math.floor(density * 50);
+---
+
+<div
+  class:list={[
+    cn(
+      "pointer-events-none fixed inset-0 -z-50 h-screen w-screen overflow-hidden",
+      variant === "cyber" ? "bg-slate-950" : "bg-black",
+      className,
+    ),
+  ]}
+>
+  {/* Base Deep Space Gradient */}
+  <div
+    class:list={[
+      "absolute inset-0 z-0 bg-linear-to-b from-transparent",
+      {"via-primary/5 to-accent/5": variant !== "glass", "via-white/5 to-white/10": variant === "glass"},
+    ]}
+  >
+  </div>
+
+  {/* Distant Nebulae (Glow Spheres) */}
+  <div class="absolute top-[-10%] left-[-10%] size-[80%] rounded-full bg-primary/10 opacity-40 blur-[120px]"></div>
+  <div class="absolute right-[-10%] bottom-[-10%] size-[70%] rounded-full bg-accent/10 opacity-30 blur-[100px]"></div>
+
+  {/* Star Field */}
+  {
+    showStars && (
+      <div class="absolute inset-0 z-10 opacity-20">
+        <div class="absolute inset-0 bg-[radial-gradient(white_1px,transparent_1px)] bg-size-[40px_40px]" />
+        <div class="absolute inset-0 bg-[radial-gradient(white_1.5px,transparent_1.5px)] bg-size-[100px_100px] bg-position-[20px_20px]" />
+      </div>
+    )
+  }
+
+  {/* Dynamic meteor shower based on density */}
+  <MeteorEffect class="z-20" number={meteorCount} />
+
+  <slot />
+</div>

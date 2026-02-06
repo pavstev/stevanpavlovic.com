@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 
 export interface Props extends Omit<HTMLAttributes<"input">, "type"> {}
@@ -8,7 +9,7 @@ const { class: className, ...props } = Astro.props;
 ---
 
 <input
-  class={cn(
+  class:list={cn(
     "h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-border accent-primary hover:accent-primary/80 focus:outline-none",
     className,
   )}

@@ -1,8 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
-import Heading from "../atoms/heading.astro";
-import Text from "../atoms/text.astro";
+import Heading from "../atoms/Heading.astro";
+import Text from "../atoms/Text.astro";
 import IconBox from "../molecules/icon-box.astro";
 
 interface Props extends HTMLAttributes<"section"> {
@@ -14,19 +15,19 @@ interface Props extends HTMLAttributes<"section"> {
 const { class: className, description, icon, title, ...props } = Astro.props;
 ---
 
-<section class={cn("relative py-12 md:py-16", className)} {...props}>
+<section class:list={cn("relative py-12 md:py-16", className)} {...props}>
   {/* Ambient Background Glow */}
   <div class="pointer-events-none absolute -top-24 -left-24 size-96 rounded-full bg-primary/10 blur-[120px]"></div>
 
   <div class="relative flex flex-col gap-6">
-    {icon && <IconBox class="border-primary/20 bg-primary/5 text-primary shadow-glow-primary" icon={icon} size="xl" />}
+    {icon && <IconBox class="shadow-glow-primary border-primary/20 bg-primary/5 text-primary" icon={icon} size="xl" />}
 
-    <div class="flex flex-col gap-4 max-w-2xl">
-      <Heading class="text-4xl sm:text-5xl md:text-6xl tracking-tight" level={1} size="display">
+    <div class="flex max-w-2xl flex-col gap-4">
+      <Heading class="text-4xl tracking-tight sm:text-5xl md:text-6xl" level={1} size="display">
         {title}
       </Heading>
 
-      <Text class="text-lg md:text-xl text-muted-foreground/80 leading-relaxed" size="lg">
+      <Text class="text-lg leading-relaxed text-muted-foreground/80 md:text-xl" size="lg">
         {description}
       </Text>
     </div>

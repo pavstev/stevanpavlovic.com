@@ -1,33 +1,36 @@
 ---
-import Icon from "../atoms/icon.astro";
-import ToolbarItem from "./toolbar-item.astro";
+import { cn } from "../../lib/cn";
+import Icon from "../atoms/Icon.astro";
+import PropertyField from "./PropertyField.astro";
 
 interface Props {
-  description: string | undefined;
+  class?: string;
+  label?: string;
+  text?: string;
 }
 
-const { description } = Astro.props;
+const { class: className, label = "Description", text } = Astro.props;
 ---
 
 {
-  description && (
-    <div class="min-w-0">
-      <ToolbarItem label="Description">
+  text && (
+    <div class:list={["min-w-0", className]}>
+      <PropertyField label={label}>
         <div class="relative w-full">
-          <details class="group/description text-sm font-medium text-muted-foreground group-hover/toolbar:text-foreground">
+          <details class="group/details text-sm font-medium text-muted-foreground">
             <summary class="cursor-pointer list-none transition-colors hover:text-primary [&::-webkit-details-marker]:hidden">
-              <div class="description-text line-clamp-4 leading-relaxed tracking-tight text-foreground/70 transition-all duration-300 group-open/description:line-clamp-none">
-                {description}
+              <div class="line-clamp-4 leading-relaxed tracking-tight text-foreground/70 transition-all duration-300 group-open/details:line-clamp-none">
+                {text}
               </div>
               <div class="toggle-buttons mt-3 hidden">
-                <div class="group-open/description:hidden">
+                <div class="group-open/details:hidden">
                   <div class="inline-flex items-center gap-2 border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-primary uppercase transition-all duration-300 hover:bg-primary/10 hover:shadow-[0_0_15px_var(--color-primary)]">
                     <span class="size-1 animate-pulse-neon rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
-                    Expand Record
+                    Expand
                     <Icon name="mdi:chevron-down" size="sm" />
                   </div>
                 </div>
-                <div class="hidden group-open/description:block">
+                <div class="hidden group-open/details:block">
                   <div class="inline-flex items-center gap-2 border border-foreground/10 bg-foreground/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-foreground/50 uppercase transition-all duration-300 hover:border-primary/20 hover:text-primary">
                     Collapse
                     <Icon name="mdi:chevron-up" size="sm" />
@@ -37,7 +40,7 @@ const { description } = Astro.props;
             </summary>
           </details>
         </div>
-      </ToolbarItem>
+      </PropertyField>
     </div>
   )
 }
@@ -45,11 +48,8 @@ const { description } = Astro.props;
 <script>
   import { setupDescriptionToggles } from "../../lib/post-description";
 
-  // Run on mount and after a short delay to ensure layout
   document.addEventListener("astro:page-load", setupDescriptionToggles);
   setupDescriptionToggles();
   window.addEventListener("resize", setupDescriptionToggles);
-
-  // Also watch for class changes or other potential triggers
   setTimeout(setupDescriptionToggles, 100);
 </script>

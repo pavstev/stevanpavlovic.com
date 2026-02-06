@@ -1,0 +1,51 @@
+---
+import { cn } from "../../lib/cn";
+import Badge from "../atoms/Badge.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
+
+interface Item {
+  [key: string]: any;
+  label: string;
+}
+
+interface Props {
+  class?: string;
+  items: Item[];
+  limit?: number;
+  showCount?: boolean;
+  title?: string;
+  variant?: "accent" | "cyber" | "default" | "outline" | "primary";
+}
+
+const { class: className, items = [], limit, showCount = true, title, variant = "default" } = Astro.props;
+
+const displayItems = limit ? items.slice(0, limit) : items;
+const remainingCount = items.length - displayItems.length;
+---
+
+{
+  items.length > 0 && (
+    <Stack class:list={[className, "min-w-0"]} gap={2}>
+      {title && (
+        <Text class="text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase" variant="muted">
+          {title}
+        </Text>
+      )}
+      <Stack class="flex-wrap" direction="row" gap={2}>
+        {displayItems.map((item) => (
+          <Badge
+            class:list={cn(
+              variant === "default" &&
+                "group-hover/toolbar:shadow-glow-accent cursor-pointer transition-all duration-300 group-hover/toolbar:border-accent/50 group-hover/toolbar:bg-accent/10 group-hover/toolbar:text-accent hover:text-foreground",
+            )}
+            variant={variant}
+          >
+            {item.label}
+          </Badge>
+        ))}
+        {showCount && remainingCount > 0 && <Badge variant={variant}>+{remainingCount}</Badge>}
+      </Stack>
+    </Stack>
+  )
+}

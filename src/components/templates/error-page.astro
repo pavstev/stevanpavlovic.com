@@ -1,10 +1,10 @@
 ---
-import Button from "../atoms/button.astro";
-import Container from "../atoms/container.astro";
-import Heading from "../atoms/heading.astro";
-import Icon from "../atoms/icon.astro";
-import Meteors from "../atoms/meteors.astro";
-import Text from "../atoms/text.astro";
+import Button from "../atoms/Button.astro";
+import Container from "../atoms/Container.astro";
+import Heading from "../atoms/Heading.astro";
+import Icon from "../atoms/Icon.astro";
+import MeteorEffect from "../atoms/MeteorEffect.astro";
+import Text from "../atoms/Text.astro";
 import LayoutRoot from "../layout/layout-root.astro";
 
 interface Props {
@@ -44,7 +44,7 @@ const errorMessage = error instanceof Error ? error.message : typeof error === "
     </div>
 
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
-      <Meteors number={40} />
+      <MeteorEffect number={40} />
     </div>
 
     <Container class="relative z-10 flex flex-col items-center justify-center p-6 sm:p-8">

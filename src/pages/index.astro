@@ -1,15 +1,57 @@
 ---
-import Container from "../components/atoms/container.astro";
-import Meteors from "../components/atoms/meteors.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import HomeBento from "../components/organisms/home-bento.astro";
-import { PROFILE } from "../config";
+import EnvironmentalBackground from "../components/organisms/EnvironmentalBackground.astro";
+import CompositionGrid from "../components/organisms/CompositionGrid.astro";
+import GridTile from "../components/molecules/GridTile.astro";
+import Heading from "../components/atoms/Heading.astro";
+import Text from "../components/atoms/Text.astro";
+import { PROFILE, NAV_ITEMS_ARRAY } from "../config";
+
+const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
 ---
 
-<LayoutRoot class="pb-10" description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Engineer`}>
-  <Container>
-    <Meteors number={30} />
+<LayoutRoot description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Architect`}>
+  <EnvironmentalBackground density={0.4} />
 
-    <HomeBento />
-  </Container>
+  <CompositionGrid class="relative z-10 pt-10 md:pt-20">
+    <GridTile cols="lg:col-span-12" class="p-12 md:p-16">
+      <div class="max-w-3xl space-y-8">
+        <Heading level={1} size="display" variant="primary">
+          Helping brands scale with <br />
+          <span class="text-white">Future-Proof Architecture.</span>
+        </Heading>
+        <Text variant="muted" class="text-xl max-w-2xl leading-relaxed">
+          {PROFILE.bio}
+        </Text>
+      </div>
+    </GridTile>
+
+    {
+      navItems.map((item) => (
+        <GridTile>
+          <div class="flex flex-col justify-between h-full gap-8">
+            <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d={item.icon || "M12 2v20M2 12h20"} />
+              </svg>
+            </div>
+            <div class="space-y-2">
+              <Heading level={3} size="sm">
+                {item.label}
+              </Heading>
+              <Text variant="muted" size="sm">
+                {item.description}
+              </Text>
+            </div>
+            <a
+              href={item.href}
+              class="text-sm font-bold tracking-widest uppercase text-primary hover:text-white transition-colors"
+            >
+              Explore Item
+            </a>
+          </div>
+        </GridTile>
+      ))
+    }
+  </CompositionGrid>
 </LayoutRoot>

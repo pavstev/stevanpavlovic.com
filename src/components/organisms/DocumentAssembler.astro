@@ -1,0 +1,241 @@
+---
+import { cn } from "../../lib/cn";
+import Button from "../atoms/Button.astro";
+import Container from "../atoms/Container.astro";
+import Grid from "../atoms/Grid.astro";
+import Icon from "../atoms/Icon.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
+
+interface Props {
+  class?: string;
+  data: {
+    education: any[];
+    experience: any[];
+    profile: any;
+    skills: string[];
+  };
+}
+
+const { class: className, data } = Astro.props;
+const { education, experience, profile, skills } = data;
+---
+
+<section
+  class:list={[
+    cn("relative min-h-screen w-full bg-neutral-100 px-4 py-12 print:min-h-0 print:bg-white print:p-0", className),
+  ]}
+>
+  {/* Floating Actions */}
+  <div
+    class="animate-in slide-in-from-bottom-6 fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 gap-4 duration-700 print:hidden"
+  >
+    <Button class="rounded-full px-8 shadow-2xl" id="print-btn" variant="primary">
+      <Icon class="mr-2" name="mdi:printer" />
+      Export PDF
+    </Button>
+    <div class="glass rounded-full border-white/20 px-6 py-3 text-sm font-medium shadow-xl">
+      <Text as="span" class="font-bold" variant="accent">Pro Tip:</Text> Click any field to live edit.
+    </div>
+  </div>
+
+  {/* Document Canvas */}
+  <Container
+    class="relative mx-auto min-h-[297mm] max-w-[210mm] bg-white p-12 shadow-2xl transition-all sm:p-16 print:min-h-0 print:w-full print:max-w-none print:shadow-none"
+    id="resume-paper"
+  >
+    <div class="absolute top-0 left-0 h-1.5 w-full bg-primary"></div>
+
+    <Stack gap={12}>
+      {/* Header Section */}
+      <header class="flex flex-col items-start justify-between gap-6 border-b border-neutral-100 pb-8 md:flex-row">
+        <Stack gap={2}>
+          <h1
+            class="rounded-sm p-1 text-4xl font-black tracking-tight text-neutral-900 uppercase outline-none focus:bg-primary/5 md:text-5xl"
+            contenteditable="true"
+          >
+            {profile.name}
+          </h1>
+          <p
+            class="rounded-sm p-1 text-xl font-medium text-neutral-500 outline-none focus:bg-primary/5"
+            contenteditable="true"
+          >
+            {profile.role}
+          </p>
+        </Stack>
+
+        <Stack align="end" class="text-right text-sm font-medium text-neutral-400" gap={1}>
+          <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
+            <span class="outline-none" contenteditable="true">{profile.email}</span>
+            <Icon name="mdi:email" />
+          </div>
+          <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
+            <span class="outline-none" contenteditable="true">{profile.website}</span>
+            <Icon name="mdi:web" />
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="outline-none" contenteditable="true">{profile.location}</span>
+            <Icon name="mdi:map-marker" />
+          </div>
+        </Stack>
+      </header>
+
+      {/* Main Sections */}
+      <Grid class="print:grid-cols-12 print:gap-8" cols={{ base: 1, md: 12 }} gap={12}>
+        {/* Left Column */}
+        <div class="md:col-span-8 print:col-span-8">
+          <Stack gap={10}>
+            <section>
+              <Text
+                class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
+                variant="muted"
+              >
+                <span class="size-1 rounded-full bg-neutral-300"></span> Summary
+              </Text>
+              <div
+                class="rounded-sm p-1 leading-relaxed text-neutral-700 outline-none focus:bg-primary/5"
+                contenteditable="true"
+              >
+                {profile.summary}
+              </div>
+            </section>
+
+            <section>
+              <Text
+                class="mb-6 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
+                variant="muted"
+              >
+                <span class="size-1 rounded-full bg-neutral-300"></span> Professional Experience
+              </Text>
+              <Stack gap={8}>
+                {
+                  experience.map((job) => (
+                    <div class="group relative">
+                      <button class="delete-btn absolute top-1 -left-10 text-red-400 opacity-0 transition-opacity group-hover:opacity-100 print:hidden">
+                        <Icon name="mdi:trash-can" size="sm" />
+                      </button>
+                      <div class="mb-1 flex items-baseline justify-between">
+                        <h3
+                          class="rounded-sm p-1 text-lg font-bold text-neutral-900 outline-none focus:bg-primary/5"
+                          contenteditable="true"
+                        >
+                          {job.role}
+                        </h3>
+                        <span
+                          class="rounded-sm p-1 font-mono text-sm text-neutral-400 outline-none focus:bg-primary/5"
+                          contenteditable="true"
+                        >
+                          {job.period}
+                        </span>
+                      </div>
+                      <div
+                        class="mb-2 rounded-sm p-1 text-sm font-bold text-blue-600 outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                      >
+                        {job.company}
+                      </div>
+                      <div
+                        class="rounded-sm p-1 text-sm leading-relaxed text-neutral-600 outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                      >
+                        {job.description}
+                      </div>
+                    </div>
+                  ))
+                }
+              </Stack>
+            </section>
+          </Stack>
+        </div>
+
+        {/* Right Column */}
+        <div class="md:col-span-4 print:col-span-4">
+          <Stack gap={10}>
+            <section>
+              <Text
+                class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
+                variant="muted"
+              >
+                <span class="size-1 rounded-full bg-neutral-300"></span> Technical Skills
+              </Text>
+              <Stack gap={2}>
+                {
+                  skills.map((skill) => (
+                    <div
+                      class="rounded-sm border-b border-neutral-100 p-1 pb-1 text-sm font-medium text-neutral-700 outline-none focus:bg-primary/5"
+                      contenteditable="true"
+                    >
+                      {skill}
+                    </div>
+                  ))
+                }
+              </Stack>
+            </section>
+
+            <section>
+              <Text
+                class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
+                variant="muted"
+              >
+                <span class="size-1 rounded-full bg-neutral-300"></span> Academic Background
+              </Text>
+              <Stack gap={4}>
+                {
+                  education.map((edu) => (
+                    <div>
+                      <div
+                        class="rounded-sm p-1 text-sm font-bold text-neutral-900 outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                      >
+                        {edu.degree}
+                      </div>
+                      <div
+                        class="rounded-sm p-1 text-sm text-neutral-500 outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                      >
+                        {edu.school}
+                      </div>
+                      <div
+                        class="rounded-sm p-1 font-mono text-xs text-neutral-400 outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                      >
+                        {edu.year}
+                      </div>
+                    </div>
+                  ))
+                }
+              </Stack>
+            </section>
+          </Stack>
+        </div>
+      </Grid>
+    </Stack>
+  </Container>
+</section>
+
+<script>
+  import { initResumeGenerator } from "../../lib/resume-generator";
+
+  function setup() {
+    initResumeGenerator();
+  }
+
+  document.addEventListener("astro:page-load", setup);
+  setup();
+</script>
+
+<style>
+  @media print {
+    @page {
+      margin: 0;
+      size: auto;
+    }
+    :global(body) {
+      background: white;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>

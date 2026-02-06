@@ -1,0 +1,26 @@
+---
+import { cn } from "../../lib/cn";
+import Spotlight from "../atoms/Spotlight.astro";
+
+interface Props {
+  class?: string;
+  cols?: string; // Tailwind col-span classes like 'col-span-1'
+  rows?: string; // Tailwind row-span classes like 'row-span-1'
+}
+
+const { class: className, cols = "col-span-1", rows = "row-span-1" } = Astro.props;
+---
+
+<div
+  class:list={[
+    cn(
+      "group/card relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:border-primary/20 hover:bg-white/10",
+      cols,
+      rows,
+      className,
+    ),
+  ]}
+>
+  <Spotlight class="opacity-0 group-hover/card:opacity-10" />
+  <slot />
+</div>

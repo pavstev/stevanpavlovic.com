@@ -1,7 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
-import Stat from "../molecules/stat.astro";
+import MetricBlock from "../molecules/MetricBlock.astro";
+
+interface Props extends HTMLAttributes<"div"> {
+  items: StatItem[];
+}
 
 interface StatItem {
   format?: "compact" | "plain";
@@ -11,17 +16,13 @@ interface StatItem {
   value: number;
 }
 
-interface Props extends HTMLAttributes<"div"> {
-  items: StatItem[];
-}
-
 const { class: className, items, ...props } = Astro.props;
 ---
 
-<div class={cn("flex flex-wrap justify-start gap-4 md:gap-6", className)} {...props}>
+<div class:list={cn("flex flex-wrap justify-start gap-4 md:gap-6", className)} {...props}>
   {
     items.map((item) => (
-      <Stat
+      <MetricBlock
         class="origin-left transition-transform duration-300 hover:scale-105"
         format={item.format}
         icon={item.icon}

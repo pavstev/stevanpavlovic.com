@@ -1,0 +1,92 @@
+---
+import { cn } from "../../lib/cn";
+import Container from "../atoms/Container.astro";
+import Stack from "../atoms/Stack.astro";
+import EnvironmentalBackground from "./EnvironmentalBackground.astro";
+
+interface Props {
+  class?: string;
+  showBackground?: boolean;
+}
+
+const { class: className, showBackground = true } = Astro.props;
+const hasSidebar = Astro.slots.has("sidebar");
+const hasToc = Astro.slots.has("toc");
+---
+
+<div class:list={[cn("relative min-h-screen w-full", className)]}>
+  {showBackground && <EnvironmentalBackground density={0.3} />}
+
+  <Container class="relative z-10 py-12 md:py-20">
+    <Stack gap={12}>
+      {/* Header Slot */}
+      {
+        Astro.slots.has("header") && (
+          <header class="w-full">
+            <slot name="header" />
+          </header>
+        )
+      }
+
+      <div class:list={["grid gap-12", {"lg:grid-cols-12": hasSidebar || hasToc, "mx-auto max-w-3xl": !(hasSidebar || hasToc)}]}>
+        {/* TOC Column (if exists) */}
+        {
+          hasToc && (
+            <aside class="hidden lg:col-span-3 lg:block">
+              <div class="sticky top-24">
+                <slot name="toc" />
+              </div>
+            </aside>
+          )
+        }
+
+        {/* Content Column */}
+        <div
+          class:list={[
+            cn(
+              "prose-cyber prose min-w-0",
+              hasSidebar && hasToc ? "lg:col-span-6" : hasSidebar || hasToc ? "lg:col-span-9" : "w-full",
+            ),
+          ]}
+        >
+          <slot />
+
+          {
+            Astro.slots.has("footer") && (
+              <footer class="mt-16 border-t border-white/5 pt-8">
+                <slot name="footer" />
+              </footer>
+            )
+          }
+        </div>
+
+        {/* Sidebar Column (if exists) */}
+        {
+          hasSidebar && (
+            <aside class:list={["lg:col-span-3", {"lg:col-start-10": !hasToc}]}>
+              <div class="sticky top-24">
+                <slot name="sidebar" />
+              </div>
+            </aside>
+          )
+        }
+      </div>
+    </Stack>
+  </Container>
+</div>
+
+<style is:global>
+  .prose-cyber {
+    --tw-prose-body: var(--color-foreground);
+    --tw-prose-headings: var(--color-foreground);
+    --tw-prose-links: var(--color-primary);
+    --tw-prose-bold: var(--color-foreground);
+    --tw-prose-counters: var(--color-muted-foreground);
+    --tw-prose-bullets: var(--color-primary);
+    --tw-prose-quotes: var(--color-primary);
+    --tw-prose-code: var(--color-primary);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-th-borders: var(--color-border);
+    --tw-prose-td-borders: var(--color-border);
+  }
+</style>

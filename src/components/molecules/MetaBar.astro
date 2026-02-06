@@ -1,15 +1,16 @@
 ---
 import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib";
-import Icon from "../atoms/icon.astro";
-import PostDescription from "./post-description.astro";
-import PostTags from "./post-tags.astro";
-import ToolbarItem from "./toolbar-item.astro";
-import ToolbarLogo from "./toolbar-logo.astro";
+import Icon from "../atoms/Icon.astro";
+import Stack from "../atoms/Stack.astro";
+import BrandLogo from "./BrandLogo.astro";
+import BriefSummary from "./BriefSummary.astro";
+import LabelGroup from "./LabelGroup.astro";
+import PropertyField from "./PropertyField.astro";
 
 interface Props {
   description?: string;
-  tags: undefined | ViewPagePropsTags;
-  toolbarItems: (ToolbarItemType | undefined)[];
+  tags?: ViewPagePropsTags;
+  toolbarItems?: (ToolbarItemType | undefined)[];
 }
 
 const {
@@ -27,29 +28,29 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
 <div
   class="group/toolbar grid w-full grid-cols-1 gap-3 rounded-2xl border border-border/40 bg-background/40 p-3 backdrop-blur-md md:grid-cols-8"
 >
-  {/* Column 1: Description (Wider) */}
+  {/* Column 1: Description */}
   <div class="min-w-0 md:col-span-3">
-    <PostDescription description={description} />
+    <BriefSummary text={description} />
   </div>
 
-  {/* Column 2 & 3: Metadata (Author, Published, etc.) */}
+  {/* Column 2 & 3: Metadata */}
   <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:border-x md:border-border/40 md:px-6">
     {
       items.map((item) => (
-        <ToolbarItem className="min-w-0" label={item.label}>
+        <PropertyField class="min-w-0" label={item.label}>
           {item.type === "status" ? (
-            <div class="flex items-center gap-2">
-              <ToolbarLogo size="sm" type="status" />
+            <Stack align="center" direction="row" gap={2}>
+              <BrandLogo size="sm" variant="status" />
               <span class="text-sm font-semibold text-foreground">{item.value}</span>
-            </div>
+            </Stack>
           ) : (
-            <div class="flex items-center gap-2">
+            <Stack align="center" direction="row" gap={2}>
               {item.logo && (
-                <ToolbarLogo
+                <BrandLogo
                   alt={item.value}
                   size="sm"
                   src={item.logo}
-                  type={item.type === "person" ? "person" : "organization"}
+                  variant={item.type === "person" ? "person" : "organization"}
                 />
               )}
 
@@ -68,15 +69,15 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
               ) : (
                 <span class="text-sm font-semibold text-foreground">{item.value}</span>
               )}
-            </div>
+            </Stack>
           )}
-        </ToolbarItem>
+        </PropertyField>
       ))
     }
   </div>
 
   {/* Column 4: Tags */}
   <div class="min-w-0 md:col-span-3">
-    <PostTags tags={tags.items} title={tags.title} />
+    <LabelGroup items={tags.items} title={tags.title} />
   </div>
 </div>

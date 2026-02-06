@@ -1,9 +1,9 @@
 ---
 import { SITE_CONFIG, STATS } from "../../config";
-import Heading from "../atoms/heading.astro";
-import Text from "../atoms/text.astro";
+import Heading from "../atoms/Heading.astro";
+import Text from "../atoms/Text.astro";
 import StatsGrid from "../organisms/stats-grid.astro";
-import Meteors from "./../atoms/meteors.astro";
+import MeteorEffect from "./../atoms/meteors.astro";
 
 interface Props {
   class?: string;
@@ -13,7 +13,7 @@ const { class: className } = Astro.props;
 ---
 
 <div class:list={["relative -mt-12 space-y-4 overflow-hidden py-8 md:py-16", className]}>
-  <Meteors number={30} />
+  <MeteorEffect number={30} />
 
   <div class="relative z-10 space-y-1">
     <Text class="font-mono tracking-tight text-foreground/50" size="lg"> Hi, I'm </Text>
@@ -28,5 +28,5 @@ const { class: className } = Astro.props;
   </div>
 
   {/* Statistics */}
-  <StatsGrid items={STATS as any} />
+  <MetricBlocksGrid items={STATS as any} />
 </div>

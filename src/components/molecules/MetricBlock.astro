@@ -1,8 +1,9 @@
 ---
 import { formatCompactNumber } from "../../lib/content";
-import Icon from "../atoms/icon.astro";
-import Text from "../atoms/text.astro";
-import Ticker from "../atoms/ticker.astro";
+import Icon from "../atoms/Icon.astro";
+import RollingNumbers from "../atoms/RollingNumbers.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
 
 interface Props {
   class?: string;
@@ -18,7 +19,7 @@ const { class: className, format = "plain", icon, label, unit, value } = Astro.p
 const displayValue = format === "compact" ? formatCompactNumber(value) : value;
 ---
 
-<div class:list={["group flex items-center gap-3", className]}>
+<Stack align="center" class:list={["group", className]} direction="row" gap={3}>
   {/* Icon Container */}
   <div
     class="relative flex size-10 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:text-accent group-hover:ring-primary/50"
@@ -27,10 +28,10 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
   </div>
 
   {/* Text Content */}
-  <div class="flex flex-col text-left">
+  <Stack gap={0}>
     <div class="flex items-baseline gap-0.5">
       <span class="text-gradient-accent text-2xl font-bold tracking-tight tabular-nums md:text-3xl">
-        {format === "compact" ? displayValue : <Ticker value={value} />}
+        {format === "compact" ? displayValue : <RollingNumbers value={value} />}
       </span>
       {unit && <span class="text-xl font-bold text-primary md:text-2xl">{unit}</span>}
     </div>
@@ -40,5 +41,5 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
     >
       {label}
     </Text>
-  </div>
-</div>
+  </Stack>
+</Stack>

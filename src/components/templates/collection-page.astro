@@ -4,14 +4,14 @@ import type { CollectionKey } from "astro:content";
 import type { CollectionItem } from "../../lib";
 import type { DisplayMode } from "../../lib/list";
 
-import Stack from "../atoms/stack.astro";
-import Text from "../atoms/text.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
 import LayoutRoot from "../layout/layout-root.astro";
 import ListActions from "../molecules/list-actions.astro";
 import MasonryGrid from "../molecules/masonry-grid.astro";
 import Card from "../organisms/card.astro";
 import CollectionHeader from "../organisms/collection-header.astro";
-import Section from "../organisms/section.astro";
+import CompositionGrid from "../organisms/CompositionGrid.astro";
 
 interface Props {
   baseUrl: string;
@@ -69,7 +69,7 @@ const isGrid = display === "grid";
 ---
 
 <LayoutRoot description={description} slug={`/${collectionKey}/${display}`} title={title}>
-  <Section>
+  <CompositionGrid>
     <CollectionHeader description={headerDescription} icon={headerIcon} level={2} title={headerTitle}>
       <ListActions
         baseUrl={baseUrl}
@@ -129,7 +129,7 @@ const isGrid = display === "grid";
         </div>
       </div>
     </Stack>
-  </Section>
+  </CompositionGrid>
 </LayoutRoot>
 
 <script>

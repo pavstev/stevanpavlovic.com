@@ -28,19 +28,19 @@ const justifyClass = buildResponsiveClasses(justify, "justify");
 const wrapClass = wrap
   ? typeof wrap === "object"
     ? [
-        `flex-wrap-${wrap.base}`,
-        wrap.sm ? `sm:flex-wrap-${wrap.sm}` : "",
-        wrap.md ? `md:flex-wrap-${wrap.md}` : "",
-        wrap.lg ? `lg:flex-wrap-${wrap.lg}` : "",
-        wrap.xl ? `xl:flex-wrap-${wrap.xl}` : "",
-      ]
-        .join(" ")
-        .replace(/flex-wrap-nowrap/g, "flex-nowrap")
-        .replace(/flex-wrap-wrap-reverse/g, "flex-wrap-reverse")
-        .trim()
+      `flex-wrap-${wrap.base}`,
+      wrap.sm ? `sm:flex-wrap-${wrap.sm}` : "",
+      wrap.md ? `md:flex-wrap-${wrap.md}` : "",
+      wrap.lg ? `lg:flex-wrap-${wrap.lg}` : "",
+      wrap.xl ? `xl:flex-wrap-${wrap.xl}` : "",
+    ]
+      .join(" ")
+      .replace(/flex-wrap-nowrap/g, "flex-nowrap")
+      .replace(/flex-wrap-wrap-reverse/g, "flex-wrap-reverse")
+      .trim()
     : `flex-wrap-${wrap}`
-        .replace(/flex-wrap-nowrap/g, "flex-nowrap")
-        .replace(/flex-wrap-wrap-reverse/g, "flex-wrap-reverse")
+      .replace(/flex-wrap-nowrap/g, "flex-nowrap")
+      .replace(/flex-wrap-wrap-reverse/g, "flex-wrap-reverse")
   : "";
 ---
 

@@ -1,9 +1,39 @@
 ---
 import LayoutRoot from "../components/layout/layout-root.astro";
-import ResumeGenerator from "../components/organisms/resume-generator.astro";
-import { PROFILE } from "../config";
+import DocumentAssembler from "../components/organisms/DocumentAssembler.astro";
+import { getCollection, getEntry } from "astro:content";
+
+const stevan = await getEntry("people", "stevan-pavlovic");
+const experiences = await getCollection("experience");
+
+if (!stevan) throw new Error("Stevan profile not found");
+
+const data = {
+  profile: {
+    email: stevan.data.email,
+    location: stevan.data.location,
+    name: `${stevan.data.firstName} ${stevan.data.lastName}`,
+    phone: "+381 60 123 4567",
+    role: stevan.data.title,
+    summary: stevan.body,
+    website: "stevan.dev",
+  },
+  experience: experiences.map((job) => ({
+    company: job.data.company,
+    description: job.data.description,
+    period: `${new Date(job.data.startDate).getFullYear()} — ${job.data.endDate ? new Date(job.data.endDate).getFullYear() : "Present"}`,
+    role: job.data.role,
+  })),
+  skills: stevan.data.skills || [],
+  education: stevan.data.education || [],
+};
 ---
 
-<LayoutRoot class="bg-slate-100" description="Interactive Resume" slug="/resume" title={`${PROFILE.name} | Resume`}>
-  <ResumeGenerator />
+<LayoutRoot
+  class="bg-neutral-100"
+  description="Interactive Resume"
+  slug="/resume"
+  title={`${data.profile.name} | Resume`}
+>
+  <DocumentAssembler data={data} />
 </LayoutRoot>

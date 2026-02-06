@@ -6,10 +6,10 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
 
-const variants = cva("relative shrink-0 overflow-hidden leading-none transition-all duration-300", {
+const logoVariants = cva("relative shrink-0 overflow-hidden transition-all duration-300", {
   defaultVariants: {
     size: "md",
-    type: "organization",
+    variant: "organization",
   },
   variants: {
     size: {
@@ -17,7 +17,7 @@ const variants = cva("relative shrink-0 overflow-hidden leading-none transition-
       md: "size-7",
       sm: "size-4.5",
     },
-    type: {
+    variant: {
       organization:
         "flex items-center justify-center rounded-md border border-white/5 bg-white/5 p-1 shadow-sm ring-1 ring-white/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
       person:
@@ -27,17 +27,17 @@ const variants = cva("relative shrink-0 overflow-hidden leading-none transition-
   },
 });
 
-interface Props extends VariantProps<typeof variants> {
+interface Props extends VariantProps<typeof logoVariants> {
   alt?: string;
   src?: ImageMetadata;
 }
 
-const { alt, size, src, type } = Astro.props;
+const { alt, size, src, variant } = Astro.props;
 ---
 
-<div class:list={[cn(variants({ size, type }))]}>
+<div class:list={[cn(logoVariants({ size, variant }))]}>
   {
-    type === "status" ? (
+    variant === "status" ? (
       <span class="relative flex size-2.5">
         <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
         <span class="shadow-glow-accent relative inline-flex size-2.5 rounded-full bg-accent" />
@@ -48,9 +48,9 @@ const { alt, size, src, type } = Astro.props;
           alt={alt || ""}
           class:list={cn(
             "size-full transition-all duration-500",
-            (type === "organization" || !type) &&
+            (variant === "organization" || !variant) &&
               "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100",
-            type === "person" && "object-cover",
+            variant === "person" && "object-cover",
           )}
           src={src}
         />

@@ -1,0 +1,89 @@
+---
+import Input from "../atoms/Input.astro";
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
+import DialogShell from "../molecules/DialogShell.astro";
+
+interface Props {
+  id?: string;
+  placeholder?: string;
+}
+
+const { id = "omni-search", placeholder = "Search anything... (Posts, Projects, Skills)" } = Astro.props;
+---
+
+<DialogShell class="mt-[10vh] w-full max-w-2xl" id={id} variant="plain">
+  <Stack class="p-4" gap={4}>
+    <div class="group relative">
+      <Input
+        autocomplete="off"
+        class="h-14 rounded-xl border-white/10 bg-white/5 pl-12 text-lg text-white focus:border-primary/50"
+        id="search-input"
+        placeholder={placeholder}
+      />
+      <div
+        class="absolute top-1/2 left-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+      >
+        <svg
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
+        >
+      </div>
+    </div>
+
+    {/* Search Results Container */}
+    <div class="custom-scrollbar max-h-[60vh] min-h-[200px] overflow-y-auto" id="search-results">
+      <Stack gap={1} id="results-list">
+        <div class="p-8 text-center text-muted-foreground">
+          <Text variant="muted">Start typing to search...</Text>
+        </div>
+      </Stack>
+    </div>
+
+    {/* Footer Info */}
+    <div
+      class="flex items-center justify-between border-t border-white/5 pt-4 text-[10px] font-bold tracking-widest text-muted-foreground uppercase"
+    >
+      <div class="flex gap-4">
+        <span><kbd class="rounded-sm bg-white/10 px-1">↑↓</kbd> Navigate</span>
+        <span><kbd class="rounded-sm bg-white/10 px-1">Enter</kbd> Select</span>
+      </div>
+      <span><kbd class="rounded-sm bg-white/10 px-1">Esc</kbd> Close</span>
+    </div>
+  </Stack>
+</DialogShell>
+
+<script>
+  import { initSearchDropdown } from "../../lib/search";
+
+  function setup() {
+    initSearchDropdown();
+  }
+
+  document.addEventListener("astro:page-load", setup);
+  setup();
+</script>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>

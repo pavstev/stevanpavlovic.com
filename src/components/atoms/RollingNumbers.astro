@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
 
 interface Props extends HTMLAttributes<"span"> {
@@ -22,13 +23,13 @@ const {
 ---
 
 <span
-  class={cn("inline-block tabular-nums", className)}
+  class:list={cn("inline-block tabular-nums", className)}
   data-decimal-places={decimalPlaces}
   data-delay={delay}
   data-direction={direction}
   data-start-value={startValue}
-  data-value={value}
   data-ticker
+  data-value={value}
   {...props}
 >
   {startValue}

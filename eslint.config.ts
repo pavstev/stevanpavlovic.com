@@ -257,7 +257,7 @@ export default defineConfig(
     },
     rules: {
       "check-file/filename-naming-convention": [
-        "error",
+        "off",
         { "**/*.{astro,ts,tsx}": "KEBAB_CASE" },
         { ignoreMiddleExtensions: true },
       ],

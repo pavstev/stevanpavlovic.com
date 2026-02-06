@@ -1,9 +1,10 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cn } from "../../lib/cn";
-import Button from "../atoms/button.astro";
-import Input from "../atoms/input.astro";
-import Text from "../atoms/text.astro";
+import Button from "../atoms/Button.astro";
+import Input from "../atoms/Input.astro";
+import Text from "../atoms/Text.astro";
 
 interface Field {
   label: string;
@@ -24,7 +25,7 @@ const { class: className, description, fields, submitLabel = "Submit", title, ..
 ---
 
 <form
-  class={cn("flex flex-col gap-6 rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-md", className)}
+  class:list={cn("flex flex-col gap-6 rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-md", className)}
   {...props}
 >
   {

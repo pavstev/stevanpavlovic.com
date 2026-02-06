@@ -1,0 +1,41 @@
+---
+import { cn } from "../../lib/cn";
+import Container from "../atoms/Container.astro";
+import Stack from "../atoms/Stack.astro";
+
+interface Props {
+  class?: string;
+  variant?: "ghost" | "glass" | "solid";
+}
+
+const { class: className, variant = "glass" } = Astro.props;
+const hasSidebar = Astro.slots.has("sidebar");
+
+const variantClasses = {
+  ghost: "bg-transparent border-transparent",
+  glass: "bg-white/5 backdrop-blur-md border-white/10",
+  solid: "bg-card border-border",
+};
+---
+
+<Container class:list={[cn("rounded-3xl border px-4 py-12 transition-all", variantClasses[variant], className)]}>
+  <div class:list={["grid grid-cols-1 gap-6", { "lg:grid-cols-12": hasSidebar }]}>
+    {/* Main Content Area */}
+    <div class:list={[{ "lg:col-span-8 xl:col-span-9": hasSidebar, "mx-auto w-full max-w-4xl": !hasSidebar }]}>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <slot />
+      </div>
+    </div>
+
+    {/* Sidebar Area */}
+    {
+      hasSidebar && (
+        <aside class="lg:col-span-4 xl:col-span-3">
+          <Stack gap={6}>
+            <slot name="sidebar" />
+          </Stack>
+        </aside>
+      )
+    }
+  </div>
+</Container>

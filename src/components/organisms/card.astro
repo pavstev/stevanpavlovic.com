@@ -29,8 +29,6 @@ const variants = cva(
         true: "cursor-pointer hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5",
       },
       variant: {
-        cyber:
-          "neon-border glass-dark shadow-[0_0_20px_var(--color-primary)/0.1] hover:shadow-[0_0_30px_var(--color-primary)/0.2]",
         default: "border-border/50 bg-card/50 backdrop-blur-md hover:border-primary/20",
         ghost: "border-transparent bg-transparent hover:bg-foreground/5",
         glass: "glass-dark border-white/5 hover:bg-white/5",
@@ -223,7 +221,7 @@ const isRowLayout = list && !icon;
                   {actionLabel && (
                     <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                       {actionLabel}
-                      <AppIcon name={actionIcon} size="xs" />
+                      <AppIcon name={actionIcon} size="sm" />
                     </div>
                   )}
                 </div>
@@ -275,7 +273,7 @@ const isRowLayout = list && !icon;
               <AppIcon
                 class="ml-auto text-muted-foreground group-hover:text-primary"
                 name="mdi:arrow-top-right"
-                size="xs"
+                size="sm"
               />
             )}
           </div>

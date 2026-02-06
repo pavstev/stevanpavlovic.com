@@ -28,11 +28,7 @@ export default defineConfig({
   }),
 
   image: {
-    // #30 Standardizing on modern, highly-compressed formats
     remotePatterns: [{ protocol: "https" }],
-    // CAUTION: 'sharp' is a Node.js binary and will CRASH on Cloudflare runtime.
-    // We let the Cloudflare adapter handle image optimization natively.
-    // service: { entrypoint: "astro/assets/services/sharp" },
   },
 
   integrations: [
@@ -73,16 +69,13 @@ export default defineConfig({
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
     remarkPlugins: [readingTimeRemarkPlugin, [remarkToc, { heading: "toc", maxDepth: 3 }]],
     shikiConfig: { theme: "github-dark-dimmed" },
-    // #10 VS-Code Caliber Syntax Highlighting
     syntaxHighlight: "shiki",
   },
 
-  // #1 Switch to hybrid to support dynamic OG images while keeping the blog static
-  output: "hybrid",
+  output: "static",
 
   prefetch: {
     defaultStrategy: "hover",
-    // #20 Pre-fetching links for instant navigation
     prefetchAll: true,
   },
 
@@ -96,7 +89,6 @@ export default defineConfig({
         external: ["@resvg/resvg-wasm"],
       },
     },
-    // #2 Fix for @resvg/resvg-wasm on Cloudflare
     optimizeDeps: {
       exclude: ["@resvg/resvg-wasm"],
     },

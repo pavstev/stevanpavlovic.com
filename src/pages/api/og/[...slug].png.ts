@@ -1,15 +1,27 @@
 import type { APIRoute, GetStaticPaths } from "astro";
-
-import { Resvg } from "@resvg/resvg-js";
 import { getCollection } from "astro:content";
-import fs from "node:fs";
-import path from "node:path";
 import satori from "satori";
+import { Resvg, initWasm } from "@resvg/resvg-wasm";
 
-/**
- * Feature #13: Dynamic OG Image Generation
- * Optimized Satori implementation using local @fontsource assets.
- */
+// 1. Import the WASM binary explicitly
+import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm?url";
+
+// 2. Import fonts as URLs so Vite handles the bundling/paths for us
+// Note: We use the WOFF file directly from the package
+import interBoldUrl from "@fontsource-variable/inter/files/inter-latin-700-normal.woff?url";
+import interRegularUrl from "@fontsource-variable/inter/files/inter-latin-400-normal.woff?url";
+
+// Initialize the Wasm module *once* (outside the handler)
+let wasmInitialized = false;
+
+const initResvg = async () => {
+  if (wasmInitialized) return;
+
+  // Fetch the WASM binary from the URL Vite provided
+  const wasmModule = await fetch(resvgWasm).then((res) => res.arrayBuffer());
+  await initWasm(wasmModule);
+  wasmInitialized = true;
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection("blog");
@@ -31,45 +43,65 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const GET: APIRoute = async ({ props }) => {
   const { description, readingTime, title } = props;
 
-  const boldFontPath = path.resolve("node_modules/@fontsource-variable/inter/files/inter-latin-700-normal.woff");
-  const regularFontPath = path.resolve("node_modules/@fontsource-variable/inter/files/inter-latin-400-normal.woff");
+  // Ensure WASM is ready
+  await initResvg();
 
-  const boldFontData = fs.readFileSync(boldFontPath);
-  const regularFontData = fs.readFileSync(regularFontPath);
+  // 3. Load Fonts via Fetch (Standard Web API works in Cloudflare)
+  const [boldFontData, regularFontData] = await Promise.all([
+    fetch(interBoldUrl).then((res) => res.arrayBuffer()),
+    fetch(interRegularUrl).then((res) => res.arrayBuffer()),
+  ]);
 
   const html: Parameters<typeof satori>[0] = {
+    type: "div",
     props: {
+      style: {
+        alignItems: "flex-start",
+        backgroundColor: "#fff",
+        backgroundImage: "radial-gradient(circle at 2px 2px, #f1f5f9 2px, transparent 0)",
+        backgroundSize: "40px 40px",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        justifyContent: "space-between",
+        padding: "80px",
+        width: "100%",
+        fontFamily: "Inter",
+      },
       children: [
         {
+          type: "div",
           props: {
+            style: { display: "flex", flexDirection: "column" },
             children: [
               {
+                type: "div",
                 props: {
-                  children: [
-                    {
-                      props: {
-                        style: { backgroundColor: "#3b82f6", borderRadius: "4px", height: "8px", width: "40px" },
-                      },
-                      type: "div",
-                    },
-                    {
-                      props: {
-                        children: "TECHNICAL BLOG",
-                        style: { color: "#64748b", fontSize: "20px", fontWeight: 700, letterSpacing: "0.1em" },
-                      },
-                      type: "span",
-                    },
-                  ],
                   style: {
                     alignItems: "center",
                     display: "flex",
                     gap: "12px",
                     marginBottom: "40px",
                   },
+                  children: [
+                    {
+                      type: "div",
+                      props: {
+                        style: { backgroundColor: "#3b82f6", borderRadius: "4px", height: "8px", width: "40px" },
+                      },
+                    },
+                    {
+                      type: "span",
+                      props: {
+                        children: "TECHNICAL BLOG",
+                        style: { color: "#64748b", fontSize: "20px", fontWeight: 700, letterSpacing: "0.1em" },
+                      },
+                    },
+                  ],
                 },
-                type: "div",
               },
               {
+                type: "h1",
                 props: {
                   children: title,
                   style: {
@@ -80,9 +112,9 @@ export const GET: APIRoute = async ({ props }) => {
                     marginBottom: "24px",
                   },
                 },
-                type: "h1",
               },
               {
+                type: "p",
                 props: {
                   children: description,
                   style: {
@@ -92,31 +124,13 @@ export const GET: APIRoute = async ({ props }) => {
                     maxWidth: "900px",
                   },
                 },
-                type: "p",
               },
             ],
-            style: { display: "flex", flexDirection: "column" },
           },
-          type: "div",
         },
         {
+          type: "div",
           props: {
-            children: [
-              {
-                props: {
-                  children: `spcom.final • ${readingTime}`,
-                  style: { color: "#94a3b8", fontSize: "24px", fontWeight: 500 },
-                },
-                type: "span",
-              },
-              {
-                props: {
-                  children: "stevan.dev",
-                  style: { color: "#3b82f6", fontSize: "24px", fontWeight: 700 },
-                },
-                type: "div",
-              },
-            ],
             style: {
               alignItems: "center",
               borderTop: "2px solid #f1f5f9",
@@ -125,39 +139,39 @@ export const GET: APIRoute = async ({ props }) => {
               paddingTop: "40px",
               width: "100%",
             },
+            children: [
+              {
+                type: "span",
+                props: {
+                  children: `spcom.final • ${readingTime}`,
+                  style: { color: "#94a3b8", fontSize: "24px", fontWeight: 500 },
+                },
+              },
+              {
+                type: "div",
+                props: {
+                  children: "stevan.dev",
+                  style: { color: "#3b82f6", fontSize: "24px", fontWeight: 700 },
+                },
+              },
+            ],
           },
-          type: "div",
         },
       ],
-      style: {
-        alignItems: "flex-start",
-        backgroundColor: "#fff",
-        // Modern "grid" pattern background
-        backgroundImage: "radial-gradient(circle at 2px 2px, #f1f5f9 2px, transparent 0)",
-        backgroundSize: "40px 40px",
-        display: "flex",
-        flexDirection: "column",
-        fontFamily: "Inter",
-        height: "100%",
-        justifyContent: "space-between",
-        padding: "80px",
-        width: "100%",
-      },
     },
-    type: "div",
   };
 
   const svg = await satori(html, {
     fonts: [
       {
-        data: regularFontData,
         name: "Inter",
+        data: regularFontData,
         style: "normal",
         weight: 400,
       },
       {
-        data: boldFontData,
         name: "Inter",
+        data: boldFontData,
         style: "normal",
         weight: 700,
       },
@@ -168,17 +182,15 @@ export const GET: APIRoute = async ({ props }) => {
 
   const resvg = new Resvg(svg, {
     fitTo: { mode: "width", value: 1200 },
-    imageRendering: 0,
-    // Optimize for text rendering
-    shapeRendering: 2,
+    imageRendering: 0, // optimizeSpeed
+    shapeRendering: 2, // geometricPrecision
   });
 
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
 
-  return new Response(new Uint8Array(pngBuffer), {
+  return new Response(pngBuffer, {
     headers: {
-      // Aggressive caching for static assets
       "Cache-Control": "public, max-age=31536000, immutable",
       "Content-Type": "image/png",
     },

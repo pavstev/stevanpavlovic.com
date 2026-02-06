@@ -327,6 +327,7 @@ export default defineConfig(
 
   {
     files: ALL_FILES,
+    ignore: ["**/*.mdx"],
     name: "prettier",
     plugins: {
       prettier: eslintPluginPrettier,

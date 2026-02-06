@@ -42,6 +42,7 @@
     "@iconify-json/mdi": "^1.2.3",
     "@playform/compress": "^0.2.1",
     "@playform/inline": "^0.1.2",
+    "@resvg/resvg-js": "^2.6.2",
     "@resvg/resvg-wasm": "^2.6.2",
     "@sentry/astro": "^10.38.0",
     "@tailwindcss/vite": "^4.1.18",

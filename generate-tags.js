@@ -1,8 +1,8 @@
-const fs = require("node:fs/promises");
-const path = require("node:path");
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
 // Target directory
-const OUT_DIR = path.join(__dirname, "src/content/tags");
+const OUT_DIR = join(import.meta.dirname, "src/content/tags");
 
 // Input Data
 const tags = [
@@ -146,13 +146,13 @@ ${label} plays a critical role in modern software architecture. This section agg
     const start = performance.now();
 
     // 1. Create directory (if needed)
-    await fs.mkdir(OUT_DIR, { recursive: true });
+    await mkdir(OUT_DIR, { recursive: true });
 
     // 2. Prepare write operations (Concurrency)
     const operations = tags.map((raw) => {
       const tagData = processTag(raw);
       const content = generateMarkdown(tagData);
-      return fs.writeFile(path.join(OUT_DIR, `${tagData.id}.md`), content);
+      return writeFile(join(OUT_DIR, `${tagData.id}.md`), content);
     });
 
     // 3. Execute all writes in parallel

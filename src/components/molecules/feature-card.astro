@@ -1,0 +1,96 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+import Badge from "../atoms/badge.astro";
+import Heading from "../atoms/heading.astro";
+import Icon from "../atoms/icon.astro";
+import Text from "../atoms/text.astro";
+import IconBox from "./icon-box.astro";
+
+interface Props extends HTMLAttributes<"div"> {
+  description: string;
+  href?: string;
+  icon?: string;
+  tags?: string[];
+  title: string;
+  year?: string;
+}
+
+const { class: className, description, href, icon = "mdi:terminal", tags = [], title, year, ...props } = Astro.props;
+
+const Tag = href ? "a" : "div";
+---
+
+<Tag
+  class={cn(
+    "group relative flex flex-col gap-6 rounded-2xl border border-white/5 bg-white/2 p-6 transition-all duration-500 hover:border-white/10 hover:bg-white/4 hover:shadow-2xl",
+    href && "cursor-pointer",
+    className,
+  )}
+  href={href}
+  {...props}
+>
+  {/* Hover Glow Effect */}
+  <div
+    class="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-radial-gradient(400px_at_center,rgba(255,255,255,0.05),transparent)"
+  >
+  </div>
+
+  <div class="flex items-start justify-between gap-4">
+    <div class="flex items-start gap-5">
+      <IconBox
+        class="group-hover:primary shadow-glow-subtle bg-white/5 text-white/40 group-hover:text-primary"
+        icon={icon}
+        size="xl"
+      />
+
+      <div class="flex flex-col gap-1.5">
+        <div class="flex items-center gap-2">
+          <Heading class="text-white group-hover:text-primary transition-colors" level={3} size="md">
+            {title}
+          </Heading>
+          {
+            href && (
+              <Icon
+                class="opacity-0 -translate-x-2 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 text-white/40"
+                name="mdi:arrow-top-right"
+                size="sm"
+              />
+            )
+          }
+        </div>
+        <Text class="font-mono text-[11px] font-bold tracking-widest text-white/40 uppercase" size="sm">
+          {description}
+        </Text>
+      </div>
+    </div>
+
+    {
+      year && (
+        <Badge class="border-white/10 bg-white/5 font-mono text-white/60" variant="secondary">
+          {year}
+        </Badge>
+      )
+    }
+  </div>
+
+  <div class="flex flex-wrap gap-2">
+    {
+      tags.map((tag) => (
+        <Badge
+          class="border-white/5 bg-white/3 text-white/40 transition-colors group-hover:border-primary/20 group-hover:bg-primary/5 group-hover:text-primary/80"
+          variant="outline"
+        >
+          {tag}
+        </Badge>
+      ))
+    }
+    {
+      tags.length > 4 && (
+        <Badge class="border-white/5 bg-white/1 text-white/20" variant="outline">
+          +{tags.length - 4}
+        </Badge>
+      )
+    }
+  </div>
+</Tag>

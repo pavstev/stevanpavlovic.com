@@ -1,0 +1,31 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+import Icon from "../atoms/icon.astro";
+import Input from "../atoms/input.astro";
+import Kbd from "../atoms/kbd.astro";
+
+interface Props extends HTMLAttributes<"input"> {
+  containerClass?: string;
+  showKbd?: boolean;
+}
+
+const { class: className, containerClass, showKbd = true, ...props } = Astro.props;
+---
+
+<div class={cn("relative flex items-center", containerClass)}>
+  <Icon
+    class="absolute left-3 text-muted-foreground transition-colors group-focus-within:text-primary"
+    name="mdi:magnify"
+    size="md"
+  />
+  <Input class={cn("pl-10 pr-12", className)} {...props} />
+  {
+    showKbd && (
+      <div class="absolute right-3 hidden items-center gap-1 sm:flex">
+        <Kbd>⌘</Kbd>
+        <Kbd>K</Kbd>
+      </div>
+    )
+  }
+</div>

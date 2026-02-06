@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+import Icon from "../atoms/icon.astro";
+
+interface Logo {
+  href?: string;
+  icon: string;
+  label: string;
+}
+
+interface Props extends HTMLAttributes<"div"> {
+  logos: Logo[];
+  title?: string;
+}
+
+const { class: className, logos, title, ...props } = Astro.props;
+---
+
+<div class={cn("flex flex-col gap-4", className)} {...props}>
+  {title && <span class="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{title}</span>}
+
+  <div class="flex flex-wrap items-center gap-6 md:gap-8">
+    {
+      logos.map((logo) => (
+        <a
+          class="group relative flex items-center justify-center grayscale transition-all duration-300 hover:grayscale-0 hover:scale-110"
+          href={logo.href}
+          aria-label={logo.label}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon
+            class="text-muted-foreground group-hover:text-foreground transition-colors"
+            name={logo.icon}
+            size="lg"
+          />
+          <span class="sr-only">{logo.label}</span>
+        </a>
+      ))
+    }
+  </div>
+</div>

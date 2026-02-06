@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+import Stat from "../molecules/stat.astro";
+
+interface StatItem {
+  format?: "compact" | "plain";
+  icon: string;
+  label: string;
+  unit?: string;
+  value: number;
+}
+
+interface Props extends HTMLAttributes<"div"> {
+  items: StatItem[];
+}
+
+const { class: className, items, ...props } = Astro.props;
+---
+
+<div class={cn("flex flex-wrap justify-start gap-4 md:gap-6", className)} {...props}>
+  {
+    items.map((item) => (
+      <Stat
+        class="origin-left transition-transform duration-300 hover:scale-105"
+        format={item.format}
+        icon={item.icon}
+        label={item.label}
+        unit={item.unit}
+        value={item.value}
+      />
+    ))
+  }
+</div>

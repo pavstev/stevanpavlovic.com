@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import dayjs from "dayjs";
+import { cn } from "../../lib/cn";
+
+interface Props extends HTMLAttributes<"time"> {
+  date: Date | string | number;
+  format?: string;
+}
+
+const { class: className, date, format = "MMM D, YYYY", ...props } = Astro.props;
+
+const dateObj = dayjs(date);
+---
+
+<time
+  class={cn("font-mono text-xs font-bold tracking-widest text-muted-foreground uppercase", className)}
+  datetime={dateObj.toISOString()}
+  title={dateObj.format("MMMM D, YYYY")}
+  {...props}
+>
+  {dateObj.format(format)}
+</time>

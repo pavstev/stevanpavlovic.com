@@ -26,6 +26,7 @@ const modalId = `zoom-modal-${uniqueId}`;
 const triggerId = `zoom-trigger-${uniqueId}`;
 
 const displayCaption = caption || alt;
+import Slider from "../atoms/slider.astro";
 ---
 
 <div
@@ -171,7 +172,7 @@ const displayCaption = caption || alt;
             <Text class="text-white/60" size="sm">Size</Text>
             <Text class="font-mono text-primary" size="sm"><span class="val-size">4</span>px</Text>
           </div>
-          <input class="slider brush-size-slider w-full accent-primary" max="100" min="1" type="range" value="4" />
+          <Slider class="brush-size-slider" max="100" min="1" value="4" />
         </div>
 
         <div class="space-y-2">
@@ -179,7 +180,7 @@ const displayCaption = caption || alt;
             <Text class="text-white/60" size="sm">Opacity</Text>
             <Text class="font-mono text-primary" size="sm"><span class="val-opacity">100</span>%</Text>
           </div>
-          <input class="slider brush-opacity-slider w-full accent-primary" max="100" min="1" type="range" value="100" />
+          <Slider class="brush-opacity-slider" max="100" min="1" value="100" />
         </div>
 
         <div class="space-y-2">
@@ -187,7 +188,7 @@ const displayCaption = caption || alt;
             <Text class="text-white/60" size="sm">Softness</Text>
             <Text class="font-mono text-primary" size="sm"><span class="val-softness">0</span>px</Text>
           </div>
-          <input class="slider brush-softness-slider w-full accent-primary" max="50" min="0" type="range" value="0" />
+          <Slider class="brush-softness-slider" max="50" min="0" value="0" />
         </div>
       </div>
 

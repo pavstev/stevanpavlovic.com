@@ -1,0 +1,66 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+import Button from "../atoms/button.astro";
+import Input from "../atoms/input.astro";
+import Text from "../atoms/text.astro";
+
+interface Field {
+  label: string;
+  name: string;
+  placeholder?: string;
+  required?: boolean;
+  type?: "email" | "number" | "password" | "text";
+}
+
+interface Props extends HTMLAttributes<"form"> {
+  description?: string;
+  fields: Field[];
+  submitLabel?: string;
+  title?: string;
+}
+
+const { class: className, description, fields, submitLabel = "Submit", title, ...props } = Astro.props;
+---
+
+<form
+  class={cn("flex flex-col gap-6 rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-md", className)}
+  {...props}
+>
+  {
+    (title || description) && (
+      <div class="space-y-1">
+        {title && <h3 class="text-xl font-bold text-foreground">{title}</h3>}
+        {description && (
+          <Text size="sm" variant="muted">
+            {description}
+          </Text>
+        )}
+      </div>
+    )
+  }
+
+  <div class="space-y-4">
+    {
+      fields.map((field) => (
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold tracking-widest text-muted-foreground uppercase" for={field.name}>
+            {field.label} {field.required && <span class="text-destructive">*</span>}
+          </label>
+          <Input
+            id={field.name}
+            name={field.name}
+            placeholder={field.placeholder}
+            required={field.required}
+            type={field.type || "text"}
+            variant="glass"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <Button class="mt-2 w-full" type="submit" variant="primary">
+    {submitLabel}
+  </Button>
+</form>

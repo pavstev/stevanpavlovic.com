@@ -1,0 +1,85 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}", "./.storybook/**/*.{js,ts}"],
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        background: "hsl(240 30% 2%)",
+        foreground: "hsl(0 0% 98%)",
+        card: "hsl(240 30% 3%)",
+        cardForeground: "hsl(0 0% 98%)",
+        popover: "hsl(240 30% 3%)",
+        popoverForeground: "hsl(0 0% 98%)",
+        primary: "hsl(210 100% 45%)",
+        primaryForeground: "hsl(210 100% 10%)",
+        secondary: "hsl(30 100% 50%)",
+        secondaryForeground: "hsl(30 100% 5%)",
+        muted: "hsl(240 10% 8%)",
+        mutedForeground: "hsl(240 5% 65%)",
+        accent: "hsl(140 100% 50%)",
+        accentForeground: "hsl(140 100% 5%)",
+        highlight: "hsl(75 100% 50%)",
+        highlightForeground: "hsl(75 100% 5%)",
+        destructive: "hsl(340 100% 55%)",
+        destructiveForeground: "hsl(340 100% 100%)",
+        danger: "hsl(340 100% 55%)",
+        dangerForeground: "hsl(340 100% 100%)",
+        border: "hsl(240 10% 12%)",
+        input: "hsl(240 10% 12%)",
+        ring: "hsl(210 100% 55% / 0.5)",
+      },
+      fontFamily: {
+        sans: ['"Inter Variable"', "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ['"Space Grotesk Variable"', '"Space Grotesk"', "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono Variable"', '"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
+      },
+      borderRadius: {
+        sm: "0rem",
+        md: "0.125rem",
+        lg: "0.25rem",
+        xl: "0.5rem",
+        "2xl": "0.75rem",
+        "3xl": "1rem",
+      },
+      animation: {
+        "fade-in": "fade-in 0.3s ease-out",
+        "fade-out": "fade-out 0.2s ease-out",
+        "zoom-in": "zoom-in 0.2s ease-out",
+        "slide-in-from-bottom": "slide-in-from-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        "pulse-neon": "pulse-neon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        "fade-out": {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
+        "zoom-in": {
+          from: { transform: "scale(0.98)", opacity: "0" },
+          to: { transform: "scale(1)", opacity: "1" },
+        },
+        "slide-in-from-bottom": {
+          from: { transform: "translateY(10px)" },
+          to: { transform: "translateY(0)" },
+        },
+        "pulse-neon": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
+      },
+      boxShadow: {
+        "glow-subtle": "0 0 20px hsl(240 5% 65% / 0.15)",
+        "glow-primary": "0 0 20px hsl(210 100% 45% / 0.3)",
+        "glow-secondary": "0 0 20px hsl(30 100% 50% / 0.3)",
+        "glow-accent": "0 0 20px hsl(140 100% 50% / 0.3)",
+        "glow-highlight": "0 0 20px hsl(75 100% 50% / 0.3)",
+        "glow-destructive": "0 0 20px hsl(340 100% 55% / 0.3)",
+      },
+    },
+  },
+  plugins: [],
+};

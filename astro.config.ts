@@ -9,6 +9,7 @@ import brokenLinksChecker from "astro-broken-links-checker";
 import favicons from "astro-favicons";
 import icon from "astro-icon";
 import pagefind from "astro-pagefind";
+import playground from "@brattonross/astro-playground";
 import { defineConfig } from "astro/config";
 import { readFile } from "node:fs/promises";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -63,6 +64,7 @@ export default defineConfig({
       project: "stevanpavlovic",
       telemetry: false,
     }),
+    playground(),
   ],
 
   markdown: {

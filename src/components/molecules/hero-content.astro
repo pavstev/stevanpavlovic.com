@@ -2,8 +2,8 @@
 import { SITE_CONFIG, STATS } from "../../config";
 import Heading from "../atoms/heading.astro";
 import Text from "../atoms/text.astro";
+import StatsGrid from "../organisms/stats-grid.astro";
 import Meteors from "./../atoms/meteors.astro";
-import Stat from "./stat.astro";
 
 interface Props {
   class?: string;
@@ -28,17 +28,5 @@ const { class: className } = Astro.props;
   </div>
 
   {/* Statistics */}
-  <div class="flex flex-wrap justify-start gap-3 pt-3 md:gap-4">
-    {
-      STATS.map((stat) => (
-        <Stat
-          class="origin-left scale-95 md:scale-100"
-          icon={stat.icon}
-          label={stat.label}
-          unit={stat.unit}
-          value={stat.value}
-        />
-      ))
-    }
-  </div>
+  <StatsGrid items={STATS as any} />
 </div>

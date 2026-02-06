@@ -4,8 +4,8 @@ import type { HTMLAttributes } from "astro/types";
 import type { PostLink } from "../../lib";
 
 import { cn } from "../../lib/cn";
-import Button from "./button.astro";
-import Icon from "./icon.astro";
+import Button from "../atoms/button.astro";
+import Icon from "../atoms/icon.astro";
 
 interface Props extends HTMLAttributes<"a"> {
   link: PostLink;

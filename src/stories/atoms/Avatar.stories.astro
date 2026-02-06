@@ -1,0 +1,181 @@
+---
+import Badge from "../../components/atoms/badge.astro";
+import Text from "../../components/atoms/text.astro";
+import Heading from "../../components/atoms/heading.astro";
+import Container from "../../components/atoms/container.astro";
+import Stack from "../../components/atoms/stack.astro";
+---
+
+<Container>
+  <Stack gap={6}>
+    <Stack gap={4} align="center">
+      <Heading level={1} size="lg" variant="primary">
+        Avatar
+      </Heading>
+      <Text size="lg" variant="muted" class="text-center max-w-2xl">
+        Displays user profile images or fallback initials with various sizes and variants.
+      </Text>
+      <Badge variant="cyber">Atoms</Badge>
+    </Stack>
+
+    <Separator />
+
+    <!-- Sizes -->
+    <Stack gap={4}>
+      <Heading level={2} size="md" variant="accent">
+        Sizes
+      </Heading>
+      <Text variant="muted">
+        Five size options from extra small to extra large.
+      </Text>
+
+      <Stack gap={2} align="center">
+        <div class="flex items-end gap-4">
+          <Stack gap={2} align="center">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-6">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-[10px]">XS</span>
+              </div>
+            </div>
+            <Text size="xs" variant="muted">6px</Text>
+          </Stack>
+
+          <Stack gap={2} align="center">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-8">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-xs">SM</span>
+              </div>
+            </div>
+            <Text size="xs" variant="muted">8px</Text>
+          </Stack>
+
+          <Stack gap={2} align="center">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-10">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-sm">MD</span>
+              </div>
+            </div>
+            <Text size="xs" variant="muted">10px</Text>
+          </Stack>
+
+          <Stack gap={2} align="center">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-12">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-base">LG</span>
+              </div>
+            </div>
+            <Text size="xs" variant="muted">12px</Text>
+          </Stack>
+
+          <Stack gap={2} align="center">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-16">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-xl">XL</span>
+              </div>
+            </div>
+            <Text size="xs" variant="muted">16px</Text>
+          </Stack>
+        </div>
+      </Stack>
+    </Stack>
+
+    <!-- Variants -->
+    <Stack gap={4}>
+      <Heading level={2} size="md" variant="accent">
+        Variants
+      </Heading>
+
+      <Stack gap={3} direction="row" wrap="wrap">
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-12">
+            <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+              <span class="select-none text-sm">DF</span>
+            </div>
+          </div>
+          <Text size="xs" variant="muted">Default</Text>
+        </Stack>
+
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full glass border-white/10 bg-white/5 size-12">
+            <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+              <span class="select-none text-sm">GL</span>
+            </div>
+          </div>
+          <Text size="xs" variant="muted">Glass</Text>
+        </Stack>
+
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full shadow-glow-primary border border-primary/30 bg-primary/10 size-12">
+            <div class="flex size-full items-center justify-center bg-primary/20 font-medium text-primary uppercase">
+              <span class="select-none text-sm">PR</span>
+            </div>
+          </div>
+          <Text size="xs" variant="muted">Primary</Text>
+        </Stack>
+      </Stack>
+    </Stack>
+
+    <!-- With Images -->
+    <Stack gap={4}>
+      <Heading level={2} size="md" variant="accent">
+        With Images
+      </Heading>
+
+      <Stack gap={3} direction="row" wrap="wrap">
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-16">
+            <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" />
+          </div>
+          <Text size="xs" variant="muted">Default</Text>
+        </Stack>
+
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full glass border-white/10 bg-white/5 size-16">
+            <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
+          </div>
+          <Text size="xs" variant="muted">Glass</Text>
+        </Stack>
+
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full shadow-glow-primary border border-primary/30 bg-primary/10 size-16">
+            <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" />
+          </div>
+          <Text size="xs" variant="muted">Primary</Text>
+        </Stack>
+      </Stack>
+    </Stack>
+
+    <!-- Avatar Group -->
+    <Stack gap={4}>
+      <Heading level={2} size="md" variant="accent">
+        Avatar Group
+      </Heading>
+
+      <div class="flex -space-x-3">
+        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+          <div class="flex size-full items-center justify-center bg-primary/20 font-medium text-primary uppercase">
+            <span class="select-none text-sm">A</span>
+          </div>
+        </div>
+        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+          <div class="flex size-full items-center justify-center bg-secondary/20 font-medium text-secondary uppercase">
+            <span class="select-none text-sm">B</span>
+          </div>
+        </div>
+        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+          <div class="flex size-full items-center justify-center bg-accent/20 font-medium text-accent uppercase">
+            <span class="select-none text-sm">C</span>
+          </div>
+        </div>
+        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+          <img alt="User" class="aspect-square size-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
+        </div>
+        <div class="relative flex shrink-0 overflow-hidden rounded-full border-2 border-card bg-muted/50 shadow-glow-subtle transition-all duration-300 size-12 ring-2 ring-background">
+          <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+            <span class="select-none text-sm">+3</span>
+          </div>
+        </div>
+      </div>
+    </Stack>
+  </Stack>
+</Container>

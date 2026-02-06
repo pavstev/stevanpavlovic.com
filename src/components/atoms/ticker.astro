@@ -1,0 +1,79 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+
+interface Props extends HTMLAttributes<"span"> {
+  decimalPlaces?: number;
+  delay?: number;
+  direction?: "down" | "up";
+  startValue?: number;
+  value: number;
+}
+
+const {
+  class: className,
+  decimalPlaces = 0,
+  delay = 0,
+  direction = "up",
+  startValue = 0,
+  value,
+  ...props
+} = Astro.props;
+---
+
+<span
+  class={cn("inline-block tabular-nums", className)}
+  data-decimal-places={decimalPlaces}
+  data-delay={delay}
+  data-direction={direction}
+  data-start-value={startValue}
+  data-value={value}
+  data-ticker
+  {...props}
+>
+  {startValue}
+</span>
+
+<script>
+  function animateValue(obj: HTMLElement, start: number, end: number, duration: number, decimalPlaces: number) {
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = start + (end - start) * easeProgress;
+      obj.textContent = current.toFixed(decimalPlaces);
+      if (progress < 1) window.requestAnimationFrame(step);
+      else obj.textContent = end.toFixed(decimalPlaces);
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  function initTickers() {
+    const tickers = document.querySelectorAll<HTMLElement>("[data-ticker]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const val = parseFloat(el.dataset.value || "0");
+            const startVal = parseFloat(el.dataset.startValue || "0");
+            const dir = el.dataset.direction || "up";
+            const delayMs = parseFloat(el.dataset.delay || "0") * 1000;
+            const decimals = parseInt(el.dataset.decimalPlaces || "0");
+            const start = dir === "down" ? val : startVal;
+            const end = dir === "down" ? startVal : val;
+
+            setTimeout(() => animateValue(el, start, end, 2000, decimals), delayMs);
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+    tickers.forEach((t) => observer.observe(t));
+  }
+
+  initTickers();
+  document.addEventListener("astro:page-load", initTickers);
+</script>

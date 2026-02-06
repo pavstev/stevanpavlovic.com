@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../lib/cn";
+
+const inputVariants = cva(
+  "flex w-full rounded-xl border px-4 py-2 text-sm ring-offset-background transition-all placeholder:text-muted-foreground focus:ring-1 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+  {
+    defaultVariants: {
+      size: "md",
+      variant: "default",
+    },
+    variants: {
+      size: {
+        lg: "h-12 px-5 text-base",
+        md: "h-10 px-4 text-sm",
+        sm: "h-8 px-3 text-xs",
+      },
+      variant: {
+        default: "border-border bg-background focus:border-primary focus:ring-primary",
+        glass:
+          "border-white/10 bg-white/5 backdrop-blur-md focus:border-primary/50 focus:bg-white/10 focus:ring-primary/20",
+        primary: "border-primary/30 bg-primary/5 focus:border-primary focus:ring-primary/20",
+      },
+    },
+  },
+);
+
+export interface Props extends HTMLAttributes<"input">, VariantProps<typeof inputVariants> {}
+
+const { class: className, size, variant, ...props } = Astro.props;
+---
+
+<input class={cn(inputVariants({ size, variant }), className)} {...props} />

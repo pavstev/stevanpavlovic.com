@@ -1,5 +1,5 @@
 ---
-import Icon from "../atoms/icon.astro";
+import SearchInput from "../molecules/search-input.astro";
 
 interface Props {
   variant?: "desktop" | "mobile";
@@ -10,39 +10,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
 ---
 
 <div class="search-dropdown-container relative" data-search-variant={variant} id={`${id}-container`}>
-  {/* Search Input */}
-  <div class="group/search relative flex items-center transition-all duration-300">
-    <Icon
-      class="absolute left-3 transition-colors group-focus-within/search:text-primary md:size-4"
-      name="mdi:magnify"
-      size="lg"
-      variant="muted"
-    />
-    <input
-      aria-controls={`${id}-dropdown`}
-      autocomplete="off"
-      class="h-9 w-full min-w-[200px] rounded-full border border-foreground/10 bg-background/80 pr-24 pl-10 text-sm transition-all outline-none hover:bg-background/90 focus:border-primary/50 focus:bg-background/90 focus:ring-2 focus:ring-primary/20 md:h-8 md:w-48 md:min-w-0 md:pr-24 lg:w-64"
-      id={`${id}-input`}
-      placeholder="Search..."
-      type="text"
-    />
-    <div class="absolute top-0 right-0 flex h-full items-center pr-1.5">
-      <button
-        aria-label="Clear search"
-        class="search-clear mr-2 hidden size-5 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition-all hover:bg-foreground/20 hover:text-foreground"
-        id={`${id}-clear`}
-        type="button"
-      >
-        <Icon name="mdi:close" size="sm" />
-      </button>
-      <div class="mx-2 h-4 w-px bg-foreground/10"></div>
-      <kbd
-        class="hidden h-5 items-center gap-1 p-1 pr-2 font-mono text-[12px] font-medium opacity-70 sm:flex md:hidden lg:flex"
-      >
-        <span class="text-sm">⌘</span>K
-      </kbd>
-    </div>
-  </div>
+  <SearchInput class="md:w-48 lg:w-64" id={`${id}-input`} placeholder="Search..." type="text" />
 
   {/* Dropdown Menu */}
   <div

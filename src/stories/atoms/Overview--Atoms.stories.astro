@@ -1,0 +1,478 @@
+---
+# import Avatar from "../../components/atoms/avatar.astro";
+import Text from "../../components/atoms/text.astro";
+import Badge from "../../components/atoms/badge.astro";
+import Container from "../../components/atoms/container.astro";
+import Heading from "../../components/atoms/heading.astro";
+import Separator from "../../components/atoms/separator.astro";
+import Stack from "../../components/atoms/stack.astro";
+import Icon from "../../components/atoms/icon.astro";
+---
+
+<Container>
+  <Stack gap={6}>
+    <!-- Header -->
+    <Stack gap={4} align="center">
+      <Heading level={1} size="display" variant="primary">
+        Design System
+      </Heading>
+      <Text size="lg" variant="muted">
+        A showcase of all atom components in the SPCOM design system
+      </Text>
+      <Badge variant="cyber">v1.0.0</Badge>
+    </Stack>
+
+    <Separator />
+
+    <!-- Avatar Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Avatar
+      </Heading>
+      <Text variant="muted">
+        Displays user profile images or fallback initials with various sizes and variants.
+      </Text>
+
+      <Stack gap={4} direction="row" wrap="wrap">
+        <!-- Default -->
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-10">
+            <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+              <span class="select-none text-sm">JD</span>
+            </div>
+          </div>
+          <Text size="sm" variant="muted">Default</Text>
+        </Stack>
+
+        <!-- Glass -->
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full glass border-white/10 bg-white/5 size-10">
+            <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+              <span class="select-none text-sm">GL</span>
+            </div>
+          </div>
+          <Text size="sm" variant="muted">Glass</Text>
+        </Stack>
+
+        <!-- Primary -->
+        <Stack gap={2} align="center">
+          <div class="relative flex shrink-0 overflow-hidden rounded-full shadow-glow-primary border border-primary/30 bg-primary/10 size-10">
+            <div class="flex size-full items-center justify-center bg-primary/20 font-medium text-primary uppercase">
+              <span class="select-none text-sm">PR</span>
+            </div>
+          </div>
+          <Text size="sm" variant="muted">Primary</Text>
+        </Stack>
+
+        <!-- Sizes -->
+        <Stack gap={2} align="center">
+          <div class="flex items-end gap-2">
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-6">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-[10px]">XS</span>
+              </div>
+            </div>
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-8">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-xs">SM</span>
+              </div>
+            </div>
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-10">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-sm">MD</span>
+              </div>
+            </div>
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-12">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-base">LG</span>
+              </div>
+            </div>
+            <div class="relative flex shrink-0 overflow-hidden rounded-full border border-border/50 bg-muted/20 size-16">
+              <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span class="select-none text-xl">XL</span>
+              </div>
+            </div>
+          </div>
+          <Text size="sm" variant="muted">Sizes</Text>
+        </Stack>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Badge Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Badge
+      </Heading>
+      <Text variant="muted">
+        Small labels for status, categories, or notifications.
+      </Text>
+
+      <Stack gap={3} direction="row" wrap="wrap">
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none border-border/50 bg-foreground/5 text-muted-foreground hover:border-primary/30">
+          DEFAULT
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-primary border-primary/40 bg-primary/10 text-primary">
+          PRIMARY
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-accent border-accent/40 bg-accent/10 text-accent">
+          ACCENT
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none neon-border bg-card/80 text-foreground">
+          CYBER
+        </span>
+      </Stack>
+
+      <!-- Tech Stack Badges -->
+      <Heading level={3} size="sm" variant="default">
+        Tech Stack
+      </Heading>
+      <Stack gap={2} direction="row" wrap="wrap">
+        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none neon-border bg-card/80 text-foreground">
+          ASTRO
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-primary border-primary/40 bg-primary/10 text-primary">
+          TAILWIND
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-accent border-accent/40 bg-accent/10 text-accent">
+          TYPESCRIPT
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none border-border/50 bg-foreground/5 text-muted-foreground hover:border-primary/30">
+          NODE
+        </span>
+      </Stack>
+
+      <!-- Status Badges -->
+      <Heading level={3} size="sm" variant="default">
+        Status
+      </Heading>
+      <Stack gap={2} direction="row" wrap="wrap">
+        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none neon-border bg-card/80 text-foreground">
+          NEW
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-primary border-primary/40 bg-primary/10 text-primary">
+          FEATURED
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none shadow-glow-accent border-accent/40 bg-accent/10 text-accent">
+          LIVE
+        </span>
+        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all duration-300 select-none border-border/50 bg-foreground/5 text-muted-foreground hover:border-primary/30">
+          DRAFT
+        </span>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Button Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Button
+      </Heading>
+      <Text variant="muted">
+        Interactive button component with multiple variants and sizes.
+      </Text>
+
+      <!-- Variants -->
+      <Heading level={3} size="sm" variant="default">
+        Variants
+      </Heading>
+      <Stack gap={3} direction="row" wrap="wrap">
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110">
+          Primary
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] shadow-glow-secondary hover:shadow-glow-secondary/80 bg-secondary text-secondary-foreground hover:bg-secondary/80">
+          Secondary
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] hover:shadow-glow-primary border border-border bg-transparent text-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary">
+          Outline
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] hover:shadow-glow-subtle text-muted-foreground hover:bg-foreground/5 hover:text-foreground">
+          Ghost
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] glass hover:shadow-glow border-white/10 text-foreground shadow-sm hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10">
+          Glass
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] shadow-glow-destructive hover:shadow-glow-destructive/80 bg-destructive text-destructive-foreground hover:bg-destructive/90">
+          Destructive
+        </button>
+      </Stack>
+
+      <!-- Sizes -->
+      <Heading level={3} size="sm" variant="default">
+        Sizes
+      </Heading>
+      <Stack gap={3} direction="row" align="center" wrap="wrap">
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-8 rounded-md px-3 text-[12px] shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110">
+          Small
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-9 rounded-lg px-4 text-[13px] shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110">
+          Medium
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] h-11 rounded-xl px-6 text-[15px] shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110">
+          Large
+        </button>
+        <button class="inline-flex cursor-pointer items-center justify-center gap-2 font-medium tracking-wide whitespace-nowrap ring-offset-background transition-all duration-300 select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] size-9 rounded-full shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110">
+          <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Icon Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Icon
+      </Heading>
+      <Text variant="muted">
+        Versatile icon component with multiple sizes and visual variants.
+      </Text>
+
+      <!-- Sizes -->
+      <Heading level={3} size="sm" variant="default">
+        Sizes
+      </Heading>
+      <Stack gap={4} direction="row" align="center" wrap="wrap">
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">sm</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">md</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">lg</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-7 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">xl</Text>
+        </Stack>
+      </Stack>
+
+      <!-- Variants -->
+      <Heading level={3} size="sm" variant="default">
+        Variants
+      </Heading>
+      <Stack gap={4} direction="row" align="center" wrap="wrap">
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">default</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">muted</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-primary drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] filter" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">primary</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-accent drop-shadow-[0_0_10px_rgba(74,222,128,0.5)] filter" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">accent</Text>
+        </Stack>
+        <Stack gap={2} align="center">
+          <svg class="shrink-0 transition-all duration-300 size-6 text-foreground drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] filter" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <Text size="xs" variant="muted">glow</Text>
+        </Stack>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Typography Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Typography
+      </Heading>
+      <Text variant="muted">
+        Text and heading components for consistent typography.
+      </Text>
+
+      <!-- Heading Sizes -->
+      <Heading level={3} size="sm" variant="default">
+        Heading Sizes
+      </Heading>
+      <Stack gap={3}>
+        <h1 class="font-display font-black tracking-tight text-foreground selection:bg-primary/30 text-[clamp(2.5rem,8vw,4.5rem)] leading-[0.9] tracking-tighter uppercase">
+          Display Heading
+        </h1>
+        <h2 class="font-display font-black tracking-tight text-foreground selection:bg-primary/30 text-[clamp(2rem,6vw,3.25rem)] leading-none tracking-tighter uppercase">
+          Large Heading
+        </h2>
+        <h3 class="font-display font-bold tracking-tight text-foreground selection:bg-primary/30 text-[clamp(1.5rem,4vw,2.25rem)]">
+          Medium Heading
+        </h3>
+        <h4 class="font-display font-bold tracking-tight text-foreground selection:bg-primary/30 text-lg font-bold sm:text-xl md:text-2xl">
+          Small Heading
+        </h4>
+      </Stack>
+
+      <!-- Heading Variants -->
+      <Heading level={3} size="sm" variant="default">
+        Heading Variants
+      </Heading>
+      <Stack gap={2}>
+        <h3 class="font-display font-bold tracking-tight text-foreground selection:bg-primary/30">Default</h3>
+        <h3 class="font-display font-bold tracking-tight text-gradient-primary selection:bg-primary/30 bg-linear-to-br from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+          Primary Gradient
+        </h3>
+        <h3 class="font-display font-bold tracking-tight text-gradient-accent selection:bg-primary/30 bg-linear-to-br from-accent via-accent/80 to-accent/60 bg-clip-text text-transparent">
+          Accent Gradient
+        </h3>
+        <h3 class="font-display font-bold tracking-tight font-medium text-muted-foreground selection:bg-primary/30">
+          Muted
+        </h3>
+      </Stack>
+
+      <!-- Text Sizes -->
+      <Heading level={3} size="sm" variant="default">
+        Text Sizes
+      </Heading>
+      <Stack gap={2}>
+        <p class="text-[0.9375rem] leading-[1.6] opacity-80 text-foreground">Base text (0.9375rem)</p>
+        <p class="text-[1.125rem] font-medium leading-[1.6] opacity-80 text-foreground">Large text (1.125rem)</p>
+        <p class="text-[0.8125rem] leading-[1.6] opacity-80 text-foreground">Small text (0.8125rem)</p>
+        <p class="text-[0.6875rem] leading-[1.6] opacity-80 text-foreground">Extra small text (0.6875rem)</p>
+      </Stack>
+
+      <!-- Text Variants -->
+      <Heading level={3} size="sm" variant="default">
+        Text Variants
+      </Heading>
+      <Stack gap={2}>
+        <p class="text-[0.9375rem] leading-[1.6] opacity-80 text-foreground">Default text</p>
+        <p class="text-[0.9375rem] leading-[1.6] opacity-80 font-medium text-primary">Primary text</p>
+        <p class="text-[0.9375rem] leading-[1.6] opacity-80 font-medium text-accent">Accent text</p>
+        <p class="text-[0.9375rem] leading-[1.6] opacity-80 text-muted-foreground">Muted text</p>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Stack Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Stack
+      </Heading>
+      <Text variant="muted">
+        Flexible layout component for stacking elements with consistent gaps.
+      </Text>
+
+      <!-- Directions -->
+      <Heading level={3} size="sm" variant="default">
+        Direction
+      </Heading>
+      <Stack gap={4} direction="row" wrap="wrap">
+        <div class="flex bg-muted/20 p-4 rounded-lg border border-border">
+          <Stack gap={2}>
+            <div class="h-8 bg-primary/20 rounded border border-primary/30 flex items-center justify-center text-xs text-primary">Item 1</div>
+            <div class="h-8 bg-primary/20 rounded border border-primary/30 flex items-center justify-center text-xs text-primary">Item 2</div>
+            <div class="h-8 bg-primary/20 rounded border border-primary/30 flex items-center justify-center text-xs text-primary">Item 3</div>
+          </Stack>
+        </div>
+        <div class="flex bg-muted/20 p-4 rounded-lg border border-border">
+          <Stack gap={2} direction="row">
+            <div class="w-8 h-8 bg-secondary/20 rounded border border-secondary/30 flex items-center justify-center text-xs text-secondary">1</div>
+            <div class="w-8 h-8 bg-secondary/20 rounded border border-secondary/30 flex items-center justify-center text-xs text-secondary">2</div>
+            <div class="w-8 h-8 bg-secondary/20 rounded border border-secondary/30 flex items-center justify-center text-xs text-secondary">3</div>
+          </Stack>
+        </div>
+      </Stack>
+
+      <!-- Gaps -->
+      <Heading level={3} size="sm" variant="default">
+        Gap
+      </Heading>
+      <Stack gap={4} wrap="wrap">
+        <Stack gap={1}>
+          <Text size="sm" variant="muted">gap-1</Text>
+          <Stack gap={1} direction="row">
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+          </Stack>
+        </Stack>
+        <Stack gap={2}>
+          <Text size="sm" variant="muted">gap-2</Text>
+          <Stack gap={2} direction="row">
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+          </Stack>
+        </Stack>
+        <Stack gap={3}>
+          <Text size="sm" variant="muted">gap-3</Text>
+          <Stack gap={3} direction="row">
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+          </Stack>
+        </Stack>
+        <Stack gap={4}>
+          <Text size="sm" variant="muted">gap-4</Text>
+          <Stack gap={4} direction="row">
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+            <div class="w-8 h-8 bg-accent/20 rounded border border-accent/30"></div>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Stack>
+
+    <Separator />
+
+    <!-- Separator Section -->
+    <Stack gap={4}>
+      <Heading level={2} size="lg" variant="accent">
+        Separator
+      </Heading>
+      <Text variant="muted">
+        Visual divider for separating content.
+      </Text>
+
+      <Stack gap={4}>
+        <div class="h-px w-full shrink-0 bg-border"></div>
+        <div class="h-px w-24 shrink-0 bg-border"></div>
+        <div class="h-32 w-px shrink-0 bg-border ml-4"></div>
+      </Stack>
+    </Stack>
+
+    <!-- Footer -->
+    <Separator />
+
+    <Stack gap={4} align="center" justify="center">
+      <Text variant="muted" size="sm">
+        SPCOM Design System v1.0.0
+      </Text>
+      <Stack gap={2} direction="row">
+        <Badge variant="default">Astro</Badge>
+        <Badge variant="primary">Tailwind v4</Badge>
+        <Badge variant="accent">TypeScript</Badge>
+      </Stack>
+    </Stack>
+  </Stack>
+</Container>

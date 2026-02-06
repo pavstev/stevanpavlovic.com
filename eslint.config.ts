@@ -51,11 +51,11 @@ export default defineConfig(
     ignores: ["**/*.md", "**/*.mdx"],
     name: "perfectionist",
   },
-  ...tseslint.configs.strictTypeChecked.map(config => ({
+  ...tseslint.configs.strictTypeChecked.map((config) => ({
     ...config,
     ...tsFiles,
   })),
-  ...eslintPluginAstro.configs.recommended.map(config => ({
+  ...eslintPluginAstro.configs.recommended.map((config) => ({
     ...config,
     ignores: tsFiles.ignores,
   })),
@@ -92,13 +92,7 @@ export default defineConfig(
     rules: jsxA11yRules,
   },
   {
-    files: [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.astro",
-    ],
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"],
     name: "editorconfig-general",
     plugins: {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -172,7 +166,7 @@ export default defineConfig(
       // 3. Remove "return" syntax where possible (implicit return)
       "arrow-body-style": ["error", "as-needed"],
       // 5. Enforce curly braces for all control statements
-      "curly": ["error", "all"],
+      curly: ["error", "all"],
       // 2. Only use arrow functions
       "func-style": ["error", "expression"],
       // 7. Enforce maximum nesting depth of 3
@@ -183,8 +177,7 @@ export default defineConfig(
       "no-restricted-syntax": [
         "error",
         {
-          message:
-            "Forbidden 'else' or 'else if'. Use early returns or guard clauses to keep code flat and readable.",
+          message: "Forbidden 'else' or 'else if'. Use early returns or guard clauses to keep code flat and readable.",
           selector: "IfStatement[alternate]",
         },
         {
@@ -303,12 +296,10 @@ export default defineConfig(
   //   language: 'json/json5',
   //   extends: ['json/recommended'],
   // },
-  ...eslintPluginJsonSchemaValidator.configs.recommended.map(config => ({
+  ...eslintPluginJsonSchemaValidator.configs.recommended.map((config) => ({
     ...config,
     files: ["**/*.json"],
-    ignores: [
-      ".vscode/**/*",
-    ],
+    ignores: [".vscode/**/*"],
     languageOptions: {
       parser: jsoncParser, // Set this parser.
     },

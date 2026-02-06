@@ -1,21 +1,21 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type { ImageMetadata } from "astro";
+import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from 'astro-icon/components';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { Icon } from "astro-icon/components";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from '../../lib/cn';
-import Badge from '../atoms/badge.astro';
-import FormattedDate from '../atoms/formatted-date.astro';
-import Heading from '../atoms/heading.astro';
-import IconBox from '../atoms/icon-box.astro';
-import Text from '../atoms/text.astro';
-import CardImage from '../molecules/card-image.astro';
-import CardSpotlight from '../molecules/card-spotlight.astro';
-import Tags from '../molecules/tags.astro';
+import { cn } from "../../lib/cn";
+import Badge from "../atoms/badge.astro";
+import FormattedDate from "../atoms/formatted-date.astro";
+import Heading from "../atoms/heading.astro";
+import IconBox from "../atoms/icon-box.astro";
+import Text from "../atoms/text.astro";
+import CardImage from "../molecules/card-image.astro";
+import CardSpotlight from "../molecules/card-spotlight.astro";
+import Tags from "../molecules/tags.astro";
 
-
-export const variants = cva(
+const variants = cva(
   "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
   {
     defaultVariants: {
@@ -30,7 +30,7 @@ export const variants = cva(
       variant: {
         default: "",
         ghost: "border-foreground/5 bg-transparent shadow-none hover:border-foreground/15",
-        glass: "glass text-foreground border-white/10",
+        glass: "glass border-white/10 text-foreground",
         outline: "border-2 border-foreground/10 bg-transparent hover:border-primary/20",
       },
     },
@@ -53,11 +53,10 @@ export interface CardData {
   url?: string;
 }
 
-
-interface BaseProps extends HTMLAttributes<'div'>, Omit<VariantProps<typeof variants>, 'variant'> {
+interface BaseProps extends HTMLAttributes<"div">, Omit<VariantProps<typeof variants>, "variant"> {
   as?: string;
   glowColor?: string;
-  visual?: 'default' | 'ghost' | 'glass' | 'outline';
+  visual?: "default" | "ghost" | "glass" | "outline";
 }
 
 interface Props extends BaseProps {
@@ -66,23 +65,49 @@ interface Props extends BaseProps {
   data?: CardData;
   headingLevel?: number;
   list?: boolean;
-  loading?: 'eager' | 'lazy';
+  loading?: "eager" | "lazy";
 }
 
 const props = Astro.props;
-const { actionIcon = 'mdi:arrow-right', actionLabel, class: className, data: _data, glowColor = 'var(--color-primary)', headingLevel = 3, interactive, list, loading, visual = 'default', ...rest } = props;
+const {
+  actionIcon = "mdi:arrow-right",
+  actionLabel,
+  class: className,
+  data: _data,
+  glowColor = "var(--color-primary)",
+  headingLevel = 3,
+  interactive,
+  list,
+  loading,
+  visual = "default",
+  ...rest
+} = props;
 // Default to empty object if undefined
 const data = _data || {};
 
 // Destructure data properties
-const { align = 'start', animate, date, delay = 0, description, footerMeta, icon, image, meta, subtitle, tags, title, url } = data;
+const {
+  align = "start",
+  animate,
+  date,
+  delay = 0,
+  description,
+  footerMeta,
+  icon,
+  image,
+  meta,
+  subtitle,
+  tags,
+  title,
+  url,
+} = data;
 
 // Determine Card State
 const hasData = Object.keys(data).length > 0;
 const isSimpleCard = !hasData;
 
 // Layout Helpers
-const Wrapper = url ? 'a' : 'div';
+const Wrapper = url ? "a" : "div";
 const cardClasses = cn(variants({ className, interactive: !!url || interactive, variant: visual }));
 
 // Determine Layout Mode
@@ -91,146 +116,163 @@ const cardClasses = cn(variants({ className, interactive: !!url || interactive, 
 const isRowLayout = list && !icon;
 ---
 
-{isSimpleCard ? (
-  <Wrapper
-    class:list={cn(cardClasses)}
-    href={url}
-    style={{ '--glow-color': glowColor }}
-    {...rest}
-  >
-    <CardSpotlight glowColor={glowColor} />
-    <slot />
-  </Wrapper>
-) : (
-  <Wrapper class:list={cn("group block", !isRowLayout && "h-full")} href={url} {...rest}>
-    <div
-      class:list={cn(
-        cardClasses,
-        isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4",
-        align === 'center' && !isRowLayout ? 'items-center text-center' : 'items-start',
-        animate && 'animate-in fade-in slide-in-from-bottom-4 duration-700'
-      )}
-      style={{ '--glow-color': glowColor, animationDelay: `${delay}ms` }}
-    >
-      {/* Background Effects */}
+{
+  isSimpleCard ? (
+    <Wrapper class:list={cn(cardClasses)} href={url} style={{ "--glow-color": glowColor }} {...rest}>
       <CardSpotlight glowColor={glowColor} />
+      <slot />
+    </Wrapper>
+  ) : (
+    <Wrapper class:list={cn("group block", !isRowLayout && "h-full")} href={url} {...rest}>
+      <div
+        class:list={cn(
+          cardClasses,
+          isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4",
+          align === "center" && !isRowLayout ? "items-center text-center" : "items-start",
+          animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
+        )}
+        style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
+      >
+        {/* Background Effects */}
+        <CardSpotlight glowColor={glowColor} />
 
-      {/* Media Section: Icon */}
-      {icon && (
-        <div class="relative">
-          <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"></div>
-          <IconBox
-            class="relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5"
-            size="lg"
-            variant="glass"
-          >
-            <Icon class="transition-colors duration-300 group-hover:text-accent" name={isRowLayout ? icon : icon} size={24} />
-          </IconBox>
-        </div>
-      )}
-
-      {/* Media Section: Image */}
-      {image && (
-        <CardImage
-          alt={title || ""}
-          image={image}
-          loading={loading}
-          wrapperClass={isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-2xl"}
-        />
-      )}
-
-      {/* Content Section */}
-      <div class:list={cn("flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4")}>
-
-        {/* Header Row */}
-        <div class:list={cn("flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row")}>
-          <div class:list={cn("flex flex-col", isRowLayout ? "gap-0" : "gap-1")}>
-            {/* Date (List View / Grid View) */}
-            {date && (
-              <div class:list={cn("flex items-center justify-between", !isRowLayout && "mb-1")}>
-                <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
-                  <FormattedDate date={date} full />
-                </Text>
-              </div>
-            )}
-
-            {/* Title */}
-            <Heading
-              class:list={cn("transition-colors group-hover:text-primary", isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2")}
-              level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
-              size={isRowLayout ? "md" : "lg"}
+        {/* Media Section: Icon */}
+        {icon && (
+          <div class="relative">
+            <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+            <IconBox
+              class="relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5"
+              size="lg"
+              variant="glass"
             >
-              {title}
-            </Heading>
-
-            {/* Subtitle */}
-            {subtitle && (
-              <Text
-                class:list={cn("font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1")}
-                size="xs"
-                variant="muted"
-              >
-                {subtitle}
-              </Text>
-            )}
+              <Icon
+                class="transition-colors duration-300 group-hover:text-accent"
+                name={isRowLayout ? icon : icon}
+                size={24}
+              />
+            </IconBox>
           </div>
-
-          {/* Right Side: Meta & Action */}
-          <div class:list={cn("flex items-center gap-2 self-start", align === 'center' && !isRowLayout ? "hidden" : "")}>
-            {meta && <Badge variant="secondary">{meta}</Badge>}
-
-            {url && (
-              <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
-                <div class:list={cn("absolute right-0 flex items-center text-muted-foreground transition-all duration-300", actionLabel ? "group-hover:-translate-x-2 group-hover:opacity-0" : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary")}>
-                  <Icon name="mdi:arrow-top-right" />
-                </div>
-                {actionLabel && (
-                  <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                    {actionLabel}
-                    <Icon class="size-3" name={actionIcon} />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Body: Description */}
-        {description && (
-          <Text class:list={cn("text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "line-clamp-2 flex-1")} size="sm">
-            {description}
-          </Text>
         )}
 
-        {/* Footer Section */}
-        <div class:list={cn("mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between")}>
+        {/* Media Section: Image */}
+        {image && (
+          <CardImage
+            alt={title || ""}
+            image={image}
+            loading={loading}
+            wrapperClass={
+              isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-2xl"
+            }
+          />
+        )}
 
-          {/* Tags */}
-          {tags && tags.length > 0 && (
-            <div class:list={cn(isRowLayout ? "mt-2" : "")}>
-              <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
+        {/* Content Section */}
+        <div class:list={cn("flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4")}>
+          {/* Header Row */}
+          <div class:list={cn("flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row")}>
+            <div class:list={cn("flex flex-col", isRowLayout ? "gap-0" : "gap-1")}>
+              {/* Date (List View / Grid View) */}
+              {date && (
+                <div class:list={cn("flex items-center justify-between", !isRowLayout && "mb-1")}>
+                  <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+                    <FormattedDate date={date} full />
+                  </Text>
+                </div>
+              )}
+
+              {/* Title */}
+              <Heading
+                class:list={cn(
+                  "transition-colors group-hover:text-primary",
+                  isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2",
+                )}
+                level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
+                size={isRowLayout ? "md" : "lg"}
+              >
+                {title}
+              </Heading>
+
+              {/* Subtitle */}
+              {subtitle && (
+                <Text
+                  class:list={cn("font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1")}
+                  size="xs"
+                  variant="muted"
+                >
+                  {subtitle}
+                </Text>
+              )}
             </div>
-          )}
 
-          {/* Footer Meta (e.g. Experience Date Range) */}
-          {footerMeta && (
-            <Text class="ml-auto font-mono tracking-wider whitespace-nowrap uppercase transition-colors group-hover:text-primary/80" size="xs" variant="muted">
-              {footerMeta}
+            {/* Right Side: Meta & Action */}
+            <div
+              class:list={cn("flex items-center gap-2 self-start", align === "center" && !isRowLayout ? "hidden" : "")}
+            >
+              {meta && <Badge variant="secondary">{meta}</Badge>}
+
+              {url && (
+                <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
+                  <div
+                    class:list={cn(
+                      "absolute right-0 flex items-center text-muted-foreground transition-all duration-300",
+                      actionLabel
+                        ? "group-hover:-translate-x-2 group-hover:opacity-0"
+                        : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary",
+                    )}
+                  >
+                    <Icon name="mdi:arrow-top-right" />
+                  </div>
+                  {actionLabel && (
+                    <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                      {actionLabel}
+                      <Icon class="size-3" name={actionIcon} />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Body: Description */}
+          {description && (
+            <Text
+              class:list={cn("text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "line-clamp-2 flex-1")}
+              size="sm"
+            >
+              {description}
             </Text>
           )}
 
+          {/* Footer Section */}
+          <div class:list={cn("mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between")}>
+            {/* Tags */}
+            {tags && tags.length > 0 && (
+              <div class:list={cn(isRowLayout ? "mt-2" : "")}>
+                <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
+              </div>
+            )}
 
+            {/* Footer Meta (e.g. Experience Date Range) */}
+            {footerMeta && (
+              <Text
+                class="ml-auto font-mono tracking-wider whitespace-nowrap uppercase transition-colors group-hover:text-primary/80"
+                size="xs"
+                variant="muted"
+              >
+                {footerMeta}
+              </Text>
+            )}
 
-          {/* Icon Card Bottom Arrow (if no meta/header arrow used) */}
-          {icon && url && (
-            <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
-          )}
-
+            {/* Icon Card Bottom Arrow (if no meta/header arrow used) */}
+            {icon && url && (
+              <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  </Wrapper>
-)}
+    </Wrapper>
+  )
+}
 
 <script is:inline>
   function initInteractiveCards() {
@@ -255,5 +297,5 @@ const isRowLayout = list && !icon;
   }
 
   initInteractiveCards();
-  document.addEventListener('astro:page-load', initInteractiveCards);
+  document.addEventListener("astro:page-load", initInteractiveCards);
 </script>

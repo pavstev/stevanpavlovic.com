@@ -1,9 +1,9 @@
 ---
-title: 'TypeScript Design Patterns: Builder, Factory, and Singleton'
-description: 'Deep dive into essential TypeScript design patterns with practical examples and best practices'
-pubDate: '2024-02-01'
-tags: ['typescript', 'design-patterns', 'architecture']
-heroImage: '../../assets/code-editor.jpg'
+title: "TypeScript Design Patterns: Builder, Factory, and Singleton"
+description: "Deep dive into essential TypeScript design patterns with practical examples and best practices"
+pubDate: "2024-02-01"
+tags: ["typescript", "design-patterns", "architecture"]
+heroImage: "../../assets/code-editor.jpg"
 ---
 
 Design patterns are proven solutions to common programming challenges. In TypeScript, these patterns become even more powerful with strong typing and modern language features.
@@ -26,25 +26,21 @@ class UserBuilder {
     return this;
   }
 
-  setRole(role: 'admin' | 'user'): this {
+  setRole(role: "admin" | "user"): this {
     this.user.role = role;
     return this;
   }
 
   build(): User {
     if (!this.user.name || !this.user.email) {
-      throw new Error('Name and email are required');
+      throw new Error("Name and email are required");
     }
     return this.user as User;
   }
 }
 
 // Usage
-const user = new UserBuilder()
-  .setName('John Doe')
-  .setEmail('john@example.com')
-  .setRole('admin')
-  .build();
+const user = new UserBuilder().setName("John Doe").setEmail("john@example.com").setRole("admin").build();
 ```
 
 ## Factory Pattern
@@ -70,11 +66,11 @@ class FileLogger implements Logger {
 }
 
 class LoggerFactory {
-  static create(type: 'console' | 'file'): Logger {
+  static create(type: "console" | "file"): Logger {
     switch (type) {
-      case 'console':
+      case "console":
         return new ConsoleLogger();
-      case 'file':
+      case "file":
         return new FileLogger();
       default:
         throw new Error(`Unknown logger type: ${type}`);

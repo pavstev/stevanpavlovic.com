@@ -57,8 +57,7 @@ const initSingleSearch = (
         try {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           pagefind = await import(/* @vite-ignore */ pagefindUrl);
-        }
-        catch (e) {
+        } catch (e) {
           console.warn("Pagefind not found in dev (expected if not built)", e);
           return;
         }
@@ -72,8 +71,7 @@ const initSingleSearch = (
       if (pagefind) {
         pagefind.options({ showImages: false });
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.warn("Pagefind failed to load. Is the site built?", e);
       resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-muted-foreground">Search is available after build.</div>`;
     }
@@ -139,8 +137,7 @@ const initSingleSearch = (
     try {
       const search = await pagefind.search(query);
       await renderResults(search.results);
-    }
-    catch (e) {
+    } catch (e) {
       console.error("Search failed", e);
       resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-red-500">Search failed.</div>`;
     }
@@ -273,10 +270,7 @@ const initSingleSearch = (
   // Keyboard shortcut: / to focus
   document.addEventListener("keydown", (e) => {
     const target = e.target;
-    if (
-      e.key === "/"
-      && !["INPUT", "TEXTAREA"].includes((target as HTMLElement).tagName)
-    ) {
+    if (e.key === "/" && !["INPUT", "TEXTAREA"].includes((target as HTMLElement).tagName)) {
       e.preventDefault();
       searchInput.focus();
     }
@@ -300,11 +294,8 @@ export const initSearchDropdown = (): void => {
 
   for (const container of containers) {
     const variant = container.getAttribute("data-search-variant") || "desktop";
-    const idPrefix
-      = variant === "mobile" ? "mobile-search" : "desktop-search";
-    const searchInput = document.getElementById(
-      `${idPrefix}-input`,
-    ) as HTMLInputElement;
+    const idPrefix = variant === "mobile" ? "mobile-search" : "desktop-search";
+    const searchInput = document.getElementById(`${idPrefix}-input`) as HTMLInputElement;
     const clearButton = document.getElementById(`${idPrefix}-clear`);
     const dropdown = document.getElementById(`${idPrefix}-dropdown`);
     const resultsContainer = document.getElementById(`${idPrefix}-results`);
@@ -314,12 +305,6 @@ export const initSearchDropdown = (): void => {
       continue;
     }
 
-    initSingleSearch(
-      container as HTMLElement,
-      searchInput,
-      clearButton,
-      dropdown,
-      resultsContainer,
-    );
+    initSingleSearch(container as HTMLElement, searchInput, clearButton, dropdown, resultsContainer);
   }
 };

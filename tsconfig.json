@@ -7,17 +7,14 @@
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "types": [
-      "./worker-configuration.d.ts",
-      "node"
+    "types": ["./worker-configuration.d.ts", "node"],
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
     ]
   },
-  "exclude": [
-    "dist"
-  ],
+  "exclude": ["dist"],
   "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*"
-  ]
+  "include": [".astro/types.d.ts", "**/*"]
 }

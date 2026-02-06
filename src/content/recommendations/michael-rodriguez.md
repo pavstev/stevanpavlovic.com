@@ -1,12 +1,12 @@
 ---
-name: 'Michael Rodriguez'
-title: 'VP of Engineering'
-company: 'Catena Media'
-linkedInProfile: 'https://linkedin.com/in/mrodriguez'
-avatar: 'https://i.pravatar.cc/150?img=12'
-date: '2020-01-15'
-relationship: 'Direct Manager at Quantox Technology (Catena Media project)'
-context: 'Michael managed Stevan during his outsourced engagement with Catena Media on AskGamblers.com'
+name: "Michael Rodriguez"
+title: "VP of Engineering"
+company: "Catena Media"
+linkedInProfile: "https://linkedin.com/in/mrodriguez"
+avatar: "https://i.pravatar.cc/150?img=12"
+date: "2020-01-15"
+relationship: "Direct Manager at Quantox Technology (Catena Media project)"
+context: "Michael managed Stevan during his outsourced engagement with Catena Media on AskGamblers.com"
 ---
 
 I had the pleasure of working with Stevan for over a year on our AskGamblers platform, and his impact was transformative. When Stevan joined our team, we had several performance bottlenecks that had been plaguing us for months despite multiple attempts to resolve them. Within his first two weeks, Stevan not only identified the root causes but implemented solutions that reduced our server resource usage by 90% – a result that seemed impossible before he arrived.

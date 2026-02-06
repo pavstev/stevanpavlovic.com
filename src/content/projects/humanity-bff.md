@@ -1,29 +1,20 @@
 ---
-title: 'Humanity Mobile Backend'
-subtitle: 'High-Performance BFF & Caching Layer'
-meta: '2021'
-desc: 'Architected and optimized the Backend-for-Frontend (BFF) infrastructure for Humanity.com, facilitating seamless data orchestration and ultra-fast API responses for hundreds of thousands of daily mobile users.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://humanity.com'
-tags:
-  [
-    'Node.js',
-    'Go',
-    'Redis',
-    'BFF',
-    'Microservices',
-    'Performance',
-    'API Orchestration',
-  ]
+title: "Humanity Mobile Backend"
+subtitle: "High-Performance BFF & Caching Layer"
+meta: "2021"
+desc: "Architected and optimized the Backend-for-Frontend (BFF) infrastructure for Humanity.com, facilitating seamless data orchestration and ultra-fast API responses for hundreds of thousands of daily mobile users."
+image: "../../assets/placeholder.png"
+demoUrl: "https://humanity.com"
+tags: ["Node.js", "Go", "Redis", "BFF", "Microservices", "Performance", "API Orchestration"]
 featured: true
-duration: '14 months'
-teamSize: 'Backend team of 5'
-role: 'Senior Backend Developer'
-impact: 'Reduced mobile app load times by 40% and improved database efficiency by 50%'
+duration: "14 months"
+teamSize: "Backend team of 5"
+role: "Senior Backend Developer"
+impact: "Reduced mobile app load times by 40% and improved database efficiency by 50%"
 challenges:
-  - 'Aggregating data from 10+ legacy microservices into a unified API'
-  - 'Managing complex cache invalidation for real-time shift scheduling'
-  - 'Optimizing Go-based services for high-concurrency throughput'
+  - "Aggregating data from 10+ legacy microservices into a unified API"
+  - "Managing complex cache invalidation for real-time shift scheduling"
+  - "Optimizing Go-based services for high-concurrency throughput"
 ---
 
 ## Problem Statement
@@ -31,6 +22,7 @@ challenges:
 Humanity.com's mobile applications were suffering from high latency due to multiple round-trips to various backend microservices. The frontend code was doing too much data transformation, leading to battery drain and a sluggish user experience.
 
 The goal was to build a dedicated Backend-for-Frontend (BFF) layer that would:
+
 - Aggregate multiple API calls into single, optimized payloads.
 - Implement aggressive, intelligent caching.
 - Shift heavy data processing from the client to the server.

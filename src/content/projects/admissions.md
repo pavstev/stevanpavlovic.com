@@ -1,29 +1,20 @@
 ---
-title: 'Intelligent Admissions'
-subtitle: 'Automated CRM Scoring Algorithms'
-meta: '2018'
-desc: 'An innovative auto-evaluation system that transforms college admissions processing by analyzing hundreds of applicant properties, generating weighted scores, and automatically routing applications through customizable workflows, reducing manual review time by 75%.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://admissions.com'
-tags:
-  [
-    'Algorithms',
-    'Automation',
-    'CRM',
-    'EdTech',
-    'Node.js',
-    'MongoDB',
-    'Workflow Engine',
-  ]
+title: "Intelligent Admissions"
+subtitle: "Automated CRM Scoring Algorithms"
+meta: "2018"
+desc: "An innovative auto-evaluation system that transforms college admissions processing by analyzing hundreds of applicant properties, generating weighted scores, and automatically routing applications through customizable workflows, reducing manual review time by 75%."
+image: "../../assets/placeholder.png"
+demoUrl: "https://admissions.com"
+tags: ["Algorithms", "Automation", "CRM", "EdTech", "Node.js", "MongoDB", "Workflow Engine"]
 featured: true
-duration: '6 months'
-teamSize: 'Solo project within 10-member team'
-role: 'Lead Backend Developer & System Architect'
-impact: 'Processed 50K+ annual admissions for 100+ institutions, reducing review time by 75%'
+duration: "6 months"
+teamSize: "Solo project within 10-member team"
+role: "Lead Backend Developer & System Architect"
+impact: "Processed 50K+ annual admissions for 100+ institutions, reducing review time by 75%"
 challenges:
-  - 'Designing flexible scoring algorithm supporting diverse institutional requirements'
-  - 'Handling hundreds of data points while maintaining sub-second evaluation times'
-  - 'Building configurable workflow engine without code changes'
+  - "Designing flexible scoring algorithm supporting diverse institutional requirements"
+  - "Handling hundreds of data points while maintaining sub-second evaluation times"
+  - "Building configurable workflow engine without code changes"
 ---
 
 ## Problem Statement

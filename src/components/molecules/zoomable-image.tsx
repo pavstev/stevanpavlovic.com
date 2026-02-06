@@ -14,42 +14,40 @@ interface Props {
   width?: number;
 }
 
-const ZoomableImage: React.FC<Props> = ({
-  alt,
-  className,
-  height,
-  loading = "lazy",
-  src,
-  width,
-}) => {
+const ZoomableImage: React.FC<Props> = ({ alt, className, height, loading = "lazy", src, width }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMagnified, setIsMagnified] = useState(false);
   const [position, setPosition] = useState({ x: 50, y: 50 });
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
-    if (!isMagnified) {
-      return;
-    }
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>): void => {
+      if (!isMagnified) {
+        return;
+      }
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Use state for updates without re-renders
-    setPosition({ x, y });
+      // Use state for updates without re-renders
+      setPosition({ x, y });
 
-    // Update transform directly for instant response
-    const img = e.currentTarget.querySelector("img");
-    if (img) {
-      img.style.transformOrigin = `${x.toString()}% ${y.toString()}%`;
-    }
-  }, [isMagnified]);
+      // Update transform directly for instant response
+      const img = e.currentTarget.querySelector("img");
+      if (img) {
+        img.style.transformOrigin = `${x.toString()}% ${y.toString()}%`;
+      }
+    },
+    [isMagnified],
+  );
 
   return (
     <>
       <div
         className={`group relative block cursor-pointer overflow-hidden transition-all hover:opacity-90 ${className || ""}`}
-        onClick={() => { setIsModalOpen(true); }}
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
         onKeyDown={(e): void => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -83,7 +81,9 @@ const ZoomableImage: React.FC<Props> = ({
       >
         <div
           className={`relative cursor-zoom-${isMagnified ? "out" : "in"} overflow-hidden transition-transform duration-100`}
-          onClick={() => { setIsMagnified(!isMagnified); }}
+          onClick={() => {
+            setIsMagnified(!isMagnified);
+          }}
           onKeyDown={(e): void => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -97,16 +97,14 @@ const ZoomableImage: React.FC<Props> = ({
           <img
             alt={alt}
             className={`object-contain transition-all duration-100 ${
-              isMagnified
-                ? "scale-150 cursor-zoom-out"
-                : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
+              isMagnified ? "scale-150 cursor-zoom-out" : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
             }`}
             src={typeof src === "string" ? src : src.src}
             style={
               isMagnified
                 ? {
-                  transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
-                }
+                    transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
+                  }
                 : undefined
             }
           />

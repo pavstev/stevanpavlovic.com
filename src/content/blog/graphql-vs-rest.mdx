@@ -1,9 +1,9 @@
 ---
-title: 'GraphQL vs REST: Architecture Comparison'
-description: 'When to choose GraphQL over REST and how to implement each effectively'
-pubDate: '2024-02-28'
-tags: ['graphql', 'rest', 'api', 'architecture']
-heroImage: '../../assets/satellite-tech.jpg'
+title: "GraphQL vs REST: Architecture Comparison"
+description: "When to choose GraphQL over REST and how to implement each effectively"
+pubDate: "2024-02-28"
+tags: ["graphql", "rest", "api", "architecture"]
+heroImage: "../../assets/satellite-tech.jpg"
 ---
 
 GraphQL and REST both solve API design problems, but in different ways. Here's how to choose.
@@ -14,9 +14,9 @@ Resource-based architecture:
 
 ```typescript
 // Multiple endpoints for related data
-GET /users/123
-GET /users/123/posts
-GET /users/123/comments
+GET / users / 123;
+GET / users / 123 / posts;
+GET / users / 123 / comments;
 
 // Multiple round trips
 async function getUserWithData(userId: string) {
@@ -27,7 +27,7 @@ async function getUserWithData(userId: string) {
   return {
     ...user,
     posts,
-    comments
+    comments,
   };
 }
 ```
@@ -59,8 +59,8 @@ query GetUserWithData($userId: ID!) {
 ## GraphQL Server Implementation
 
 ```typescript
-import { ApolloServer } from '@apollo/server';
-import { gql } from 'graphql-tag';
+import { ApolloServer } from "@apollo/server";
+import { gql } from "graphql-tag";
 
 const typeDefs = gql`
   type User {
@@ -92,16 +92,16 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     user: (_, { id }) => User.findById(id),
-    users: () => User.find()
+    users: () => User.find(),
   },
   Mutation: {
     createUser: (_, { name, email }) => User.create({ name, email }),
-    updateUser: (_, { id, ...data }) => User.findByIdAndUpdate(id, data)
+    updateUser: (_, { id, ...data }) => User.findByIdAndUpdate(id, data),
   },
   User: {
     posts: (user) => Post.find({ authorId: user.id }),
-    comments: (user) => Comment.find({ userId: user.id })
-  }
+    comments: (user) => Comment.find({ userId: user.id }),
+  },
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
@@ -116,22 +116,22 @@ const resolvers = {
     posts: (user) => {
       // Called once per user!
       return Post.find({ authorId: user.id });
-    }
-  }
+    },
+  },
 };
 
 // ✅ GOOD - Use DataLoader
-import DataLoader from 'dataloader';
+import DataLoader from "dataloader";
 
 const postLoader = new DataLoader(async (userIds) => {
   const posts = await Post.find({ authorId: { $in: userIds } });
-  return userIds.map(id => posts.filter(p => p.authorId === id));
+  return userIds.map((id) => posts.filter((p) => p.authorId === id));
 });
 
 const resolvers = {
   User: {
-    posts: (user) => postLoader.load(user.id)
-  }
+    posts: (user) => postLoader.load(user.id),
+  },
 };
 ```
 
@@ -155,22 +155,24 @@ const resolvers = {
 
 ```typescript
 // REST for simple operations
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
-app.post('/api/upload', upload.single('file'), handleUpload);
+app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+app.post("/api/upload", upload.single("file"), handleUpload);
 
 // GraphQL for complex queries
-app.use('/graphql', expressMiddleware(apolloServer));
+app.use("/graphql", expressMiddleware(apolloServer));
 ```
 
 ## Best Practices
 
 ### REST
+
 1. Use proper HTTP methods and status codes
 2. Version your API
 3. Implement pagination
 4. Document with OpenAPI
 
 ### GraphQL
+
 1. Use DataLoader to prevent N+1
 2. Implement query complexity limits
 3. Add pagination (relay-style)

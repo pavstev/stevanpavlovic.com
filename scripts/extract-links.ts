@@ -18,8 +18,7 @@ try {
   while ((match = regex.exec(content)) !== null) {
     console.log(`- ${match[1]}`);
   }
-}
-catch (error) {
+} catch (error) {
   console.error("Error extracting links:", error);
   process.exit(1);
 }

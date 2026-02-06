@@ -1,0 +1,33 @@
+---
+import PostTags from "../molecules/post-tags.astro";
+
+/**
+ * Collection Tags Component
+ *
+ * A unified tags component that handles all collection types (blog, projects, experience)
+ * with smart conditional rendering based on the collection type and data available.
+ *
+ * @param collection - The collection name (blog, projects, experience)
+ * @param data - The collection entry data
+ */
+interface Props {
+  collection: "blog" | "experience" | "projects";
+  data: any;
+}
+
+const { collection, data } = Astro.props;
+
+// Compute tags and tags heading based on collection type
+const tags =
+  collection === "blog" && "tags" in data && data.tags
+    ? data.tags
+    : collection === "experience" && "skills" in data && data.skills
+      ? data.skills
+      : collection === "projects" && "tags" in data && data.tags
+        ? data.tags
+        : undefined;
+
+const tagsHeading = collection === "experience" ? "Skills" : collection === "projects" ? "Technologies" : "Tags";
+---
+
+{tags && tags.length && <PostTags heading={tagsHeading} tags={tags} />}

@@ -48,9 +48,8 @@ export const updateActiveLinks = (): void => {
     const href = link.getAttribute("href");
     const cleanHref = href?.replace(/\/$/, "") || "/";
 
-    const isActive = cleanHref === "/"
-      ? currentPath === "/"
-      : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
+    const isActive =
+      cleanHref === "/" ? currentPath === "/" : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
 
     const dot = link.querySelector(".rounded-full.bg-primary");
 

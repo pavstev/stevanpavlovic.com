@@ -1,9 +1,9 @@
 ---
-title: 'Microservices Architecture Best Practices'
-description: 'Essential patterns and principles for building scalable microservices systems'
-pubDate: '2024-02-15'
-tags: ['microservices', 'architecture', 'distributed-systems']
-heroImage: '../../assets/satellite-tech.jpg'
+title: "Microservices Architecture Best Practices"
+description: "Essential patterns and principles for building scalable microservices systems"
+pubDate: "2024-02-15"
+tags: ["microservices", "architecture", "distributed-systems"]
+heroImage: "../../assets/satellite-tech.jpg"
 ---
 
 Microservices offer flexibility and scalability, but they come with complexity. Here are battle-tested practices for success.
@@ -39,7 +39,7 @@ class OrderController {
     const user = await this.userClient.get(`/users/${req.userId}`);
     const order = await this.orderService.create({
       userId: user.id,
-      items: req.body.items
+      items: req.body.items,
     });
     res.json(order);
   }
@@ -52,14 +52,14 @@ class OrderController {
 // Event-driven with RabbitMQ
 class OrderCreatedHandler {
   async handle(event: OrderCreatedEvent) {
-    await this.emailQueue.publish('send-confirmation', {
+    await this.emailQueue.publish("send-confirmation", {
       userId: event.userId,
-      orderId: event.orderId
+      orderId: event.orderId,
     });
 
-    await this.inventoryQueue.publish('reserve-items', {
+    await this.inventoryQueue.publish("reserve-items", {
       orderId: event.orderId,
-      items: event.items
+      items: event.items,
     });
   }
 }
@@ -99,8 +99,8 @@ interface ServiceRegistry {
 // Using Consul
 class OrderService {
   async start() {
-    await this.registry.register('order-service', process.env.SERVICE_URL);
-    setInterval(() => this.registry.heartbeat('order-service'), 10000);
+    await this.registry.register("order-service", process.env.SERVICE_URL);
+    setInterval(() => this.registry.heartbeat("order-service"), 10000);
   }
 }
 ```
@@ -110,11 +110,11 @@ class OrderService {
 ```typescript
 class CircuitBreaker {
   private failures = 0;
-  private state: 'closed' | 'open' | 'half-open' = 'closed';
+  private state: "closed" | "open" | "half-open" = "closed";
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.state === 'open') {
-      throw new Error('Circuit breaker is open');
+    if (this.state === "open") {
+      throw new Error("Circuit breaker is open");
     }
 
     try {
@@ -129,14 +129,14 @@ class CircuitBreaker {
 
   private onSuccess() {
     this.failures = 0;
-    this.state = 'closed';
+    this.state = "closed";
   }
 
   private onFailure() {
     this.failures++;
     if (this.failures >= 5) {
-      this.state = 'open';
-      setTimeout(() => this.state = 'half-open', 30000);
+      this.state = "open";
+      setTimeout(() => (this.state = "half-open"), 30000);
     }
   }
 }

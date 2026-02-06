@@ -1,0 +1,53 @@
+---
+import ZoomableImage from "../molecules/zoomable-image.tsx";
+
+/**
+ * Collection Hero Image Component
+ *
+ * A unified hero image component that handles all collection types (blog, projects, experience)
+ * with smart conditional rendering based on the collection type and data available.
+ *
+ * @param collection - The collection name (blog, projects, experience)
+ * @param data - The collection entry data
+ * @param title - The computed title (optional, will be computed if not provided)
+ */
+interface Props {
+  collection: "blog" | "experience" | "projects";
+  data: any;
+  title?: string;
+}
+
+const { collection, data, title: propTitle } = Astro.props;
+
+// Compute hero image based on collection type
+const heroImage =
+  "heroImage" in data && data.heroImage
+    ? {
+        alt:
+          propTitle ||
+          (collection === "experience" && "role" in data && "company" in data
+            ? `${data.role} at ${data.company}`
+            : "title" in data
+              ? data.title
+              : ""),
+        height: 450,
+        src: data.heroImage,
+        width: 800,
+      }
+    : undefined;
+---
+
+{
+  heroImage && (
+    <div class="relative mx-auto mb-8 aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-foreground/10 shadow-2xl transition-all hover:border-foreground/20">
+      <ZoomableImage
+        alt={heroImage.alt}
+        className="size-full object-cover"
+        client:load
+        height={heroImage.height}
+        src={heroImage.src}
+        width={heroImage.width}
+      />
+    </div>
+  )
+}

@@ -1,0 +1,46 @@
+---
+import { Icon } from "astro-icon/components";
+
+import Heading from "../atoms/heading.astro";
+import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
+
+interface Props {
+  description?: string;
+  icon?: string;
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  title: string;
+}
+
+const { description, icon, level = 1, title } = Astro.props;
+---
+
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+  <Stack align="center" class="min-w-0" direction="row" gap={4}>
+    {
+      icon && (
+        <div class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
+          <Icon name={icon} size={24} />
+        </div>
+      )
+    }
+
+    <div class="min-w-0">
+      <Heading level={level} size="xl" variant="muted">
+        {title}
+      </Heading>
+
+      {
+        description && (
+          <Text size="sm" variant="secondary">
+            {description}
+          </Text>
+        )
+      }
+    </div>
+  </Stack>
+
+  <div class="shrink-0">
+    <slot name="action" />
+  </div>
+</div>

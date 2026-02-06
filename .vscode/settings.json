@@ -99,5 +99,7 @@
   "emmet.includeLanguages": {
     "typescript": "html",
     "typescriptreact": "html"
-  }
+  },
+  "cSpell.words": ["Zoomable"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

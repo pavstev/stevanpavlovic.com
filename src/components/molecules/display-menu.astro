@@ -1,8 +1,8 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import { buildListUrl, type DisplayMode, VIEW_MODES, type ViewUrls } from '../../lib/list';
-import Button from '../atoms/button.astro';
+import { buildListUrl, type DisplayMode, VIEW_MODES, type ViewUrls } from "../../lib/list";
+import Button from "../atoms/button.astro";
 
 interface Props {
   display?: DisplayMode;
@@ -10,43 +10,39 @@ interface Props {
   showLabels?: boolean;
 }
 
-const {
-  display = 'list',
-  displayUrls,
-  showLabels = true,
-} = Astro.props;
+const { display = "list", displayUrls, showLabels = true } = Astro.props;
 
 const buildUrl = (path: string, paramsToSet: Record<string, number | string | undefined> = {}) =>
-  buildListUrl(Astro.url, 'path', path, paramsToSet);
+  buildListUrl(Astro.url, "path", path, paramsToSet);
 ---
 
 <div class="display-menu glass relative flex items-center gap-2 rounded-2xl p-2 shadow-2xl">
-  {VIEW_MODES.map(({ icon, label, mode }) => {
-    const isActive = display === mode;
-    return (
-      <Button
-        as="a"
-        class:list={[
-          "relative min-h-[40px] overflow-hidden transition-all duration-300 hover:no-underline",
-          {"shadow-glow-primary bg-primary text-primary-foreground": isActive}
-        ]}
-        data-active={isActive}
-        href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
-        size="sm"
-        variant={isActive ? "default" : "subtle"}
-      >
-        <Icon
+  {
+    VIEW_MODES.map(({ icon, label, mode }) => {
+      const isActive = display === mode;
+      return (
+        <Button
+          as="a"
           class:list={[
-            "shrink-0 transition-colors duration-300",
-            {"group-hover:text-accent": !isActive, "text-primary-foreground": isActive}
+            "relative min-h-10 overflow-hidden transition-all duration-300 hover:no-underline",
+            { "shadow-glow-primary bg-primary text-primary-foreground": isActive },
           ]}
-          name={icon}
-          size={18}
-        />
-        {showLabels && (
-          <span class="ml-2.5 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>
-        )}
-      </Button>
-    )
-  })}
+          data-active={isActive}
+          href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
+          size="sm"
+          variant={isActive ? "default" : "subtle"}
+        >
+          <Icon
+            class:list={[
+              "shrink-0 transition-colors duration-300",
+              { "group-hover:text-accent": !isActive, "text-primary-foreground": isActive },
+            ]}
+            name={icon}
+            size={18}
+          />
+          {showLabels && <span class="ml-2.5 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>}
+        </Button>
+      );
+    })
+  }
 </div>

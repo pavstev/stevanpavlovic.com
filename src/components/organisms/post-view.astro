@@ -1,110 +1,47 @@
 ---
+import type { CollectionEntry } from "astro:content";
 
-import type { CollectionEntry } from 'astro:content';
-
-import type { CollectionName } from '../../lib/collection-pages';
-
-import { PROFILE } from '../../lib/config';
-import Avatar from '../atoms/avatar.astro';
-import BackButton from '../atoms/back-button.astro';
-import Button from '../atoms/button.astro';
-import FormattedDate from '../atoms/formatted-date.astro';
-import Stack from '../atoms/stack.astro';
-import Text from '../atoms/text.astro';
+import { type CollectionItem, type CollectionName, getViewPageProps } from "../../lib/collection-pages";
+import BackButton from "../atoms/back-button.astro";
 import LayoutContent from "../layout/layout-content.astro";
-import PostTags from '../molecules/post-tags.astro';
-import ZoomableImage from '../molecules/zoomable-image';
-import PageHero from './page-hero.astro';
+import CollectionActions from "./collection-actions.astro";
+import CollectionEyebrow from "./collection-eyebrow.astro";
+import CollectionHeader from "./collection-header.astro";
+import CollectionHeroImage from "./collection-hero-image.astro";
+import CollectionTags from "./collection-tags.astro";
+
 interface Props {
   backLink?: string;
   collection: CollectionName;
-  data: CollectionEntry<'blog'>['data'] | CollectionEntry<'experience'>['data'] | CollectionEntry<'projects'>['data'];
+  entry: CollectionEntry<CollectionName>;
 }
 
 const {
   collection,
-  data,
+  entry: { data, id },
 } = Astro.props;
 
-const title = collection === 'experience' && 'role' in data && 'company' in data
-  ? `${data.role} at ${data.company}`
-  : ('title' in data ? data.title : '');
+const item: CollectionItem<CollectionName> = {
+  collection,
+  data,
+  id,
+};
 
-const description = 'description' in data ? data.description : ('desc' in data ? data.desc : '');
+const { description, title } = getViewPageProps(item);
 ---
 
-<LayoutContent
-  description={description}
-  title={title}
->
-  <BackButton collection={collection} slot="back-link">
-  </BackButton>
-  <PageHero description={description} slot="header" title={title}>
-    <Stack align="center" class="font-mono text-xs tracking-wider uppercase" direction="row" gap={3} slot="eyebrow">
-      {collection === 'blog' && 'pubDate' in data && data.pubDate && (
-        <FormattedDate date={data.pubDate} full />
-      )}
-      {collection === 'projects' && 'subtitle' in data && data.subtitle && (
-        <Text variant="primary">{data.subtitle}</Text>
-      )}
-      {collection === 'experience' && 'company' in data && (
-        <>
-          <Text variant="primary">{data.company}</Text>
-          {'location' in data && data.location && <Text variant="muted">{data.location}</Text>}
-        </>
-      )}
-    </Stack>
+<LayoutContent description={description} title={title}>
+  <BackButton collection={collection} />
 
-    {collection === 'blog' && (
-      <Stack align="center" direction="row" gap={3} slot="actions">
-        <Avatar alt={PROFILE.name} size="sm" src={PROFILE.avatar} />
-        <Stack gap={0}>
-          <Text class="font-medium">{PROFILE.name}</Text>
-          <Text class="text-xs" variant="muted">{PROFILE.role}</Text>
-        </Stack>
-      </Stack>
-    )}
+  <CollectionHeader description={description} level={1} title={title} />
 
-    {collection === 'projects' && (
-      <Stack align="center" direction="row" gap={3} slot="actions">
-        {'demoUrl' in data && data.demoUrl && (
-          <Button as="a" href={data.demoUrl} variant="default">
-            Live Demo
-          </Button>
-        )}
-        {'repoUrl' in data && data.repoUrl && (
-          <Button as="a" href={data.repoUrl} variant="outline">
-            Source
-          </Button>
-        )}
-      </Stack>
-    )}
-  </PageHero>
+  <CollectionEyebrow collection={collection} item={item} />
 
-  {collection === 'blog' && 'tags' in data && data.tags && (
-    <PostTags heading="Tags" tags={data.tags} />
-  )}
+  <CollectionActions collection={collection} item={item} />
 
-  {collection === 'experience' && 'skills' in data && data.skills && (
-    <PostTags heading="Skills" tags={data.skills} />
-  )}
+  <CollectionHeroImage collection={collection} data={data} title={title} />
 
-  {collection === 'projects' && 'tags' in data && data.tags && (
-    <PostTags heading="Technologies" tags={data.tags} />
-  )}
-
-  {'heroImage' in data && data.heroImage && (
-    <div class="relative mx-auto mb-8 aspect-video w-full max-w-3xl overflow-hidden rounded-2xl border border-foreground/10 shadow-2xl transition-all hover:border-foreground/20" slot="hero-image">
-      <ZoomableImage
-        alt={title}
-        className="size-full object-cover"
-        client:load
-        height={450}
-        src={data.heroImage}
-        width={800}
-      />
-    </div>
-  )}
+  <CollectionTags collection={collection} data={data} />
 
   <slot />
 </LayoutContent>

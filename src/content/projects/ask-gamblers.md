@@ -1,29 +1,20 @@
 ---
-title: 'AskGamblers Modernization'
-subtitle: 'High-Scale Content & Review Engine'
-meta: '2019'
-desc: 'Led the architectural overhaul of a global iGaming authority, refactoring core performance bottlenecks and implementing advanced search technologies to support 150,000+ active monthly users.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://askgamblers.com'
-tags:
-  [
-    'PHP',
-    'Symfony',
-    'MongoDB',
-    'ElasticSearch',
-    'Redis',
-    'Varnish',
-    'Performance Tuning',
-  ]
+title: "AskGamblers Modernization"
+subtitle: "High-Scale Content & Review Engine"
+meta: "2019"
+desc: "Led the architectural overhaul of a global iGaming authority, refactoring core performance bottlenecks and implementing advanced search technologies to support 150,000+ active monthly users."
+image: "../../assets/placeholder.png"
+demoUrl: "https://askgamblers.com"
+tags: ["PHP", "Symfony", "MongoDB", "ElasticSearch", "Redis", "Varnish", "Performance Tuning"]
 featured: true
-duration: '14 months'
-teamSize: 'Backend team of 6'
-role: 'Lead Backend Developer'
-impact: 'Reduced server resource usage by 90% and improved search speed by 500%'
+duration: "14 months"
+teamSize: "Backend team of 6"
+role: "Lead Backend Developer"
+impact: "Reduced server resource usage by 90% and improved search speed by 500%"
 challenges:
-  - 'Resolving critical race conditions in high-concurrency user review systems'
-  - 'Migrating massive amounts of legacy data without downtime'
-  - 'Optimizing cold-start performance for complex faceted search'
+  - "Resolving critical race conditions in high-concurrency user review systems"
+  - "Migrating massive amounts of legacy data without downtime"
+  - "Optimizing cold-start performance for complex faceted search"
 ---
 
 ## Problem Statement
@@ -31,6 +22,7 @@ challenges:
 As one of the world's largest iGaming portals, AskGamblers was outgrowing its legacy architecture. The site was experiencing slow load times, frequent database deadlocks, and an unreliable search experience. The infrastructure was becoming prohibitively expensive due to inefficient resource utilization.
 
 The objectives were:
+
 - Dramatically reduce server response times and CPU usage.
 - Implement a modern, ultra-fast search engine.
 - Modernize the codebase while maintaining 100% uptime.

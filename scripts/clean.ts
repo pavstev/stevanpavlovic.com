@@ -11,8 +11,5 @@ void runSafe("clean", async (ctx) => {
     throw new Error("Git state is dirty. Please commit or stash.");
   }
 
-  return runInParallel(ctx, [
-    cleanUntracked(git, [".env.local"]),
-    deleteEmptyDirs,
-  ]);
+  return runInParallel(ctx, [cleanUntracked(git, [".env.local"]), deleteEmptyDirs]);
 });

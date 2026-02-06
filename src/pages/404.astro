@@ -1,16 +1,16 @@
 ---
-import LayoutRoot from '../components/layout/layout-root.astro';
-import Empty from '../components/molecules/empty.astro';
-import Section from '../components/organisms/section.astro';
+import LayoutRoot from "../components/layout/layout-root.astro";
+import Empty from "../components/molecules/empty.astro";
+import Section from "../components/organisms/section.astro";
 
-const title = '404 - Page Not Found';
-const description = 'The page you requested could not be located or no longer exists.';
+const title = "404 - Page Not Found";
+const description = "The page you requested could not be located or no longer exists.";
 ---
 
 <LayoutRoot description={description} title={title}>
   <Section>
     <Empty
-      action={{ href: '/', label: 'Back to Home' }}
+      action={{ href: "/", label: "Back to Home" }}
       description={description}
       icon="mdi:compass-off-outline"
       title="Page Not Found"

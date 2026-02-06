@@ -1,5 +1,5 @@
 ---
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 interface Props {
   date: Date;
@@ -10,5 +10,5 @@ const { date, full = false } = Astro.props;
 ---
 
 <time datetime={dayjs(date).toISOString()}>
-  {full ? dayjs(date).format('MMMM D, YYYY') : dayjs(date).format('MMM YYYY')}
+  {full ? dayjs(date).format("MMMM D, YYYY") : dayjs(date).format("MMM YYYY")}
 </time>

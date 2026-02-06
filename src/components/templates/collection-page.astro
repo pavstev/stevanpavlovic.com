@@ -1,12 +1,12 @@
 ---
-import type {  DisplayMode } from '../../lib/list';
+import type { DisplayMode } from "../../lib/list";
 
-import Stack from '../atoms/stack.astro';
-import LayoutRoot from '../layout/layout-root.astro';
-import ListActions from '../molecules/list-actions.astro';
-import MasonryGrid from '../molecules/masonry-grid.astro';
-import Card from '../organisms/card.astro';
-import SectionHeader from "../organisms/section-header.astro";
+import Stack from "../atoms/stack.astro";
+import LayoutRoot from "../layout/layout-root.astro";
+import ListActions from "../molecules/list-actions.astro";
+import MasonryGrid from "../molecules/masonry-grid.astro";
+import Card from "../organisms/card.astro";
+import CollectionHeader from "../organisms/collection-header.astro";
 import Section from "../organisms/section.astro";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
   // Configuration
   display: DisplayMode;
-  displayUrls?: { grid: string; list: string; };
+  displayUrls?: { grid: string; list: string };
 
   // Helpers to map generic items to Card props
   // eslint-disable-next-line no-unused-vars
@@ -58,89 +58,82 @@ const {
 } = Astro.props;
 
 // Determine if we should show List or Grid
-const isList = display === 'list';
-const isGrid = display === 'grid';
+const isList = display === "list";
+const isGrid = display === "grid";
 ---
 
 <LayoutRoot description={description} title={title}>
   <Section>
-    <SectionHeader
-      description={headerDescription}
-      icon={headerIcon}
-      title={headerTitle}
-    >
+    <CollectionHeader description={headerDescription} icon={headerIcon} level={2} title={headerTitle}>
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
         display={display}
         displayUrls={displayUrls}
-        getPageUrl={(p: number) => p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`}
+        getPageUrl={(p: number) => (p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`)}
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
         slot="action"
         totalPages={totalPages}
       />
-    </SectionHeader>
-
+    </CollectionHeader>
 
     <Stack gap={4}>
-
       <div class="view-container" data-initial-page-size={initialPageSize} id={containerId}>
-
         {/* VIEW MODE: LIST */}
-        {isList && (
-          <div class="list-view flex flex-col gap-3 transition-opacity duration-300 sm:gap-4">
-            {items.map((item) => (
-              <div
-                class="card-item transition-all duration-300"
-              >
-                <Card list {...getItemCardProps(item)} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* VIEW MODE: GRID */}
-        {isGrid && (
-          <div class="grid-view transition-opacity duration-300">
-            <MasonryGrid columns={2}>
+        {
+          isList && (
+            <div class="list-view flex flex-col gap-3 transition-opacity duration-300 sm:gap-4">
               {items.map((item) => (
-                <div
-                  class="masonry-item card-item transition-all duration-300"
-                >
-                  <Card {...getItemCardProps(item)} />
+                <div class="card-item transition-all duration-300">
+                  <Card list {...getItemCardProps(item)} />
                 </div>
               ))}
-            </MasonryGrid>
-          </div>
-        )}
+            </div>
+          )
+        }
+
+        {/* VIEW MODE: GRID */}
+        {
+          isGrid && (
+            <div class="grid-view transition-opacity duration-300">
+              <MasonryGrid columns={2}>
+                {items.map((item) => (
+                  <div class="masonry-item card-item transition-all duration-300">
+                    <Card {...getItemCardProps(item)} />
+                  </div>
+                ))}
+              </MasonryGrid>
+            </div>
+          )
+        }
 
         {/* No Results */}
         <div class="mt-12 hidden text-center text-muted-foreground" id="no-results">
           <div class="flex flex-col items-center justify-center gap-2">
             <span class="text-4xl">🔍</span>
             <p class="text-lg font-medium">No results found.</p>
-            <a class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20" href={baseUrl}>
-                Clear Filters
+            <a
+              class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20"
+              href={baseUrl}
+            >
+              Clear Filters
             </a>
           </div>
         </div>
-
       </div>
     </Stack>
   </Section>
 </LayoutRoot>
 
-
-
 <script>
-  import { initInteractiveCards } from '../../lib/interactive-cards';
+  import { initInteractiveCards } from "../../lib/interactive-cards";
 
   const setup = () => {
     initInteractiveCards();
   };
 
   setup();
-  document.addEventListener('astro:page-load', setup);
+  document.addEventListener("astro:page-load", setup);
 </script>

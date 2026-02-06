@@ -1,16 +1,12 @@
 ---
-import LayoutRoot from '../components/layout/layout-root.astro';
-import { Meteors } from '../components/meteor';
-import Container from '../components/molecules/container.astro';
-import HomeBento from '../components/organisms/home-bento.astro';
-import { PROFILE } from '../lib/config';
+import LayoutRoot from "../components/layout/layout-root.astro";
+import { Meteors } from "../components/meteor";
+import Container from "../components/molecules/container.astro";
+import HomeBento from "../components/organisms/home-bento.astro";
+import { PROFILE } from "../lib/config";
 ---
 
-<LayoutRoot
-  class="pb-12"
-  description={PROFILE.bio}
-  title={`${PROFILE.name} | Software Engineer`}
->
+<LayoutRoot class="pb-12" description={PROFILE.bio} title={`${PROFILE.name} | Software Engineer`}>
   <Container>
     <Meteors client:load number={30} />
 

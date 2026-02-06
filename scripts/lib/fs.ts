@@ -21,8 +21,7 @@ export const deleteEmptyDirs: ParallelPromise = async ({ logger }) => {
         await rmdir(dir);
         count++;
       }
-    }
-    catch (e) {
+    } catch (e) {
       logger.trace(`Error ${dir}:`, e);
     }
   }

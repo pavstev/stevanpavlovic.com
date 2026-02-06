@@ -3,10 +3,10 @@ interface Props {
   navItems: readonly { href: string; label: string }[];
 }
 
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import { SOCIALS } from '../../lib/config';
-import { isActivePath } from '../../lib/nav';
+import { SOCIALS } from "../../lib/config";
+import { isActivePath } from "../../lib/nav";
 
 const { navItems } = Astro.props;
 const { pathname } = Astro.url;
@@ -19,30 +19,37 @@ const isActive = (href: string) => isActivePath(pathname, href);
   id="mobile-menu"
 >
   <nav class="flex w-full max-w-sm flex-col gap-4 text-center">
-    {navItems.map((item) => (
-      <a
-        class:list={[
-          "text-xl font-medium transition-all duration-300",
-          { "scale-105 text-foreground": isActive(item.href), "text-muted-foreground hover:text-foreground": !isActive(item.href) }
-        ]}
-        href={item.href}
-      >
-        {item.label}
-      </a>
-    ))}
+    {
+      navItems.map((item) => (
+        <a
+          class:list={[
+            "text-xl font-medium transition-all duration-300",
+            {
+              "scale-105 text-foreground": isActive(item.href),
+              "text-muted-foreground hover:text-foreground": !isActive(item.href),
+            },
+          ]}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+      ))
+    }
   </nav>
 
   <div class="absolute bottom-12 flex items-center gap-4">
-    {SOCIALS.map((social) => (
-      <a
-        aria-label={social.name}
-        class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-foreground/5 hover:text-foreground"
-        href={social.href}
-        rel="noreferrer"
-        target="_blank"
-      >
-        <Icon class="size-5" name={social.icon} />
-      </a>
-    ))}
+    {
+      SOCIALS.map((social) => (
+        <a
+          aria-label={social.name}
+          class="flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-foreground/5 hover:text-foreground"
+          href={social.href}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <Icon class="size-5" name={social.icon} />
+        </a>
+      ))
+    }
   </div>
 </div>

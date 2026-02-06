@@ -1,9 +1,9 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import { formatCompactNumber } from '../../lib/content';
-import { NumberTicker } from '../atoms/number-ticker';
-import Text from '../atoms/text.astro';
+import { formatCompactNumber } from "../../lib/content";
+import { NumberTicker } from "../atoms/number-ticker";
+import Text from "../atoms/text.astro";
 
 interface Props {
   class?: string;
@@ -21,7 +21,9 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
 
 <div class:list={["group flex items-center gap-4", className]}>
   {/* Icon Container */}
-  <div class="relative flex size-12 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/10 group-hover:text-accent group-hover:ring-primary/20">
+  <div
+    class="relative flex size-12 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/10 group-hover:text-accent group-hover:ring-primary/20"
+  >
     <Icon class="size-6 transition-transform duration-300 group-hover:scale-110 md:size-7" name={icon} />
   </div>
 
@@ -33,7 +35,10 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
         {format === "compact" ? displayValue : <NumberTicker client:visible value={value} />}
       </span>
     </div>
-    <Text class="text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors duration-300 group-hover:text-accent/80" variant="default">
+    <Text
+      class="text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors duration-300 group-hover:text-accent/80"
+      variant="default"
+    >
       {label}
     </Text>
   </div>

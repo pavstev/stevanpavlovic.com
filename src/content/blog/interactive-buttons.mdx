@@ -1,13 +1,13 @@
 ---
-title: 'Interactive Button Showcase'
-description: 'Explore modern button designs with smooth animations and micro-interactions'
-pubDate: '2024-01-15'
-tags: ['animations', 'buttons', 'interactions']
+title: "Interactive Button Showcase"
+description: "Explore modern button designs with smooth animations and micro-interactions"
+pubDate: "2024-01-15"
+tags: ["animations", "buttons", "interactions"]
 ---
 
-import Button from '../../components/atoms/button.astro';
-import Stack from '../../components/atoms/stack.astro';
-import Grid from '../../components/molecules/grid.astro';
+import Button from "../../components/atoms/button.astro";
+import Stack from "../../components/atoms/stack.astro";
+import Grid from "../../components/molecules/grid.astro";
 
 ## Modern Button Collection
 
@@ -15,24 +15,38 @@ A showcase of beautifully crafted buttons with delightful hover effects and anim
 
 ### Primary Variants
 
-<Stack direction={{ base: 'col', sm: 'row' }} gap={4} class="my-8">
-  <Button variant="default" size="lg">Primary Action</Button>
-  <Button variant="secondary" size="lg">Secondary</Button>
-  <Button variant="outline" size="lg">Outlined</Button>
-  <Button variant="ghost" size="lg">Ghost</Button>
+<Stack direction={{ base: "col", sm: "row" }} gap={4} class="my-8">
+  <Button variant="default" size="lg">
+    Primary Action
+  </Button>
+  <Button variant="secondary" size="lg">
+    Secondary
+  </Button>
+  <Button variant="outline" size="lg">
+    Outlined
+  </Button>
+  <Button variant="ghost" size="lg">
+    Ghost
+  </Button>
 </Stack>
 
 ### Size Variants
 
-<Stack direction={{ base: 'col', sm: 'row' }} gap={4} class="my-8">
-  <Button variant="default" size="sm">Small</Button>
-  <Button variant="default" size="md">Medium</Button>
-  <Button variant="default" size="lg">Large</Button>
+<Stack direction={{ base: "col", sm: "row" }} gap={4} class="my-8">
+  <Button variant="default" size="sm">
+    Small
+  </Button>
+  <Button variant="default" size="md">
+    Medium
+  </Button>
+  <Button variant="default" size="lg">
+    Large
+  </Button>
 </Stack>
 
 ### Interactive States
 
-<Stack direction={{ base: 'col', sm: 'row' }} gap={4} class="my-8">
+<Stack direction={{ base: "col", sm: "row" }} gap={4} class="my-8">
   <Button variant="default" class="hover:scale-105 active:scale-95 transition-transform">
     Hover Me
   </Button>

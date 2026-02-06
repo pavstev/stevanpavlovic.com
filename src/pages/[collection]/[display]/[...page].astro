@@ -1,8 +1,9 @@
 ---
 // Handles: /blog/grid/2, /blog/list/3, etc. (explicit display, pages 2+)
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths } from "astro";
 
-import CollectionPage from '../../../components/templates/collection-page.astro';
+import CollectionPage from "../../../components/templates/collection-page.astro";
+import { collections } from "../../../content.config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
@@ -13,8 +14,8 @@ import {
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
-} from '../../../lib/collection-pages';
-import {type Params as BaseParams} from './../[display].astro';
+} from "../../../lib/collection-pages";
+import { type Params as BaseParams } from "./../[display].astro";
 
 interface Params extends BaseParams {
   page: `${number}`;
@@ -23,8 +24,7 @@ interface Params extends BaseParams {
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections: CollectionName[] = ['blog', 'projects', 'experience'];
-  const displays: DisplayMode[] = ['list', 'grid'];
+  const displays: DisplayMode[] = ["list", "grid"];
   const paths: Array<{
     params: {
       collection: CollectionName;
@@ -33,7 +33,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
   }> = [];
 
-  for (const collection of collections) {
+  const collectionNames = Object.keys(collections) as CollectionName[];
+  for (const collection of collectionNames) {
     const sortedItems = await getCollectionData(collection);
     const totalItems = sortedItems.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));

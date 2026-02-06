@@ -1,10 +1,10 @@
 ---
-import { cn } from '../../lib/cn';
-import { SITE_CONFIG, STATS } from '../../lib/config';
-import Heading from '../atoms/heading.astro';
-import Text from '../atoms/text.astro';
-import {Meteors} from './../meteor';
-import Stat from './stat.astro';
+import { cn } from "../../lib/cn";
+import { SITE_CONFIG, STATS } from "../../lib/config";
+import Heading from "../atoms/heading.astro";
+import Text from "../atoms/text.astro";
+import { Meteors } from "./../meteor";
+import Stat from "./stat.astro";
 
 interface Props {
   class?: string;
@@ -17,9 +17,7 @@ const { class: className } = Astro.props;
   <Meteors client:load number={30} />
 
   <div class="relative z-10 space-y-1">
-    <Text class="font-mono tracking-tight text-foreground/50" size="lg">
-      Hi, I'm
-    </Text>
+    <Text class="font-mono tracking-tight text-foreground/50" size="lg"> Hi, I'm </Text>
     <Heading class="leading-[1.1]" size="display">
       <span class="animate-shiny-text block">
         {SITE_CONFIG.author}
@@ -32,14 +30,16 @@ const { class: className } = Astro.props;
 
   {/* Statistics */}
   <div class="flex flex-wrap justify-start gap-4 pt-4 md:gap-6">
-    {STATS.map((stat) => (
-      <Stat
-        class="origin-left scale-95 md:scale-100"
-        icon={stat.icon}
-        label={stat.label}
-        unit={stat.unit}
-        value={stat.value}
-      />
-    ))}
+    {
+      STATS.map((stat) => (
+        <Stat
+          class="origin-left scale-95 md:scale-100"
+          icon={stat.icon}
+          label={stat.label}
+          unit={stat.unit}
+          value={stat.value}
+        />
+      ))
+    }
   </div>
 </div>

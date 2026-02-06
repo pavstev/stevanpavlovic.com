@@ -1,9 +1,9 @@
 ---
-title: 'Domain-Driven Design Fundamentals'
-description: 'Build maintainable software by aligning code with business domains'
-pubDate: '2024-03-05'
-tags: ['ddd', 'architecture', 'design', 'patterns']
-heroImage: '../../assets/satellite-tech.jpg'
+title: "Domain-Driven Design Fundamentals"
+description: "Build maintainable software by aligning code with business domains"
+pubDate: "2024-03-05"
+tags: ["ddd", "architecture", "design", "patterns"]
+heroImage: "../../assets/satellite-tech.jpg"
 ---
 
 Domain-Driven Design (DDD) helps manage complexity by organizing code around business concepts.
@@ -35,22 +35,22 @@ Objects with unique identity:
 ```typescript
 class Order {
   constructor(
-    public readonly id: OrderId,  // Identity
+    public readonly id: OrderId, // Identity
     public customerId: CustomerId,
     private items: OrderItem[],
-    private status: OrderStatus
+    private status: OrderStatus,
   ) {}
 
   addItem(item: OrderItem): void {
     if (this.status !== OrderStatus.Draft) {
-      throw new Error('Cannot modify confirmed order');
+      throw new Error("Cannot modify confirmed order");
     }
     this.items.push(item);
   }
 
   confirm(): void {
     if (this.items.length === 0) {
-      throw new Error('Cannot confirm empty order');
+      throw new Error("Cannot confirm empty order");
     }
     this.status = OrderStatus.Confirmed;
   }
@@ -70,24 +70,23 @@ Objects without identity, defined by attributes:
 class Money {
   constructor(
     public readonly amount: number,
-    public readonly currency: string
+    public readonly currency: string,
   ) {
     if (amount < 0) {
-      throw new Error('Amount cannot be negative');
+      throw new Error("Amount cannot be negative");
     }
   }
 
   add(other: Money): Money {
     if (this.currency !== other.currency) {
-      throw new Error('Currency mismatch');
+      throw new Error("Currency mismatch");
     }
     return new Money(this.amount + other.amount, this.currency);
   }
 
   // Value object equality based on attributes
   equals(other: Money): boolean {
-    return this.amount === other.amount &&
-           this.currency === other.currency;
+    return this.amount === other.amount && this.currency === other.currency;
   }
 }
 
@@ -95,13 +94,11 @@ class Address {
   constructor(
     public readonly street: string,
     public readonly city: string,
-    public readonly zipCode: string
+    public readonly zipCode: string,
   ) {}
 
   equals(other: Address): boolean {
-    return this.street === other.street &&
-           this.city === other.city &&
-           this.zipCode === other.zipCode;
+    return this.street === other.street && this.city === other.city && this.zipCode === other.zipCode;
   }
 }
 ```
@@ -119,12 +116,10 @@ class Order {
   addItem(product: Product, quantity: number): void {
     // Aggregate enforces invariants
     if (this.items.length >= this.maxItems) {
-      throw new Error('Order has too many items');
+      throw new Error("Order has too many items");
     }
 
-    const existing = this.items.find(i =>
-      i.productId.equals(product.id)
-    );
+    const existing = this.items.find((i) => i.productId.equals(product.id));
 
     if (existing) {
       existing.increaseQuantity(quantity);
@@ -134,10 +129,7 @@ class Order {
   }
 
   calculateTotal(): Money {
-    return this.items.reduce(
-      (total, item) => total.add(item.total),
-      new Money(0, 'USD')
-    );
+    return this.items.reduce((total, item) => total.add(item.total), new Money(0, "USD"));
   }
 }
 
@@ -145,7 +137,7 @@ class Order {
 class OrderItem {
   constructor(
     public readonly productId: ProductId,
-    private quantity: number
+    private quantity: number,
   ) {}
 
   increaseQuantity(amount: number): void {
@@ -154,7 +146,7 @@ class OrderItem {
 
   get total(): Money {
     // Simplified - would get price from product
-    return new Money(this.quantity * 10, 'USD');
+    return new Money(this.quantity * 10, "USD");
   }
 }
 ```
@@ -178,11 +170,7 @@ class MongoOrderRepository implements OrderRepository {
 
   async save(order: Order): Promise<void> {
     const doc = this.toDocument(order);
-    await this.collection.replaceOne(
-      { _id: order.id.value },
-      doc,
-      { upsert: true }
-    );
+    await this.collection.replaceOne({ _id: order.id.value }, doc, { upsert: true });
   }
 
   private toDomain(doc: any): Order {
@@ -201,11 +189,7 @@ Operations that don't belong to entities:
 
 ```typescript
 class PricingService {
-  calculateOrderPrice(
-    order: Order,
-    customer: Customer,
-    promotions: Promotion[]
-  ): Money {
+  calculateOrderPrice(order: Order, customer: Customer, promotions: Promotion[]): Money {
     let total = order.calculateTotal();
 
     // Apply customer discount

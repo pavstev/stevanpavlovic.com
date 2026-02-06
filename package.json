@@ -24,7 +24,8 @@
     "lint": "eslint . --cache --fix --max-warnings 0",
     "check": "astro check",
     "knip": "knip",
-    "validate": "pnpm lint && pnpm check && pnpm knip",
+    "validate": "pnpm format && pnpm lint && pnpm check && pnpm knip",
+    "format": "prettier --write .",
     "all": "pnpm validate && pnpm build",
     "unlighthouse": "unlighthouse",
     "extract-links": "tsx scripts/extract-links.ts"
@@ -63,6 +64,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@astrojs/ts-plugin": "^1.10.6",
     "@eslint/js": "^9.39.2",
     "@eslint/markdown": "^7.5.1",
     "@stylistic/eslint-plugin": "^5.7.1",
@@ -86,6 +88,8 @@
     "jiti": "^2.6.1",
     "jsonc-eslint-parser": "^2.4.2",
     "knip": "^5.83.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
     "simple-git": "^3.30.0",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",

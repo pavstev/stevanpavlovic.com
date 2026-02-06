@@ -1,8 +1,8 @@
 ---
 // Handles: /blog/grid, /blog/list, /projects/grid, etc. (explicit display, page 1)
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths } from "astro";
 
-import CollectionPage from '../../components/templates/collection-page.astro';
+import CollectionPage from "../../components/templates/collection-page.astro";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
@@ -13,8 +13,8 @@ import {
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
-} from '../../lib/collection-pages';
-import {type Params as IndexParams} from './index.astro'
+} from "../../lib/collection-pages";
+import { type Params as IndexParams } from "./index.astro";
 
 export interface Params extends IndexParams {
   display: DisplayMode;
@@ -23,8 +23,8 @@ export interface Params extends IndexParams {
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections: CollectionName[] = ['blog', 'projects', 'experience'];
-  const displays: DisplayMode[] = ['list', 'grid'];
+  const collections: CollectionName[] = ["blog", "projects", "experience"];
+  const displays: DisplayMode[] = ["list", "grid"];
   const paths: Array<{
     params: {
       collection: CollectionName;

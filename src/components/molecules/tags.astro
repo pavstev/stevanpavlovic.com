@@ -1,6 +1,6 @@
 ---
-import Badge from '../atoms/badge.astro';
-import Stack from '../atoms/stack.astro';
+import Badge from "../atoms/badge.astro";
+import Stack from "../atoms/stack.astro";
 
 interface Props {
   class?: string;
@@ -15,15 +15,9 @@ const { class: className, limit, tags } = Astro.props;
   tags && tags.length > 0 && (
     <Stack class:list={[className, "group flex-wrap"]} direction="row" gap={2}>
       {tags.slice(0, limit || tags.length).map((tag) => (
-        <Badge variant="secondary">
-          {tag}
-        </Badge>
+        <Badge variant="secondary">{tag}</Badge>
       ))}
-      {limit && tags.length > limit && (
-        <Badge variant="muted">
-          +{tags.length - limit}
-        </Badge>
-      )}
+      {limit && tags.length > limit && <Badge variant="muted">+{tags.length - limit}</Badge>}
     </Stack>
   )
 }

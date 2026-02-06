@@ -1,29 +1,20 @@
 ---
-title: 'Evermed Video Infrastructure'
-subtitle: 'Serverless Video Transcoding & Distribution'
-meta: '2021'
-desc: 'Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://evermed.com'
-tags:
-  [
-    'AWS Lambda',
-    'S3',
-    'MediaConvert',
-    'Serverless',
-    'Node.js',
-    'Healthcare',
-    'Video Streaming',
-  ]
+title: "Evermed Video Infrastructure"
+subtitle: "Serverless Video Transcoding & Distribution"
+meta: "2021"
+desc: "Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance."
+image: "../../assets/placeholder.png"
+demoUrl: "https://evermed.com"
+tags: ["AWS Lambda", "S3", "MediaConvert", "Serverless", "Node.js", "Healthcare", "Video Streaming"]
 featured: true
-duration: '8 months'
-teamSize: 'Backend dev + DevOps lead'
-role: 'Lead Project Engineer'
-impact: 'Successfully migrated 10,000+ hours of medical content to a modern playback engine'
+duration: "8 months"
+teamSize: "Backend dev + DevOps lead"
+role: "Lead Project Engineer"
+impact: "Successfully migrated 10,000+ hours of medical content to a modern playback engine"
 challenges:
-  - 'Orchestrating complex serverless workflows for multi-resolution transcoding'
-  - 'Enforcing strict HIPAA data security protocols throughout the pipeline'
-  - 'Minifying cost while maintaining high video quality and fast delivery'
+  - "Orchestrating complex serverless workflows for multi-resolution transcoding"
+  - "Enforcing strict HIPAA data security protocols throughout the pipeline"
+  - "Minifying cost while maintaining high video quality and fast delivery"
 ---
 
 ## Problem Statement
@@ -31,6 +22,7 @@ challenges:
 Evermed's legacy video system was manual, slow, and expensive to maintain. New content took hours to go live, and the platform struggled with inconsistent playback quality across different devices and internet speeds. In the medical field, content must be delivered reliably and securely.
 
 The mission was to:
+
 - Fully automate the video ingestion and transcoding workflow.
 - Implement Adaptive Bitrate Streaming (HLS) for a smooth viewing experience.
 - Ensure end-to-end encryption and strict access controls.
@@ -41,6 +33,7 @@ The mission was to:
 ### System Design
 
 I architected a completely event-driven, serverless pipeline on AWS:
+
 1. **Ingestion**: Videos uploaded to S3 trigger an AWS Lambda function.
 2. **Preprocessing**: Lambda validates metadata and prepares the file for transcoding.
 3. **Transcoding**: AWS Elemental MediaConvert handles the heavy lifting, creating HLS manifests and multiple resolution fragments.

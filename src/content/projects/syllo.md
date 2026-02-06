@@ -1,29 +1,20 @@
 ---
-title: 'Syllo Ecosystem'
-subtitle: 'Fintech Microservices Architecture'
-meta: '2020'
-desc: 'A secure, scalable fintech microservice ecosystem built with NestJS, implementing OAuth2/OIDC authentication, ACID-compliant transactions, and high-availability architecture for processing millions of payment transactions with zero data loss.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://syllo.com'
-tags:
-  [
-    'NestJS',
-    'OAuth2',
-    'ACID',
-    'Microservices',
-    'Fintech',
-    'PostgreSQL',
-    'Security',
-  ]
+title: "Syllo Ecosystem"
+subtitle: "Fintech Microservices Architecture"
+meta: "2020"
+desc: "A secure, scalable fintech microservice ecosystem built with NestJS, implementing OAuth2/OIDC authentication, ACID-compliant transactions, and high-availability architecture for processing millions of payment transactions with zero data loss."
+image: "../../assets/placeholder.png"
+demoUrl: "https://syllo.com"
+tags: ["NestJS", "OAuth2", "ACID", "Microservices", "Fintech", "PostgreSQL", "Security"]
 featured: true
-duration: '8 months'
-teamSize: '3-member backend team'
-role: 'Lead Architect & Backend Developer'
-impact: 'Processed $10M+ in monthly transactions with 99.99% uptime and zero data loss'
+duration: "8 months"
+teamSize: "3-member backend team"
+role: "Lead Architect & Backend Developer"
+impact: "Processed $10M+ in monthly transactions with 99.99% uptime and zero data loss"
 challenges:
-  - 'Ensuring ACID compliance across distributed microservices'
-  - 'Implementing PCI DSS compliant security architecture'
-  - 'Designing fault-tolerant payment processing with idempotency guarantees'
+  - "Ensuring ACID compliance across distributed microservices"
+  - "Implementing PCI DSS compliant security architecture"
+  - "Designing fault-tolerant payment processing with idempotency guarantees"
 ---
 
 ## Problem Statement

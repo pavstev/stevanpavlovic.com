@@ -30,7 +30,9 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
     <>
       <div
         className={`group relative z-10 ${className || ""}`}
-        onClick={() => { setIsModalOpen(true); }}
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
         onKeyDown={(e): void => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -46,7 +48,6 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
 
         {/* Main Card */}
         <div className="group-hover:shadow-glow-accent relative w-56 cursor-pointer rounded-2xl border border-white/10 bg-black/20 p-1.5 shadow-2xl backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:border-white/20 md:w-64">
-
           {/* Inner Image Container */}
           <div className="relative aspect-4/5 overflow-hidden rounded-xl bg-neutral-900">
             <img
@@ -78,7 +79,9 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
       >
         <div
           className={`relative cursor-zoom-${isMagnified ? "out" : "in"} overflow-hidden transition-transform duration-100`}
-          onClick={() => { setIsMagnified(!isMagnified); }}
+          onClick={() => {
+            setIsMagnified(!isMagnified);
+          }}
           onKeyDown={(e): void => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -92,16 +95,14 @@ const HeroAvatar: React.FC<HeroAvatarProps> = ({ className }) => {
           <img
             alt={PROFILE.name}
             className={`object-contain transition-all duration-100 ${
-              isMagnified
-                ? "scale-150 cursor-zoom-out"
-                : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
+              isMagnified ? "scale-150 cursor-zoom-out" : "max-h-[90vh] max-w-[95vw] cursor-zoom-in"
             }`}
             src={profileImage.src}
             style={
               isMagnified
                 ? {
-                  transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
-                }
+                    transformOrigin: `${String(position.x)}% ${String(position.y)}%`,
+                  }
                 : undefined
             }
           />

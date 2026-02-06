@@ -1,14 +1,14 @@
 ---
-title: 'Micro-Animations Pattern Library'
-description: 'Delightful micro-animations that enhance user experience'
-pubDate: '2024-01-28'
-tags: ['animations', 'micro-interactions', 'ux']
+title: "Micro-Animations Pattern Library"
+description: "Delightful micro-animations that enhance user experience"
+pubDate: "2024-01-28"
+tags: ["animations", "micro-interactions", "ux"]
 ---
 
-import Stack from '../../components/atoms/stack.astro';
-import Heading from '../../components/atoms/heading.astro';
-import Text from '../../components/atoms/text.astro';
-import { Icon } from 'astro-icon/components';
+import Stack from "../../components/atoms/stack.astro";
+import Heading from "../../components/atoms/heading.astro";
+import Text from "../../components/atoms/text.astro";
+import { Icon } from "astro-icon/components";
 
 ## Micro-Animations
 
@@ -22,10 +22,10 @@ Small animations make a big difference in user experience. Here are some essenti
     <span class="sr-only">Status indicator</span>
   </div>
 
-  <div class="relative">
-    <div class="h-3 w-3 rounded-full bg-emerald-500"></div>
-    <div class="absolute inset-0 h-3 w-3 rounded-full bg-emerald-500 animate-ping"></div>
-  </div>
+<div class="relative">
+  <div class="h-3 w-3 rounded-full bg-emerald-500"></div>
+  <div class="absolute inset-0 h-3 w-3 rounded-full bg-emerald-500 animate-ping"></div>
+</div>
 
   <div class="relative">
     <div class="h-4 w-4 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></div>
@@ -39,9 +39,12 @@ Small animations make a big difference in user experience. Here are some essenti
     <Icon name="mdi:arrow-up" class="h-6 w-6 text-emerald-500" />
   </div>
 
-  <div class="p-4 rounded-md bg-zinc-900 border border-zinc-800 hover:animate-bounce cursor-pointer" style="animation-delay: 100ms;">
-    <Icon name="mdi:heart" class="h-6 w-6 text-pink-500" />
-  </div>
+<div
+  class="p-4 rounded-md bg-zinc-900 border border-zinc-800 hover:animate-bounce cursor-pointer"
+  style="animation-delay: 100ms;"
+>
+  <Icon name="mdi:heart" class="h-6 w-6 text-pink-500" />
+</div>
 
   <div class="p-4 rounded-md bg-zinc-900 border border-zinc-800 hover:animate-bounce cursor-pointer" style="animation-delay: 200ms;">
     <Icon name="mdi:star" class="h-6 w-6 text-yellow-500" />
@@ -55,9 +58,9 @@ Small animations make a big difference in user experience. Here are some essenti
     <Text>Slide in from left with fade</Text>
   </div>
 
-  <div class="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 animate-in fade-in slide-in-from-right duration-500 delay-100">
-    <Text>Slide in from right with delay</Text>
-  </div>
+<div class="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 animate-in fade-in slide-in-from-right duration-500 delay-100">
+  <Text>Slide in from right with delay</Text>
+</div>
 
   <div class="p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800 animate-in fade-in slide-in-from-bottom duration-500 delay-200">
     <Text>Slide in from bottom</Text>

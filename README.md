@@ -19,43 +19,54 @@ The project follows a structured organization:
 ## 🚀 Usage
 
 ### Prerequisites
+
 - Node.js (Latest LTS recommended)
 - `pnpm` (Package manager)
 
 ### Installation
+
 ```bash
 pnpm install
 ```
 
 ### Development
+
 Start the dev server:
+
 ```bash
 pnpm dev
 ```
 
 ### Build & Deploy
+
 Build for production:
+
 ```bash
 pnpm build
 ```
 
 Deploy (Cloudflare Pages):
+
 ```bash
 pnpm deploy
 ```
 
 ### Quality Assurance
+
 Run all checks (lint, types, knip):
+
 ```bash
 pnpm validate
 ```
 
 Run full validation suite and build:
+
 ```bash
 pnpm all
 ```
 
 ### Utilities
+
 - **Clean & Reinstall**: `pnpm clean`
 - **Extract Sitemap Links**: `pnpm extract-links`
 - **LinkedIn Scraper**: `pnpm linkedin` (Requires setup)

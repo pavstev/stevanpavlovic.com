@@ -9,7 +9,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
   const posts = await getSortedBlogPosts();
   return rss({
     description: SITE_DESCRIPTION,
-    items: posts.map(post => ({
+    items: posts.map((post) => ({
       ...post.data,
       link: `/blog/${post.id}`,
     })),

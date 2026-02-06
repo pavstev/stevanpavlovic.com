@@ -1,9 +1,9 @@
 ---
-title: 'Caching Strategies in Distributed Systems'
-description: 'Implement effective caching patterns to improve performance and reduce load'
-pubDate: '2024-02-25'
-tags: ['caching', 'redis', 'performance', 'distributed-systems']
-heroImage: '../../assets/laptop-desk.jpg'
+title: "Caching Strategies in Distributed Systems"
+description: "Implement effective caching patterns to improve performance and reduce load"
+pubDate: "2024-02-25"
+tags: ["caching", "redis", "performance", "distributed-systems"]
+heroImage: "../../assets/laptop-desk.jpg"
 ---
 
 Caching is crucial for scalable applications. Understanding when and how to cache can dramatically improve performance.
@@ -52,11 +52,7 @@ class ProductService {
     const product = await db.products.update(id, data);
 
     // Update cache immediately
-    await redis.setex(
-      `product:${id}`,
-      3600,
-      JSON.stringify(product)
-    );
+    await redis.setex(`product:${id}`, 3600, JSON.stringify(product));
 
     return product;
   }
@@ -71,21 +67,21 @@ Write to cache immediately, database asynchronously:
 class AnalyticsService {
   async trackEvent(event: Event): Promise<void> {
     // Write to cache immediately
-    await redis.lpush('events', JSON.stringify(event));
+    await redis.lpush("events", JSON.stringify(event));
 
     // Process asynchronously
     this.processQueue();
   }
 
   private async processQueue() {
-    const batch = await redis.lrange('events', 0, 99);
+    const batch = await redis.lrange("events", 0, 99);
     if (batch.length === 0) return;
 
     // Batch write to database
-    await db.events.insertMany(batch.map(e => JSON.parse(e)));
+    await db.events.insertMany(batch.map((e) => JSON.parse(e)));
 
     // Remove processed items
-    await redis.ltrim('events', batch.length, -1);
+    await redis.ltrim("events", batch.length, -1);
   }
 }
 ```
@@ -96,7 +92,7 @@ class AnalyticsService {
 
 ```typescript
 // Simple TTL
-await redis.setex('key', 300, 'value'); // 5 minutes
+await redis.setex("key", 300, "value"); // 5 minutes
 
 // Refresh on access
 async function getCachedValue(key: string): Promise<string | null> {
@@ -120,7 +116,7 @@ class OrderService {
     await Promise.all([
       redis.del(`user:${userId}:orders`),
       redis.del(`user:${userId}:stats`),
-      ...items.map(item => redis.del(`product:${item.id}:stock`))
+      ...items.map((item) => redis.del(`product:${item.id}:stock`)),
     ]);
 
     return order;
@@ -182,11 +178,7 @@ async function warmCache(): Promise<void> {
   const popular = await db.products.find({ views: { $gt: 1000 } });
 
   for (const product of popular) {
-    await redis.setex(
-      `product:${product.id}`,
-      3600,
-      JSON.stringify(product)
-    );
+    await redis.setex(`product:${product.id}`, 3600, JSON.stringify(product));
   }
 
   console.log(`Warmed cache with ${popular.length} products`);
@@ -199,11 +191,7 @@ warmCache();
 ## Cache Stampede Prevention
 
 ```typescript
-async function getCachedOrCompute<T>(
-  key: string,
-  computeFn: () => Promise<T>,
-  ttl: number
-): Promise<T> {
+async function getCachedOrCompute<T>(key: string, computeFn: () => Promise<T>, ttl: number): Promise<T> {
   const lockKey = `lock:${key}`;
 
   // Try to get from cache
@@ -211,7 +199,7 @@ async function getCachedOrCompute<T>(
   if (value) return JSON.parse(value);
 
   // Try to acquire lock
-  const acquired = await redis.set(lockKey, '1', 'EX', 10, 'NX');
+  const acquired = await redis.set(lockKey, "1", "EX", 10, "NX");
 
   if (acquired) {
     try {
@@ -224,7 +212,7 @@ async function getCachedOrCompute<T>(
     }
   } else {
     // Wait and retry
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return getCachedOrCompute(key, computeFn, ttl);
   }
 }

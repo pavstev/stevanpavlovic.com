@@ -10,18 +10,11 @@ export interface ExecutionContext {
 
 export type ExecutionResult = 0 | 1;
 
-export type ParallelPromise = (
-  ctx: ExecutionContext,
-) => Promise<ExecutionResult>;
+export type ParallelPromise = (ctx: ExecutionContext) => Promise<ExecutionResult>;
 
-type RunSafeCallback = (
-  ctx: ExecutionContext,
-) => ExecutionResult | Promise<ExecutionResult>;
+type RunSafeCallback = (ctx: ExecutionContext) => ExecutionResult | Promise<ExecutionResult>;
 
-const performRun = async (
-  name: string,
-  fn: RunSafeCallback,
-): Promise<ExecutionResult> => {
+const performRun = async (name: string, fn: RunSafeCallback): Promise<ExecutionResult> => {
   const logger = createLogger(name);
 
   logger.start(`Starting ${name} script...`);
@@ -32,17 +25,13 @@ const performRun = async (
       logger.success(`Completed ${name} script.`);
     }
     return result;
-  }
-  catch (err) {
+  } catch (err) {
     logger.error(err instanceof Error ? err.message : err);
     return 1;
   }
 };
 
-export const runSafe = async (
-  name: string,
-  fn: RunSafeCallback,
-): Promise<void> => {
+export const runSafe = async (name: string, fn: RunSafeCallback): Promise<void> => {
   const result = await performRun(name, fn);
 
   if (result !== 0) {
@@ -50,18 +39,12 @@ export const runSafe = async (
   }
 };
 
-export const runInParallel = async (
-  ctx: ExecutionContext,
-  promises: ParallelPromise[],
-): Promise<ExecutionResult> => {
-  const results = await Promise.allSettled(promises.map(p => p(ctx)));
+export const runInParallel = async (ctx: ExecutionContext, promises: ParallelPromise[]): Promise<ExecutionResult> => {
+  const results = await Promise.allSettled(promises.map((p) => p(ctx)));
 
-  const failed = results.filter(result => result.status === "rejected");
+  const failed = results.filter((result) => result.status === "rejected");
   if (failed.length > 0) {
-    ctx.logger.error(
-      `One or more scripts failed.`,
-      ...failed.map(result => result.reason),
-    );
+    ctx.logger.error(`One or more scripts failed.`, ...failed.map((result) => result.reason));
     return 1;
   }
 

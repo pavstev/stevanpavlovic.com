@@ -1,15 +1,22 @@
 // Shared collection page logic
 import { type CollectionEntry, getCollection } from "astro:content";
 
-import type { CardData } from "../components/organisms/card/card-helpers";
+import type { CardData } from "../components/organisms/card.astro";
 
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { collections as baseCollections } from "../content.config";
 import { NAV_ITEMS, PROFILE } from "./config";
 
-export type CollectionName = "blog" | "experience" | "projects";
+const nonhandledCollections = ["recommendations"] as const;
+
+export type CollectionName = Exclude<keyof typeof baseCollections, (typeof nonhandledCollections)[number]>;
 export type DisplayMode = "grid" | "list";
 
-interface CollectionItem<CN extends CollectionName> {
+export const collections: CollectionName[] = Object.keys(baseCollections).filter(
+  (c) => !nonhandledCollections.includes(c as unknown as (typeof nonhandledCollections)[number]),
+) as CollectionName[];
+
+export interface CollectionItem<CN extends CollectionName> {
   collection: CN;
   data: CollectionEntry<CN>["data"];
   id: string;
@@ -26,20 +33,22 @@ export const buildPaginationUrls = (
   nextUrl: string | undefined;
   prevUrl: string | undefined;
 } => {
-  const prevUrl = currentPage > 1
-    ? (currentPage === 2
-      ? `/${collection}/${view}`
-      : `/${collection}/${view}/${(currentPage - 1).toString()}`)
-    : undefined;
+  const prevUrl =
+    currentPage > 1
+      ? currentPage === 2
+        ? `/${collection}/${view}`
+        : `/${collection}/${view}/${(currentPage - 1).toString()}`
+      : undefined;
 
-  const nextUrl = currentPage < totalPages
-    ? `/${collection}/${view}/${(currentPage + 1).toString()}`
-    : undefined;
+  const nextUrl = currentPage < totalPages ? `/${collection}/${view}/${(currentPage + 1).toString()}` : undefined;
 
   return { nextUrl, prevUrl };
 };
 
-export const buildDisplayUrls = (collection: CollectionName, currentPage: number): {
+export const buildDisplayUrls = (
+  collection: CollectionName,
+  currentPage: number,
+): {
   grid: string;
   list: string;
 } => ({
@@ -48,68 +57,75 @@ export const buildDisplayUrls = (collection: CollectionName, currentPage: number
 });
 
 // Type guards for different collection types
-const itemIsBlog = (item: CollectionItem<CollectionName>): item is CollectionItem<"blog"> => item.collection === "blog";
-const itemIsExperience = (item: CollectionItem<CollectionName>): item is CollectionItem<"experience"> => item.collection === "experience";
-const itemIsProject = (item: CollectionItem<CollectionName>): item is CollectionItem<"projects"> => item.collection === "projects";
+const itemIsBlog = (item?: CollectionItem<CollectionName>): item is CollectionItem<"blog"> =>
+  item?.collection === "blog";
+const itemIsExperience = (item?: CollectionItem<CollectionName>): item is CollectionItem<"experience"> =>
+  item?.collection === "experience";
+const itemIsProject = (item?: CollectionItem<CollectionName>): item is CollectionItem<"projects"> =>
+  item?.collection === "projects";
 
 // Extract common properties with fallbacks for view pages
-export const getViewPageProps = (item: CollectionItem<CollectionName>): {
-  title: string;
-  subtitle: string | undefined;
+export const getViewPageProps = (
+  item: CollectionItem<CollectionName>,
+): {
+  date: string;
   description: string | undefined;
   icon: string | undefined;
+  subtitle: string | undefined;
   tags: string[] | undefined;
-  date: string;
-} = {
+  title: string;
+} => {
   if (itemIsBlog(item)) {
     return {
-      title: item.data.title,
-      subtitle: undefined, // Blog doesn't have subtitle
+      date: new Date(item.data.pubDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
       description: item.data.description,
       icon: undefined, // Blog doesn't have icon
+      subtitle: undefined, // Blog doesn't have subtitle
       tags: item.data.tags,
-      date: new Date(item.data.pubDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+      title: item.data.title,
     };
   }
 
   if (itemIsExperience(item)) {
     return {
-      title: item.data.role,
-      subtitle: item.data.company,
+      date: new Date(item.data.startDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
       description: item.data.description,
       icon: undefined,
+      subtitle: item.data.company,
       tags: item.data.skills,
-      date: new Date(item.data.startDate).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+      title: item.data.role,
     };
   }
 
   if (itemIsProject(item)) {
     return {
-      title: item.data.title,
-      subtitle: item.data.subtitle,
+      date: item.data.meta || "",
       description: item.data.desc,
       icon: undefined,
+      subtitle: item.data.subtitle,
       tags: item.data.tags,
-      date: item.data.meta || "",
+      title: item.data.title,
     };
   }
 
   return {
-    title: "",
-    subtitle: undefined,
+    date: "",
     description: undefined,
     icon: undefined,
+    subtitle: undefined,
     tags: undefined,
-    date: "",
+    title: "",
   };
 };
 
-export const getCollectionConfig = (collection: CollectionName): {
+export const getCollectionConfig = (
+  collection: CollectionName,
+): {
   description: string;
-headerDescription: string;
-headerIcon: string;
-headerTitle: string;
-title: string;
+  headerDescription: string;
+  headerIcon: string;
+  headerTitle: string;
+  title: string;
 } => {
   const navItem = NAV_ITEMS[collection];
 
@@ -117,13 +133,9 @@ title: string;
     throw new Error(`Unknown collection: ${collection}`);
   }
 
-  const title = collection === "blog"
-    ? `Blog | ${SITE_TITLE}`
-    : `${navItem.label} | ${PROFILE.name}`;
+  const title = collection === "blog" ? `Blog | ${SITE_TITLE}` : `${navItem.label} | ${PROFILE.name}`;
 
-  const description = collection === "blog"
-    ? SITE_DESCRIPTION
-    : `${PROFILE.name} - ${navItem.label}`;
+  const description = collection === "blog" ? SITE_DESCRIPTION : `${PROFILE.name} - ${navItem.label}`;
 
   return {
     description,
@@ -154,7 +166,10 @@ export const getCollectionData = async <CN extends CollectionName>(collection: C
   return sortedItems as CollectionItem<CN>[];
 };
 
-export const getItemCardProps = <CN extends CollectionName>(_collection: CN, item: CollectionItem<CN>): {
+export const getItemCardProps = <CN extends CollectionName>(
+  _collection: CN,
+  item: CollectionItem<CN>,
+): {
   actionLabel?: string;
   data: CardData;
 } => {
@@ -168,9 +183,9 @@ export const getItemCardProps = <CN extends CollectionName>(_collection: CN, ite
         description: blogItem.data.description,
         image: blogItem.data.heroImage,
         // eslint-disable-next-line
-        subtitle: "subtitle" in blogItem.data ? (blogItem.data as any).subtitle as string : undefined,
+        subtitle: "subtitle" in blogItem.data ? ((blogItem.data as any).subtitle as string) : undefined,
         // eslint-disable-next-line
-        tags: "tags" in blogItem.data ? (blogItem.data as any).tags as string[] : undefined,
+        tags: "tags" in blogItem.data ? ((blogItem.data as any).tags as string[]) : undefined,
         title: blogItem.data.title,
         url: `/blog/view/${blogItem.id}`,
       },
@@ -184,8 +199,15 @@ export const getItemCardProps = <CN extends CollectionName>(_collection: CN, ite
       /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
       data: {
         description: projectItem.data.desc,
-        image: "heroImage" in projectItem.data ? (projectItem.data as any).heroImage : ("image" in projectItem.data ? (projectItem.data as any).image : undefined),
-        meta: (projectItem.data as any).pubDate ? new Date((projectItem.data as any).pubDate).getFullYear().toString() : "",
+        image:
+          "heroImage" in projectItem.data
+            ? (projectItem.data as any).heroImage
+            : "image" in projectItem.data
+              ? (projectItem.data as any).image
+              : undefined,
+        meta: (projectItem.data as any).pubDate
+          ? new Date((projectItem.data as any).pubDate).getFullYear().toString()
+          : "",
         subtitle: projectItem.data.subtitle,
         tags: projectItem.data.tags,
         title: projectItem.data.title,
@@ -208,10 +230,14 @@ export const getItemCardProps = <CN extends CollectionName>(_collection: CN, ite
       },
     };
   }
-  return { actionLabel: undefined, data: {} as CardData };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  return { actionLabel: undefined, data: {} as unknown as CardData };
 };
 
-export const getPageItems = <CN extends CollectionName>(sortedItems: CollectionItem<CN>[], pageNum: number): CollectionItem<CN>[] => {
+export const getPageItems = <CN extends CollectionName>(
+  sortedItems: CollectionItem<CN>[],
+  pageNum: number,
+): CollectionItem<CN>[] => {
   const startIndex = (pageNum - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   return sortedItems.slice(startIndex, endIndex);

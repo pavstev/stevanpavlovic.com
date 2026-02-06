@@ -7,9 +7,7 @@ const MagnifyOverlay: React.FC = () => (
       {/* Icon with Label */}
       <div className="flex items-center gap-2 rounded-full bg-accent/95 px-4 py-2.5 shadow-[0_8px_24px_rgba(var(--color-accent-rgb),0.4)] backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_32px_rgba(var(--color-accent-rgb),0.6)]">
         <Icon className="size-5 text-accent-foreground" icon="mdi:magnify-plus-outline" />
-        <span className="text-sm font-semibold text-accent-foreground">
-          Enlarge
-        </span>
+        <span className="text-sm font-semibold text-accent-foreground">Enlarge</span>
       </div>
     </div>
   </div>

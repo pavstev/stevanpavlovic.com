@@ -13,16 +13,13 @@ const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
 ---
 
-<header
-  class="fixed top-4 z-50 w-full px-4 transition-all duration-500 md:px-0"
-  id="site-header"
-  transition:persist
->
+<header class="fixed top-4 z-50 w-full px-4 transition-all duration-500 md:px-0" id="site-header" transition:persist>
   <Container>
     <LayoutWrapper class="items-center">
       {/* Main Bar */}
-      <div class="glass relative flex h-14 w-full items-center rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20">
-
+      <div
+        class="glass relative flex h-14 w-full items-center rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20"
+      >
         {/* Left: Logo */}
         <div class="shrink-0 pl-1">
           <Logo />
@@ -41,29 +38,34 @@ const isActive = (href: string) => isActivePath(pathname, href);
           </div>
           {/* Desktop Nav */}
           <nav class="hidden items-center gap-1 md:flex" id="desktop-nav">
-            {NAV_ITEMS_ARRAY.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <Button
-                  aria-current={active ? "page" : undefined}
-                  class:list={[
-                    "relative rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300",
-                    {"bg-foreground/10 text-foreground ring-2 ring-offset-foreground/20": active, "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active}
-                  ]}
-                  data-nav-link
-                  href={item.href}
-                  variant="unstyled"
-                >
-                  <span>
-                    {item.label}
-                  </span>
-                  <div class:list={[
-                    "absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
-                    !active && "scale-0 opacity-0"
-                  ]}></div>
-                </Button>
-              );
-            })}
+            {
+              NAV_ITEMS_ARRAY.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Button
+                    aria-current={active ? "page" : undefined}
+                    class:list={[
+                      "relative rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300",
+                      {
+                        "bg-foreground/10 text-foreground ring-2 ring-offset-foreground/20": active,
+                        "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active,
+                      },
+                    ]}
+                    data-nav-link
+                    href={item.href}
+                    variant="unstyled"
+                  >
+                    <span>{item.label}</span>
+                    <div
+                      class:list={[
+                        "absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
+                        !active && "scale-0 opacity-0",
+                      ]}
+                    />
+                  </Button>
+                );
+              })
+            }
           </nav>
 
           {/* Socials Removed (Moved to Footer) */}
@@ -79,7 +81,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
 <MobileMenu navItems={Object.values(NAV_ITEMS)} />
 
 <script>
-  import { initMobileMenu, updateActiveLinks } from '../../lib/mobile-menu';
+  import { initMobileMenu, updateActiveLinks } from "../../lib/mobile-menu";
 
   const init = () => {
     initMobileMenu();
@@ -87,6 +89,6 @@ const isActive = (href: string) => isActivePath(pathname, href);
   };
 
   init();
-  document.addEventListener('astro:page-load', init);
-  document.addEventListener('astro:after-swap', updateActiveLinks);
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:after-swap", updateActiveLinks);
 </script>

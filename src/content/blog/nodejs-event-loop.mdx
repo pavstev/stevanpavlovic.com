@@ -1,9 +1,9 @@
 ---
-title: 'Node.js Event Loop Deep Dive'
-description: 'Understanding how the Node.js event loop works under the hood for better async programming'
-pubDate: '2024-02-05'
-tags: ['nodejs', 'event-loop', 'async', 'performance']
-heroImage: '../../assets/code-editor.jpg'
+title: "Node.js Event Loop Deep Dive"
+description: "Understanding how the Node.js event loop works under the hood for better async programming"
+pubDate: "2024-02-05"
+tags: ["nodejs", "event-loop", "async", "performance"]
+heroImage: "../../assets/code-editor.jpg"
 ---
 
 The Node.js event loop is the heart of its asynchronous, non-blocking I/O model. Understanding it is crucial for writing efficient Node.js applications.
@@ -22,17 +22,17 @@ The event loop operates in phases, each handling specific types of callbacks:
 ## Process.nextTick() vs setImmediate()
 
 ```javascript
-console.log('start');
+console.log("start");
 
 setImmediate(() => {
-  console.log('setImmediate');
+  console.log("setImmediate");
 });
 
 process.nextTick(() => {
-  console.log('nextTick');
+  console.log("nextTick");
 });
 
-console.log('end');
+console.log("end");
 
 // Output:
 // start
@@ -46,17 +46,17 @@ console.log('end');
 ## Microtasks vs Macrotasks
 
 ```javascript
-console.log('Script start');
+console.log("Script start");
 
 setTimeout(() => {
-  console.log('setTimeout');
+  console.log("setTimeout");
 }, 0);
 
 Promise.resolve()
-  .then(() => console.log('Promise 1'))
-  .then(() => console.log('Promise 2'));
+  .then(() => console.log("Promise 1"))
+  .then(() => console.log("Promise 2"));
 
-console.log('Script end');
+console.log("Script end");
 
 // Output:
 // Script start
@@ -80,13 +80,13 @@ function blockingOperation() {
 }
 
 // GOOD - Use worker threads for CPU-intensive tasks
-const { Worker } = require('worker_threads');
+const { Worker } = require("worker_threads");
 
 function nonBlockingOperation() {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./heavy-task.js');
-    worker.on('message', resolve);
-    worker.on('error', reject);
+    const worker = new Worker("./heavy-task.js");
+    worker.on("message", resolve);
+    worker.on("error", reject);
   });
 }
 ```

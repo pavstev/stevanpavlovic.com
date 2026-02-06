@@ -1,27 +1,21 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type { HTMLAttributes } from "astro/types";
 
-import { cn } from '../../lib/cn';
-import { buildResponsiveClasses, type ResponsiveValue } from '../../lib/styles';
+import { cn } from "../../lib/cn";
+import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/styles";
 
-interface Props extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<"div"> {
   as?: string;
   cols?: ResponsiveValue<1 | 2 | 3 | 4>;
   gap?: 2 | 4 | 6 | 8 | 10;
 }
 
-const {
-  as: Tag = 'div',
-  class: className,
-  cols = { base: 1 },
-  gap = 6,
-  ...props
-} = Astro.props;
+const { as: Tag = "div", class: className, cols = { base: 1 }, gap = 6, ...props } = Astro.props;
 
-const colClass = buildResponsiveClasses(cols, 'grid-cols');
+const colClass = buildResponsiveClasses(cols, "grid-cols");
 const gapClass = `gap-${gap}`;
 ---
 
-<Tag class:list={cn('grid w-full', colClass, gapClass, className)} {...props}>
+<Tag class:list={cn("grid w-full", colClass, gapClass, className)} {...props}>
   <slot />
 </Tag>

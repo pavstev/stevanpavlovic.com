@@ -40,7 +40,6 @@ export default defineConfig({
       config: {
         forward: ["dataLayer.push", "gtag"],
       },
-
     }),
     pagefind(),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call

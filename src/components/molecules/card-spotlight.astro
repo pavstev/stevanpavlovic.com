@@ -3,11 +3,13 @@ interface Props {
   glowColor?: string;
 }
 
-const { glowColor = 'var(--color-primary)' } = Astro.props;
+const { glowColor = "var(--color-primary)" } = Astro.props;
 ---
 
 <div
   class="spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-20"
-  style={{ background: `radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), ${glowColor}, transparent 60%)` }}
+  style={{
+    background: `radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), ${glowColor}, transparent 60%)`,
+  }}
 >
 </div>

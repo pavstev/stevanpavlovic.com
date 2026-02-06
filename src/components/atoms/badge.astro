@@ -1,42 +1,49 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type { HTMLAttributes } from "astro/types";
 
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from '../../lib/cn';
+import { cn } from "../../lib/cn";
 
 const variants = cva(
-  'inline-flex max-w-full items-center rounded-full border px-3 py-1 font-mono text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
+  "inline-flex max-w-full items-center rounded-full border px-3 py-1 font-mono text-xs font-semibold transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none",
   {
     variants: {
       variant: {
-        accent: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90',
-        default: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90',
-        destructive: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-destructive/20 group-hover:bg-destructive/10 group-hover:text-destructive/90',
-        muted: 'border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/40 transition-all duration-500 group-hover:text-muted-foreground/80',
-        outline: 'border-border text-muted-foreground/60 transition-all duration-500 group-hover:text-foreground',
-        secondary: 'border-muted-foreground/5 bg-muted-foreground/5 text-muted-foreground/50 transition-all duration-500 group-hover:border-accent/10 group-hover:bg-accent/10 group-hover:text-accent/70',
+        accent:
+          "border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90",
+        default:
+          "border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-accent/20 group-hover:bg-accent/10 group-hover:text-accent/90",
+        destructive:
+          "border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/60 transition-all duration-500 group-hover:border-destructive/20 group-hover:bg-destructive/10 group-hover:text-destructive/90",
+        muted:
+          "border-muted-foreground/10 bg-muted-foreground/5 text-muted-foreground/40 transition-all duration-500 group-hover:text-muted-foreground/80",
+        outline: "border-border text-muted-foreground/60 transition-all duration-500 group-hover:text-foreground",
+        secondary:
+          "border-muted-foreground/5 bg-muted-foreground/5 text-muted-foreground/50 transition-all duration-500 group-hover:border-accent/10 group-hover:bg-accent/10 group-hover:text-accent/70",
       },
     },
-  }
+  },
 );
 
-interface Props extends HTMLAttributes<'span'>, VariantProps<typeof variants> {
+interface Props extends HTMLAttributes<"span">, VariantProps<typeof variants> {
   as?: string;
 }
 
-const { as: Tag = 'span', class: className, variant, ...props } = Astro.props;
+const { as: Tag = "span", class: className, variant, ...props } = Astro.props;
 
-const slotContent = await Astro.slots.render('default');
+const slotContent = await Astro.slots.render("default");
 const hasContent = slotContent.trim().length > 0;
 ---
 
-{hasContent && (
-  <Tag
-    class:list={cn(variants({ className, variant }))}
-    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-    {...props}
-  >
-    <slot />
-  </Tag>
-)}
+{
+  hasContent && (
+    <Tag
+      class:list={cn(variants({ className, variant }))}
+      style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+      {...props}
+    >
+      <slot />
+    </Tag>
+  )
+}

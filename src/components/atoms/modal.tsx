@@ -83,7 +83,7 @@ const Modal: React.FC<ModalProps> = ({
           className,
         )}
       >
-        <div className="absolute inset-0 rounded-2xl bg-card/50 backdrop-blur-sm" ></div>
+        <div className="absolute inset-0 rounded-2xl bg-card/50 backdrop-blur-sm"></div>
         <div className="relative z-10 p-6">
           {showCloseButton && (
             <button
@@ -92,17 +92,18 @@ const Modal: React.FC<ModalProps> = ({
               onClick={onClose}
               type="button"
             >
-              <Icon className="hover:scale-1.1 size-5 transition-all duration-300 hover:rotate-90" icon="mdi:close-thick" />
+              <Icon
+                className="hover:scale-1.1 size-5 transition-all duration-300 hover:rotate-90"
+                icon="mdi:close-thick"
+              />
             </button>
           )}
 
           {children}
 
           {caption && (
-            <div className="mt-4 border-t border-foreground/10 pt-4" >
-              <div className="text-sm leading-relaxed text-muted-foreground" >
-                {caption}
-              </div>
+            <div className="mt-4 border-t border-foreground/10 pt-4">
+              <div className="text-sm leading-relaxed text-muted-foreground">{caption}</div>
             </div>
           )}
         </div>

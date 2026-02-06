@@ -1,12 +1,12 @@
 ---
-name: 'Sarah Chen'
-title: 'CTO'
-company: '167Pluto'
-linkedInProfile: 'https://linkedin.com/in/sarachen'
-avatar: 'https://i.pravatar.cc/150?img=45'
-date: '2025-06-15'
-relationship: 'CTO and Technical Leader at 167Pluto'
-context: 'Sarah led the engineering organization at 167Pluto where Stevan architected the betting platform'
+name: "Sarah Chen"
+title: "CTO"
+company: "167Pluto"
+linkedInProfile: "https://linkedin.com/in/sarachen"
+avatar: "https://i.pravatar.cc/150?img=45"
+date: "2025-06-15"
+relationship: "CTO and Technical Leader at 167Pluto"
+context: "Sarah led the engineering organization at 167Pluto where Stevan architected the betting platform"
 ---
 
 Stevan joined 167Pluto as a Senior Software Engineer, but his contributions went far beyond that title. He single-handedly architected our event-driven betting platform from the ground up, making critical decisions about microservices boundaries, data consistency patterns, and infrastructure that positioned us for scale.

@@ -1,28 +1,42 @@
 ---
-import Stack from '../atoms/stack.astro';
-import Tags from '../molecules/tags.astro';
+import Stack from "../atoms/stack.astro";
+import Tags from "../molecules/tags.astro";
 
 interface Props {
   heading: string;
   tags: string[];
-  variant?: 'default' | 'elevated' | 'subtle';
+  variant?: "default" | "elevated" | "subtle";
 }
 
-const { heading, tags, variant = 'default' } = Astro.props;
+const { heading, tags, variant = "default" } = Astro.props;
 ---
 
-{tags && tags.length > 0 && (
-  <div class:list={[`group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-background/30 to-transparent p-6 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md`,{"border-foreground/10 bg-foreground/5": variant === 'subtle',"shadow-lg": variant === 'elevated'}]}>
-    {/* Subtle gradient overlay */}
-    <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+{
+  tags && tags.length > 0 && (
+    <div
+      class:list={[
+        `group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-background/30 to-transparent p-2 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md`,
+        { "border-foreground/10 bg-foreground/5": variant === "subtle", "shadow-lg": variant === "elevated" },
+      ]}
+    >
+      {/* Subtle gradient overlay */}
+      <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-    {/* Content */}
-    <Stack class="relative" gap={3}>
-      <div class="flex items-center justify-between">
-        <h6 class:list={[`mb-2 font-medium`,{"text-foreground": variant === 'subtle', "text-muted": variant !== 'subtle'}]}>{heading}</h6>
-        <slot name="action" />
-      </div>
-      <Tags tags={tags} />
-    </Stack>
-  </div>
-)}
+      {/* Content */}
+      <Stack class="relative" gap={3}>
+        <div class="flex items-center justify-between">
+          <h6
+            class:list={[
+              `mb-2 font-medium`,
+              { "text-foreground": variant === "subtle", "text-muted": variant !== "subtle" },
+            ]}
+          >
+            {heading}
+          </h6>
+          <slot name="action" />
+        </div>
+        <Tags tags={tags} />
+      </Stack>
+    </div>
+  )
+}

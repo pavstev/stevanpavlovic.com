@@ -1,0 +1,46 @@
+---
+import type { CollectionItem, CollectionName } from "../../lib/collection-pages";
+
+import { PROFILE } from "../../lib/config";
+import Avatar from "../atoms/avatar.astro";
+import Button from "../atoms/button.astro";
+import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
+
+interface Props {
+  collection: "blog" | "experience" | "projects";
+  item: CollectionItem<CollectionName>;
+}
+
+const {
+  collection,
+  item: { data },
+} = Astro.props;
+---
+
+{
+  collection === "blog" ? (
+    <Stack align="center" direction="row" gap={3}>
+      <Avatar alt={PROFILE.name} size="sm" src={PROFILE.avatar} />
+      <Stack gap={0}>
+        <Text class="font-medium">{PROFILE.name}</Text>
+        <Text class="text-xs" variant="muted">
+          {PROFILE.role}
+        </Text>
+      </Stack>
+    </Stack>
+  ) : collection === "projects" ? (
+    <Stack align="center" direction="row" gap={3}>
+      {"demoUrl" in data && data.demoUrl && (
+        <Button as="a" href={data.demoUrl} variant="default">
+          Live Demo
+        </Button>
+      )}
+      {"repoUrl" in data && data.repoUrl && (
+        <Button as="a" href={data.repoUrl} variant="outline">
+          Source
+        </Button>
+      )}
+    </Stack>
+  ) : undefined
+}

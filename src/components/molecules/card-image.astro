@@ -1,12 +1,12 @@
 ---
-import type { ImageMetadata } from 'astro';
-import type { HTMLAttributes } from 'astro/types';
+import type { ImageMetadata } from "astro";
+import type { HTMLAttributes } from "astro/types";
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
-import { cn } from '../../lib/cn';
+import { cn } from "../../lib/cn";
 
-interface Props extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<"div"> {
   alt?: string;
   class?: string;
   image: ImageMetadata | string;
@@ -18,21 +18,23 @@ const { alt = "", class: className, image, loading = "lazy", wrapperClass, ...re
 ---
 
 <div class:list={cn("relative overflow-hidden rounded-lg border border-border/50 bg-muted", wrapperClass)} {...rest}>
-  {typeof image === 'string' ? (
-    <img
-      alt={alt}
-      class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
-      loading={loading}
-      src={image}
-    />
-  ) : (
-    <Image
-      alt={alt}
-      class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
-      height={400}
-      loading={loading}
-      src={image}
-      width={600}
-    />
-  )}
+  {
+    typeof image === "string" ? (
+      <img
+        alt={alt}
+        class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
+        loading={loading}
+        src={image}
+      />
+    ) : (
+      <Image
+        alt={alt}
+        class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
+        height={400}
+        loading={loading}
+        src={image}
+        width={600}
+      />
+    )
+  }
 </div>

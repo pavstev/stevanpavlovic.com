@@ -1,10 +1,10 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import Button from '../atoms/button.astro';
-import Heading from '../atoms/heading.astro';
-import Stack from '../atoms/stack.astro';
-import Text from '../atoms/text.astro';
+import Button from "../atoms/button.astro";
+import Heading from "../atoms/heading.astro";
+import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
 
 interface Props {
   action?: {
@@ -19,16 +19,12 @@ interface Props {
 const {
   action,
   description = "We couldn't find what you're looking for.",
-  icon = 'mdi:alert-circle-outline',
-  title = 'Nothing found',
+  icon = "mdi:alert-circle-outline",
+  title = "Nothing found",
 } = Astro.props;
 ---
 
-<div
-  aria-label={title}
-  class="flex flex-col items-center justify-center py-16 text-center"
-  role="region"
->
+<div aria-label={title} class="flex flex-col items-center justify-center py-16 text-center" role="region">
   <Stack align="center" gap={4}>
     <div class="flex items-center justify-center rounded-full bg-muted/30 p-4 ring-1 ring-border/50">
       <Icon class="text-muted-foreground" name={icon} size={32} />

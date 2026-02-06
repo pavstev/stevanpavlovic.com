@@ -1,9 +1,9 @@
 ---
-title: 'CI/CD Pipeline Optimization Strategies'
-description: 'Speed up your continuous integration and deployment pipelines for faster feedback'
-pubDate: '2024-03-01'
-tags: ['ci-cd', 'devops', 'automation']
-heroImage: '../../assets/laptop-desk.jpg'
+title: "CI/CD Pipeline Optimization Strategies"
+description: "Speed up your continuous integration and deployment pipelines for faster feedback"
+pubDate: "2024-03-01"
+tags: ["ci-cd", "devops", "automation"]
+heroImage: "../../assets/laptop-desk.jpg"
 ---
 
 Fast CI/CD pipelines mean faster feedback and more confident deployments. Here's how to optimize.
@@ -39,7 +39,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [lint, test]  # Wait for quality checks
+    needs: [lint, test] # Wait for quality checks
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
@@ -128,16 +128,16 @@ jobs:
   quick-checks:
     runs-on: ubuntu-latest
     steps:
-      - run: npm run type-check  # Fast
-      - run: npm run lint        # Fast
-      - run: npm run test:unit   # Fast
+      - run: npm run type-check # Fast
+      - run: npm run lint # Fast
+      - run: npm run test:unit # Fast
 
   slow-checks:
-    needs: quick-checks  # Only run if quick checks pass
+    needs: quick-checks # Only run if quick checks pass
     runs-on: ubuntu-latest
     steps:
-      - run: npm run test:e2e    # Slow
-      - run: npm run test:integration  # Slow
+      - run: npm run test:e2e # Slow
+      - run: npm run test:integration # Slow
 ```
 
 ## Reduce Test Time
@@ -183,9 +183,9 @@ interface PipelineMetrics {
 }
 
 async function trackMetrics(metrics: PipelineMetrics) {
-  await analytics.track('pipeline_completed', {
+  await analytics.track("pipeline_completed", {
     ...metrics,
-    timestamp: new Date()
+    timestamp: new Date(),
   });
 }
 ```

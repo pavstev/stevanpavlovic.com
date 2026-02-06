@@ -1,8 +1,8 @@
 ---
 // Handles: /blog, /projects, /experience (defaults to list view, page 1)
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths } from "astro";
 
-import CollectionPage from '../../components/templates/collection-page.astro';
+import CollectionPage from "../../components/templates/collection-page.astro";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
@@ -12,7 +12,7 @@ import {
   getItemCardProps,
   getPageItems,
   ITEMS_PER_PAGE,
-} from '../../lib/collection-pages';
+} from "../../lib/collection-pages";
 
 export const prerender = true;
 
@@ -21,7 +21,7 @@ export interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections: CollectionName[] = ['blog', 'projects', 'experience'];
+  const collections: CollectionName[] = ["blog", "projects", "experience"];
 
   return collections.map((collection) => ({
     params: { collection },
@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection } = Astro.params as unknown as Params;
-const view = 'list' as const;
+const view = "list" as const;
 const currentPage = 1;
 
 const sortedItems = await getCollectionData(collection);

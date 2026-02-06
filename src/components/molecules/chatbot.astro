@@ -1,18 +1,18 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import { cn } from '../../lib/cn';
-import Button from '../atoms/button.astro';
-import Stack from '../atoms/stack.astro';
-import Text from '../atoms/text.astro';
+import { cn } from "../../lib/cn";
+import Button from "../atoms/button.astro";
+import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
 
 // ============================================================================
 // Message Bubble Variants
 // ============================================================================
 
 const variants = {
-  ai: 'rounded-tl-none bg-muted/80 text-foreground/90',
-  user: 'ml-auto rounded-tr-none bg-primary text-primary-foreground',
+  ai: "rounded-tl-none bg-muted/80 text-foreground/90",
+  user: "ml-auto rounded-tr-none bg-primary text-primary-foreground",
 };
 
 // ============================================================================
@@ -31,16 +31,13 @@ const { class: className } = Astro.props;
 ---
 
 <!-- Fixed position widget - doesn't take document flow space -->
-<div
-  class:list={cn('fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden', className)}
-  id="chatbot-widget"
->
+<div class:list={cn("fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden", className)} id="chatbot-widget">
   <!-- Chat Window -->
   <div
     class:list={cn(
-      'pointer-events-none mb-4 w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-[380px]',
-      'data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100',
-      'glass overflow-hidden rounded-xl border border-border'
+      "pointer-events-none mb-4 w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-95",
+      "data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100",
+      "glass overflow-hidden rounded-xl border border-border",
     )}
     data-open="false"
     id="chat-window"
@@ -56,25 +53,16 @@ const { class: className } = Astro.props;
           <Text class="text-[10px]" id="chat-status" variant="muted">Ready to help</Text>
         </Stack>
       </Stack>
-      <Button
-        aria-label="Close chat"
-        class="size-8"
-        id="close-chat"
-        size="icon"
-        variant="ghost"
-      >
+      <Button aria-label="Close chat" class="size-8" id="close-chat" size="icon" variant="ghost">
         <Icon name="mdi:close" size={18} />
       </Button>
     </header>
 
     <!-- Messages Area -->
-    <div
-      class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4"
-      id="chat-messages"
-    >
+    <div class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4" id="chat-messages">
       <!-- Welcome Message -->
       <div class="flex flex-col gap-1">
-        <div class:list={cn('max-w-[85%] rounded-2xl px-4 py-2.5 text-sm', variants.ai)}>
+        <div class:list={cn("max-w-[85%] rounded-2xl px-4 py-2.5 text-sm", variants.ai)}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
         <Text class="px-1 text-[10px]" variant="muted">Powered by AI</Text>
@@ -92,13 +80,7 @@ const { class: className } = Astro.props;
             type="text"
           />
         </div>
-        <Button
-          aria-label="Send message"
-          class="size-9"
-          id="send-button"
-          size="icon"
-          type="submit"
-        >
+        <Button aria-label="Send message" class="size-9" id="send-button" size="icon" type="submit">
           <Icon name="mdi:send" size={16} />
         </Button>
       </form>
@@ -106,13 +88,7 @@ const { class: className } = Astro.props;
   </div>
 
   <!-- Toggle Button -->
-  <Button
-    aria-label="Toggle Chatbot"
-    class="size-11"
-    id="chat-toggle"
-    size="icon"
-    variant="fab"
-  >
+  <Button aria-label="Toggle Chatbot" class="size-11" id="chat-toggle" size="icon" variant="fab">
     <!-- Robot Icon (visible when closed) -->
     <Icon
       class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"
@@ -140,13 +116,13 @@ const { class: className } = Astro.props;
   let isInitializing = false;
   let isProcessing = false;
 
-  const toggleBtn = document.getElementById('chat-toggle');
-  const chatWindow = document.getElementById('chat-window');
-  const messagesContainer = document.getElementById('chat-messages');
-  const chatForm = document.getElementById('chat-form');
-  const chatInput = document.getElementById('chat-input') as HTMLInputElement | null;
-  const statusEl = document.getElementById('chat-status');
-  const closeBtn = document.getElementById('close-chat');
+  const toggleBtn = document.getElementById("chat-toggle");
+  const chatWindow = document.getElementById("chat-window");
+  const messagesContainer = document.getElementById("chat-messages");
+  const chatForm = document.getElementById("chat-form");
+  const chatInput = document.getElementById("chat-input") as HTMLInputElement | null;
+  const statusEl = document.getElementById("chat-status");
+  const closeBtn = document.getElementById("close-chat");
 
   function generateId() {
     return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
@@ -156,7 +132,7 @@ const { class: className } = Astro.props;
     if (messagesContainer) {
       messagesContainer.scrollTo({
         top: messagesContainer.scrollHeight,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   }
@@ -168,20 +144,20 @@ const { class: className } = Astro.props;
   }
 
   function createMessageElement(message: { id: string; text: string; isAi: boolean }) {
-    const container = document.createElement('div');
-    container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? '' : 'items-end'}`;
+    const container = document.createElement("div");
+    container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? "" : "items-end"}`;
 
-    const bubble = document.createElement('div');
+    const bubble = document.createElement("div");
     bubble.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
       message.isAi
-        ? 'rounded-tl-none bg-muted/80 text-foreground/90'
-        : 'rounded-tr-none bg-primary text-primary-foreground ml-auto'
+        ? "rounded-tl-none bg-muted/80 text-foreground/90"
+        : "rounded-tr-none bg-primary text-primary-foreground ml-auto"
     }`;
     bubble.textContent = message.text;
 
-    const timestamp = document.createElement('span');
-    timestamp.className = 'text-[10px] text-muted-foreground/60 px-1';
-    timestamp.textContent = message.isAi ? 'AI' : 'You';
+    const timestamp = document.createElement("span");
+    timestamp.className = "text-[10px] text-muted-foreground/60 px-1";
+    timestamp.textContent = message.isAi ? "AI" : "You";
 
     container.appendChild(bubble);
     container.appendChild(timestamp);
@@ -189,21 +165,21 @@ const { class: className } = Astro.props;
   }
 
   function createTypingIndicator() {
-    const container = document.createElement('div');
-    container.className = 'flex flex-col gap-1 animate-in fade-in';
-    container.id = 'typing-indicator';
+    const container = document.createElement("div");
+    container.className = "flex flex-col gap-1 animate-in fade-in";
+    container.id = "typing-indicator";
 
-    const bubble = document.createElement('div');
-    bubble.className = 'flex items-center gap-1 rounded-2xl rounded-tl-none bg-muted/80 px-4 py-3';
+    const bubble = document.createElement("div");
+    bubble.className = "flex items-center gap-1 rounded-2xl rounded-tl-none bg-muted/80 px-4 py-3";
     bubble.innerHTML = `
       <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 0ms;"></span>
       <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 150ms;"></span>
       <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 300ms;"></span>
     `;
 
-    const timestamp = document.createElement('span');
-    timestamp.className = 'text-[10px] text-muted-foreground/60 px-1';
-    timestamp.textContent = 'AI';
+    const timestamp = document.createElement("span");
+    timestamp.className = "text-[10px] text-muted-foreground/60 px-1";
+    timestamp.textContent = "AI";
 
     container.appendChild(bubble);
     container.appendChild(timestamp);
@@ -220,23 +196,23 @@ const { class: className } = Astro.props;
   }
 
   function removeTypingIndicator() {
-    const typing = document.getElementById('typing-indicator');
+    const typing = document.getElementById("typing-indicator");
     if (typing) typing.remove();
   }
 
   async function initModel() {
     if (qaPipeline || isInitializing) return;
     isInitializing = true;
-    updateStatus('Loading AI...');
+    updateStatus("Loading AI...");
 
     try {
-      const { pipeline } = await import('@xenova/transformers');
-      qaPipeline = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
-      updateStatus('Ready');
-      setTimeout(() => updateStatus('Ready'), 2000);
+      const { pipeline } = await import("@xenova/transformers");
+      qaPipeline = await pipeline("question-answering", "Xenova/distilbert-base-uncased-distilled-squad");
+      updateStatus("Ready");
+      setTimeout(() => updateStatus("Ready"), 2000);
     } catch (err) {
-      console.error('Failed to load model:', err);
-      updateStatus('Error');
+      console.error("Failed to load model:", err);
+      updateStatus("Error");
     } finally {
       isInitializing = false;
     }
@@ -244,7 +220,7 @@ const { class: className } = Astro.props;
 
   function toggleChat() {
     if (!chatWindow || !toggleBtn) return;
-    const isOpen = chatWindow.dataset.open === 'true';
+    const isOpen = chatWindow.dataset.open === "true";
     const newState = !isOpen;
     chatWindow.dataset.open = String(newState);
     toggleBtn.dataset.open = String(newState);
@@ -258,8 +234,8 @@ const { class: className } = Astro.props;
   }
 
   function closeChat() {
-    if (chatWindow) chatWindow.dataset.open = 'false';
-    if (toggleBtn) toggleBtn.dataset.open = 'false';
+    if (chatWindow) chatWindow.dataset.open = "false";
+    if (toggleBtn) toggleBtn.dataset.open = "false";
   }
 
   async function handleSubmit(e: Event) {
@@ -270,7 +246,7 @@ const { class: className } = Astro.props;
     const question = chatInput.value.trim();
     if (!question) return;
 
-    chatInput.value = '';
+    chatInput.value = "";
     chatInput.disabled = true;
     isProcessing = true;
     addMessage(question, false);
@@ -291,7 +267,7 @@ const { class: className } = Astro.props;
       removeTypingIndicator();
       addMessage(result.answer || "I'm not sure about that.", true);
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Error:", err);
       removeTypingIndicator();
       addMessage("Sorry, error occurred.", true);
     } finally {
@@ -303,23 +279,29 @@ const { class: className } = Astro.props;
     }
   }
 
-  toggleBtn?.addEventListener('click', toggleChat);
-  closeBtn?.addEventListener('click', closeChat);
-  chatForm?.addEventListener('submit', handleSubmit);
+  toggleBtn?.addEventListener("click", toggleChat);
+  closeBtn?.addEventListener("click", closeChat);
+  chatForm?.addEventListener("submit", handleSubmit);
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && chatWindow?.dataset.open === 'true') {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && chatWindow?.dataset.open === "true") {
       closeChat();
     }
   });
 </script>
 
 <style is:global>
-
-
   @keyframes slide-in-from-bottom-2 {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  .animate-in { animation: slide-in-from-bottom-2 0.2s ease-out forwards; }
+  .animate-in {
+    animation: slide-in-from-bottom-2 0.2s ease-out forwards;
+  }
 </style>

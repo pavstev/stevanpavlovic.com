@@ -1,21 +1,21 @@
 ---
-import type { ViewUrls } from '../../lib/list';
+import type { ViewUrls } from "../../lib/list";
 
-import DisplayMenu from './display-menu.astro';
-import Pagination from './pagination.astro';
+import DisplayMenu from "./display-menu.astro";
+import Pagination from "./pagination.astro";
 
 interface Props {
   baseUrl: string;
   currentPage: number;
-  display?: 'grid' | 'list';
+  display?: "grid" | "list";
   /** Optional: Explicit URLs for view toggles */
-  displayUrls?: ViewUrls
+  displayUrls?: ViewUrls;
   /** Optional: Function to generate page URL. Falls back to default logic if not provided. */
   // eslint-disable-next-line no-unused-vars
   getPageUrl?: (_page: number) => string;
   /** Optional: Direct URL for next page (overrides auto-generation) */
   nextUrl?: string;
-  paginationType?: 'path' | 'query';
+  paginationType?: "path" | "query";
   /** Optional: Direct URL for previous page (overrides auto-generation) */
   prevUrl?: string;
   showViewToggle?: boolean;
@@ -25,11 +25,11 @@ interface Props {
 const {
   baseUrl,
   currentPage,
-  display = 'list',
+  display = "list",
   displayUrls,
   getPageUrl: customGetPageUrl,
   nextUrl,
-  paginationType = 'path',
+  paginationType = "path",
   prevUrl,
   showViewToggle = true,
   totalPages,
@@ -37,9 +37,7 @@ const {
 ---
 
 <div class="flex flex-wrap items-center gap-3">
-  {showViewToggle && (
-    <DisplayMenu display={display} displayUrls={displayUrls} showLabels />
-  )}
+  {showViewToggle && <DisplayMenu display={display} displayUrls={displayUrls} showLabels />}
   <Pagination
     baseUrl={baseUrl}
     currentPage={currentPage}

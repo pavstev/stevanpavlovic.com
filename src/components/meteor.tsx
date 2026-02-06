@@ -25,20 +25,16 @@ export const Meteors: FC<MeteorsProps> = ({
   minDuration = 2,
   number = 20,
 }) => {
-  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>(
-    [],
-  );
+  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>([]);
 
   useEffect(() => {
     const styles = [...new Array(number)].map(() => ({
       "--angle": -angle + "deg",
-      "animationDelay": Math.random() * (maxDelay - minDelay) + minDelay + "s",
-      "animationDuration":
-        Math.floor(Math.random() * (maxDuration - minDuration) + minDuration)
-        + "s",
+      animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
+      animationDuration: Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) + "s",
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      "left": `calc(0% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
-      "top": "-5%",
+      left: `calc(0% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
+      top: "-5%",
     }));
     setMeteorStyles(styles);
   }, [number, minDelay, maxDelay, minDuration, maxDuration, angle]);

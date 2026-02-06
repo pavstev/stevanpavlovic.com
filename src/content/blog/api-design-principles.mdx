@@ -1,9 +1,9 @@
 ---
-title: 'API Design Principles: RESTful Best Practices'
-description: 'Build intuitive, scalable, and maintainable REST APIs following industry standards'
-pubDate: '2024-02-22'
-tags: ['api', 'rest', 'design', 'backend']
-heroImage: '../../assets/code-editor.jpg'
+title: "API Design Principles: RESTful Best Practices"
+description: "Build intuitive, scalable, and maintainable REST APIs following industry standards"
+pubDate: "2024-02-22"
+tags: ["api", "rest", "design", "backend"]
+heroImage: "../../assets/code-editor.jpg"
 ---
 
 A well-designed API is a joy to use. Here's how to build APIs that developers will love.
@@ -33,38 +33,31 @@ GET    /user/get/123
 
 ```typescript
 // GET - Retrieve resource(s)
-app.get('/users/:id', async (req, res) => {
+app.get("/users/:id", async (req, res) => {
   const user = await User.findById(req.params.id);
   res.json(user);
 });
 
 // POST - Create new resource
-app.post('/users', async (req, res) => {
+app.post("/users", async (req, res) => {
   const user = await User.create(req.body);
   res.status(201).json(user);
 });
 
 // PUT - Replace entire resource
-app.put('/users/:id', async (req, res) => {
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { overwrite: true }
-  );
+app.put("/users/:id", async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, { overwrite: true });
   res.json(user);
 });
 
 // PATCH - Partial update
-app.patch('/users/:id', async (req, res) => {
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    req.body
-  );
+app.patch("/users/:id", async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body);
   res.json(user);
 });
 
 // DELETE - Remove resource
-app.delete('/users/:id', async (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.status(204).send();
 });
@@ -75,30 +68,31 @@ app.delete('/users/:id', async (req, res) => {
 ```typescript
 // Use appropriate status codes
 const StatusCodes = {
-  OK: 200,                    // Successful GET, PUT, PATCH
-  CREATED: 201,               // Successful POST
-  NO_CONTENT: 204,            // Successful DELETE
-  BAD_REQUEST: 400,           // Invalid request
-  UNAUTHORIZED: 401,          // Authentication required
-  FORBIDDEN: 403,             // Authenticated but not authorized
-  NOT_FOUND: 404,             // Resource not found
-  CONFLICT: 409,              // Conflict (e.g., duplicate email)
-  UNPROCESSABLE_ENTITY: 422,  // Validation errors
-  INTERNAL_SERVER_ERROR: 500  // Server error
+  OK: 200, // Successful GET, PUT, PATCH
+  CREATED: 201, // Successful POST
+  NO_CONTENT: 204, // Successful DELETE
+  BAD_REQUEST: 400, // Invalid request
+  UNAUTHORIZED: 401, // Authentication required
+  FORBIDDEN: 403, // Authenticated but not authorized
+  NOT_FOUND: 404, // Resource not found
+  CONFLICT: 409, // Conflict (e.g., duplicate email)
+  UNPROCESSABLE_ENTITY: 422, // Validation errors
+  INTERNAL_SERVER_ERROR: 500, // Server error
 };
 
-app.post('/users', async (req, res) => {
+app.post("/users", async (req, res) => {
   try {
     const user = await User.create(req.body);
     res.status(StatusCodes.CREATED).json(user);
   } catch (error) {
-    if (error.code === 11000) { // Duplicate key
+    if (error.code === 11000) {
+      // Duplicate key
       res.status(StatusCodes.CONFLICT).json({
-        error: 'Email already exists'
+        error: "Email already exists",
       });
     } else {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: 'Internal server error'
+        error: "Internal server error",
       });
     }
   }
@@ -113,15 +107,12 @@ interface PaginationParams {
   limit?: number;
 }
 
-app.get('/users', async (req: Request<{}, {}, {}, PaginationParams>, res) => {
+app.get("/users", async (req: Request<{}, {}, {}, PaginationParams>, res) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
   const skip = (page - 1) * limit;
 
-  const [users, total] = await Promise.all([
-    User.find().skip(skip).limit(limit),
-    User.countDocuments()
-  ]);
+  const [users, total] = await Promise.all([User.find().skip(skip).limit(limit), User.countDocuments()]);
 
   res.json({
     data: users,
@@ -129,8 +120,8 @@ app.get('/users', async (req: Request<{}, {}, {}, PaginationParams>, res) => {
       page,
       limit,
       total,
-      pages: Math.ceil(total / limit)
-    }
+      pages: Math.ceil(total / limit),
+    },
   });
 });
 ```
@@ -138,18 +129,18 @@ app.get('/users', async (req: Request<{}, {}, {}, PaginationParams>, res) => {
 ## Filtering and Sorting
 
 ```typescript
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
   const { role, status, sortBy, order } = req.query;
 
   let query = User.find();
 
   // Filtering
-  if (role) query = query.where('role').equals(role);
-  if (status) query = query.where('status').equals(status);
+  if (role) query = query.where("role").equals(role);
+  if (status) query = query.where("status").equals(status);
 
   // Sorting
   if (sortBy) {
-    const sortOrder = order === 'desc' ? -1 : 1;
+    const sortOrder = order === "desc" ? -1 : 1;
     query = query.sort({ [sortBy as string]: sortOrder });
   }
 
@@ -164,13 +155,13 @@ app.get('/users', async (req, res) => {
 
 ```typescript
 // URL versioning (recommended for major changes)
-app.use('/api/v1', v1Router);
-app.use('/api/v2', v2Router);
+app.use("/api/v1", v1Router);
+app.use("/api/v2", v2Router);
 
 // Header versioning
 app.use((req, res, next) => {
-  const version = req.headers['api-version'];
-  if (version === '2.0') {
+  const version = req.headers["api-version"];
+  if (version === "2.0") {
     // Handle v2 differently
   }
   next();
@@ -192,7 +183,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const response: ErrorResponse = {
     error: err.message,
     code: err.name,
-    details: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    details: process.env.NODE_ENV === "development" ? err.stack : undefined,
   };
 
   res.status(500).json(response);

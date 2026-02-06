@@ -1,18 +1,21 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
 interface Props {
-  variant?: 'desktop' | 'mobile';
+  variant?: "desktop" | "mobile";
 }
 
-const { variant = 'desktop' } = Astro.props;
-const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
+const { variant = "desktop" } = Astro.props;
+const id = variant === "mobile" ? "mobile-search" : "desktop-search";
 ---
 
 <div class="search-dropdown-container relative" data-search-variant={variant} id={`${id}-container`}>
   {/* Search Input */}
   <div class="group/search relative flex items-center transition-all duration-300">
-    <Icon class="absolute left-3 size-5 text-muted-foreground transition-colors group-focus-within/search:text-primary md:size-4" name="mdi:magnify" />
+    <Icon
+      class="absolute left-3 size-5 text-muted-foreground transition-colors group-focus-within/search:text-primary md:size-4"
+      name="mdi:magnify"
+    />
     <input
       aria-controls={`${id}-dropdown`}
       autocomplete="off"
@@ -31,7 +34,9 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
         <Icon class="size-3" name="mdi:close" />
       </button>
       <div class="mx-2 h-4 w-px bg-foreground/10"></div>
-      <kbd class="hidden h-5 items-center gap-1 p-1 pr-2 font-mono text-[12px] font-medium opacity-70 sm:flex md:hidden lg:flex">
+      <kbd
+        class="hidden h-5 items-center gap-1 p-1 pr-2 font-mono text-[12px] font-medium opacity-70 sm:flex md:hidden lg:flex"
+      >
         <span class="text-sm">⌘</span>K
       </kbd>
     </div>
@@ -53,7 +58,9 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
       </div>
 
       {/* Keyboard Shortcuts Footer */}
-      <div class="flex flex-wrap items-center gap-2 border-t border-foreground/5 bg-foreground/5 px-4 py-2 text-xs font-medium text-muted-foreground md:text-[10px]">
+      <div
+        class="flex flex-wrap items-center gap-2 border-t border-foreground/5 bg-foreground/5 px-4 py-2 text-xs font-medium text-muted-foreground md:text-[10px]"
+      >
         <span class="flex items-center gap-1">
           <kbd class="rounded-sm bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd>
           close
@@ -72,9 +79,9 @@ const id = variant === 'mobile' ? 'mobile-search' : 'desktop-search';
 </div>
 
 <script>
-  import { initSearchDropdown } from '../../lib/search';
+  import { initSearchDropdown } from "../../lib/search";
 
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     initSearchDropdown();
   });
 </script>

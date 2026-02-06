@@ -1,10 +1,10 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import Heading from '../atoms/heading.astro';
-import Stack from '../atoms/stack.astro';
-import Text from '../atoms/text.astro';
-import PostTags from '../molecules/post-tags.astro';
+import Heading from "../atoms/heading.astro";
+import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
+import PostTags from "../molecules/post-tags.astro";
 
 /**
  * Section Header Component
@@ -32,53 +32,52 @@ interface Props {
   title: string;
 }
 
-const {
-  backText = 'Back',
-  backUrl,
-  description,
-  icon,
-  level = 2,
-  subtitle,
-  tags,
-  title,
-} = Astro.props;
+const { backText = "Back", backUrl, description, icon, level = 2, subtitle, tags, title } = Astro.props;
 ---
 
 <div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
   <Stack align="center" class="min-w-0" direction="row" gap={4}>
-    {backUrl && (
-      <a class="shrink-0 text-muted transition-colors hover:text-foreground" href={backUrl}>
-        <span class="sr-only">{backText}</span>
-        <span aria-hidden class="material-icons text-sm">arrow_back</span>
-      </a>
-    )}
+    {
+      backUrl && (
+        <a class="shrink-0 text-muted transition-colors hover:text-foreground" href={backUrl}>
+          <span class="sr-only">{backText}</span>
+          <span aria-hidden class="material-icons text-sm">
+            arrow_back
+          </span>
+        </a>
+      )
+    }
 
-    {icon && (
-      <div class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
-        <Icon name={icon} size={24} />
-      </div>
-    )}
+    {
+      icon && (
+        <div class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
+          <Icon name={icon} size={24} />
+        </div>
+      )
+    }
 
     <div class="min-w-0">
       <Heading level={level} size="xl" variant="muted">
         {title}
       </Heading>
 
-      {subtitle && (
-        <Text size="sm" variant="muted">
-          {subtitle}
-        </Text>
-      )}
+      {
+        subtitle && (
+          <Text size="sm" variant="muted">
+            {subtitle}
+          </Text>
+        )
+      }
 
-      {description && (
-        <Text class="mt-2" size="sm" variant="secondary">
-          {description}
-        </Text>
-      )}
+      {
+        description && (
+          <Text class="mt-2" size="sm" variant="secondary">
+            {description}
+          </Text>
+        )
+      }
 
-      {tags && tags.length > 0 && (
-        <PostTags heading="Tags" tags={tags} />
-      )}
+      {tags && tags.length > 0 && <PostTags heading="Tags" tags={tags} />}
     </div>
   </Stack>
 

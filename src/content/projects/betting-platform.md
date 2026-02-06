@@ -1,30 +1,20 @@
 ---
-title: 'High-Throughput Betting Platform'
-subtitle: 'Event-Driven Microservices Architecture'
-meta: '2024'
-desc: 'A state-of-the-art sports betting and gaming ecosystem architected for extreme concurrency, processing millions of real-time transactions with sub-millisecond latency using Node.js, NestJS, and Kafka event-driven patterns.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://167pluto.com'
-tags:
-  [
-    'Node.js',
-    'NestJS',
-    'Kafka',
-    'Redis',
-    'PostgreSQL',
-    'Microservices',
-    'Event Sourcing',
-    'High Availability',
-  ]
+title: "High-Throughput Betting Platform"
+subtitle: "Event-Driven Microservices Architecture"
+meta: "2024"
+desc: "A state-of-the-art sports betting and gaming ecosystem architected for extreme concurrency, processing millions of real-time transactions with sub-millisecond latency using Node.js, NestJS, and Kafka event-driven patterns."
+image: "../../assets/placeholder.png"
+demoUrl: "https://167pluto.com"
+tags: ["Node.js", "NestJS", "Kafka", "Redis", "PostgreSQL", "Microservices", "Event Sourcing", "High Availability"]
 featured: true
-duration: '16 months'
-teamSize: 'Backend core team of 8'
-role: 'Senior Software Engineer & Architect'
-impact: 'Successfully handled 500k+ concurrent users during peak global sporting events with zero downtime'
+duration: "16 months"
+teamSize: "Backend core team of 8"
+role: "Senior Software Engineer & Architect"
+impact: "Successfully handled 500k+ concurrent users during peak global sporting events with zero downtime"
 challenges:
-  - 'Maintaining strict eventual consistency across 20+ distributed microservices'
-  - 'Processing high-frequency odds updates with sub-millisecond latency'
-  - 'Designing a bulletproof financial ledger for high-volume transactions'
+  - "Maintaining strict eventual consistency across 20+ distributed microservices"
+  - "Processing high-frequency odds updates with sub-millisecond latency"
+  - "Designing a bulletproof financial ledger for high-volume transactions"
 ---
 
 ## Problem Statement
@@ -32,6 +22,7 @@ challenges:
 The sports betting industry demands extreme reliability and performance, especially during high-profile events where traffic can spike by 100x in seconds. Legacy systems often struggle with race conditions, data inconsistency, and horizontal scalability during peak loads.
 
 The challenge was to build a next-generation platform that could:
+
 - Handle 500k+ concurrent users and 100k+ transactions per second.
 - Provide real-time odds updates with zero perceived lag.
 - Ensure 100% financial accuracy across a highly distributed environment.
@@ -42,6 +33,7 @@ The challenge was to build a next-generation platform that could:
 ### System Design
 
 The platform was architected as a decentralized ecosystem of specialized microservices:
+
 1. **Odds Engine**: High-speed service processing provider feeds and calculating live markets.
 2. **Bet Placement Service**: Optimized for rapid transaction logging and validation.
 3. **Wallet & Ledger Service**: The source of truth for all financial movements, implementing event-sourcing for auditability.
@@ -60,6 +52,7 @@ The platform was architected as a decentralized ecosystem of specialized microse
 ### Real-Time Odds Distribution
 
 Implemented a reactive pipeline for odds distribution. When an external provider sends a price change:
+
 1. The **Ingestion Service** validates and normalizes the data.
 2. It publishes an event to a dedicated Kafka topic.
 3. Multiple **Market Services** recalculate affected betting lines concurrently.
@@ -68,6 +61,7 @@ Implemented a reactive pipeline for odds distribution. When an external provider
 ### Resilient Financial Ledger
 
 Built an event-sourced ledger system to ensure data integrity:
+
 - Every balance change is recorded as an immutable event.
 - Snapshots are taken every 1000 events to optimize reconstruction time.
 - Idempotent processing ensures that network retries or service restarts never result in double-spending or duplicate withdrawals.

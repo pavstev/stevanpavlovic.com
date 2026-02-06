@@ -1,25 +1,33 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import type { CollectionName } from '../../lib/collection-pages';
+import type { CollectionName } from "../../lib/collection-pages";
 
-import Button from './button.astro';
+import Button from "./button.astro";
 
 interface Props {
-  collection?: CollectionName
+  collection?: CollectionName;
 }
 
 const { collection } = Astro.props;
 
-const backLabel = collection === 'blog' ? 'Back to Blog' :
-  collection === 'projects' ? 'Back to Projects' :
-    collection === 'experience' ?
-      'Back to Experience' : "Back";
+const backLabel =
+  collection === "blog"
+    ? "Back to Blog"
+    : collection === "projects"
+      ? "Back to Projects"
+      : collection === "experience"
+        ? "Back to Experience"
+        : "Back";
 
-const backLink = collection === 'blog' ? '/blog' :
-  collection === 'projects' ? '/projects' :
-    collection === 'experience' ? '/experience' : '/';
-
+const backLink =
+  collection === "blog"
+    ? "/blog"
+    : collection === "projects"
+      ? "/projects"
+      : collection === "experience"
+        ? "/experience"
+        : "/";
 ---
 
 <Button
@@ -27,11 +35,8 @@ const backLink = collection === 'blog' ? '/blog' :
   class="group mb-4 font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
   href={backLink}
   size="sm"
-  variant="outline"
+  variant="back"
 >
-  <Icon
-    class="mr-1 size-4 transition-transform group-hover:-translate-x-1"
-    name="mdi:arrow-left"
-  />
+  <Icon class="mr-1 size-4 transition-transform group-hover:-translate-x-1" name="mdi:arrow-left" />
   <slot>{backLabel}</slot>
 </Button>

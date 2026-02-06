@@ -10,10 +10,10 @@ export default defineUnlighthouseConfig({
 
   ci: {
     budget: {
-      "accessibility": 90,
+      accessibility: 90,
       "best-practices": 90,
-      "performance": 90,
-      "seo": 90,
+      performance: 90,
+      seo: 90,
     },
     buildStatic: true,
   },

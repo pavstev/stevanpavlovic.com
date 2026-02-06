@@ -1,29 +1,20 @@
 ---
-title: 'Fleet Visualizer'
-subtitle: 'Real-time Vehicle Telemetry Platform'
-meta: '2023'
-desc: 'A high-performance full-stack platform for real-time visualization of vehicle telemetry data, processing millions of GPS coordinates and sensor readings daily with sub-second latency through optimized microservices architecture and WebSocket streaming.'
-image: '../../assets/placeholder.png'
-demoUrl: 'https://telemetry.com'
-tags:
-  [
-    'React',
-    'TypeScript',
-    'Real-time',
-    'WebSockets',
-    'Maps',
-    'Microservices',
-    'Time-Series Data',
-  ]
+title: "Fleet Visualizer"
+subtitle: "Real-time Vehicle Telemetry Platform"
+meta: "2023"
+desc: "A high-performance full-stack platform for real-time visualization of vehicle telemetry data, processing millions of GPS coordinates and sensor readings daily with sub-second latency through optimized microservices architecture and WebSocket streaming."
+image: "../../assets/placeholder.png"
+demoUrl: "https://telemetry.com"
+tags: ["React", "TypeScript", "Real-time", "WebSockets", "Maps", "Microservices", "Time-Series Data"]
 featured: true
-duration: '10 months'
-teamSize: '5-member full-stack team'
-role: 'Full-Stack Architect & Lead Developer'
-impact: 'Monitored 10K+ vehicles in real-time, reducing fleet incident response time by 65%'
+duration: "10 months"
+teamSize: "5-member full-stack team"
+role: "Full-Stack Architect & Lead Developer"
+impact: "Monitored 10K+ vehicles in real-time, reducing fleet incident response time by 65%"
 challenges:
-  - 'Processing and visualizing millions of telemetry data points with sub-second latency'
-  - 'Optimizing map rendering performance for thousands of concurrent vehicle markers'
-  - 'Designing time-series data storage and querying for historical playback'
+  - "Processing and visualizing millions of telemetry data points with sub-second latency"
+  - "Optimizing map rendering performance for thousands of concurrent vehicle markers"
+  - "Designing time-series data storage and querying for historical playback"
 ---
 
 ## Problem Statement

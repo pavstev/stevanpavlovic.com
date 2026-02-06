@@ -18,23 +18,27 @@ const { class: className } = Astro.props;
   variant="unstyled"
 >
   {/* Rounded Tinted Avatar */}
-  <div class="relative flex size-8 items-center justify-center overflow-hidden rounded-full ring-2 ring-foreground/10 transition-all duration-300 group-hover:ring-primary/40">
-    <Image
-      alt={SITE_CONFIG.author}
-      class="size-full object-cover"
-      src={PROFILE.avatar}
-    />
+  <div
+    class="relative flex size-8 items-center justify-center overflow-hidden rounded-full ring-2 ring-foreground/10 transition-all duration-300 group-hover:ring-primary/40"
+  >
+    <Image alt={SITE_CONFIG.author} class="size-full object-cover" src={PROFILE.avatar} />
 
     {/* Primary Tint Overlay */}
-    <div class="absolute inset-0 bg-primary/60 mix-blend-color transition-all duration-500 group-hover:opacity-40"></div>
+    <div class="absolute inset-0 bg-primary/60 mix-blend-color transition-all duration-500 group-hover:opacity-40">
+    </div>
 
     {/* Shine effect */}
-    <div class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full"></div>
+    <div
+      class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
+    >
+    </div>
   </div>
 
   {/* Author Text Container */}
   <div class="flex items-center">
-    <span class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-base font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-lg">
+    <span
+      class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-base font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-lg"
+    >
       {SITE_CONFIG.author}
     </span>
   </div>

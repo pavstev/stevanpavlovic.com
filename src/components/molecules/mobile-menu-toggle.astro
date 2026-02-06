@@ -1,38 +1,34 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
-import { cn } from '../../lib/cn';
-import Button from '../atoms/button.astro';
+import { cn } from "../../lib/cn";
+import Button from "../atoms/button.astro";
 
-interface Props extends HTMLAttributes<'button'> {
-  size?: 'lg' | 'md' | 'sm';
+interface Props extends HTMLAttributes<"button"> {
+  size?: "lg" | "md" | "sm";
 }
 
-const {
-  class: className,
-  size = 'md',
-  ...props
-} = Astro.props;
+const { class: className, size = "md", ...props } = Astro.props;
 
 const sizeClasses = {
-  lg: 'size-10',
-  md: 'size-9',
-  sm: 'size-8',
+  lg: "size-10",
+  md: "size-9",
+  sm: "size-8",
 };
 ---
 
 <Button
   aria-label="Toggle menu"
   class:list={cn(
-    'group/toggle relative text-muted-foreground transition-colors',
-    'hover:bg-foreground/5 hover:text-foreground',
+    "group/toggle relative text-muted-foreground transition-colors",
+    "hover:bg-foreground/5 hover:text-foreground",
     // Hidden on desktop
-    'md:hidden',
+    "md:hidden",
     // Size
     sizeClasses[size],
-    className
+    className,
   )}
   id="mobile-menu-toggle"
   size="icon"
@@ -41,18 +37,18 @@ const sizeClasses = {
 >
   <Icon
     class:list={cn(
-      'transition-all duration-200 ease-out',
-      'group-[.open]/toggle:rotate-90 group-[.open]/toggle:opacity-0',
-      'group-hover/toggle:scale-105'
+      "transition-all duration-200 ease-out",
+      "group-[.open]/toggle:rotate-90 group-[.open]/toggle:opacity-0",
+      "group-hover/toggle:scale-105",
     )}
     name="mdi:menu"
     size={20}
   />
   <Icon
     class:list={cn(
-      'absolute transition-all duration-200 ease-out',
-      'rotate-90 opacity-0',
-      'group-[.open]/toggle:rotate-0 group-[.open]/toggle:opacity-100'
+      "absolute transition-all duration-200 ease-out",
+      "rotate-90 opacity-0",
+      "group-[.open]/toggle:rotate-0 group-[.open]/toggle:opacity-100",
     )}
     name="mdi:close"
     size={20}

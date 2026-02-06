@@ -13,8 +13,14 @@ interface Props {
 const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Astro.props;
 ---
 
-<div class="invisible fixed inset-0 z-[200] flex items-start justify-center bg-black/40 p-4 pt-[15vh] opacity-0 backdrop-blur-md transition-all duration-300" id={id}>
-  <div class="w-full max-w-2xl origin-top translate-y-4 scale-95 transition-all duration-300" id="search-modal-container">
+<div
+  class="invisible fixed inset-0 z-[200] flex items-start justify-center bg-black/40 p-4 pt-[15vh] opacity-0 backdrop-blur-md transition-all duration-300"
+  id={id}
+>
+  <div
+    class="w-full max-w-2xl origin-top translate-y-4 scale-95 transition-all duration-300"
+    id="search-modal-container"
+  >
     <DialogShell class="w-full border-white/10 shadow-2xl shadow-black/50" variant="plain">
       <Stack class="p-4" gap={4}>
         <div class="group relative">
@@ -37,7 +43,7 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
               viewBox="0 0 24 24"
               width="20"
               xmlns="http://www.w3.org/2000/svg"
-            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
+              ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
             >
           </div>
 

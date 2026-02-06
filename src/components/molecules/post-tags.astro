@@ -1,34 +1,22 @@
 ---
 import type { HTMLAttributes } from "react";
+
 import type { Tag } from "../../lib/collections";
 
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import Tags from "./tags.astro";
 
-interface Props  extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<"div"> {
   tags: Tag[];
   title: string | undefined;
 }
 
-const { tags: baseTags, title: heading } = Astro.props;
-
-const tags = baseTags.filter((i): i is Tag >> !!i.label);
----
-
-<ToolbarItemComponent>
-  <span slot="label">{heading}</span>
-  <Tags tags={tags} />
-</ToolbarItemComponent>
-
-const { tags: baseTags, title: heading } = Astro.props;
-
-const tags = baseTags.filter((i): i is Tag => !!i.label);
+const { tags, title: heading } = Astro.props;
 ---
 
 {
   tags && tags.length > 0 && (
-    <ToolbarItemComponent>
-      <span slot="label">{heading}</span>
+    <ToolbarItemComponent label={heading}>
       <Tags tags={tags} />
     </ToolbarItemComponent>
   )

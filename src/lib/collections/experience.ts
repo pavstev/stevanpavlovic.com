@@ -27,7 +27,7 @@ const getOrganizationToolbarItem = (item: CollectionItem<"experience">): TI | un
 const getTimelineToolbarItem = (item: CollectionItem<"experience">): TI => {
   const start = dayjs(item.data.startDate);
   const end = item.data.endDate ? dayjs(item.data.endDate) : dayjs();
-  const dateRange = `${start.format("MMM YYYY")} — ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YYYY") : "Present"}`;
+  const dateRange = `${start.format("MMM YY")} - ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YY") : "Present"}`;
 
   const diffMonths = end.diff(start, "month") + 1;
   const years = Math.floor(diffMonths / 12);

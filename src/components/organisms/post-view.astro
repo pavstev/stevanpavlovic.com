@@ -2,12 +2,12 @@
 import type { CollectionEntry } from "astro:content";
 
 import { type CollectionItem, type CollectionName, getViewPageProps } from "../../lib/collection-pages";
+import BackButton from "../atoms/back-button.astro";
 import Heading from "../atoms/heading.astro";
 import Stack from "../atoms/stack.astro";
 import LayoutContent from "../layout/layout-content.astro";
 import PostHeroImage from "../molecules/post-hero-image.astro";
 import PostToolbar from "../molecules/post-toolbar.astro";
-import BackButton from "../atoms/back-button.astro";
 
 interface Props {
   backLink?: string;
@@ -28,14 +28,14 @@ const item: CollectionItem<CollectionName> = {
 
 const viewPageProps = getViewPageProps(item);
 
-const { backLink: defaultBackLink, description, image, title, toolbarItems, tags } = viewPageProps;
+const { backLink: defaultBackLink, description, image, tags, title, toolbarItems } = viewPageProps;
 
 const backLink = Astro.props.backLink ? { ...defaultBackLink, href: Astro.props.backLink } : defaultBackLink;
 ---
 
 <LayoutContent description={description} title={title}>
   <!-- Condensed Header Content (Left Aligned) -->
-  <div class="mb-12" slot="header">
+  <div class="mb-12">
     <Stack gap={10}>
       <div class="mb-6">
         <BackButton link={backLink} />
@@ -45,10 +45,7 @@ const backLink = Astro.props.backLink ? { ...defaultBackLink, href: Astro.props.
         {title}
       </Heading>
 
-      <PostToolbar
-      description={description}
-      tags={tags}
-      toolbarItems={toolbarItems}  />
+      <PostToolbar description={description} tags={tags} toolbarItems={toolbarItems} />
     </Stack>
   </div>
 

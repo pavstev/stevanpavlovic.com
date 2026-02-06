@@ -1,10 +1,5 @@
 ---
-
-import {
-type Tag,
-type ToolbarItem,
-type ViewPagePropsTags
-} from "../../lib/collection-pages";
+import { type Tag, type ToolbarItem, type ViewPagePropsTags } from "../../lib/collection-pages";
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
 import PostDescription from "./post-description.astro";
@@ -12,7 +7,7 @@ import PostTags from "./post-tags.astro";
 
 interface Props {
   description?: string;
-  tags: ViewPagePropsTags | undefined;
+  tags: undefined | ViewPagePropsTags;
   toolbarItems: (ToolbarItem | undefined)[];
 }
 
@@ -31,50 +26,36 @@ const items = toolbarItems.filter((i): i is ToolbarItem => !!i);
 <div class="my-6 flex flex-col gap-4 border-t border-b border-foreground/10 py-4">
   {/* Top row: Items left, Description right */}
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
-      {
-        items.map((item) => (
-          <ToolbarItemComponent>
-            <span slot="label">{item.label}</span>
-            <div class="flex items-center gap-2">
-              {item.href ? (
-                <a
-                  class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
-                  href={item.href}
-                  target="_blank"
-                >
-                  {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                  <span>{item.value}</span>
-                </a>
-              ) : (
-                <div class="flex items-center gap-2.5">
-                  {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                  <span>{item.value}</span>
-                </div>
-              )}
-            </div>
-          </ToolbarItemComponent>
-        ))
-      }
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-wrap items-start gap-4">
+        {
+          items.map((item) => (
+            <ToolbarItemComponent label={item.label}>
+              <div class="flex items-center gap-2">
+                {item.href ? (
+                  <a
+                    class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
+                    href={item.href}
+                    target="_blank"
+                  >
+                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                    <span>{item.value}</span>
+                  </a>
+                ) : (
+                  <div class="flex items-center gap-2.5">
+                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                    <span>{item.value}</span>
+                  </div>
+                )}
+              </div>
+            </ToolbarItemComponent>
+          ))
+        }
+      </div>
+      <div class="flex flex-wrap items-start gap-4">
+        <PostTags tags={tags.items} title={tags.title} />
+        <PostDescription description={description} />
+      </div>
     </div>
-
-    {
-      description && (
-        <div class="md:col-start-2">
-          <PostDescription description={description} />
-        </div>
-      )
-    }
-  </div>
-
-  {/* Bottom row: Tags left */}
-  <div class="flex flex-wrap items-start gap-4">
-    {
-      tags.items.length > 0 && (
-        <div class="flex-shrink-0">
-          <PostTags tags={tags.items} title={tags.title} />
-        </div>
-      )
-    }
   </div>
 </div>

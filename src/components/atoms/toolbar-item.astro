@@ -1,17 +1,21 @@
 ---
 import type { HTMLAttributes } from "react";
+
 import { cn } from "../../lib/cn";
 
-interface Props  extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<"div"> {
   className?: string;
+  label: string | undefined;
 }
 
-const { className } = Astro.props;
+const { className, label } = Astro.props;
 ---
 
 <div class:list={cn("flex flex-col gap-1.5 py-1", className)}>
   <span class="font-mono text-sm font-bold whitespace-nowrap text-muted-foreground/60">
-    <slot name="label" />
+    <slot name="label">
+      <span>{label}</span>
+    </slot>
   </span>
   <div class="flex items-center gap-2 text-sm font-bold text-foreground">
     <slot />

@@ -26,7 +26,6 @@ skills:
   - id: technical-strategy
     label: Technical Strategy
 description: "Directed the complete technical trajectory and product vision for a high-performance real-time fleet telemetry and safety monitoring platform. Engineered a massive-scale data ingestion engine capable of processing high-frequency vehicle diagnostics and GPS telemetry from thousands of IoT devices simultaneously. Orchestrated a performant full-stack architecture using TypeScript and React to deliver sub-second latency visualizations of large datasets on interactive maps. Standardized engineering practices across the organization, including automated testing, CI/CD, and robust SLA monitoring, ensuring 99.95% uptime for mission-critical logistics operations."
-
 ---
 
 As CTO, I led the technical transformation of the company from a startup to an enterprise-ready logistics platform provider.

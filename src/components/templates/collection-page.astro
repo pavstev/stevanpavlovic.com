@@ -12,15 +12,17 @@ import Section from "../organisms/section.astro";
 
 interface Props {
   baseUrl: string;
+  // Data
+  collectionItems: CollectionItem<CollectionName>[]; // The collection items
   // Script configuration
   containerId: string;
   currentPage?: number;
-  description: string;
 
+  description: string;
   // Configuration
   display: DisplayMode;
-  displayUrls?: { grid: string; list: string };
 
+  displayUrls?: { grid: string; list: string };
   // Helpers to map generic items to Card props
   // eslint-disable-next-line no-unused-vars
   getItemCardProps: (item: any) => any;
@@ -28,8 +30,6 @@ interface Props {
   headerIcon: string;
   headerTitle: string;
   initialPageSize?: number;
-  // Data
-  collectionItems: CollectionItem<CollectionName>[]; // The collection items
   nextUrl?: string;
   prevUrl?: string;
 
@@ -41,6 +41,7 @@ interface Props {
 
 const {
   baseUrl,
+  collectionItems: items,
   containerId,
   currentPage = 1,
   description,
@@ -51,7 +52,6 @@ const {
   headerIcon,
   headerTitle,
   initialPageSize = 6,
-  collectionItems: items,
   nextUrl,
   prevUrl,
   title,
@@ -71,11 +71,10 @@ const isGrid = display === "grid";
         currentPage={currentPage}
         display={display}
         displayUrls={displayUrls}
-        getPageUrl={(p: number) => (p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`)}
+        getPageUrl={(p) => (p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`)}
         nextUrl={nextUrl}
         paginationType="path"
         prevUrl={prevUrl}
-        slot="action"
         totalPages={totalPages}
       />
     </CollectionHeader>

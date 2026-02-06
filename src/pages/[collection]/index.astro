@@ -46,13 +46,13 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
 <CollectionPage
   {...config}
   baseUrl={baseUrl}
+  collectionItems={items}
   containerId={`${collection}-container`}
   currentPage={currentPage}
   display={view}
   displayUrls={displayUrls}
   getItemCardProps={(item) => getItemCardProps(item)}
   initialPageSize={20}
-  collectionItems={items}
   nextUrl={nextUrl}
   prevUrl={prevUrl}
   totalItems={totalItems}

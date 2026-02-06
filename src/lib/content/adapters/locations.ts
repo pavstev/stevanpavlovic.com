@@ -12,7 +12,7 @@ export class LocationsAdapter extends ContentAdapter<"locations"> {
         meta: item.data.timezone,
         subtitle: item.data.country,
         title: item.data.name,
-        url: `/locations/view/${item.id}`,
+        url: `/locations/${item.id}`,
       },
     };
   }

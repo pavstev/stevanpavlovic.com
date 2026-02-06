@@ -4,10 +4,10 @@ import type { CollectionEntry, CollectionKey } from "astro:content";
 
 import { getCollection, render } from "astro:content";
 
-import type { Params as BaseParams } from "./../index.astro";
+import type { Params as BaseParams } from "./index.astro";
 
-import PostView from "../../../components/organisms/post-view.astro";
-import { collections } from "../../../lib";
+import PostView from "../../components/organisms/post-view.astro";
+import { collections } from "../../lib";
 
 export const prerender = true;
 

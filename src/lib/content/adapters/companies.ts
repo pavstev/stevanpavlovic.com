@@ -15,7 +15,7 @@ export class CompaniesAdapter extends ContentAdapter<"companies"> {
         meta: item.data.size,
         subtitle: item.data.industry,
         title: item.data.name,
-        url: `/companies/view/${item.id}`,
+        url: `/companies/${item.id}`,
       },
     };
   }

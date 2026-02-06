@@ -17,7 +17,7 @@ export class RecommendationsAdapter extends ContentAdapter<"recommendations"> {
         meta: item.data.relationship,
         subtitle: item.data.title,
         title: person ? `${person.data.firstName} ${person.data.lastName}` : item.data.name,
-        url: `/recommendations/view/${item.id}`,
+        url: `/recommendations/${item.id}`,
       },
     };
   }

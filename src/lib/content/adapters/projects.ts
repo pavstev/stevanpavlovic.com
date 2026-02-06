@@ -14,7 +14,7 @@ export class ProjectsAdapter extends ContentAdapter<"projects"> {
         subtitle: item.data.subtitle,
         tags: await resolveTags(item.data.tags),
         title: item.data.title,
-        url: `/projects/view/${item.id}`,
+        url: `/projects/${item.id}`,
       },
     };
   }

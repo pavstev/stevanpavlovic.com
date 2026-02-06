@@ -13,7 +13,7 @@ export class PeopleAdapter extends ContentAdapter<"people"> {
         image: item.data.avatar,
         subtitle: item.data.title,
         title: `${item.data.firstName} ${item.data.lastName}`,
-        url: `/people/view/${item.id}`,
+        url: `/people/${item.id}`,
       },
     };
   }

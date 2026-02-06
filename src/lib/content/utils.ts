@@ -5,18 +5,18 @@ import { ITEMS_PER_PAGE, NAV_ITEMS, type NavItem, PROFILE, SITE_DESCRIPTION, SIT
 
 export const buildPaginationUrls = (
   collection: CollectionKey,
-  view: DisplayMode,
+  display: DisplayMode,
   currentPage: number,
   totalPages: number,
 ): { nextUrl: string | undefined; prevUrl: string | undefined } => {
   const prevUrl =
     currentPage > 1
       ? currentPage === 2
-        ? `/${collection}/${view}`
-        : `/${collection}/${view}/${(currentPage - 1).toString()}`
+        ? `/${collection}/${display}`
+        : `/${collection}/${display}/${(currentPage - 1).toString()}`
       : undefined;
 
-  const nextUrl = currentPage < totalPages ? `/${collection}/${view}/${(currentPage + 1).toString()}` : undefined;
+  const nextUrl = currentPage < totalPages ? `/${collection}/${display}/${(currentPage + 1).toString()}` : undefined;
 
   return { nextUrl, prevUrl };
 };

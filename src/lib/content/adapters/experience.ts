@@ -18,7 +18,7 @@ export class ExperienceAdapter extends ContentAdapter<"experience"> {
         subtitle: company?.name,
         tags: await resolveTags(item.data.tags),
         title: item.data.role,
-        url: `/experience/view/${item.id}`,
+        url: `/experience/${item.id}`,
       },
     };
   }

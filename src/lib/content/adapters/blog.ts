@@ -15,7 +15,7 @@ export class BlogAdapter extends ContentAdapter<"blog"> {
         image: item.data.image,
         tags: await resolveTags(item.data.tags),
         title: item.data.title,
-        url: `/blog/view/${item.id}`,
+        url: `/blog/${item.id}`,
       },
     };
   }

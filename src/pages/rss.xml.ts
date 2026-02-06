@@ -11,7 +11,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
     description: SITE_DESCRIPTION,
     items: posts.map((post) => ({
       description: post.data.description,
-      link: `/blog/view/${post.id}`,
+      link: `/blog/${post.id}`,
       pubDate: post.data.pubDate,
       title: post.data.title,
     })),

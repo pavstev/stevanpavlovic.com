@@ -71,7 +71,7 @@ export const getItemCardProps = async (
       actionLabel: "View",
       data: {
         title: item.id,
-        url: `/${item.collection}/view/${item.id}`,
+        url: `/${item.collection}/${item.id}`,
       },
     };
   }

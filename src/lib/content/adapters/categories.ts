@@ -11,7 +11,7 @@ export class CategoriesAdapter extends ContentAdapter<"categories"> {
         image: item.data.icon,
         subtitle: item.data.label,
         title: item.data.label,
-        url: `/categories/view/${item.id}`,
+        url: `/categories/${item.id}`,
       },
     };
   }

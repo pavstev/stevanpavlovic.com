@@ -15,7 +15,7 @@ export class TagsAdapter extends ContentAdapter<"tags"> {
         image: category?.data.icon,
         subtitle: category?.data.label,
         title: item.data.label,
-        url: `/tags/view/${item.id}`,
+        url: `/tags/${item.id}`,
       },
     };
   }

@@ -28,7 +28,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
             { "shadow-glow-primary bg-primary text-primary-foreground": isActive },
           ]}
           data-active={isActive}
-          href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
+          href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { mode })}
           size="sm"
           variant={isActive ? "primary" : "ghost"}
         >

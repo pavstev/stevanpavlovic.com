@@ -1,5 +1,5 @@
 ---
-// Handles: /blog, /projects, /experience (defaults to list view, page 1)
+// Handles: /blog, /projects, /experience (defaults to list display, page 1)
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection } = Astro.params as unknown as Params;
-const view = "list" as const;
+const display = "list" as const;
 const currentPage = 1;
 
 const sortedItems = await getCollectionData(collection);
@@ -40,7 +40,7 @@ const items = getPageItems(sortedItems, currentPage);
 const config = getCollectionConfig(collection);
 const baseUrl = `/${collection}`;
 const displayUrls = buildDisplayUrls(collection, currentPage);
-const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, totalPages);
+const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
 ---
 
 <CollectionPage
@@ -50,7 +50,7 @@ const { nextUrl, prevUrl } = buildPaginationUrls(collection, view, currentPage, 
   collectionKey={collection}
   containerId={`${collection}-container`}
   currentPage={currentPage}
-  display={view}
+  display={display}
   displayUrls={displayUrls}
   getItemCardProps={(item) => getItemCardProps(item)}
   initialPageSize={20}

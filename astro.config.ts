@@ -107,7 +107,7 @@ export default defineConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ["/pagefind/pagefind.js"],
+        // external: ["/pagefind/pagefind.js"],
       },
     },
     // 1. This defines __dirname as an empty string during the build,

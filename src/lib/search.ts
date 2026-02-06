@@ -58,7 +58,7 @@ const QUICK_ACTIONS: QuickAction[] = [
   },
 ];
 
-export class CommandPalette {
+class CommandPalette {
   private currentIndex = -1;
   private dropdown: HTMLElement;
   private input: HTMLInputElement;

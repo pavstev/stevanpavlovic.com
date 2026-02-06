@@ -25,9 +25,7 @@ const avatarVariants = cva("relative flex shrink-0 overflow-hidden rounded-full 
       primary: "shadow-glow-primary border border-primary/30 bg-primary/10",
     },
   },
-});
-
-export interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
+}ort interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
   alt?: string;
   fallback?: string;
   src?: any;

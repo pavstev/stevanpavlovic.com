@@ -5,39 +5,22 @@ import { cn } from "../../lib/cn";
 import Container from "../atoms/Container.astro";
 import Stack from "../atoms/Stack.astro";
 import EnvironmentalBackground from "../organisms/EnvironmentalBackground.astro";
-
-export interface Props extends HTMLAttributes<"div"> {
+interface Props extends HTMLAttributes<"div"> {
   class?: string;
   intensity?: "high" | "low" | "medium";
 }
 
-const {
-  class: className,
-  intensity = "medium",
-  ...rest
-} = Astro.props;
+const { class: className, intensity = "medium", ...rest } = Astro.props;
 ---
 
 <Container
   as="div"
-  class:list={[
-    cn(
-      "relative",
-      "min-h-screen",
-      "overflow-x-hidden",
-      "bg-(--color-background)",
-      className,
-    ),
-  ]}
+  class:list={[cn("relative", "min-h-screen", "overflow-x-hidden", "bg-background", className)]}
   {...rest}
 >
   <EnvironmentalBackground {intensity} />
 
-  <Stack
-    as="main"
-    class="relative z-10 min-h-screen"
-    gap={0}
-  >
+  <Stack as="main" class="relative z-10 min-h-screen" gap={0}>
     <slot />
   </Stack>
 </Container>
@@ -71,11 +54,7 @@ const {
 
   /* Selection Glow Effect */
   ::selection {
-    background-color: color-mix(
-      in srgb,
-      var(--color-primary),
-      transparent 80%
-    );
+    background-color: color-mix(in srgb, var(--color-primary), transparent 80%);
     text-shadow: 0 0 8px var(--color-primary);
   }
 

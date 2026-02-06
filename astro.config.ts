@@ -42,7 +42,7 @@ export default defineConfig({
       },
     }),
     pagefind(),
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
     brokenLinksChecker({
       cacheExternalLinks: true,
       checkExternalLinks: false,
@@ -72,7 +72,6 @@ export default defineConfig({
   trailingSlash: "never",
 
   vite: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
   },
 });

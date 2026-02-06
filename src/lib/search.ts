@@ -55,7 +55,6 @@ const initSingleSearch = (
 
       if (import.meta.env.DEV) {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           pagefind = await import(/* @vite-ignore */ pagefindUrl);
         } catch (e) {
           console.warn("Pagefind not found in dev (expected if not built)", e);
@@ -64,7 +63,6 @@ const initSingleSearch = (
       }
 
       if (!import.meta.env.DEV) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         pagefind = await import(/* @vite-ignore */ pagefindUrl);
       }
 

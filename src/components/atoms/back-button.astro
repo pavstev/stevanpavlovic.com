@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<"a"> {
   collection?: CollectionName;
 }
 
-const { class: className, collection, type, ...props } = Astro.props;
+const { class: className, collection, ...props } = Astro.props;
 
 const backLabel =
   collection === "blog"
@@ -43,6 +43,7 @@ const backLink =
   size="sm"
   variant="outline"
   {...props}
+  type="button"
 >
   <Icon class="mr-1.5 size-3.5 transition-transform group-hover:-translate-x-1" name="mdi:arrow-left" />
   <slot>{backLabel}</slot>

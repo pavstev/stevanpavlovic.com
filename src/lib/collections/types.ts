@@ -23,13 +23,6 @@ export interface CollectionItem<CN extends CollectionName> {
 
 export type DisplayMode = "grid" | "list";
 
-export interface HeroImage {
-  alt: string;
-  height: number;
-  src: ImageMetadata | string;
-  width: number;
-}
-
 export interface PostLink {
   href: string;
   label: string;

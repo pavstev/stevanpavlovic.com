@@ -1,6 +1,8 @@
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
+const tagSchema = z.object({ id: z.string(), label: z.string() });
+
 const projects = defineCollection({
   loader: glob({ base: "./src/content/projects", pattern: "**/*.md" }),
   schema: ({ image }) =>
@@ -16,7 +18,7 @@ const projects = defineCollection({
       repoUrl: z.string().url().optional(),
       role: z.string().optional(),
       subtitle: z.string(),
-      tags: z.array(z.object({ id: z.string(), label: z.string() })),
+      tags: z.array(tagSchema),
       teamSize: z.string().optional(),
       title: z.string(),
     }),
@@ -41,9 +43,9 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       description: z.string(),
-      heroImage: image().optional(),
+      image: image().optional(),
       pubDate: z.coerce.date(),
-      tags: z.array(z.object({ id: z.string(), label: z.string() })),
+      tags: z.array(tagSchema),
       title: z.string(),
       updatedDate: z.coerce.date().optional(),
     }),
@@ -65,7 +67,7 @@ const experience = defineCollection({
       endDate: z.coerce.date().optional(),
       location: z.string(),
       role: z.string(),
-      skills: z.array(z.object({ id: z.string(), label: z.string() })).optional(),
+      skills: z.array(tagSchema).optional(),
       startDate: z.coerce.date(),
       type: z.enum(["Full-time", "Contract", "Freelance"]).optional(),
     }),

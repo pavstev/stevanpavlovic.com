@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
 
 import type { CardData } from "../../components/organisms/card.astro";
+import type { CollectionItem, CollectionName, ViewPageProps } from "./types";
+
 import { getBlogProps } from "./blog";
 import { getExperienceProps } from "./experience";
 import { isBlog, isExperience, isProject } from "./guards";
 import { getProjectProps } from "./projects";
-import type { CollectionItem, CollectionName, ViewPageProps } from "./types";
 
 export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPageProps => {
   if (isBlog(item)) return getBlogProps(item);
@@ -15,6 +16,7 @@ export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPage
   return {
     backLink: { href: "/", label: "Back" },
     description: "",
+    image: undefined,
     subtitle: "",
     tags: { items: [], title: "Tags" },
     title: "",
@@ -35,8 +37,8 @@ export const getItemCardProps = (
       data: {
         date: data.pubDate,
         description: data.description,
-        image: data.heroImage,
-        tags: data.tags?.map((tag) => tag.label),
+        image: data.image,
+        tags: data.tags,
         title: data.title,
         url: `/blog/view/${item.id}`,
       },
@@ -51,7 +53,7 @@ export const getItemCardProps = (
         footerMeta: `${dayjs(data.startDate).format("MMM YYYY")} — ${data.endDate ? dayjs(data.endDate).format("MMM YYYY") : "Present"}`,
         logo: typeof data.company !== "string" ? data.company.logo : undefined,
         subtitle: typeof data.company === "string" ? data.company : data.company.name,
-        tags: data.skills?.map((skill) => skill.label),
+        tags: data.skills,
         title: data.role,
         url: `/experience/view/${item.id}`,
       },
@@ -66,7 +68,7 @@ export const getItemCardProps = (
         image: data.image,
         meta: data.meta,
         subtitle: data.subtitle,
-        tags: data.tags?.map((tag) => tag.label),
+        tags: data.tags,
         title: data.title,
         url: `/projects/view/${item.id}`,
       },

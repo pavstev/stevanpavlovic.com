@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;

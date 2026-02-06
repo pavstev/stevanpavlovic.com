@@ -1,12 +1,12 @@
 ---
+import type { ImageMetadata } from "astro";
 import type { CollectionEntry } from "astro:content";
 
-import { type CollectionName, type ToolbarItem } from "../../lib/collection-pages";
+import { type CollectionName, type Tag, type ToolbarItem } from "../../lib/collection-pages";
 import BackButton from "../atoms/back-button.astro";
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
 import PostActions from "./post-actions.astro";
-import PostAuthor from "./post-author.astro";
 import TagItem from "./tag-item.astro";
 
 interface Props {
@@ -15,22 +15,18 @@ interface Props {
   collection: CollectionName;
   data: CollectionEntry<CollectionName>["data"];
   items: ToolbarItem[];
-  tags?: { id: string; label: string }[];
+  tags?: Tag[];
   tagsTitle?: string;
 }
 
-const { author, backLink, collection, data, items = [], tags = [] } = Astro.props;
+const { backLink, collection, data, items = [], tags = [] } = Astro.props;
 ---
 
-<div
-  class="flex flex-col gap-5 border-t border-b border-foreground/10 py-4 my-6"
->
+<div class="my-6 flex flex-col gap-5 border-t border-b border-foreground/10 py-4">
   <div class="flex flex-wrap items-center justify-between gap-6">
     <div class="flex flex-wrap items-center gap-8 sm:gap-12">
       <div class="scale-90 sm:scale-100">
-        <BackButton collection={collection} href={backLink}>
-          Back
-        </BackButton>
+        <BackButton collection={collection} href={backLink}> Back </BackButton>
       </div>
 
       <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
@@ -62,14 +58,13 @@ const { author, backLink, collection, data, items = [], tags = [] } = Astro.prop
     </div>
 
     <div class="flex items-center gap-6 sm:gap-10">
-      <PostAuthor author={author} />
       <PostActions collection={collection} data={data} />
     </div>
   </div>
 
   {
     tags && tags.length > 0 && (
-      <div class="border-t border-foreground/10 pt-3 mt-1">
+      <div class="mt-1 border-t border-foreground/10 pt-3">
         <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
           {tags.map((tag) => (
             <TagItem id={tag.id} label={tag.label} />

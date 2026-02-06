@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
+
 import { PROFILE } from "../config";
 import { createAuthorItem } from "./toolbar-items";
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 
 dayjs.extend(duration);
 

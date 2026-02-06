@@ -3,7 +3,7 @@ import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 import { PROFILE } from "../config";
 import { createAuthorItem } from "./toolbar-items";
 
-export const getClassificationToolbarItem = (item: CollectionItem<"projects">): ToolbarItem | undefined => {
+const getClassificationToolbarItem = (item: CollectionItem<"projects">): ToolbarItem | undefined => {
   if (!item.data.subtitle) return undefined;
   return {
     label: "Classification",
@@ -11,7 +11,7 @@ export const getClassificationToolbarItem = (item: CollectionItem<"projects">): 
   };
 };
 
-export const getStatusToolbarItem = (item: CollectionItem<"projects">): ToolbarItem => ({
+const getStatusToolbarItem = (item: CollectionItem<"projects">): ToolbarItem => ({
   label: "Status",
   value: item.data.meta || "Completed",
 });

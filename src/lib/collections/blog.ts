@@ -5,7 +5,7 @@ import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 import { PROFILE } from "../config";
 import { createAuthorItem } from "./toolbar-items";
 
-export const getPublishedToolbarItem = (item: CollectionItem<"blog">): ToolbarItem => ({
+const getPublishedToolbarItem = (item: CollectionItem<"blog">): ToolbarItem => ({
   label: "Published",
   value: dayjs(item.data.pubDate).format("MMMM YYYY"),
 });

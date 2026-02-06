@@ -1,9 +1,11 @@
 ---
+import type { Tag } from "../../lib/collections";
+
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 
 interface Props {
   heading: string;
-  tags: { id: string; label: string }[];
+  tags: Tag[];
   variant?: "default" | "elevated" | "subtle";
 }
 

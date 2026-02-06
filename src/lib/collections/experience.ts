@@ -8,7 +8,7 @@ import { createAuthorItem } from "./toolbar-items";
 
 dayjs.extend(duration);
 
-export const getOrganizationToolbarItem = (item: CollectionItem<"experience">): ToolbarItem | undefined => {
+const getOrganizationToolbarItem = (item: CollectionItem<"experience">): ToolbarItem | undefined => {
   if (!item.data.company) return undefined;
 
   return typeof item.data.company !== "string"
@@ -24,7 +24,7 @@ export const getOrganizationToolbarItem = (item: CollectionItem<"experience">): 
       };
 };
 
-export const getTimelineToolbarItem = (item: CollectionItem<"experience">): ToolbarItem => {
+const getTimelineToolbarItem = (item: CollectionItem<"experience">): ToolbarItem => {
   const start = dayjs(item.data.startDate);
   const end = item.data.endDate ? dayjs(item.data.endDate) : dayjs();
   const dateRange = `${start.format("MMM YYYY")} — ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YYYY") : "Present"}`;

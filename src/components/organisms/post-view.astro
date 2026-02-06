@@ -1,7 +1,7 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry, CollectionKey } from "astro:content";
 
-import { type CollectionItem, type CollectionKey, getViewPageProps } from "../../lib";
+import { type CollectionItem, getViewPageProps } from "../../lib";
 import BackButton from "../atoms/back-button.astro";
 import LayoutContent from "../layout/layout-content.astro";
 import PostToolbar from "../molecules/post-toolbar.astro";
@@ -25,7 +25,7 @@ const item: CollectionItem<CollectionKey> = {
   id,
 };
 
-const viewPageProps = getViewPageProps(item);
+const viewPageProps = await getViewPageProps(item);
 
 const { backLink: defaultBackLink, description, image, tags, title, toolbarItems } = viewPageProps;
 

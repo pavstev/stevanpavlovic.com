@@ -1,13 +1,13 @@
 ---
 // Handles: /blog/grid, /blog/list, /projects/grid, etc. (explicit display, page 1)
 import type { GetStaticPaths } from "astro";
+import type { CollectionKey } from "astro:content";
 
 import CollectionPage from "../../components/templates/collection-page.astro";
 import { ITEMS_PER_PAGE } from "../../config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
-  type CollectionKey,
   type DisplayMode,
   getCollectionConfig,
   getCollectionData,

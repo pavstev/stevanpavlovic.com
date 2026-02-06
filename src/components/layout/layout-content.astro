@@ -6,13 +6,14 @@ import "../../styles/tables.css";
 
 interface Props {
   description?: string;
+  slug: string;
   title: string;
 }
 
-const { description, title } = Astro.props;
+const { description, slug, title } = Astro.props;
 ---
 
-<LayoutRoot description={description} title={title}>
+<LayoutRoot description={description} slug={slug} title={title}>
   <Container as="article" data-pagefind-body>
     <div class="mx-auto">
       <header class="mb-6">

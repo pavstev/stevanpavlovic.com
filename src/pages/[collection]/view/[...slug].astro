@@ -1,13 +1,12 @@
 ---
 import type { GetStaticPathsItem, GetStaticPathsResult } from "astro";
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry, CollectionKey } from "astro:content";
 
 import { getCollection, render } from "astro:content";
 
 import type { Params as BaseParams } from "./../index.astro";
 
 import PostView from "../../../components/organisms/post-view.astro";
-import { type CollectionKey } from "../../../lib";
 import { collections } from "../../../lib";
 
 export const prerender = true;

@@ -1,5 +1,7 @@
 ---
-import type { CollectionItem, CollectionKey } from "../../lib/collections";
+import type { CollectionKey } from "astro:content";
+
+import type { CollectionItem } from "../../lib";
 import type { DisplayMode } from "../../lib/list";
 
 import Stack from "../atoms/stack.astro";
@@ -16,6 +18,7 @@ interface Props {
   // Data
   collectionItems: CollectionItem<CollectionKey>[]; // The collection items
   // Script configuration
+  collectionKey: CollectionKey;
   containerId: string;
   currentPage?: number;
 
@@ -43,6 +46,7 @@ interface Props {
 const {
   baseUrl,
   collectionItems: items,
+  collectionKey,
   containerId,
   currentPage = 1,
   description,
@@ -64,7 +68,7 @@ const isList = display === "list";
 const isGrid = display === "grid";
 ---
 
-<LayoutRoot description={description} title={title}>
+<LayoutRoot description={description} slug={`/${collectionKey}/${display}`} title={title}>
   <Section>
     <CollectionHeader description={headerDescription} icon={headerIcon} level={2} title={headerTitle}>
       <ListActions

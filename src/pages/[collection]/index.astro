@@ -1,13 +1,13 @@
 ---
 // Handles: /blog, /projects, /experience (defaults to list view, page 1)
 import type { GetStaticPaths } from "astro";
+import type { CollectionKey } from "astro:content";
 
 import CollectionPage from "../../components/templates/collection-page.astro";
 import { ITEMS_PER_PAGE } from "../../config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
-  type CollectionKey,
   getCollectionConfig,
   getCollectionData,
   getItemCardProps,

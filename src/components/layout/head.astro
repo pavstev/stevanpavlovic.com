@@ -10,13 +10,14 @@ import GoogleTagManager from "../google-tag-manager.astro";
 
 interface Props {
   description?: string;
-  image?: ImageMetadata;
+  image?: ImageMetadata | string;
   title: string;
 }
 
 const { description, image = FallbackImage, title } = Astro.props;
+const imageSrc = typeof image === "string" ? image : image.src;
 ---
 
 <GoogleTagManager />
 
-<SEO description={description ?? PROFILE.bio} image={new URL(image.src, Astro.url)} title={title} />
+<SEO description={description ?? PROFILE.bio} image={new URL(imageSrc, Astro.url)} title={title} />

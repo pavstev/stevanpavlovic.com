@@ -1,4 +1,4 @@
-export * from "./collections/index";
+export * from "./content";
 export * from "./dom";
 export * from "./list";
 export * from "./nav";

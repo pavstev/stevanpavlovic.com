@@ -1,35 +1,37 @@
 ---
-import type { ImageMetadata } from "astro";
-import type { CollectionEntry } from "astro:content";
 
-import { type CollectionName, type PostLink, type ToolbarItem, type ViewPagePropsTags } from "../../lib/collection-pages";
-import BackButton from "../atoms/back-button.astro";
+import {
+type Tag,
+type ToolbarItem,
+type ViewPagePropsTags
+} from "../../lib/collection-pages";
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
-import PostActions from "./post-actions.astro";
 import PostDescription from "./post-description.astro";
 import PostTags from "./post-tags.astro";
 
 interface Props {
-  author?: { avatar: ImageMetadata; name: string; role: string };
-  backLink: PostLink;
-  collection: CollectionName;
-  data: CollectionEntry<CollectionName>["data"];
   description?: string;
-  items: ToolbarItem[];
-  tags?: ViewPagePropsTags;
-  tagsTitle?: string;
+  tags: ViewPagePropsTags | undefined;
+  toolbarItems: (ToolbarItem | undefined)[];
 }
 
-const { backLink, collection, data, description, items = [], tags = {
-  items: [],
-} } = Astro.props;
+const {
+  description,
+  tags = {
+    items: [] as Tag[],
+    title: undefined,
+  },
+  toolbarItems = [],
+} = Astro.props;
+
+const items = toolbarItems.filter((i): i is ToolbarItem => !!i);
 ---
 
-<div class="my-6 flex flex-col gap-3 border-t border-b border-foreground/10 py-4">
-  {/* Top row: Items left, BackButton right */}
-  <div class="flex flex-wrap items-start justify-between gap-4">
-    <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
+<div class="my-6 flex flex-col gap-4 border-t border-b border-foreground/10 py-4">
+  {/* Top row: Items left, Description right */}
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
       {
         items.map((item) => (
           <ToolbarItemComponent>
@@ -56,15 +58,23 @@ const { backLink, collection, data, description, items = [], tags = {
       }
     </div>
 
-    <div class="flex items-center gap-4">
-      <PostActions collection={collection} data={data} />
-      <div class="scale-90 sm:scale-100">
-        <BackButton collection={collection} link={backLink} />
-      </div>
-    </div>
+    {
+      description && (
+        <div class="md:col-start-2">
+          <PostDescription description={description} />
+        </div>
+      )
+    }
   </div>
 
-  {description && <PostDescription description={description} />}
-
-  {tags.items.length > 0 && <PostTags {...tags} />}
+  {/* Bottom row: Tags left */}
+  <div class="flex flex-wrap items-start gap-4">
+    {
+      tags.items.length > 0 && (
+        <div class="flex-shrink-0">
+          <PostTags tags={tags.items} title={tags.title} />
+        </div>
+      )
+    }
+  </div>
 </div>

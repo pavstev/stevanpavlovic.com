@@ -41,7 +41,7 @@ export interface ViewPageProps {
   subtitle: string | undefined;
   tags: ViewPagePropsTags;
   title: string;
-  toolbarItems: ToolbarItem[];
+  toolbarItems: (ToolbarItem | undefined)[];
 }
 
 export interface ViewPagePropsTags {

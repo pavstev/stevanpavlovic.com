@@ -1,7 +1,8 @@
 ---
+import type { HTMLAttributes } from "react";
 import { cn } from "../../lib/cn";
 
-interface Props {
+interface Props  extends HTMLAttributes<'div'> {
   className?: string;
 }
 

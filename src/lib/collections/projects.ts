@@ -18,14 +18,9 @@ const getStatusToolbarItem = (item: CollectionItem<"projects">): ToolbarItem => 
 
 export const getProjectProps = (item: CollectionItem<"projects">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
-  const toolbarItems: ToolbarItem[] = [author];
-
-  const classification = getClassificationToolbarItem(item);
-  if (classification) toolbarItems.push(classification);
-  toolbarItems.push(getStatusToolbarItem(item));
+  const toolbarItems = [author, getClassificationToolbarItem(item), getStatusToolbarItem(item)];
 
   return {
-    author,
     backLink: {
       href: "/projects",
       label: "Back to Projects",

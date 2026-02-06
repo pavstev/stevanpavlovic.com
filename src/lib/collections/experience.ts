@@ -42,9 +42,7 @@ const getTimelineToolbarItem = (item: CollectionItem<"experience">): TI => {
 
 export const getExperienceProps = (item: CollectionItem<"experience">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
-  const toolbarItems: TI[] = [author, getOrganizationToolbarItem(item), getTimelineToolbarItem(item)].filter(
-    (i): i is TI => !!i,
-  );
+  const toolbarItems = [author, getOrganizationToolbarItem(item), getTimelineToolbarItem(item)];
 
   return {
     backLink: {

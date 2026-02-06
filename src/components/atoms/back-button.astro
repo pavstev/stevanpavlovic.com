@@ -3,17 +3,16 @@ import type { HTMLAttributes } from "astro/types";
 
 import { Icon } from "astro-icon/components";
 
-import type { CollectionName, PostLink } from "../../lib/collection-pages";
+import type { PostLink } from "../../lib/collection-pages";
 
 import { cn } from "../../lib/cn";
 import Button from "./button.astro";
 
 interface Props extends HTMLAttributes<"a"> {
-  collection?: CollectionName;
   link: PostLink;
 }
 
-const { link, class: className, collection, ...props } = Astro.props;
+const { class: className, link, ...props } = Astro.props;
 ---
 
 <Button

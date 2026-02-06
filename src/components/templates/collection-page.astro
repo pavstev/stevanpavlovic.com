@@ -1,4 +1,5 @@
 ---
+import type { CollectionItem, CollectionName } from "../../lib/collections";
 import type { DisplayMode } from "../../lib/list";
 
 import Stack from "../atoms/stack.astro";
@@ -28,7 +29,7 @@ interface Props {
   headerTitle: string;
   initialPageSize?: number;
   // Data
-  items: any[]; // The collection items
+  collectionItems: CollectionItem<CollectionName>[]; // The collection items
   nextUrl?: string;
   prevUrl?: string;
 
@@ -50,7 +51,7 @@ const {
   headerIcon,
   headerTitle,
   initialPageSize = 6,
-  items,
+  collectionItems: items,
   nextUrl,
   prevUrl,
   title,

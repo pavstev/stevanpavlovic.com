@@ -1,234 +1,323 @@
 ---
-import { CHATBOT_VARIANTS } from "../../config";
 import AppIcon from "../atoms/app-icon.astro";
-import Button from "../atoms/button.astro";
-import Stack from "../atoms/stack.astro";
-// ============================================================================
-// Message Bubble Variants
-// ============================================================================
-import Text from "../atoms/text.astro";
 
-// ============================================================================
-// Chatbot Props
-// ============================================================================
-
-interface Props {
-  class?: string;
-}
-
-const { class: className } = Astro.props;
-
-// ============================================================================
-// Component Template
-// ============================================================================
+/**
+ * RAG Chatbot UI
+ * A floating, intelligent assistant powered by local Web Workers.
+ * Features auto-typing, source citation, and a clean glassmorphic UI.
+ */
 ---
 
-<!-- Fixed position widget - doesn't take document flow space -->
-<div class:list={["fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden", className]} id="chatbot-widget">
-  <!-- Chat Window -->
+<!-- Chat Widget Container -->
+<div id="rag-widget" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end pointer-events-none font-sans">
+  <!-- Main Window -->
   <div
-    class:list={[
-      "pointer-events-none mb-4 w-[calc(100vw-2rem)] translate-y-4 opacity-0 shadow-xl transition-all duration-300 ease-out sm:w-95",
-      "data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100",
-      "glass overflow-hidden rounded-xl border border-border",
-    ]}
-    data-open="false"
-    id="chat-window"
+    id="rag-window"
+    class="pointer-events-auto invisible mb-4 flex h-[600px] w-[380px] flex-col overflow-hidden rounded-2xl border border-border bg-card/95 shadow-2xl opacity-0 translate-y-8 scale-95 transition-all duration-300 origin-bottom-right backdrop-blur-xl"
   >
     <!-- Header -->
-    <header class="flex items-center justify-between border-b border-border bg-card px-3 py-2">
-      <Stack align="center" direction="row" gap={3}>
-        <div class="flex size-8 items-center justify-center rounded-lg bg-primary/20 text-primary">
-          <AppIcon name="mdi:robot-outline" size="base" />
+    <div class="flex items-center justify-between border-b border-border bg-muted/50 p-4 backdrop-blur-md">
+      <div class="flex items-center gap-3">
+        <div
+          class="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-border/50"
+        >
+          <AppIcon name="mdi:robot-happy-outline" class="size-6" />
+          <span
+            class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-card"
+            id="rag-status-indicator"></span>
         </div>
-        <Stack gap={0}>
-          <Text class="text-xs font-bold tracking-tight uppercase">Resume Assistant</Text>
-          <Text class="text-[10px]" id="chat-status" variant="muted">Ready to help</Text>
-        </Stack>
-      </Stack>
-      <Button aria-label="Close chat" class="size-8" id="close-chat" size="icon" variant="ghost">
-        <AppIcon name="mdi:close" size="md" />
-      </Button>
-    </header>
+        <div>
+          <h3 class="text-sm font-bold text-foreground">Stevan's Assistant</h3>
+          <p class="text-[10px] text-muted-foreground" id="rag-status-text">Offline</p>
+        </div>
+      </div>
+      <button
+        id="rag-close"
+        class="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+      >
+        <AppIcon name="mdi:close" size="sm" />
+      </button>
+    </div>
 
-    <!-- Messages Area -->
-    <div class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-3" id="chat-messages">
-      <!-- Welcome Message -->
-      <div class="flex flex-col gap-1">
-        <div class:list={["max-w-[85%] rounded-xl px-3.5 py-2 text-sm", CHATBOT_VARIANTS.ai]}>
-          Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
+    <!-- Messages Container -->
+    <div
+      id="rag-messages"
+      class="flex-1 space-y-6 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
+    >
+      <!-- Intro Message -->
+      <div class="flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <AppIcon name="mdi:robot" size="sm" />
         </div>
-        <Text class="px-1 text-[10px]" variant="muted">Powered by AI</Text>
+        <div
+          class="max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-4 py-3 text-sm leading-relaxed text-foreground shadow-sm"
+        >
+          <p>
+            Hello! I'm a local AI running entirely in your browser. I've analyzed Stevan's portfolio and experience. Ask
+            me anything!
+          </p>
+        </div>
       </div>
     </div>
 
     <!-- Input Area -->
-    <div class="border-t border-border bg-card p-3">
-      <form class="flex gap-2" id="chat-form">
-        <div class="relative flex-1">
-          <input
-            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-            id="chat-input"
-            placeholder="Ask about Stevan's experience..."
-            type="text"
-          />
-        </div>
-        <Button aria-label="Send message" class="size-9" id="send-button" size="icon" type="submit">
-          <AppIcon name="mdi:send" size="base" />
-        </Button>
+    <div class="border-t border-border bg-background/50 p-4 backdrop-blur-md">
+      <form id="rag-form" class="relative flex items-center gap-2">
+        <input
+          type="text"
+          id="rag-input"
+          placeholder="Ask a question..."
+          class="flex-1 rounded-xl border border-input bg-background/50 px-4 py-3 text-sm shadow-sm transition-all placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+          autocomplete="off"
+          disabled
+        />
+        <button
+          type="submit"
+          id="rag-submit"
+          class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-primary p-2 text-primary-foreground shadow-md transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          disabled
+        >
+          <AppIcon name="mdi:send" size="sm" />
+        </button>
       </form>
+      <div class="mt-2 flex justify-center">
+        <p class="text-[10px] text-muted-foreground/50">Powered by Transformers.js • Private & Local</p>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div
+      id="rag-loading-overlay"
+      class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-300"
+    >
+      <div class="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      <p class="text-xs font-medium text-foreground" id="rag-loader-text">Initializing AI Engine...</p>
+      <div class="mt-2 h-1.5 w-32 overflow-hidden rounded-full bg-muted">
+        <div id="rag-loader-bar" class="h-full w-0 bg-primary transition-all duration-300"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Toggle Button -->
-  <Button aria-label="Toggle Chatbot" class="size-10" id="chat-toggle" size="icon">
-    <!-- Robot Icon (visible when closed) -->
-    <AppIcon
-      class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"
-      name="mdi:robot-outline"
-      size="lg"
-    />
-    <!-- Close Icon (visible when open) -->
-    <AppIcon
-      class="absolute scale-0 transition-all duration-300 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0"
-      name="mdi:close"
-      size="lg"
-    />
-  </Button>
+  <!-- Floating Action Button -->
+  <button
+    id="rag-toggle"
+    class="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_4px_14px_0_rgba(0,0,0,0.39)] transition-all duration-300 hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.23)] active:scale-95 group"
+    aria-label="Open AI Chat"
+  >
+    <AppIcon name="mdi:sparkles" class="size-6 transition-transform duration-500 group-hover:rotate-12" />
+  </button>
 </div>
 
 <script>
-  import { CHATBOT_VARIANTS, RESUME_CONTEXT } from "../../config";
-  import { createMessageElement, createTypingIndicator, generateId, scrollToBottom, updateStatus } from "../../lib/dom";
+  // Import worker using Vite's worker suffix
+  import Worker from "../../lib/ai/worker?worker";
 
-  let qaPipeline: any = null;
-  let isInitializing = false;
-  let isProcessing = false;
+  class RagChat {
+    private worker: Worker | null = null;
+    private isOpen = false;
+    private isReady = false;
 
-  const toggleBtn = document.getElementById("chat-toggle");
-  const chatWindow = document.getElementById("chat-window");
-  const messagesContainer = document.getElementById("chat-messages");
-  const chatForm = document.getElementById("chat-form");
-  const chatInput = document.getElementById("chat-input") as HTMLInputElement | null;
-  const statusEl = document.getElementById("chat-status");
-  const closeBtn = document.getElementById("close-chat");
+    // UI Refs
+    private ui = {
+      window: document.getElementById("rag-window")!,
+      toggle: document.getElementById("rag-toggle")!,
+      close: document.getElementById("rag-close")!,
+      messages: document.getElementById("rag-messages")!,
+      input: document.getElementById("rag-input") as HTMLInputElement,
+      form: document.getElementById("rag-form") as HTMLFormElement,
+      submit: document.getElementById("rag-submit") as HTMLButtonElement,
+      loader: document.getElementById("rag-loading-overlay")!,
+      loaderBar: document.getElementById("rag-loader-bar")!,
+      loaderText: document.getElementById("rag-loader-text")!,
+      statusDot: document.getElementById("rag-status-indicator")!,
+      statusText: document.getElementById("rag-status-text")!,
+    };
 
-  function addMessage(text: string, isAi: boolean) {
-    const message = { id: generateId(), text, isAi };
-    const element = createMessageElement(message, CHATBOT_VARIANTS);
-    if (messagesContainer) {
-      messagesContainer.appendChild(element);
-      scrollToBottom(messagesContainer);
+    constructor() {
+      this.bindEvents();
     }
-  }
 
-  function removeTypingIndicator() {
-    const typing = document.getElementById("typing-indicator");
-    if (typing) typing.remove();
-  }
-
-  async function initModel() {
-    if (qaPipeline || isInitializing) return;
-    isInitializing = true;
-    updateStatus(statusEl, "Loading AI...");
-
-    try {
-      const { pipeline } = await import("@xenova/transformers");
-      qaPipeline = await pipeline("question-answering", "Xenova/distilbert-base-uncased-distilled-squad");
-      updateStatus(statusEl, "Ready");
-      setTimeout(() => updateStatus(statusEl, "Ready"), 2000);
-    } catch (err) {
-      console.error("Failed to load model:", err);
-      updateStatus(statusEl, "Error");
-    } finally {
-      isInitializing = false;
+    private bindEvents() {
+      this.ui.toggle.addEventListener("click", () => this.toggle());
+      this.ui.close.addEventListener("click", () => this.toggle());
+      this.ui.form.addEventListener("submit", (e) => this.handleSubmit(e));
     }
-  }
 
-  function toggleChat() {
-    if (!chatWindow || !toggleBtn) return;
-    const isOpen = chatWindow.dataset.open === "true";
-    const newState = !isOpen;
-    chatWindow.dataset.open = String(newState);
-    toggleBtn.dataset.open = String(newState);
+    private initWorker() {
+      if (this.worker) return;
 
-    if (newState) {
-      initModel();
-      if (chatInput) {
-        setTimeout(() => chatInput.focus(), 300);
+      this.worker = new Worker();
+
+      this.worker.addEventListener("message", (e) => {
+        const { status, message, response, sources, progress } = e.data;
+
+        if (status === "loading") {
+          this.updateLoader(progress || 0, message);
+        } else if (status === "ready") {
+          if (!this.isReady) {
+            // First load complete
+            this.isReady = true;
+            this.hideLoader();
+            this.updateStatus("online");
+          } else {
+            // Finished generating
+            this.ui.input.disabled = false;
+            this.ui.submit.disabled = false;
+            this.ui.input.focus();
+            this.updateStatus("online");
+          }
+        } else if (status === "generating") {
+          this.updateStatus("thinking");
+        } else if (status === "error") {
+          this.addMessage(message || "An error occurred.", "bot-error");
+          this.updateStatus("error");
+        } else if (response) {
+          // Add the bot response with typing effect
+          this.addBotResponse(response, sources);
+        }
+      });
+
+      this.worker.postMessage({ type: "init" });
+    }
+
+    private toggle() {
+      this.isOpen = !this.isOpen;
+
+      if (this.isOpen) {
+        this.ui.window.classList.remove("invisible", "opacity-0", "translate-y-8", "scale-95");
+        this.ui.toggle.classList.add("scale-0", "opacity-0");
+
+        if (!this.worker) this.initWorker();
+        else setTimeout(() => this.ui.input.focus(), 100);
+      } else {
+        this.ui.window.classList.add("opacity-0", "translate-y-8", "scale-95");
+        this.ui.toggle.classList.remove("scale-0", "opacity-0");
+        setTimeout(() => this.ui.window.classList.add("invisible"), 300);
       }
     }
-  }
 
-  function closeChat() {
-    if (chatWindow) chatWindow.dataset.open = "false";
-    if (toggleBtn) toggleBtn.dataset.open = "false";
-  }
+    private handleSubmit(e: SubmitEvent) {
+      e.preventDefault();
+      const text = this.ui.input.value.trim();
+      if (!text || !this.isReady) return;
 
-  async function handleSubmit(e: Event) {
-    e.preventDefault();
-    if (isProcessing) return;
-    if (!chatInput) return;
+      this.addMessage(text, "user");
+      this.ui.input.value = "";
+      this.ui.input.disabled = true;
+      this.ui.submit.disabled = true;
 
-    const question = chatInput.value.trim();
-    if (!question) return;
-
-    chatInput.value = "";
-    chatInput.disabled = true;
-    isProcessing = true;
-    addMessage(question, false);
-
-    if (!qaPipeline) {
-      addMessage("Initializing AI...", true);
-      await initModel();
+      this.worker?.postMessage({ type: "query", text });
     }
 
-    const typingIndicator = createTypingIndicator();
-    if (messagesContainer) {
-      messagesContainer.appendChild(typingIndicator);
-      scrollToBottom(messagesContainer);
-    }
+    private addMessage(text: string, type: "user" | "bot-error") {
+      const msg = document.createElement("div");
 
-    try {
-      const result = await qaPipeline(question, RESUME_CONTEXT);
-      removeTypingIndicator();
-      addMessage(result.answer || "I'm not sure about that.", true);
-    } catch (err) {
-      console.error("Error:", err);
-      removeTypingIndicator();
-      addMessage("Sorry, error occurred.", true);
-    } finally {
-      if (chatInput) {
-        chatInput.disabled = false;
-        chatInput.focus();
+      if (type === "user") {
+        msg.className = "flex justify-end gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300";
+        msg.innerHTML = `
+          <div class="max-w-[85%] rounded-2xl rounded-tr-none bg-primary px-4 py-3 text-sm text-primary-foreground shadow-md">
+            ${text}
+          </div>
+        `;
+      } else {
+        msg.className = "flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300";
+        msg.innerHTML = `
+          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive mt-1">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z" /></svg>
+          </div>
+          <div class="max-w-[85%] rounded-2xl rounded-tl-none bg-destructive/10 px-4 py-3 text-sm text-destructive shadow-sm">
+            ${text}
+          </div>
+        `;
       }
-      isProcessing = false;
+
+      this.ui.messages.appendChild(msg);
+      this.scrollToBottom();
+    }
+
+    private addBotResponse(text: string, sources: any[]) {
+      const msg = document.createElement("div");
+      msg.className = "flex gap-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-500";
+
+      // Source HTML generation
+      let sourcesHtml = "";
+      if (sources && sources.length > 0) {
+        const items = sources
+          .map(
+            (s) =>
+              `<li class="truncate hover:text-primary transition-colors cursor-help" title="${s.title}">• ${s.title}</li>`,
+          )
+          .join("");
+        sourcesHtml = `
+          <div class="mt-3 border-t border-border/40 pt-2">
+            <p class="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">Context Sources</p>
+            <ul class="text-[10px] text-muted-foreground space-y-0.5">${items}</ul>
+          </div>
+        `;
+      }
+
+      msg.innerHTML = `
+        <div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z" /></svg>
+        </div>
+        <div class="max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-4 py-3 text-sm text-foreground shadow-sm">
+          <div class="bot-text leading-relaxed"></div>
+          ${sourcesHtml}
+        </div>
+      `;
+
+      this.ui.messages.appendChild(msg);
+
+      // Typing Effect
+      const textContainer = msg.querySelector(".bot-text")!;
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        textContainer.textContent += text.charAt(i);
+        i++;
+        this.scrollToBottom();
+        if (i >= text.length) clearInterval(typeInterval);
+      }, 15); // Speed of typing
+    }
+
+    private updateLoader(progress: number, message: string) {
+      this.ui.loaderBar.style.width = `${progress}%`;
+      this.ui.loaderText.textContent = message;
+    }
+
+    private hideLoader() {
+      this.ui.loader.classList.add("opacity-0", "pointer-events-none");
+      // Wait for transition then enable inputs
+      setTimeout(() => {
+        this.ui.input.disabled = false;
+        this.ui.submit.disabled = false;
+        this.ui.input.focus();
+      }, 300);
+    }
+
+    private updateStatus(status: "online" | "thinking" | "error") {
+      const colors = {
+        online: "bg-green-500",
+        thinking: "bg-blue-500 animate-ping",
+        error: "bg-red-500",
+      };
+      const texts = {
+        online: "Online",
+        thinking: "Thinking...",
+        error: "Error",
+      };
+
+      this.ui.statusDot.className = `absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full ring-2 ring-card ${colors[status]}`;
+      this.ui.statusText.textContent = texts[status];
+    }
+
+    private scrollToBottom() {
+      this.ui.messages.scrollTo({
+        top: this.ui.messages.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }
 
-  toggleBtn?.addEventListener("click", toggleChat);
-  closeBtn?.addEventListener("click", closeChat);
-  chatForm?.addEventListener("submit", handleSubmit);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && chatWindow?.dataset.open === "true") {
-      closeChat();
-    }
-  });
+  // Initialize
+  new RagChat();
 </script>
-
-<style is:global>
-  @keyframes slide-in-from-bottom-2 {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-in {
-    animation: slide-in-from-bottom-2 0.2s ease-out forwards;
-  }
-</style>

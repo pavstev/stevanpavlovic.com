@@ -67,7 +67,7 @@ export default defineConfig({
 
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
-    remarkPlugins: [readingTimeRemarkPlugin, [remarkToc, { heading: "toc", maxDepth: 3 }]],
+    remarkPlugins: [readingTimeRemarkPlugin as any, [remarkToc, { heading: "toc", maxDepth: 3 }]],
     shikiConfig: { theme: "github-dark-dimmed" },
     syntaxHighlight: "shiki",
   },
@@ -86,11 +86,11 @@ export default defineConfig({
     assetsInclude: ["**/*.wasm"],
     build: {
       rollupOptions: {
-        external: ["@resvg/resvg-wasm"],
+        // external: ["@resvg/resvg-wasm"],
       },
     },
     optimizeDeps: {
-      exclude: ["@resvg/resvg-wasm"],
+      exclude: ['canvaskit-wasm'],
     },
     plugins: [tailwindcss()],
   },

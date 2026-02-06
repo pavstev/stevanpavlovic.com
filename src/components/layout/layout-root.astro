@@ -25,13 +25,13 @@ interface Props {
 }
 
 const { class: className, description, includeFooter = true, includeHeader = true, slug, title } = Astro.props;
-const ogImageUrl = new URL(`/api/og/${slug}.png`, Astro.url.origin).href;
+const ogImageUrl = new URL(`/api/og/${slug}.png`, Astro.site);
 ---
 
 <!doctype html>
 <html class="scroll-smooth" lang="en">
   <head>
-    <Head description={description} image={ogImageUrl} title={title} />
+    <Head description={description} image={ogImageUrl.toString()} title={title} />
     <ClientRouter />
   </head>
   <body class="font-body bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">

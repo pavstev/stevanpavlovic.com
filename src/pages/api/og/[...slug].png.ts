@@ -1,198 +1,141 @@
-import type { APIRoute, GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
-import satori from "satori";
-import { Resvg, initWasm } from "@resvg/resvg-wasm";
+import { OGImageRoute } from "astro-og-canvas";
+import { getCollection, type CollectionKey } from "astro:content";
+import dayjs from "dayjs";
 
-// 1. Import the WASM binary explicitly
-import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm?url";
+/**
+ * Define which collections we want to generate OG images for.
+ */
+const collectionsToMap: CollectionKey[] = [
+  "blog",
+  "projects",
+  "experience",
+  "people",
+  "recommendations",
+  "companies",
+];
 
-// 2. Import fonts as URLs so Vite handles the bundling/paths for us
-// Note: We use the WOFF file directly from the package
-import interBoldUrl from "@fontsource-variable/inter/files/inter-latin-700-normal.woff?url";
-import interRegularUrl from "@fontsource-variable/inter/files/inter-latin-400-normal.woff?url";
+/**
+ * Fetch all entries across collections in parallel.
+ */
+const collectionResults = await Promise.all(
+  collectionsToMap.map(async (collection) => {
+    const entries = await getCollection(collection);
+    return { collection, entries };
+  })
+);
 
-// Initialize the Wasm module *once* (outside the handler)
-let wasmInitialized = false;
-
-const initResvg = async () => {
-  if (wasmInitialized) return;
-
-  // Fetch the WASM binary from the URL Vite provided
-  const wasmModule = await fetch(resvgWasm).then((res) => res.arrayBuffer());
-  await initWasm(wasmModule);
-  wasmInitialized = true;
+/**
+ * Helper to calculate reading time based on word count.
+ */
+const getReadingTime = (body?: string) => {
+  const wordCount = body ? body.split(/\s+/).length : 0;
+  return `${Math.ceil(wordCount / 200)} min read`;
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection("blog");
-  return posts.map((post) => {
-    const wordCount = post.body ? post.body.split(/\s+/).length : 0;
-    const readingTime = `${Math.ceil(wordCount / 200)} min read`;
+/**
+ * Smart mapping of collection entries to OG page configurations.
+ * Keys are prefixed with the collection name to create unique, logical URLs.
+ */
+const pages = Object.fromEntries(
+  collectionResults.flatMap(({ collection, entries }) =>
+    entries.map((entry) => {
+      let meta = "Portfolio Item";
+      const data = entry.data as any;
+
+      // Extract high-value metadata per collection
+      if (collection === "blog") {
+        // Use dayjs for consistent and clean date formatting
+        const dateStr = data.pubDate ? dayjs(data.pubDate).format("MMM D, YYYY") : "";
+        meta = `${dateStr}${dateStr ? " • " : ""}${getReadingTime(entry.body)}`;
+      } else if (collection === "projects") {
+        meta = data.subtitle || "Featured Project";
+      } else if (collection === "experience") {
+        meta = `${data.role} • Professional Experience`;
+      } else if (collection === "people") {
+        meta = data.title || "Technical Specialist";
+      } else if (collection === "recommendations") {
+        meta = `Professional Endorsement`;
+      } else if (collection === "companies") {
+        meta = `${data.industry || "Technology"} • ${data.size || "Enterprise"}`;
+      }
+
+      // Robust title fallback logic
+      const title =
+        data.title ||
+        data.name ||
+        (data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : "Untitled Content");
+
+      return [
+        `${collection}/${entry.id}`,
+        {
+          title,
+          description: data.description || "",
+          meta,
+          collection,
+        },
+      ];
+    })
+  )
+);
+
+/**
+ * Generate the final routes and images.
+ */
+export const { getStaticPaths, GET } = await OGImageRoute({
+  param: "slug",
+  pages: pages,
+
+  getImageOptions: (_path, page) => {
+    // Brand identity mapping via collection keys
+    const themeMap: Record<string, [number, number, number]> = {
+      blog: [59, 130, 246],            // Blue
+      projects: [16, 185, 129],        // Emerald
+      experience: [139, 92, 246],      // Violet
+      people: [244, 63, 94],           // Rose
+      recommendations: [245, 158, 11], // Amber
+      companies: [100, 116, 139],      // Slate
+    };
+
+    const accentColor = themeMap[page.collection] || [100, 116, 139];
 
     return {
-      params: { slug: post.id },
-      props: {
-        description: post.data.description ?? "",
-        readingTime,
-        title: post.data.title ?? "Untitled",
+      title: page.title,
+      // Enhanced visual hierarchy: Description | Metadata | Brand
+      description: `${page.description}\n\n${page.meta}\n\nstevan.dev`,
+
+      // Personal branding: profile/logo at the top
+      logo: {
+        path: "./src/assets/profile.jpeg",
+        size: [80],
+      },
+
+      // High-performance CDN fonts for serverless/edge compatibility
+      fonts: [
+        "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-400-normal.woff",
+        "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/files/inter-latin-700-normal.woff",
+      ],
+
+      bgGradient: [[255, 255, 255]],
+      border: {
+        color: accentColor,
+        width: 24,
+        side: "inline-start",
+      },
+      padding: 80,
+      font: {
+        title: {
+          color: [15, 23, 42], // Slate 900
+          size: 78,
+          weight: "Bold",
+          families: ["Inter"],
+        },
+        description: {
+          color: [71, 85, 107], // Slate 600
+          size: 36,
+          lineHeight: 1.4,
+          families: ["Inter"],
+        },
       },
     };
-  });
-};
-
-export const GET: APIRoute = async ({ props }) => {
-  const { description, readingTime, title } = props;
-
-  // Ensure WASM is ready
-  await initResvg();
-
-  // 3. Load Fonts via Fetch (Standard Web API works in Cloudflare)
-  const [boldFontData, regularFontData] = await Promise.all([
-    fetch(interBoldUrl).then((res) => res.arrayBuffer()),
-    fetch(interRegularUrl).then((res) => res.arrayBuffer()),
-  ]);
-
-  const html: Parameters<typeof satori>[0] = {
-    type: "div",
-    props: {
-      style: {
-        alignItems: "flex-start",
-        backgroundColor: "#fff",
-        backgroundImage: "radial-gradient(circle at 2px 2px, #f1f5f9 2px, transparent 0)",
-        backgroundSize: "40px 40px",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        justifyContent: "space-between",
-        padding: "80px",
-        width: "100%",
-        fontFamily: "Inter",
-      },
-      children: [
-        {
-          type: "div",
-          props: {
-            style: { display: "flex", flexDirection: "column" },
-            children: [
-              {
-                type: "div",
-                props: {
-                  style: {
-                    alignItems: "center",
-                    display: "flex",
-                    gap: "12px",
-                    marginBottom: "40px",
-                  },
-                  children: [
-                    {
-                      type: "div",
-                      props: {
-                        style: { backgroundColor: "#3b82f6", borderRadius: "4px", height: "8px", width: "40px" },
-                      },
-                    },
-                    {
-                      type: "span",
-                      props: {
-                        children: "TECHNICAL BLOG",
-                        style: { color: "#64748b", fontSize: "20px", fontWeight: 700, letterSpacing: "0.1em" },
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "h1",
-                props: {
-                  children: title,
-                  style: {
-                    color: "#0f172a",
-                    fontSize: "84px",
-                    fontWeight: 700,
-                    lineHeight: 1.1,
-                    marginBottom: "24px",
-                  },
-                },
-              },
-              {
-                type: "p",
-                props: {
-                  children: description,
-                  style: {
-                    color: "#475569",
-                    fontSize: "36px",
-                    lineHeight: 1.5,
-                    maxWidth: "900px",
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          type: "div",
-          props: {
-            style: {
-              alignItems: "center",
-              borderTop: "2px solid #f1f5f9",
-              display: "flex",
-              justifyContent: "space-between",
-              paddingTop: "40px",
-              width: "100%",
-            },
-            children: [
-              {
-                type: "span",
-                props: {
-                  children: `spcom.final • ${readingTime}`,
-                  style: { color: "#94a3b8", fontSize: "24px", fontWeight: 500 },
-                },
-              },
-              {
-                type: "div",
-                props: {
-                  children: "stevan.dev",
-                  style: { color: "#3b82f6", fontSize: "24px", fontWeight: 700 },
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-  };
-
-  const svg = await satori(html, {
-    fonts: [
-      {
-        name: "Inter",
-        data: regularFontData,
-        style: "normal",
-        weight: 400,
-      },
-      {
-        name: "Inter",
-        data: boldFontData,
-        style: "normal",
-        weight: 700,
-      },
-    ],
-    height: 630,
-    width: 1200,
-  });
-
-  const resvg = new Resvg(svg, {
-    fitTo: { mode: "width", value: 1200 },
-    imageRendering: 0, // optimizeSpeed
-    shapeRendering: 2, // geometricPrecision
-  });
-
-  const pngData = resvg.render();
-  const pngBuffer = pngData.asPng();
-
-  return new Response(pngBuffer, {
-    headers: {
-      "Cache-Control": "public, max-age=31536000, immutable",
-      "Content-Type": "image/png",
-    },
-  });
-};
+  },
+});

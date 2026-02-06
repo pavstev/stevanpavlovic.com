@@ -18,7 +18,7 @@ const { image } = Astro.props;
         className="size-full object-cover"
         client:load
         height={image.height}
-        src={typeof image.src === "string" ? image.src : image.src}
+        src={image.src}
         width={image.width}
       />
       <div class="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset sm:rounded-3xl" />

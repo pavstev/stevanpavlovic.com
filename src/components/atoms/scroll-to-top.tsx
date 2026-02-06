@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
-const ScrollToTop: React.FC = () => {
+const ScrollToTop: FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

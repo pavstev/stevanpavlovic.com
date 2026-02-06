@@ -112,5 +112,46 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
-  }
+  },
+  "frontMatter.content.pageFolders": [
+    {
+      "path": "[[workspace]]/src/content/blog"
+    },
+    {
+      "title": "tags",
+      "path": "[[workspace]]/src/content/tags"
+    },
+    {
+      "title": "recommendations",
+      "path": "[[workspace]]/src/content/recommendations"
+    },
+    {
+      "title": "projects",
+      "path": "[[workspace]]/src/content/projects"
+    },
+    {
+      "path": "[[workspace]]/src/content/people"
+    },
+    {
+      "title": "experience",
+      "path": "[[workspace]]/src/content/experience"
+    },
+    {
+      "title": "categories",
+      "path": "[[workspace]]/src/content/categories"
+    },
+    {
+      "title": "locations",
+      "path": "[[workspace]]/src/content/locations"
+    },
+    {
+      "title": "companies",
+      "path": "[[workspace]]/src/content/companies"
+    }
+  ],
+  "frontMatter.content.publicFolder": {
+    "path": "src/assets",
+    "relative": true
+  },
+  "frontMatter.git.enabled": true
 }

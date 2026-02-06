@@ -6,7 +6,7 @@ interface Props {
   maxLength?: number;
 }
 
-const { description, maxLength = 120 } = Astro.props;
+const { description, maxLength = 240 } = Astro.props;
 
 const shouldTruncate = description && description.length > maxLength;
 const truncatedText = shouldTruncate ? description.slice(0, maxLength).trim() + "..." : description;

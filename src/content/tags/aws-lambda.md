@@ -1,5 +1,5 @@
 ---
-aws-lambda
+id: aws-lambda
 label: AWS Lambda
 category: cloud
 description: AWS Lambda - Serverless compute service

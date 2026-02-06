@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "safety-real-time"
+company: "safety-real-time"
 role: Chief Technology Officer
-location:
-  reference: "remote-belgrade-serbia"
+location: "remote-belgrade-serbia"
 startDate: 2022-04-01
 endDate: 2024-03-01
 type: Full-time

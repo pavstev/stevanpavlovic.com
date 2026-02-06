@@ -1,5 +1,5 @@
 ---
-algorithms
+id: algorithms
 label: Algorithms
 category: architecture
 description: Algorithms - Step-by-step procedures for solving computational problems

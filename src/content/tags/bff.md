@@ -1,5 +1,5 @@
 ---
-bff
+id: bff
 label: BFF
 category: architecture
 description: BFF - Backend for Frontend pattern

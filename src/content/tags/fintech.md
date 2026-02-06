@@ -1,5 +1,5 @@
 ---
-fintech
+id: fintech
 label: Fintech
 category: other
 description: Fintech - Financial technology and digital financial services

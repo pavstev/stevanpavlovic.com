@@ -1,5 +1,5 @@
 ---
-event-sourcing
+id: event-sourcing
 label: Event Sourcing
 category: architecture
 description: Event Sourcing - Storing state changes as a sequence of events

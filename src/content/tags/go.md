@@ -1,5 +1,5 @@
 ---
-go
+id: go
 label: Go
 category: backend
 description: Go - Programming language for efficient backend development

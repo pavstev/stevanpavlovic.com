@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "apoddo"
+company: "apoddo"
 role: Back-end Developer
-location:
-  reference: "remote-belgrade-serbia"
+location: "remote-belgrade-serbia"
 startDate: 2021-01-01
 endDate: 2022-03-01
 type: Contract

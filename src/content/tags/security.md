@@ -1,5 +1,5 @@
 ---
-security
+id: security
 label: Security
 category: security
 description: Security - Security

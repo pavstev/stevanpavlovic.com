@@ -1,5 +1,5 @@
 ---
-crm
+id: crm
 label: CRM
 category: backend
 description: CRM - Customer Relationship Management systems

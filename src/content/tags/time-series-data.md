@@ -1,5 +1,5 @@
 ---
-time-series-data
+id: time-series-data
 label: Time Series Data
 category: database
 description: Time Series Data - Time Series Data

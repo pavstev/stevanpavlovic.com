@@ -1,5 +1,5 @@
 ---
-typescript
+id: typescript
 label: Typescript
 category: frontend
 description: Typescript - Typescript

@@ -5,7 +5,7 @@ company: "Catena Media"
 linkedInProfile: "https://linkedin.com/in/mrodriguez"
 avatar: "https://i.pravatar.cc/150?img=12"
 date: "2020-01-15"
-relationship: "Direct Manager at Quantox Technology (Catena Media project)"
+relationship: Manager
 context: "Michael managed Stevan during his outsourced engagement with Catena Media on AskGamblers.com"
 ---
 

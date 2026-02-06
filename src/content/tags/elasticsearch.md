@@ -1,5 +1,5 @@
 ---
-elasticsearch
+id: elasticsearch
 label: Elasticsearch
 category: database
 description: Elasticsearch - Distributed search and analytics engine

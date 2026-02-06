@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "freelance"
+company: "freelance"
 role: Full Stack Web Developer
-location:
-  reference: "remote-global"
+location: "remote-global"
 startDate: 2015-02-01
 endDate: 2016-04-01
 type: Freelance

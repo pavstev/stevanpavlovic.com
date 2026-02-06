@@ -1,7 +1,8 @@
-import type { CollectionKey, Nullable } from "./types";
+import type { CollectionKey } from "astro:content";
 
-import { type NavItem, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
-import { NAV_ITEMS, PROFILE } from "../../config";
+import type { Nullable } from "./types";
+
+import { NAV_ITEMS, type NavItem, PROFILE, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
 
 export const getCollectionConfig = (
   collection: CollectionKey,
@@ -13,7 +14,7 @@ export const getCollectionConfig = (
   tagTitle: string;
   title: string;
 } => {
-  const navItem = NAV_ITEMS[collection] as Nullable<NavItem>;
+  const navItem = NAV_ITEMS[collection as keyof typeof NAV_ITEMS] as Nullable<NavItem>;
   if (!navItem) {
     throw new Error(`Unknown collection: ${collection}`);
   }

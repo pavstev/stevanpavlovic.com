@@ -1,5 +1,5 @@
 ---
-rest
+id: rest
 label: REST
 category: architecture
 description: REST - REST

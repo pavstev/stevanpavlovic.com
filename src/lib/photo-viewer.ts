@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable no-restricted-syntax */
 export type PhotoTool = "draw" | "erase" | "move";
 
 export interface PhotoViewerOptions {

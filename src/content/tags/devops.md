@@ -1,5 +1,5 @@
 ---
-devops
+id: devops
 label: DevOps
 category: devops
 description: DevOps - Development and operations practices for software delivery

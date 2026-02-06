@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "spark451"
+company: "spark451"
 role: Back-end Developer
-location:
-  reference: "remote-new-york-ny"
+location: "remote-new-york-ny"
 startDate: 2017-09-01
 endDate: 2018-06-01
 type: Contract

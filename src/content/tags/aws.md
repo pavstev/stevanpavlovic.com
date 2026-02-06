@@ -1,5 +1,5 @@
 ---
-aws
+id: aws
 label: AWS
 category: cloud
 description: AWS - Amazon Web Services cloud computing platform

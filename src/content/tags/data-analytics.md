@@ -1,5 +1,5 @@
 ---
-data-analytics
+id: data-analytics
 label: Data Analytics
 category: backend
 description: Data Analytics - Analyzing and interpreting data to gain insights

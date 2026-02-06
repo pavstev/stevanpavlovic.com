@@ -286,6 +286,7 @@ export default defineConfig(
       ...markdownlintPlugin.configs.recommended.rules,
       "markdownlint/md012": "off",
       "markdownlint/md013": "off",
+      "markdownlint/md024": "off",
       "markdownlint/md041": "off",
     },
   },

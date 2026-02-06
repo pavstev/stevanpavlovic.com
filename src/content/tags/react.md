@@ -1,5 +1,5 @@
 ---
-react
+id: react
 label: React
 category: frontend
 description: React - React

@@ -1,5 +1,5 @@
 ---
-redis
+id: redis
 label: Redis
 category: database
 description: Redis - Redis

@@ -1,5 +1,5 @@
 ---
-serverless
+id: serverless
 label: Serverless
 category: cloud
 description: Serverless - Serverless

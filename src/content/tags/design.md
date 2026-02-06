@@ -1,5 +1,5 @@
 ---
-design
+id: design
 label: Design
 category: architecture
 description: Design - Software design principles and patterns

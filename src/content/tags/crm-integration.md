@@ -1,5 +1,5 @@
 ---
-crm-integration
+id: crm-integration
 label: CRM Integration
 category: backend
 description: CRM Integration - Connecting CRM systems with other business applications

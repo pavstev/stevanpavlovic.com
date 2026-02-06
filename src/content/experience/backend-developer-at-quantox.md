@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "quantox"
+company: "quantox"
 role: Back-end Developer
-location:
-  reference: "belgrade-serbia"
+location: "belgrade-serbia"
 startDate: 2018-11-01
 endDate: 2020-01-01
 type: Full-time

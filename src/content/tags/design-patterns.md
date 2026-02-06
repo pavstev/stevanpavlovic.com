@@ -1,5 +1,5 @@
 ---
-design-patterns
+id: design-patterns
 label: Design Patterns
 category: architecture
 description: Design Patterns - Reusable solutions to common software problems

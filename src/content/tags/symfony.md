@@ -1,5 +1,5 @@
 ---
-symfony
+id: symfony
 label: Symfony
 category: backend
 description: Symfony - Symfony

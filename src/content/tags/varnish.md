@@ -1,5 +1,5 @@
 ---
-varnish
+id: varnish
 label: Varnish
 category: devops
 description: Varnish - Varnish

@@ -1,5 +1,5 @@
 ---
-tech
+id: tech
 label: Tech
 category: other
 description: Tech - Tech

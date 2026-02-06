@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "167pluto"
+company: "167pluto"
 role: Senior Software Engineer
-location:
-  reference: "remote-global"
+location: "remote-global"
 startDate: 2024-02-01
 endDate: 2025-06-01
 type: Full-time

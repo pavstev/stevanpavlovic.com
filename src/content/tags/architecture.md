@@ -1,5 +1,5 @@
 ---
-architecture
+id: architecture
 label: Architecture
 category: architecture
 description: Architecture - Software architecture patterns and design principles

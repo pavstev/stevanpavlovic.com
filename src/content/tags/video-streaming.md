@@ -1,5 +1,5 @@
 ---
-video-streaming
+id: video-streaming
 label: Video Streaming
 category: frontend
 description: Video Streaming - Video Streaming

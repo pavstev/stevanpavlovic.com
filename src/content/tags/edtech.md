@@ -1,5 +1,5 @@
 ---
-edtech
+id: edtech
 label: EdTech
 category: other
 description: EdTech - Educational technology and learning platforms

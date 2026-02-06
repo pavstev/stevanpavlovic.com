@@ -1,5 +1,5 @@
 ---
-real-time
+id: real-time
 label: Real Time
 category: architecture
 description: Real Time - Real Time

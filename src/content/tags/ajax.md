@@ -1,5 +1,5 @@
 ---
-ajax
+id: ajax
 label: AJAX
 category: frontend
 description: AJAX - Asynchronous JavaScript and XML for dynamic web applications

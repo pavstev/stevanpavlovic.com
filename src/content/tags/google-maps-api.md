@@ -1,5 +1,5 @@
 ---
-google-maps-api
+id: google-maps-api
 label: Google Maps API
 category: frontend
 description: Google Maps API - Mapping and location services

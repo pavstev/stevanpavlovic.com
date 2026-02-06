@@ -1,5 +1,5 @@
 ---
-cloud
+id: cloud
 label: Cloud
 category: cloud
 description: Cloud - Cloud computing platforms and infrastructure services

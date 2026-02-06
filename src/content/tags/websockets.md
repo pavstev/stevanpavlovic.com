@@ -1,5 +1,5 @@
 ---
-websockets
+id: websockets
 label: Websockets
 category: architecture
 description: Websockets - Websockets

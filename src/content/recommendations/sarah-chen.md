@@ -5,7 +5,7 @@ company: "167Pluto"
 linkedInProfile: "https://linkedin.com/in/sarachen"
 avatar: "https://i.pravatar.cc/150?img=45"
 date: "2025-06-15"
-relationship: "CTO and Technical Leader at 167Pluto"
+relationship: Manager
 context: "Sarah led the engineering organization at 167Pluto where Stevan architected the betting platform"
 ---
 

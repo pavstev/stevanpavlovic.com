@@ -1,5 +1,5 @@
 ---
-frontend
+id: frontend
 label: Frontend
 category: frontend
 description: Frontend - Client-side development and user interfaces

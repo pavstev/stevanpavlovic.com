@@ -1,5 +1,5 @@
 ---
-automation
+id: automation
 label: Automation
 category: devops
 description: Automation - Automation

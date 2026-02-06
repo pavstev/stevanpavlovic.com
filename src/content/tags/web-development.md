@@ -1,5 +1,5 @@
 ---
-web-development
+id: web-development
 label: Web Development
 category: frontend
 description: Web Development - Web Development

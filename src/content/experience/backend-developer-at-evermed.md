@@ -1,9 +1,7 @@
 ---
-company:
-  reference: "evermed"
+company: "evermed"
 role: Back-end Developer
-location:
-  reference: "remote-belgrade-serbia"
+location: "remote-belgrade-serbia"
 startDate: 2021-01-01
 endDate: 2021-08-01
 type: Contract

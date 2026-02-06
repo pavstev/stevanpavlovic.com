@@ -1,5 +1,5 @@
 ---
-api-orchestration
+id: api-orchestration
 label: API Orchestration
 category: architecture
 description: API Orchestration - Coordinating multiple API calls into unified workflows

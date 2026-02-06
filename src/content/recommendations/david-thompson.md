@@ -5,7 +5,7 @@ company: "Spark451 Inc."
 linkedInProfile: "https://linkedin.com/in/davidthompson"
 avatar: "https://i.pravatar.cc/150?img=33"
 date: "2018-07-10"
-relationship: "Product Manager working closely with Stevan on Element451"
+relationship: Manager
 context: "David worked extensively with Stevan on the Intelligent Admissions module at Spark451"
 ---
 

@@ -1,5 +1,5 @@
 ---
-workflow-engine
+id: workflow-engine
 label: Workflow Engine
 category: architecture
 description: Workflow Engine - Workflow Engine

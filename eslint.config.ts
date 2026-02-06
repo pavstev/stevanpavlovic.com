@@ -40,6 +40,7 @@ export default defineConfig(
     "dist/**/*",
     ".astro/**/*",
     "node_modules/**/*",
+    "**/.eslintcache",
     ".wrangler/**/*",
     "src/env.d.ts",
     ".git/**/*",

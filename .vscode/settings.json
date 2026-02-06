@@ -70,6 +70,7 @@
     ".tanstack/": true
   },
   "search.exclude": {
+    "**/worker-configuration.d.ts": true,
     "**/node_modules": true,
     "**/bower_components": true,
     "**/*.code-search": true,

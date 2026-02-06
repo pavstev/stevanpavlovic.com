@@ -1,6 +1,5 @@
-import type React from "react";
-
 import { Icon } from "@iconify/react";
+import React from "react";
 import { useEffect, useRef } from "react";
 
 import { cn } from "../../lib/cn";

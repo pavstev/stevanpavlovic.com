@@ -5,8 +5,6 @@ import { Icon } from "astro-icon/components";
 import { type VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
-import { cn } from "../../lib/cn";
-
 const variants = cva(
   "inline-flex cursor-pointer items-center justify-center gap-2 font-medium ring-offset-background transition-all duration-300 ease-out select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   {
@@ -95,17 +93,17 @@ if (Element === "button" && !elementProps.type) {
 ---
 
 <Tag
-  class:list={cn(
+  class:list={[
     variants({ className, size, variant }),
     variant === "nav" && navActiveClasses,
     (icon || withArrow) && "group",
-  )}
+  ]}
   {...elementProps}
 >
   {
     icon && (
       <Icon
-        class:list={cn("size-4", variant === "back" && "transition-transform group-hover:-translate-x-0.5")}
+        class:list={["size-4", variant === "back" && "transition-transform group-hover:-translate-x-0.5"]}
         name={icon}
       />
     )

@@ -3,8 +3,6 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "../../lib/cn";
-
 const variants = cva("leading-relaxed wrap-break-word", {
   defaultVariants: {
     size: "base",
@@ -43,6 +41,6 @@ const { as = "p", class: className, size, variant, ...props } = Astro.props;
 const Tag = as as any;
 ---
 
-<Tag class:list={cn(variants({ className, size, variant }))} {...props}>
+<Tag class:list={variants({ className, size, variant })} {...props}>
   <slot />
 </Tag>

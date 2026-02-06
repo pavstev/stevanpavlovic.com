@@ -41,7 +41,9 @@ export default defineConfig({
         forward: ["dataLayer.push", "gtag"],
       },
     }),
-    pagefind(),
+    pagefind({
+      indexConfig: {},
+    }),
 
     brokenLinksChecker({
       cacheExternalLinks: true,

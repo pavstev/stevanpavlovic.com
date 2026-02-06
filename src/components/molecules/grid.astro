@@ -1,7 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { cn } from "../../lib/cn";
 import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/styles";
 
 interface Props extends HTMLAttributes<"div"> {
@@ -16,6 +15,6 @@ const colClass = buildResponsiveClasses(cols, "grid-cols");
 const gapClass = `gap-${gap}`;
 ---
 
-<Tag class:list={cn("grid w-full", colClass, gapClass, className)} {...props}>
+<Tag class:list={["grid w-full", colClass, gapClass, className]} {...props}>
   <slot />
 </Tag>

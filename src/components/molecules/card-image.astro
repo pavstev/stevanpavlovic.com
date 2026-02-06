@@ -4,8 +4,6 @@ import type { HTMLAttributes } from "astro/types";
 
 import { Image } from "astro:assets";
 
-import { cn } from "../../lib/cn";
-
 interface Props extends HTMLAttributes<"div"> {
   alt?: string;
   class?: string;
@@ -17,19 +15,19 @@ interface Props extends HTMLAttributes<"div"> {
 const { alt = "", class: className, image, loading = "lazy", wrapperClass, ...rest } = Astro.props;
 ---
 
-<div class:list={cn("relative overflow-hidden rounded-lg border border-border/50 bg-muted", wrapperClass)} {...rest}>
+<div class:list={["relative overflow-hidden rounded-lg border border-border/50 bg-muted", wrapperClass]} {...rest}>
   {
     typeof image === "string" ? (
       <img
         alt={alt}
-        class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
+        class:list={["size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className]}
         loading={loading}
         src={image}
       />
     ) : (
       <Image
         alt={alt}
-        class:list={cn("size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className)}
+        class:list={["size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]", className]}
         height={400}
         loading={loading}
         src={image}

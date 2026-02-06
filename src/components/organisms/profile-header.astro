@@ -1,5 +1,4 @@
 ---
-import { cn } from "../../lib/cn";
 import HeroAvatar from "../molecules/hero-avatar";
 import HeroContent from "../molecules/hero-content.astro";
 
@@ -10,8 +9,8 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<section class:list={cn("relative overflow-hidden", className)}>
-  <div class:list={cn("relative z-10 grid grid-cols-1 items-center gap-12 md:grid-cols-[1fr_auto] md:items-start")}>
+<section class:list={["relative overflow-hidden", className]}>
+  <div class:list={"relative z-10 grid grid-cols-1 items-center gap-12 md:grid-cols-[1fr_auto] md:items-start"}>
     <!-- Content -->
     <HeroContent class="order-2 md:order-1" />
 

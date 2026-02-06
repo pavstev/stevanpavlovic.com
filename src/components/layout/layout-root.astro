@@ -5,7 +5,6 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import { cn } from "../../lib/cn";
 import ScrollToTop from "../atoms/scroll-to-top";
 import Chatbot from "../molecules/chatbot.astro";
 // import Chatbot from '../molecules/chatbot.astro';
@@ -66,7 +65,7 @@ const { class: className, description, includeFooter = true, includeHeader = tru
 
     {includeHeader && <Header data-pagefind-ignore />}
 
-    <Container as="main" class:list={cn("relative z-10 pt-24", className)} data-pagefind-body transition:name="main">
+    <Container as="main" class:list={["relative z-10 pt-24", className]} data-pagefind-body transition:name="main">
       <slot />
     </Container>
 

@@ -1,6 +1,4 @@
 ---
-import { cn } from "../../lib/cn";
-
 interface Props {
   className?: string;
   label: string | undefined;
@@ -9,7 +7,7 @@ interface Props {
 const { className, label } = Astro.props;
 ---
 
-<div class:list={cn("flex flex-col gap-1.5 py-1", className)}>
+<div class:list={["flex flex-col gap-1.5 py-1", className]}>
   <span class="font-mono text-sm font-bold whitespace-nowrap text-muted-foreground/60">
     <slot name="label">
       <span>{label}</span>

@@ -7,7 +7,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import type { Tag } from "../../lib/collections";
 
-import { cn } from "../../lib/cn";
 import Badge from "../atoms/badge.astro";
 import FormattedDate from "../atoms/formatted-date.astro";
 import Heading from "../atoms/heading.astro";
@@ -112,7 +111,7 @@ const isSimpleCard = !hasData;
 
 // Layout Helpers
 const Wrapper = url ? "a" : "div";
-const cardClasses = cn(variants({ className, interactive: !!url || interactive, variant: visual }));
+const cardClasses = variants({ className, interactive: !!url || interactive, variant: visual });
 
 // Determine Layout Mode
 // If it's a list view, we use row layout. Otherwise default column.
@@ -122,19 +121,22 @@ const isRowLayout = list && !icon;
 
 {
   isSimpleCard ? (
-    <Wrapper class:list={cn(cardClasses)} href={url} style={{ "--glow-color": glowColor }} {...rest}>
+    <Wrapper class:list={[cardClasses]} href={url} style={{ "--glow-color": glowColor }} {...rest}>
       <CardSpotlight glowColor={glowColor} />
       <slot />
     </Wrapper>
   ) : (
-    <Wrapper class:list={cn("group block", !isRowLayout && "h-full")} href={url} {...rest}>
+    <Wrapper class:list={["group block", !isRowLayout && "h-full"]} href={url} {...rest}>
       <div
-        class:list={cn(
+        class:list={[
           cardClasses,
-          isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4",
-          align === "center" && !isRowLayout ? "items-center text-center" : "items-start",
+          { "flex-row gap-4 p-4!": isRowLayout, "h-full flex-col gap-4": !isRowLayout },
+          {
+            "items-center text-center": align === "center" && !isRowLayout,
+            "items-start": !(align === "center" && !isRowLayout),
+          },
           animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
-        )}
+        ]}
         style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
       >
         {/* Background Effects */}
@@ -181,13 +183,18 @@ const isRowLayout = list && !icon;
         )}
 
         {/* Content Section */}
-        <div class:list={cn("flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4")}>
+        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-4": !isRowLayout }]}>
           {/* Header Row */}
-          <div class:list={cn("flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row")}>
-            <div class:list={cn("flex flex-col", isRowLayout ? "gap-0" : "gap-1")}>
+          <div
+            class:list={[
+              "flex w-full justify-between gap-4",
+              { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
+            ]}
+          >
+            <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout }]}>
               {/* Date (List View / Grid View) */}
               {date && (
-                <div class:list={cn("flex items-center justify-between", !isRowLayout && "mb-1")}>
+                <div class:list={["flex items-center justify-between", !isRowLayout && "mb-1"]}>
                   <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
                     <FormattedDate date={date} full />
                   </Text>
@@ -196,10 +203,10 @@ const isRowLayout = list && !icon;
 
               {/* Title */}
               <Heading
-                class:list={cn(
+                class:list={[
                   "transition-colors group-hover:text-primary",
-                  isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2",
-                )}
+                  { "line-clamp-2": !isRowLayout, "mt-1 line-clamp-1": isRowLayout },
+                ]}
                 level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
                 size={isRowLayout ? "md" : "lg"}
               >
@@ -209,7 +216,7 @@ const isRowLayout = list && !icon;
               {/* Subtitle */}
               {subtitle && (
                 <Text
-                  class:list={cn("font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1")}
+                  class:list={["font-mono tracking-wider uppercase", { "mt-0.5": isRowLayout, "mt-1": !isRowLayout }]}
                   size="xs"
                   variant="muted"
                 >
@@ -219,20 +226,19 @@ const isRowLayout = list && !icon;
             </div>
 
             {/* Right Side: Meta & Action */}
-            <div
-              class:list={cn("flex items-center gap-2 self-start", align === "center" && !isRowLayout ? "hidden" : "")}
-            >
+            <div class:list={["flex items-center gap-2 self-start", { hidden: align === "center" && !isRowLayout }]}>
               {meta && <Badge variant="secondary">{meta}</Badge>}
 
               {url && (
                 <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
                   <div
-                    class:list={cn(
+                    class:list={[
                       "absolute right-0 flex items-center text-muted-foreground transition-all duration-300",
-                      actionLabel
-                        ? "group-hover:-translate-x-2 group-hover:opacity-0"
-                        : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary",
-                    )}
+                      {
+                        "group-hover:-translate-x-2 group-hover:opacity-0": actionLabel,
+                        "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary": !actionLabel,
+                      },
+                    ]}
                   >
                     <Icon name="mdi:arrow-top-right" />
                   </div>
@@ -250,7 +256,10 @@ const isRowLayout = list && !icon;
           {/* Body: Description */}
           {description && (
             <Text
-              class:list={cn("text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "line-clamp-2 flex-1")}
+              class:list={[
+                "text-muted-foreground",
+                { "line-clamp-2 flex-1": !isRowLayout, "mt-2 line-clamp-1": isRowLayout },
+              ]}
               size="sm"
             >
               {description}
@@ -258,7 +267,9 @@ const isRowLayout = list && !icon;
           )}
 
           {/* Footer Section */}
-          <div class:list={cn("mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between")}>
+          <div
+            class:list={["mt-auto flex items-center", { "gap-2": isRowLayout, "w-full justify-between": !isRowLayout }]}
+          >
             {tags && tags.length > 0 && (
               <div class:list={[{ "mt-2": isRowLayout }]}>
                 <Tags limit={isRowLayout ? 4 : 3} tags={tags} />

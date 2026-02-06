@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 
-import { cn } from "../../lib/cn";
 import { PROFILE, SITE_CONFIG } from "../../lib/config";
 import Button from "./button.astro";
 
@@ -13,7 +12,7 @@ const { class: className } = Astro.props;
 ---
 
 <Button
-  class:list={cn("group flex items-center gap-2.5 no-underline transition-opacity hover:opacity-90", className)}
+  class:list={["group flex items-center gap-2.5 no-underline transition-opacity hover:opacity-90", className]}
   href="/"
   variant="unstyled"
 >

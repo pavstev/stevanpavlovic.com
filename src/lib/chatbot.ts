@@ -23,7 +23,7 @@ export class RagChat {
     window: document.getElementById("rag-window"),
   };
 
-  private worker: Worker | null = null;
+  private worker: null | Worker = null;
 
   constructor() {
     this.init();
@@ -221,7 +221,7 @@ export class RagChat {
 
   private updateLoader(progress: number, message: string): void {
     this.ui.loaderBar.style.width = `${progress}%`;
-    this.ui.loaderText.textContent = message;
+    if (this.ui.loaderText) this.ui.loaderText.textContent = message;
   }
 
   private updateStatus(status: "error" | "online" | "thinking"): void {

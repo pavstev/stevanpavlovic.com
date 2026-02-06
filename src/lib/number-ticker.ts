@@ -32,7 +32,7 @@ export const initTicker = (): void => {
 };
 
 const animateValue = (obj: HTMLElement, start: number, end: number, duration: number, decimalPlaces: number): void => {
-  let startTimestamp: number | null = null;
+  let startTimestamp: null | number = null;
   const step = (timestamp: number): void => {
     if (!startTimestamp) startTimestamp = timestamp;
     const progress = Math.min((timestamp - startTimestamp) / duration, 1);

@@ -65,7 +65,7 @@ export class AtmosphereWidget {
       if (!res.ok) throw new Error("Failed");
       const data: AtmosphereResponse = await res.json();
 
-      this.belgradeTime = dayjs(data.localTime).toDate() as Date;
+      this.belgradeTime = dayjs(data.localTime).toDate();
       this.updateUI(data);
       this.startClock();
     } catch {

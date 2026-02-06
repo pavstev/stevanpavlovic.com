@@ -38,8 +38,8 @@ const hasSidebar = Astro.slots.has("sidebar");
 >
   <!-- Header Section: Discovery Blueprint -->
   <Stack
-    gap={4}
     class="mb-16"
+    gap={4}
   >
     <Heading
       level={1}
@@ -51,12 +51,12 @@ const hasSidebar = Astro.slots.has("sidebar");
 
     {description && (
       <Text
-        variant="muted"
         class:list={[
           "text-xl",
           "leading-relaxed",
           "max-w-3xl",
         ]}
+        variant="muted"
       >
         {description}
       </Text>
@@ -93,12 +93,12 @@ const hasSidebar = Astro.slots.has("sidebar");
   <!-- Optional Discovery Sidebar -->
   {hasSidebar && (
     <div
-      slot="sidebar"
       class:list={[
         "flex",
         "flex-col",
         "gap-10",
       ]}
+      slot="sidebar"
     >
       <slot name="sidebar" />
     </div>

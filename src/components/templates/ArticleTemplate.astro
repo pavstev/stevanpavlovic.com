@@ -2,8 +2,8 @@
 import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "../../lib/cn";
-import Stack from "../atoms/Stack.astro";
 import Prose from "../atoms/Prose.astro";
+import Stack from "../atoms/Stack.astro";
 import MetaBar from "../molecules/MetaBar.astro";
 import ArticleRenderer from "../organisms/ArticleRenderer.astro";
 
@@ -41,9 +41,9 @@ const hasHero = Astro.slots.has("hero");
   <!-- Position 1: The Context Layer (Hero & Shared Meta) -->
   {hasHero && (
     <Stack
-      slot="header"
-      gap={8}
       class="mb-12"
+      gap={8}
+      slot="header"
     >
       <slot name="hero" />
       <MetaBar
@@ -69,13 +69,13 @@ const hasHero = Astro.slots.has("hero");
   <!-- Position 4: Related Discovery Region -->
   {hasRelated && (
     <div
-      slot="footer"
       class:list={[
         "mt-20",
         "pt-10",
         "border-t",
         "border-white/5",
       ]}
+      slot="footer"
     >
       <slot name="related" />
     </div>

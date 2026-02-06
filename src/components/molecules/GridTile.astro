@@ -1,6 +1,6 @@
 ---
 import { cn } from "../../lib/cn";
-import Spotlight from "../atoms/Spotlight.astro";
+import SpotlightEffect from "../atoms/SpotlightEffect.astro";
 
 interface Props {
   class?: string;
@@ -21,6 +21,6 @@ const { class: className, cols = "col-span-1", rows = "row-span-1" } = Astro.pro
     ),
   ]}
 >
-  <Spotlight class="opacity-0 group-hover/card:opacity-10" />
+  <SpotlightEffect class="opacity-0 group-hover/card:opacity-10" />
   <slot />
 </div>

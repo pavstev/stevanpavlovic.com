@@ -39,19 +39,27 @@ const { class: className, title = "Table of Contents" } = Astro.props;
 <style is:global>
   /* Custom Tocbot Styles */
   .toc-link {
-    @apply block border-l-2 border-transparent py-1 pl-4 text-muted-foreground transition-all duration-300;
+    display: block;
+    border-left: 2px solid transparent;
+    padding-left: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    color: var(--color-muted-foreground);
+    transition: all 0.3s ease;
   }
 
   .is-active-link {
-    @apply border-primary font-semibold text-primary;
+    border-left-color: var(--color-primary);
+    font-weight: 600;
+    color: var(--color-primary);
   }
 
   .toc-link:hover {
-    @apply text-foreground;
+    color: var(--color-foreground);
   }
 
   /* Indentation for h3 */
   .node-name--H3 {
-    @apply pl-4;
+    padding-left: 1rem;
   }
 </style>

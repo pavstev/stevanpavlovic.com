@@ -6,20 +6,13 @@ desc: "A secure, scalable fintech microservice ecosystem built with NestJS, impl
 image: "../../assets/placeholder.png"
 demoUrl: "https://syllo.com"
 tags:
-  - id: nestjs
-    label: NestJS
-  - id: oauth2
-    label: OAuth2
-  - id: acid
-    label: ACID
-  - id: microservices
-    label: Microservices
-  - id: fintech
-    label: Fintech
-  - id: postgresql
-    label: PostgreSQL
-  - id: security
-    label: Security
+  - reference("nestjs")
+  - reference("oauth2")
+  - reference("acid")
+  - reference("microservices")
+  - reference("fintech")
+  - reference("postgresql")
+  - reference("security")
 featured: true
 duration: "8 months"
 teamSize: "3-member backend team"

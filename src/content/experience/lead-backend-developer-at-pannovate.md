@@ -1,28 +1,20 @@
 ---
 company:
-  name: Pannovate
-  website: https://pannovate.net
-  logo: ../../assets/placeholder.png
+  reference: "pannovate"
 role: Lead Back-end Developer
-location: Belgrade, Serbia
+location:
+  reference: "belgrade-serbia"
 startDate: 2020-01-01
 endDate: 2020-12-01
 type: Full-time
 skills:
-  - id: nestjs
-    label: NestJS
-  - id: typescript
-    label: TypeScript
-  - id: postgresql
-    label: PostgreSQL
-  - id: oauth2-oidc
-    label: OAuth2 / OIDC
-  - id: docker
-    label: Docker
-  - id: rabbitmq
-    label: RabbitMQ
-  - id: fintech
-    label: Fintech
+  - nestjs
+  - typescript
+  - postgresql
+  - oauth2-oidc
+  - docker
+  - rabbitmq
+  - fintech
 description: "Architected 'Syllo', a highly secure and scalable fintech microservice ecosystem designed to process millions of payment transactions with sub-second latency. Enforced rigorous security standards by implementing full OAuth2 and OpenID Connect (OIDC) authentication flows for third-party integrations."
 ---
 

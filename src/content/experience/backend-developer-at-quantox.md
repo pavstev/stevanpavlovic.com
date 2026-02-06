@@ -1,23 +1,19 @@
 ---
-company: Quantox Technology
+company:
+  reference: "quantox"
 role: Back-end Developer
-location: Belgrade, Serbia
+location:
+  reference: "belgrade-serbia"
 startDate: 2018-11-01
 endDate: 2020-01-01
 type: Full-time
 skills:
-  - id: php
-    label: PHP
-  - id: symfony
-    label: Symfony
-  - id: mongodb
-    label: MongoDB
-  - id: elasticsearch
-    label: ElasticSearch
-  - id: redis
-    label: Redis
-  - id: performance-tuning
-    label: Performance Tuning
+  - php
+  - symfony
+  - mongodb
+  - elasticsearch
+  - redis
+  - performance-tuning
 description: "Led the massive architectural modernization of AskGamblers.com, one of the world's largest iGaming portals with over 150,000 active users. Systematically refactored legacy technical debt and optimized critical database queries, resulting in a staggering 90% reduction in server resource consumption. Resolved long-standing race conditions and concurrency issues within the MongoDB and Symfony stack. Enforced rigorous architectural standards and implemented comprehensive automated testing, which reduced production regression rates by 70%. Spearheaded the implementation of ElasticSearch for ultra-fast, faceted search across complex datasets."
 ---
 

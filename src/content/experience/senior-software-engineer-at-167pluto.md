@@ -1,30 +1,21 @@
 ---
 company:
-  name: 167pluto
-  website: https://167pluto.com
-  logo: ../../assets/167pluto-logo.png
+  reference: "167pluto"
 role: Senior Software Engineer
-location: Remote
+location:
+  reference: "remote-global"
 startDate: 2024-02-01
 endDate: 2025-06-01
 type: Full-time
 skills:
-  - id: nodejs
-    label: Node.js
-  - id: nestjs
-    label: NestJS
-  - id: kafka
-    label: Kafka
-  - id: postgresql
-    label: PostgreSQL
-  - id: redis
-    label: Redis
-  - id: aws
-    label: AWS
-  - id: ci-cd
-    label: CI/CD
-  - id: microservices
-    label: Microservices
+  - reference("nodejs")
+  - reference("nestjs")
+  - reference("kafka")
+  - reference("postgresql")
+  - reference("redis")
+  - reference("aws")
+  - reference("ci-cd")
+  - microservices
 description: "Architected and spearheaded the development of a state-of-the-art, high-throughput betting platform leveraging a cutting-edge Node.js and NestJS microservices architecture. Engineering focus on extreme scalability and event-driven consistency, processing millions of concurrent transactions with millisecond latency."
 ---
 

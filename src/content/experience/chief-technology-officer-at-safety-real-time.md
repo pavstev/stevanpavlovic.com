@@ -1,30 +1,21 @@
 ---
 company:
-  name: Safety Real Time
-  website: http://safetyrealtime.com
-  logo: ../../assets/safetyrealtime.png
+  reference: "safety-real-time"
 role: Chief Technology Officer
-location: Belgrade, Serbia / Remote
+location:
+  reference: "remote-belgrade-serbia"
 startDate: 2022-04-01
 endDate: 2024-03-01
 type: Full-time
 skills:
-  - id: typescript
-    label: TypeScript
-  - id: react
-    label: React
-  - id: nodejs
-    label: Node.js
-  - id: websockets
-    label: WebSockets
-  - id: timescaledb
-    label: TimescaleDB
-  - id: google-maps-api
-    label: Google Maps API
-  - id: microservices
-    label: Microservices
-  - id: technical-strategy
-    label: Technical Strategy
+  - typescript
+  - react
+  - nodejs
+  - websockets
+  - timescaledb
+  - google-maps-api
+  - microservices
+  - technical-strategy
 description: "Directed the complete technical trajectory and product vision for a high-performance real-time fleet telemetry and safety monitoring platform. Engineered a massive-scale data ingestion engine capable of processing high-frequency vehicle diagnostics and GPS telemetry from thousands of IoT devices simultaneously. Orchestrated a performant full-stack architecture using TypeScript and React to deliver sub-second latency visualizations of large datasets on interactive maps. Standardized engineering practices across the organization, including automated testing, CI/CD, and robust SLA monitoring, ensuring 99.95% uptime for mission-critical logistics operations."
 ---
 

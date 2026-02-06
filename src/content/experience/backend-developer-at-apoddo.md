@@ -1,26 +1,19 @@
 ---
 company:
-  name: Apoddo
-  website: https://apoddo.com
-  logo: ../../assets/placeholder.png
+  reference: "apoddo"
 role: Back-end Developer
-location: Belgrade, Serbia (Remote)
+location:
+  reference: "remote-belgrade-serbia"
 startDate: 2021-01-01
 endDate: 2022-03-01
 type: Contract
 skills:
-  - id: nodejs
-    label: Node.js
-  - id: go
-    label: Go
-  - id: redis
-    label: Redis
-  - id: rest-apis
-    label: REST APIs
-  - id: graphql
-    label: GraphQL
-  - id: microservices
-    label: Microservices
+  - nodejs
+  - go
+  - redis
+  - rest-apis
+  - graphql
+  - microservices
 description: "Engineered critical high-performance Backend-for-Frontend (BFF) infrastructure for Humanity.com, a leading workforce management platform. Specialized in optimizing API orchestration and data aggregation layers to handle peak traffic loads exceeding 100k requests per minute. Implemented sophisticated Redis multi-level caching strategies that reduced database load by 45% and improved mobile application responsiveness by 30%."
 ---
 

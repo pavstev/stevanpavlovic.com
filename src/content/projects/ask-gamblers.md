@@ -6,20 +6,13 @@ desc: "Led the architectural overhaul of a global iGaming authority, refactoring
 image: "../../assets/placeholder.png"
 demoUrl: "https://askgamblers.com"
 tags:
-  - id: php
-    label: PHP
-  - id: symfony
-    label: Symfony
-  - id: mongodb
-    label: MongoDB
-  - id: elasticsearch
-    label: ElasticSearch
-  - id: redis
-    label: Redis
-  - id: varnish
-    label: Varnish
-  - id: performance-tuning
-    label: Performance Tuning
+  - reference("php")
+  - reference("symfony")
+  - reference("mongodb")
+  - reference("elasticsearch")
+  - reference("redis")
+  - reference("varnish")
+  - reference("performance-tuning")
 featured: true
 duration: "14 months"
 teamSize: "Backend team of 6"

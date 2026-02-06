@@ -2,7 +2,7 @@
 title: "High-Throughput Betting Platform"
 subtitle: "Event-Driven Microservices Architecture"
 meta: "2024"
-desc: "A state-of-the-art sports betting and gaming ecosystem architected for extreme concurrency, processing millions of real-time transactions with sub-millisecond latency using Node.js, NestJS, and Kafka event-driven patterns."
+description: "A state-of-the-art sports betting and gaming ecosystem architected for extreme concurrency, processing millions of real-time transactions with sub-millisecond latency using Node.js, NestJS, and Kafka event-driven patterns."
 image: "../../assets/placeholder.png"
 demoUrl: "https://167pluto.com"
 tags:

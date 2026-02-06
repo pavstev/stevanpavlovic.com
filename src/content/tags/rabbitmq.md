@@ -56,5 +56,3 @@ RabbitMQ is an open-source message broker that implements the Advanced Message Q
 - Not planning for scalability and growth
 
 ---
-
-_Last updated: 2026-02-06_

@@ -48,5 +48,3 @@ Process Automation involves using technology to automate repetitive business pro
 - Lack of proper monitoring and maintenance
 
 ---
-
-_Last updated: 2026-02-06_

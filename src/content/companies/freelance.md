@@ -1,11 +1,11 @@
 ---
 name: Freelance
-website: N/A
+website: https://example.com
 logo: N/A
 description: Independent software development consultant delivering custom web solutions
-industry: Software Development / Consulting
+industry: Consulting
 founded: 2015
-size: Solo
+size: Small Business
 type: Freelance
 socialLinks:
   - type: LinkedIn

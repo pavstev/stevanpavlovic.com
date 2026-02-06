@@ -3,7 +3,7 @@ name: Evermed
 website: https://evermedtv.com
 logo: ../../assets/placeholder.png
 description: Specialized video streaming platform for healthcare and life sciences professionals
-industry: Healthcare Technology
+industry: Healthcare
 founded: 2018
 size: Startup
 type: Contract

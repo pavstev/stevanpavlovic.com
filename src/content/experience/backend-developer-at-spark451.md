@@ -7,7 +7,7 @@ location:
 startDate: 2017-09-01
 endDate: 2018-06-01
 type: Contract
-skills:
+tags:
   - php
   - laravel
   - mongodb

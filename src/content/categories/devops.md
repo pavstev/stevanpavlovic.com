@@ -1,5 +1,5 @@
 ---
-devops
+id: devops
 description: DevOps practices and automation tools for software delivery
 label: DevOps
 color: "#EF4444"
@@ -41,5 +41,3 @@ DevOps combines software development and IT operations to shorten the developmen
 - Site reliability engineering (SRE) practices
 
 ---
-
-_Last updated: 2026-02-06_

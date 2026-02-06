@@ -7,7 +7,7 @@ import { getCollection, render } from "astro:content";
 import type { Params as BaseParams } from "./../index.astro";
 
 import PostView from "../../../components/organisms/post-view.astro";
-import { type CollectionName } from "../../../lib";
+import { type CollectionKey } from "../../../lib";
 import { collections } from "../../../lib";
 
 export const prerender = true;
@@ -16,7 +16,7 @@ interface Params extends BaseParams {
   slug: string;
 }
 
-type Props = CollectionEntry<CollectionName>;
+type Props = CollectionEntry<CollectionKey>;
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const result = await Promise.all(

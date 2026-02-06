@@ -8,7 +8,7 @@ import { collections } from "../../../content.config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
-  type CollectionName,
+  type CollectionKey,
   type DisplayMode,
   getCollectionConfig,
   getCollectionData,
@@ -27,13 +27,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const displays: DisplayMode[] = ["list", "grid"];
   const paths: Array<{
     params: {
-      collection: CollectionName;
+      collection: CollectionKey;
       display: DisplayMode;
       page: string;
     };
   }> = [];
 
-  const collectionNames = Object.keys(collections) as CollectionName[];
+  const collectionNames = Object.keys(collections) as CollectionKey[];
   for (const collection of collectionNames) {
     const sortedItems = await getCollectionData(collection);
     const totalItems = sortedItems.length;

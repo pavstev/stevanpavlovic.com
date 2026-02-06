@@ -31,7 +31,6 @@ export const buildListUrl = (
 
   // 2. Apply new overrides
   for (const [key, value] of Object.entries(paramsToSet)) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (value === undefined || value === null) {
       url.searchParams.delete(key);
       continue;

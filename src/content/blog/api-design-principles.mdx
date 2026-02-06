@@ -72,16 +72,16 @@ app.delete("/users/:id", async (req, res) => {
 ```typescript
 // Use appropriate status codes
 const StatusCodes = {
-  OK: 200, // Successful GET, PUT, PATCH
-  CREATED: 201, // Successful POST
-  NO_CONTENT: 204, // Successful DELETE
   BAD_REQUEST: 400, // Invalid request
-  UNAUTHORIZED: 401, // Authentication required
-  FORBIDDEN: 403, // Authenticated but not authorized
-  NOT_FOUND: 404, // Resource not found
   CONFLICT: 409, // Conflict (e.g., duplicate email)
-  UNPROCESSABLE_ENTITY: 422, // Validation errors
+  CREATED: 201, // Successful POST
+  FORBIDDEN: 403, // Authenticated but not authorized
   INTERNAL_SERVER_ERROR: 500, // Server error
+  NO_CONTENT: 204, // Successful DELETE
+  NOT_FOUND: 404, // Resource not found
+  OK: 200, // Successful GET, PUT, PATCH
+  UNAUTHORIZED: 401, // Authentication required
+  UNPROCESSABLE_ENTITY: 422, // Validation errors
 };
 
 app.post("/users", async (req, res) => {

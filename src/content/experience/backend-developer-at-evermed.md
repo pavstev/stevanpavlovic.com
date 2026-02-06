@@ -7,7 +7,7 @@ location:
 startDate: 2021-01-01
 endDate: 2021-08-01
 type: Contract
-skills:
+tags:
   - aws-lambda
   - serverless
   - php

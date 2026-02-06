@@ -48,5 +48,3 @@ Google Maps API provides a suite of APIs for adding maps, routes, and places fun
 - Not considering mobile performance
 
 ---
-
-_Last updated: 2026-02-06_

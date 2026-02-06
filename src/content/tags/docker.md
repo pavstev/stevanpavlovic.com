@@ -48,5 +48,3 @@ Docker is a platform for developing, shipping, and running applications in conta
 - Lack of proper monitoring and logging
 
 ---
-
-_Last updated: 2026-02-06_

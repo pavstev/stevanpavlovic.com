@@ -3,7 +3,7 @@ name: Apoddo
 website: https://apoddo.com
 logo: ../../assets/placeholder.png
 description: Backend-for-Frontend (BFF) infrastructure and API orchestration specialist
-industry: Software Development / API Services
+industry: Software
 founded: 2020
 size: Small Business
 type: Contract

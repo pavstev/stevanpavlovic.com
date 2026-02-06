@@ -1,5 +1,5 @@
 ---
-backend
+id: backend
 description: Backend development technologies and frameworks
 label: Backend
 color: "#3B82F6"
@@ -40,5 +40,3 @@ Backend development encompasses server-side technologies, APIs, databases, and i
 - Circuit breakers for fault tolerance
 
 ---
-
-_Last updated: 2026-02-06_

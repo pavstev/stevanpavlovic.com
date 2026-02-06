@@ -3,7 +3,7 @@ name: Pannovate
 website: https://pannovate.net
 logo: ../../assets/placeholder.png
 description: Fintech middleware orchestration platform enabling rapid banking app deployment
-industry: Financial Technology
+industry: Finance
 founded: 2015
 size: Mid-size
 type: Full-time

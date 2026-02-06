@@ -1,5 +1,5 @@
 ---
-cloud
+id: cloud
 description: Cloud computing platforms and infrastructure services
 label: Cloud
 color: "#F59E0B"
@@ -40,5 +40,3 @@ Cloud computing provides on-demand computing resources over the internet. This i
 - Global content delivery and edge computing
 
 ---
-
-_Last updated: 2026-02-06_

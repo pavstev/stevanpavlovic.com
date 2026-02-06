@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import { type CollectionItem, type CollectionName, getViewPageProps } from "../../lib";
+import { type CollectionItem, type CollectionKey, getViewPageProps } from "../../lib";
 import BackButton from "../atoms/back-button.astro";
 import LayoutContent from "../layout/layout-content.astro";
 import PostToolbar from "../molecules/post-toolbar.astro";
@@ -9,8 +9,8 @@ import ZoomableImage from "../molecules/zoomable-image.astro";
 
 interface Props {
   backLink?: string;
-  collection: CollectionName;
-  entry: CollectionEntry<CollectionName>;
+  collection: CollectionKey;
+  entry: CollectionEntry<CollectionKey>;
 }
 
 const {
@@ -18,7 +18,7 @@ const {
   entry: { body, data, id },
 } = Astro.props;
 
-const item: CollectionItem<CollectionName> = {
+const item: CollectionItem<CollectionKey> = {
   body,
   collection,
   data,

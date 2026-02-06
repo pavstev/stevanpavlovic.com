@@ -48,5 +48,3 @@ AI/ML encompasses technologies for building intelligent systems that can learn f
 - Ignoring ethical considerations and bias
 
 ---
-
-_Last updated: 2026-02-06_

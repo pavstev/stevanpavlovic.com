@@ -56,5 +56,3 @@ Go (Golang) is a statically typed, compiled programming language designed at Goo
 - Not considering security implications
 
 ---
-
-_Last updated: 2026-02-06_

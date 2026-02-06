@@ -1,5 +1,5 @@
 ---
-other
+id: other
 description: Other technologies and miscellaneous categories
 label: Other
 color: "#6B7280"
@@ -40,5 +40,3 @@ This category includes technologies and concepts that don't fit into the other s
 - Community engagement and contribution
 
 ---
-
-_Last updated: 2026-02-06_

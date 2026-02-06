@@ -56,5 +56,3 @@ GraphQL is a query language for APIs and a runtime for executing those queries w
 - Ignoring performance implications
 
 ---
-
-_Last updated: 2026-02-06_

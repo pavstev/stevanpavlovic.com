@@ -1,6 +1,3 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable no-restricted-syntax */
 export type PhotoTool = "draw" | "erase" | "move";
 
 export interface PhotoViewerOptions {

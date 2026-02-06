@@ -298,7 +298,6 @@ export const initSearchDropdown = (): void => {
     const dropdown = document.getElementById(`${idPrefix}-dropdown`);
     const resultsContainer = document.getElementById(`${idPrefix}-results`);
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!searchInput || !dropdown || !resultsContainer) {
       continue;
     }

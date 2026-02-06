@@ -47,5 +47,3 @@ Other encompasses technologies and concepts that don't fit into the other specif
 - Community engagement and contribution
 
 ---
-
-_Last updated: 2026-02-06_

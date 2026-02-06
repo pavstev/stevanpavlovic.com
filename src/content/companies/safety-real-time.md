@@ -3,7 +3,7 @@ name: Safety Real Time
 website: http://safetyrealtime.com
 logo: ../../assets/safetyrealtime.png
 description: Real-time fleet telemetry and safety monitoring platform for logistics operations
-industry: Logistics Technology / IoT
+industry: Transportation
 founded: 2020
 size: Startup
 type: Full-time

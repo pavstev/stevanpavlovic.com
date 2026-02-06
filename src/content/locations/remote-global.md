@@ -8,7 +8,6 @@ timezone: Various
 remote: true
 remoteType: Fully Remote
 description: Fully remote work arrangement from various global locations
-countryCode:
 gallery: []
 ---
 

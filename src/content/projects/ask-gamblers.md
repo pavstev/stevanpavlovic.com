@@ -2,7 +2,7 @@
 title: "AskGamblers Modernization"
 subtitle: "High-Scale Content & Review Engine"
 meta: "2019"
-desc: "Led the architectural overhaul of a global iGaming authority, refactoring core performance bottlenecks and implementing advanced search technologies to support 150,000+ active monthly users."
+description: "Led the architectural overhaul of a global iGaming authority, refactoring core performance bottlenecks and implementing advanced search technologies to support 150,000+ active monthly users."
 image: "../../assets/placeholder.png"
 demoUrl: "https://askgamblers.com"
 tags:

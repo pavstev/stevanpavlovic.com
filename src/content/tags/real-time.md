@@ -33,5 +33,3 @@ Real Time refers to Real Time.
 - Pitfall 2
 
 ---
-
-_Last updated: 2026-02-06_

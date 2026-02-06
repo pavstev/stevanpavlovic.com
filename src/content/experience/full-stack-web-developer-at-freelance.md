@@ -7,7 +7,7 @@ location:
 startDate: 2015-02-01
 endDate: 2016-04-01
 type: Freelance
-skills:
+tags:
   - php
   - ajax
   - javascript

@@ -1,10 +1,10 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 
-import type { CollectionItem, CollectionName } from "./types";
+import type { CollectionItem, CollectionKey } from "./types";
 
 import { getSortDate } from "./sorting";
 
-export const getCollectionData = async <CN extends CollectionName>(collection: CN): Promise<CollectionItem<CN>[]> => {
+export const getCollectionData = async <CN extends CollectionKey>(collection: CN): Promise<CollectionItem<CN>[]> => {
   const allItems = await getCollection(collection);
 
   const mappedItems: CollectionItem<CN>[] = allItems.map((item) => ({

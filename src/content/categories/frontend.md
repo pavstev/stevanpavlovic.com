@@ -1,5 +1,5 @@
 ---
-frontend
+id: frontend
 description: Frontend development technologies and user interface design
 label: Frontend
 color: "#10B981"
@@ -40,5 +40,3 @@ Frontend development focuses on building user interfaces and client-side experie
 - Progressive enhancement
 
 ---
-
-_Last updated: 2026-02-06_

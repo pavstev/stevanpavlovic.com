@@ -7,7 +7,7 @@ location:
 startDate: 2022-04-01
 endDate: 2024-03-01
 type: Full-time
-skills:
+tags:
   - typescript
   - react
   - nodejs

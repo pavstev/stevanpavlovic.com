@@ -77,11 +77,11 @@ Follow the event definitions below to manually configure in GTM UI.
 
 **Trigger Configuration:**
 
-| Action | Trigger Type | Conditions |
-|--------|--------------|------------|
-| `resume_download` | Click | Click URL contains `/resume.pdf` |
-| `contact_click` | Click | Click URL contains `mailto:` OR Click Element matches contact links |
-| `portfolio_view` | Page View | Page Path contains `/projects` OR `/experience` |
+| Action            | Trigger Type | Conditions                                                          |
+| ----------------- | ------------ | ------------------------------------------------------------------- |
+| `resume_download` | Click        | Click URL contains `/resume.pdf`                                    |
+| `contact_click`   | Click        | Click URL contains `mailto:` OR Click Element matches contact links |
+| `portfolio_view`  | Page View    | Page Path contains `/projects` OR `/experience`                     |
 
 **Status:** ⚠️ Partially implemented (service exists, needs tracking calls added)
 

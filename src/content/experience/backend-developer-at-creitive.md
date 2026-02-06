@@ -7,7 +7,7 @@ location:
 startDate: 2016-04-01
 endDate: 2017-09-01
 type: Full-time
-skills:
+tags:
   - php
   - mysql
   - wordpress

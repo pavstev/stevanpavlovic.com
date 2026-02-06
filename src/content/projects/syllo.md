@@ -2,7 +2,7 @@
 title: "Syllo Ecosystem"
 subtitle: "Fintech Microservices Architecture"
 meta: "2020"
-desc: "A secure, scalable fintech microservice ecosystem built with NestJS, implementing OAuth2/OIDC authentication, ACID-compliant transactions, and high-availability architecture for processing millions of payment transactions with zero data loss."
+description: "A secure, scalable fintech microservice ecosystem built with NestJS, implementing OAuth2/OIDC authentication, ACID-compliant transactions, and high-availability architecture for processing millions of payment transactions with zero data loss."
 image: "../../assets/placeholder.png"
 demoUrl: "https://syllo.com"
 tags:

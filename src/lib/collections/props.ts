@@ -1,14 +1,14 @@
 import dayjs from "dayjs";
 
 import type { CardData } from "../../components/organisms/card.astro";
-import type { CollectionItem, CollectionName, ViewPageProps } from "./types";
+import type { CollectionItem, CollectionKey, ViewPageProps } from "./types";
 
 import { getBlogProps } from "./blog";
 import { getExperienceProps } from "./experience";
 import { isBlog, isExperience, isProject } from "./guards";
 import { getProjectProps } from "./projects";
 
-export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPageProps => {
+export const getViewPageProps = (item: CollectionItem<CollectionKey>): ViewPageProps => {
   if (isBlog(item)) return getBlogProps(item);
   if (isExperience(item)) return getExperienceProps(item);
   if (isProject(item)) return getProjectProps(item);
@@ -25,7 +25,7 @@ export const getViewPageProps = (item: CollectionItem<CollectionName>): ViewPage
 };
 
 export const getItemCardProps = (
-  item: CollectionItem<CollectionName>,
+  item: CollectionItem<CollectionKey>,
 ): {
   actionLabel: string;
   data: CardData;
@@ -53,7 +53,7 @@ export const getItemCardProps = (
         footerMeta: `${dayjs(data.startDate).format("MMM YYYY")} — ${data.endDate ? dayjs(data.endDate).format("MMM YYYY") : "Present"}`,
         logo: typeof data.company !== "string" ? data.company.logo : undefined,
         subtitle: typeof data.company === "string" ? data.company : data.company.name,
-        tags: data.skills,
+        tags: data.tags,
         title: data.role,
         url: `/experience/view/${item.id}`,
       },
@@ -64,7 +64,7 @@ export const getItemCardProps = (
     return {
       actionLabel: "View Project",
       data: {
-        description: data.desc,
+        description: data.description,
         image: data.image,
         meta: data.meta,
         subtitle: data.subtitle,

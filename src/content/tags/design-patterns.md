@@ -48,5 +48,3 @@ Design patterns are reusable solutions to common problems that occur in software
 - Ignoring specific project requirements
 
 ---
-
-_Last updated: 2026-02-06_

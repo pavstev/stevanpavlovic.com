@@ -1,5 +1,5 @@
 ---
-testing
+id: testing
 description: Testing methodologies and tools for ensuring software quality
 label: Testing
 color: "#14B8A6"
@@ -41,5 +41,3 @@ Testing encompasses methodologies and tools for ensuring software quality and re
 - Contract testing for API integration
 
 ---
-
-_Last updated: 2026-02-06_

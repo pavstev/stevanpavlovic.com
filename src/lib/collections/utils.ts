@@ -1,10 +1,10 @@
 import type { DisplayMode } from "../list";
-import type { CollectionItem, CollectionName } from "./types";
+import type { CollectionItem, CollectionKey } from "./types";
 
 import { ITEMS_PER_PAGE } from "../../config";
 
 export const buildPaginationUrls = (
-  collection: CollectionName,
+  collection: CollectionKey,
   view: DisplayMode,
   currentPage: number,
   totalPages: number,
@@ -21,12 +21,12 @@ export const buildPaginationUrls = (
   return { nextUrl, prevUrl };
 };
 
-export const buildDisplayUrls = (collection: CollectionName, currentPage: number): { grid: string; list: string } => ({
+export const buildDisplayUrls = (collection: CollectionKey, currentPage: number): { grid: string; list: string } => ({
   grid: currentPage === 1 ? `/${collection}/grid` : `/${collection}/grid/${currentPage.toString()}`,
   list: currentPage === 1 ? `/${collection}/list` : `/${collection}/list/${currentPage.toString()}`,
 });
 
-export const getPageItems = <CN extends CollectionName>(
+export const getPageItems = <CN extends CollectionKey>(
   sortedItems: CollectionItem<CN>[],
   pageNum: number,
 ): CollectionItem<CN>[] => {

@@ -7,7 +7,7 @@ import { ITEMS_PER_PAGE } from "../../config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
-  type CollectionName,
+  type CollectionKey,
   type DisplayMode,
   getCollectionConfig,
   getCollectionData,
@@ -23,11 +23,11 @@ export interface Params extends IndexParams {
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections: CollectionName[] = ["blog", "projects", "experience"];
+  const collections: CollectionKey[] = ["blog", "projects", "experience"];
   const displays: DisplayMode[] = ["list", "grid"];
   const paths: Array<{
     params: {
-      collection: CollectionName;
+      collection: CollectionKey;
       display: DisplayMode;
     };
   }> = [];

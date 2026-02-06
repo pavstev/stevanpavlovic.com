@@ -7,7 +7,7 @@ location:
 startDate: 2021-01-01
 endDate: 2022-03-01
 type: Contract
-skills:
+tags:
   - nodejs
   - go
   - redis

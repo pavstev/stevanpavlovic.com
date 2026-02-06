@@ -57,5 +57,3 @@ AWS Lambda is a serverless compute service that lets you run code without provis
 - State management: Stateless by design
 
 ---
-
-_Last updated: 2026-02-06_

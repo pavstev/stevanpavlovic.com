@@ -1,5 +1,5 @@
 ---
-architecture
+id: architecture
 description: Software architecture patterns and design principles
 label: Architecture
 color: "#6366F1"
@@ -40,5 +40,3 @@ Software architecture encompasses the high-level structure and design patterns t
 - API gateway for service composition
 
 ---
-
-_Last updated: 2026-02-06_

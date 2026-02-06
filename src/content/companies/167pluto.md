@@ -3,7 +3,7 @@ name: 167pluto
 website: https://167pluto.com
 logo: ../../assets/167pluto-logo.png
 description: High-throughput betting platform with extreme scalability for live sports betting
-industry: Sports Betting / Gaming
+industry: Gaming
 founded: 2023
 size: Startup
 type: Full-time

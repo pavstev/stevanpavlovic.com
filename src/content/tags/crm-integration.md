@@ -48,5 +48,3 @@ CRM Integration involves connecting Customer Relationship Management systems wit
 - Not considering future scalability requirements
 
 ---
-
-_Last updated: 2026-02-06_

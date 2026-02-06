@@ -48,5 +48,3 @@ AWS (Amazon Web Services) is a comprehensive cloud computing platform offering c
 - Not following AWS best practices and compliance
 
 ---
-
-_Last updated: 2026-02-06_

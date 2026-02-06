@@ -48,5 +48,3 @@ DevOps combines software development and IT operations to shorten the developmen
 - Lack of proper error handling and recovery
 
 ---
-
-_Last updated: 2026-02-06_

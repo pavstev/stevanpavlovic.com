@@ -1,5 +1,5 @@
 ---
-import type { CollectionItem, CollectionName } from "../../lib/collections";
+import type { CollectionItem, CollectionKey } from "../../lib/collections";
 import type { DisplayMode } from "../../lib/list";
 
 import Stack from "../atoms/stack.astro";
@@ -14,7 +14,7 @@ import Section from "../organisms/section.astro";
 interface Props {
   baseUrl: string;
   // Data
-  collectionItems: CollectionItem<CollectionName>[]; // The collection items
+  collectionItems: CollectionItem<CollectionKey>[]; // The collection items
   // Script configuration
   containerId: string;
   currentPage?: number;

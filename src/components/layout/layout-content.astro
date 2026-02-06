@@ -99,7 +99,7 @@ const { description, title } = Astro.props;
             return isAscending ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
           });
 
-          header.setAttribute("data-sort", isAscending ? "desc" : "asc");
+          header.setAttribute("data-sort", isAscending ? "description" : "asc");
 
           // Re-append rows
           rows.forEach((row) => tbody.appendChild(row));

@@ -2,7 +2,7 @@
 title: "Evermed Video Infrastructure"
 subtitle: "Serverless Video Transcoding & Distribution"
 meta: "2021"
-desc: "Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance."
+description: "Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance."
 image: "../../assets/placeholder.png"
 demoUrl: "https://evermed.com"
 tags:

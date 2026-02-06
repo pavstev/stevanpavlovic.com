@@ -56,5 +56,3 @@ Elasticsearch is a distributed, RESTful search and analytics engine capable of s
 - Not planning for scalability and growth
 
 ---
-
-_Last updated: 2026-02-06_

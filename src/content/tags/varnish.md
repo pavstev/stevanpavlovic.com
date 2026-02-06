@@ -33,5 +33,3 @@ Varnish refers to Varnish.
 - Pitfall 2
 
 ---
-
-_Last updated: 2026-02-06_

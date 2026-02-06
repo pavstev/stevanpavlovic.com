@@ -1,5 +1,5 @@
 ---
-ai-ml
+id: ai-ml
 description: Artificial Intelligence and Machine Learning technologies
 label: AI/ML
 color: "#8B5CF6"
@@ -41,5 +41,3 @@ Artificial Intelligence and Machine Learning encompass technologies for building
 - Ensemble methods for improved accuracy
 
 ---
-
-_Last updated: 2026-02-06_

@@ -48,5 +48,3 @@ Algorithms are step-by-step procedures for solving computational problems. This 
 - Using inappropriate data structures
 
 ---
-
-_Last updated: 2026-02-06_

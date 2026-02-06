@@ -56,5 +56,3 @@ BFF (Backend for Frontend) is a pattern where you create separate backend servic
 - Maintenance overhead with multiple BFFs
 
 ---
-
-_Last updated: 2026-02-06_

@@ -1,3 +1,4 @@
+import { getEntries, getEntry } from "astro:content";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
@@ -8,22 +9,24 @@ import { createAuthorItem } from "./toolbar-items";
 
 dayjs.extend(duration);
 
-const getOrganizationToolbarItem = (item: CollectionItem<"experience">): TI | undefined => {
-  if (!item.data.company) return undefined;
+const getOrganizationToolbarItem = async (item: CollectionItem<"experience">): Promise<TI | undefined> => {
+  if (!item.data.company) {
+    return undefined;
+  }
 
-  return typeof item.data.company !== "string"
-    ? {
-        href: item.data.company.website,
-        label: "Organization",
-        logo: item.data.company.logo,
-        type: "organization",
-        value: item.data.company.name,
-      }
-    : {
-        label: "Organization",
-        type: "organization",
-        value: item.data.company,
-      };
+  const company = await getEntry("companies", item.data.company);
+
+  if (!company) {
+    return undefined;
+  }
+
+  return {
+    href: item.data.company,
+    label: "Organization",
+    logo: item.data.company.logo,
+    type: "organization",
+    value: item.data.company.name,
+  };
 };
 
 const getDurationToolbarItem = (item: CollectionItem<"experience">): TI => {
@@ -52,11 +55,11 @@ const getDateRangeToolbarItem = (item: CollectionItem<"experience">): TI => {
   };
 };
 
-export const getExperienceProps = (item: CollectionItem<"experience">): ViewPageProps => {
+export const getExperienceProps = async (item: CollectionItem<"experience">): Promise<ViewPageProps> => {
   const author = createAuthorItem(PROFILE);
   const toolbarItems = [
     author,
-    getOrganizationToolbarItem(item),
+    await getOrganizationToolbarItem(item),
     getDateRangeToolbarItem(item),
     getDurationToolbarItem(item),
   ];
@@ -68,9 +71,9 @@ export const getExperienceProps = (item: CollectionItem<"experience">): ViewPage
     },
     description: item.data.description,
     image: undefined,
-    subtitle: typeof item.data.company === "string" ? item.data.company : item.data.company.name,
+    subtitle: item.data.company,
     tags: {
-      items: item.data.skills || [],
+      items: await getEntries(item.data.tags ?? []),
       title: "Skills",
     },
     title: item.data.role,

@@ -56,5 +56,3 @@ Event Sourcing is a pattern where the state changes of an application are stored
 - Storage and retention management
 
 ---
-
-_Last updated: 2026-02-06_

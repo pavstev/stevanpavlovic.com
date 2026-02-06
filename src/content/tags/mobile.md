@@ -47,5 +47,3 @@ Mobile development focuses on building applications for mobile devices including
 - State management with Redux/Vuex
 
 ---
-
-_Last updated: 2026-02-06_

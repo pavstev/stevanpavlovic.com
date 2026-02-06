@@ -47,5 +47,3 @@ Software architecture encompasses the high-level structure and design patterns t
 - API gateway for service composition
 
 ---
-
-_Last updated: 2026-02-06_

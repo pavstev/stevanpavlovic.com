@@ -56,5 +56,3 @@ MySQL is an open-source relational database management system (RDBMS). It's one 
 - Not planning for scalability and growth
 
 ---
-
-_Last updated: 2026-02-06_

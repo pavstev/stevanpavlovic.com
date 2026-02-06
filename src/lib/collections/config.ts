@@ -1,10 +1,10 @@
-import type { CollectionName, Nullable } from "./types";
+import type { CollectionKey, Nullable } from "./types";
 
 import { type NavItem, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
 import { NAV_ITEMS, PROFILE } from "../../config";
 
 export const getCollectionConfig = (
-  collection: CollectionName,
+  collection: CollectionKey,
 ): {
   description: string;
   headerDescription: string;

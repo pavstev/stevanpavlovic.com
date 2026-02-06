@@ -3,7 +3,7 @@ name: CreITive
 website: https://creitive.com
 logo: ../../assets/placeholder.png
 description: Global digital agency providing web solutions and e-commerce development
-industry: Digital Agency / Web Development
+industry: Design
 founded: 2010
 size: Mid-size
 type: Full-time

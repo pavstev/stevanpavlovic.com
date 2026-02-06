@@ -1,5 +1,5 @@
 ---
-security
+id: security
 description: Security practices and technologies for protecting applications
 label: Security
 color: "#DC2626"
@@ -41,5 +41,3 @@ Security encompasses practices and technologies for protecting applications, dat
 - Security as code practices
 
 ---
-
-_Last updated: 2026-02-06_

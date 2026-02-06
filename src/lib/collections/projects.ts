@@ -38,7 +38,7 @@ export const getProjectProps = (item: CollectionItem<"projects">): ViewPageProps
       href: "/projects",
       label: "Back to Projects",
     },
-    description: item.data.desc,
+    description: item.data.description,
     image: item.data.image,
     subtitle: item.data.subtitle,
     tags: {

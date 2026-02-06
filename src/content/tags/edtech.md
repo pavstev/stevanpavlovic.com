@@ -48,5 +48,3 @@ EdTech (Educational Technology) encompasses technologies designed to enhance tea
 - Lack of proper support and training
 
 ---
-
-_Last updated: 2026-02-06_

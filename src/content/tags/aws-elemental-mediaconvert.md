@@ -56,5 +56,3 @@ AWS Elemental MediaConvert is a file-based video transcoding service with broadc
 - Not implementing proper error handling
 
 ---
-
-_Last updated: 2026-02-06_

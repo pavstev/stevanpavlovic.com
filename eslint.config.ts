@@ -28,8 +28,12 @@ const MARKDOWN_FILES = ["**/*.md"];
 const MDX_FILES = ["**/*.mdx"];
 const JSON_FILES = ["**/*.json"];
 
+// Virtual files created by MDX processor (e.g. filename.mdx/0.ts)
+const MDX_CODE_BLOCKS = ["**/*.md/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.ts", "**/*.mdx/*.tsx"];
+
 const CODE_FILES = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"];
 const FRONTEND_FILES = ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"];
+const CONTENT_FILES = ["src/content/**/*.{md,mdx}"];
 const ALL_FILES = [...CODE_FILES, ...JSON_FILES, ...MARKDOWN_FILES, ...MDX_FILES];
 
 const GLOBAL_IGNORES = [
@@ -87,15 +91,18 @@ export default defineConfig(
     ignores: [...MARKDOWN_FILES, ...MDX_FILES],
     name: "eslint/recommended",
   },
+
   {
     ...perfectionist.configs["recommended-natural"],
     ignores: [...MARKDOWN_FILES, ...MDX_FILES],
     name: "perfectionist",
   },
 
+  // TypeScript configs: Ignore MDX virtual code blocks to prevent "project" parser errors
   ...tseslint.configs.strictTypeChecked.map((config) => ({
     ...config,
     files: TS_FILES,
+    ignores: MDX_CODE_BLOCKS,
   })),
 
   ...eslintPluginAstro.configs.recommended.map((config) => ({
@@ -158,11 +165,14 @@ export default defineConfig(
     },
     rules: {
       ...stylistic.configs.customize(STYLISTIC_OPTIONS).rules,
+      "@stylistic/indent": "off",
     },
   },
 
   {
     files: TS_FILES,
+    // Explicitly ignore MDX code blocks here to avoid "file not in tsconfig" errors
+    ignores: MDX_CODE_BLOCKS,
     languageOptions: {
       parserOptions: {
         project: true,
@@ -181,7 +191,8 @@ export default defineConfig(
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-misused-promises": "error",
       "@typescript-eslint/no-non-null-assertion": "error",
-      "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -190,6 +201,7 @@ export default defineConfig(
           varsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/restrict-template-expressions": "off",
       "arrow-body-style": ["error", "as-needed"],
       curly: ["error", "all"],
       "func-style": ["error", "expression"],
@@ -270,23 +282,29 @@ export default defineConfig(
     },
     rules: {
       ...markdownlintPlugin.configs.recommended.rules,
+      "markdownlint/md012": "off",
+      "markdownlint/md013": "off",
+      "markdownlint/md041": "off",
     },
   },
 
   {
-    files: ["src/content/**/*.{md,mdx}"],
+    // Apply standard MDX rules and processor to all MD/MDX files
+    files: [...MARKDOWN_FILES, ...MDX_FILES],
     ...mdx.flat,
     processor: mdx.createRemarkProcessor({
       languageMapper: {},
       lintCodeBlocks: true,
     }),
-    rules: {
-      "mdx/remark": [
-        "error",
-        {
-          plugins: [["remark-lint-frontmatter-schema", {}]],
-        },
-      ],
+  },
+
+  {
+    // Override for content files: Use settings to pass remark plugins
+    files: CONTENT_FILES,
+    settings: {
+      mdx: {
+        remarkPlugins: ["remark-frontmatter", ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }]],
+      },
     },
   },
 

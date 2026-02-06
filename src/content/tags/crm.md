@@ -48,5 +48,3 @@ CRM (Customer Relationship Management) systems are software applications that he
 - Not measuring ROI and effectiveness
 
 ---
-
-_Last updated: 2026-02-06_

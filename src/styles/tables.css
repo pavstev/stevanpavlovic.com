@@ -57,11 +57,11 @@
   @apply translate-y-0 opacity-100 scale-125;
 }
 
-.prose th[data-sort="desc"] {
+.prose th[data-sort="description"] {
   @apply text-primary bg-primary/5;
 }
 
-.prose th[data-sort="desc"]::after {
+.prose th[data-sort="description"]::after {
   content: "↓";
   @apply translate-y-0 opacity-100 scale-125;
 }

@@ -1,5 +1,5 @@
 ---
-database
+id: database
 description: Database technologies and data storage solutions
 label: Database
 color: "#8B5CF6"
@@ -41,5 +41,3 @@ Database technologies encompass data storage, retrieval, and management systems.
 - Eventual consistency for distributed systems
 
 ---
-
-_Last updated: 2026-02-06_

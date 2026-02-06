@@ -47,5 +47,3 @@ Cloud computing provides on-demand computing resources over the internet. This i
 - Not following cloud best practices and compliance
 
 ---
-
-_Last updated: 2026-02-06_

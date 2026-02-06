@@ -7,7 +7,7 @@ location:
 startDate: 2020-01-01
 endDate: 2020-12-01
 type: Full-time
-skills:
+tags:
   - nestjs
   - typescript
   - postgresql

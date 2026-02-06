@@ -7,7 +7,7 @@ location:
 startDate: 2018-11-01
 endDate: 2020-01-01
 type: Full-time
-skills:
+tags:
   - php
   - symfony
   - mongodb

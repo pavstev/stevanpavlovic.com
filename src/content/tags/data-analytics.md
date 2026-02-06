@@ -48,5 +48,3 @@ Data Analytics involves examining, cleaning, transforming, and modeling data to 
 - Not involving business stakeholders in analysis
 
 ---
-
-_Last updated: 2026-02-06_

@@ -5,7 +5,7 @@ title: Senior Software Engineer
 company: Quantox
 currentPosition: Technical Lead
 currentCompany: Quantox
-location: Belgrade, Serbia
+location: belgrade-serbia
 avatar: ../../assets/profile.jpeg
 email: hi@stevanpavlovic.com
 socialLinks:

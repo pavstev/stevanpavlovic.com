@@ -5,7 +5,7 @@ title: Full Stack Developer
 company: Creitive
 currentPosition: Senior Frontend Developer
 currentCompany: Creitive
-location: Belgrade, Serbia
+location: belgrade-serbia
 avatar: ../../assets/sarah-chen.png
 email: sarah.chen@example.com
 socialLinks:

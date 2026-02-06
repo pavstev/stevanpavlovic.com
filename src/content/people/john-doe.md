@@ -6,7 +6,7 @@ title: Senior Software Engineer
 company: Quantox
 currentPosition: Senior Backend Developer
 currentCompany: Quantox
-location: Belgrade, Serbia
+location: belgrade-serbia
 avatar: ../../assets/john-doe.png
 linkedIn: https://linkedin.com/in/johndoe
 website: https://johndoe.dev

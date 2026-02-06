@@ -1,7 +1,9 @@
 import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
-  astro: {},
+  astro: {
+    entry: ["src/components/new/**/*.astro"],
+  },
   entry: ["unlighthouse.config.ts"],
   ignoreBinaries: ["only-allow"],
   ignoreDependencies: [

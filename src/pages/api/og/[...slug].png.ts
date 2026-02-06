@@ -91,24 +91,22 @@ const getTitle = (data: EntryData): string => {
  * Keys are prefixed with the collection name to create unique, logical URLs.
  */
 const pages = Object.fromEntries(
-  collectionResults.flatMap(
-    ({ collection, entries }) =>
-      entries.map((entry) => {
-        const data = entry.data as EntryData;
-        const meta = getMeta(collection, data, entry.body);
-        const title = getTitle(data);
+  collectionResults.flatMap(({ collection, entries }) =>
+    entries.map((entry) => {
+      const data = entry.data as EntryData;
+      const meta = getMeta(collection, data, entry.body);
+      const title = getTitle(data);
 
-        return [
-          `${collection}/${entry.id}`,
-          {
-            collection,
-            description: data.description || "",
-            meta,
-            title,
-          },
-        ];
-      }),
-    // eslint-disable-next-line @stylistic/exp-list-style -- Conflicting formatting rules
+      return [
+        `${collection}/${entry.id}`,
+        {
+          collection,
+          description: data.description || "",
+          meta,
+          title,
+        },
+      ];
+    }),
   ),
 );
 

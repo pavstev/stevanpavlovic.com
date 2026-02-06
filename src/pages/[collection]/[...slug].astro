@@ -47,11 +47,9 @@ if (entry === undefined) {
 
 const { Content, headings } = await render(entry);
 const viewProps = await getViewPageProps(entry as any);
-
-const ogImage = new URL(`/og/${collection}/${entry.id.replace(/\.[^/.]+$/, "")}.png`, Astro.url);
 ---
 
-<LayoutRoot description={viewProps.description || ""} image={ogImage} slug={`/${collection}/${entry.id}`} title={viewProps.title}>
+<LayoutRoot description={viewProps.description || ""} slug={`/${collection}/${entry.id}`} title={viewProps.title}>
   <NavigationProgress />
 
   <CompositionGrid class="py-12 md:py-24">

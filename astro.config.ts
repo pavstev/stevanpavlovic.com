@@ -114,7 +114,7 @@ export default defineConfig({
     // 2. Ensure the WASM library is properly optimized/externalized if needed.
     // (Usually the define above is enough, but this can help with strict dep handling)
     ssr: {
-      noExternal: ["astro-og-canvas", "canvaskit-wasm"],
+      noExternal: ["canvaskit-wasm"],
     },
     build: {
       rollupOptions: {

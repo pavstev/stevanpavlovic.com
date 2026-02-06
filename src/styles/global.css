@@ -100,6 +100,7 @@
     --spacing-2xl: 2rem;
     --spacing-3xl: 3rem;
 
+    --glow-subtle: 0 0 20px hsl(240 5% 65% / 0.15);
     --glow-primary: 0 0 20px hsl(210 100% 45% / 0.3);
     --glow-secondary: 0 0 20px hsl(30 100% 50% / 0.3);
     --glow-accent: 0 0 20px hsl(140 100% 50% / 0.3);
@@ -192,6 +193,10 @@
   }
 
   .shadow-glow {
+    box-shadow: var(--glow-subtle);
+  }
+
+  .shadow-glow-subtle {
     box-shadow: var(--glow-subtle);
   }
 
@@ -452,7 +457,7 @@
     font-weight: 500;
     border-radius: 0.25rem;
     border: 1px solid var(--color-border);
-    foreground-space: nowrap;
+    white-space: nowrap;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;

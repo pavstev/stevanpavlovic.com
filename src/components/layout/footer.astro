@@ -9,40 +9,44 @@ import Container from "../molecules/container.astro";
 <footer class="relative mt-6 mb-3 w-full px-4 md:px-0" transition:persist>
   <Container>
     <div
-      class="glass flex h-12 w-full items-center justify-between gap-3 rounded-full px-4 shadow-2xl transition-all duration-500 hover:border-foreground/20"
+      class="glass-strong hover:shadow-glow-subtle flex h-14 w-full items-center justify-between gap-3 rounded-full px-6 shadow-2xl transition-all duration-500 hover:border-foreground/20"
     >
       {/* Copyright */}
-      <Text size="sm" variant="muted">
+      <Text class="font-medium tracking-wide" size="sm" variant="muted">
         {getCopyrightText()}
       </Text>
 
       {/* Links */}
       <div class="flex items-center gap-4">
-        <div class="flex items-center gap-1 border-r border-foreground/5 pr-4">
+        <div class="flex items-center gap-2 border-r border-foreground/10 pr-6">
           {
             SOCIALS.map((social) => (
               <a
-                class="hover:shadow-glow-subtle flex items-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:bg-foreground/5 hover:text-foreground"
+                class="hover:shadow-glow-accent group flex items-center justify-center rounded-full p-2 text-muted-foreground transition-all duration-300 hover:scale-110 hover:bg-foreground/5 hover:text-foreground"
                 data-tooltip={social.name}
                 href={social.href}
                 rel="noreferrer"
                 target="_blank"
               >
-                <AppIcon name={social.icon} size="md" />
+                <AppIcon
+                  class="group-hover:text-accent group-hover:drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
+                  name={social.icon}
+                  size="md"
+                />
               </a>
             ))
           }
         </div>
 
         <a
-          class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
           data-tooltip="RSS Feed"
           href="/rss.xml"
         >
           <AppIcon name="mdi:rss" size="md" />
         </a>
         <a
-          class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
           data-tooltip="Sitemap"
           href="/sitemap-index.xml"
         >

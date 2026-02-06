@@ -36,56 +36,7 @@ const {
 </div>
 
 <script>
-  function initMeteors() {
-    const container = document.getElementById("meteors-container");
-    if (!container) return;
-
-    const angle = parseFloat(container.dataset.angle || "215");
-    const minDelay = parseFloat(container.dataset.minDelay || "0.2");
-    const maxDelay = parseFloat(container.dataset.maxDelay || "1.2");
-    const minDuration = parseFloat(container.dataset.minDuration || "2");
-    const maxDuration = parseFloat(container.dataset.maxDuration || "10");
-    const number = parseInt(container.dataset.number || "20", 10);
-
-    // Clear existing meteors to prevent duplication on re-runs if any
-    container.innerHTML = "";
-
-    const fragment = document.createDocumentFragment();
-
-    for (let i = 0; i < number; i++) {
-      const span = document.createElement("span");
-      // Tailwind classes
-      // Note: rotate-[...] arbitrary values might not work if not statically detected by Tailwind scanner?
-      // "rotate-(--angle)" in the original React code relies on Tailwind treating it as an arbitrary value or having a plugin.
-      // If `rotate-(--angle)` is not standard Tailwind, it might be a custom config.
-      // Safest is to apply the rotation via standard style transform if tailwind arbitrary value fails, but let's try to match original class string.
-      // Original: "pointer-events-none absolute size-0.5 rotate-(--angle) animate-meteor rounded-full bg-zinc-500 shadow-[0_0_0_1px_(--color-foreground)]"
-      span.className =
-        "pointer-events-none absolute size-0.5 rotate-(--angle) animate-meteor rounded-full bg-zinc-500 shadow-[0_0_0_1px_(--color-foreground)]";
-
-      // Inline styles
-      const left = Math.floor(Math.random() * 100) + "%"; // Using % instead of window.innerWidth px for better responsiveness
-      const animationDelay = Math.random() * (maxDelay - minDelay) + minDelay + "s";
-      const animationDuration = Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) + "s";
-
-      span.style.setProperty("--angle", -angle + "deg");
-      span.style.left = left;
-      span.style.top = "-5%";
-      span.style.animationDelay = animationDelay;
-      span.style.animationDuration = animationDuration;
-
-      // Tail
-      const tail = document.createElement("div");
-      tail.className =
-        "pointer-events-none absolute top-1/2 -z-10 h-px w-12.5 -translate-y-1/2 bg-linear-to-r from-zinc-500 to-transparent";
-
-      span.appendChild(tail);
-      fragment.appendChild(span);
-    }
-
-    container.appendChild(fragment);
-  }
-
+  import { initMeteors } from "../lib/meteor";
   initMeteors();
   document.addEventListener("astro:page-load", initMeteors);
 </script>

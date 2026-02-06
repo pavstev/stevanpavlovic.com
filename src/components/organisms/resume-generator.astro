@@ -1,46 +1,44 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { getCollection, getEntry } from 'astro:content';
+
+const stevan = await getEntry('people', 'stevan-pavlovic');
+const experiences = await getCollection('experience');
+
+if (!stevan) {
+  throw new Error('Stevan profile not found');
+}
 
 const profile = {
-  email: "hello@stevan.dev",
-  location: "Belgrade, Serbia",
-  name: "Stevan Doe",
-  phone: "+381 60 123 4567",
-  role: "Senior Software Engineer",
-  summary: "Product-minded engineer with 6+ years of experience building scalable web applications. Expert in the JavaScript ecosystem (React, Node.js) and cloud infrastructure. Passionate about DX and performance optimization.",
+  email: stevan.data.email,
+  location: stevan.data.location,
+  name: `${stevan.data.firstName} ${stevan.data.lastName}`,
+  phone: "+381 60 123 4567", // Placeholder or add to frontmatter if needed
+  role: stevan.data.title,
+  summary: stevan.body, // Using body as summary
   website: "stevan.dev"
 };
 
-const experience = [
-  {
-    company: "TechFlow Systems",
-    description: "Spearheaded the migration of a legacy monolith to a Next.js micro-frontend architecture, reducing build times by 60%. Mentored 3 junior developers and established comprehensive E2E testing protocols.",
-    period: "2022 — Present",
-    role: "Senior Frontend Engineer"
-  },
-  {
-    company: "Creative Solutions",
-    description: "Developed and maintained 5+ client-facing e-commerce platforms using Shopify Hydrogen and React. Optimised database queries resulting in a 30% reduction in API latency.",
-    period: "2019 — 2022",
-    role: "Software Developer"
-  }
-];
+// Sort experiences by startDate descending
+const sortedExperiences = experiences.sort((a, b) =>
+  new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime()
+);
 
-const skills = [
-  "JavaScript / TypeScript",
-  "React / Next.js / Astro",
-  "Node.js / PostgreSQL",
-  "AWS / Docker / CI/CD",
-  "Tailwind CSS / Design Systems"
-];
+const experience = sortedExperiences.map(job => {
+  const startYear = new Date(job.data.startDate).getFullYear();
+  const endYear = job.data.endDate ? new Date(job.data.endDate).getFullYear() : 'Present';
+  return {
+    company: job.data.company,
+    description: job.data.description, // Short description from frontmatter
+    period: `${startYear} — ${endYear}`,
+    role: job.data.role
+  };
+});
 
-const education = [
-  {
-    degree: "B.S. Computer Science",
-    school: "University of Belgrade",
-    year: "2015 — 2019"
-  }
-];
+// @ts-ignore - Assuming skills and education added to frontmatter
+const skills = stevan.data.skills || [];
+// @ts-ignore
+const education = stevan.data.education || [];
 ---
 
 <section class="relative min-h-screen w-full bg-slate-100 px-4 py-12 print:min-h-0 print:bg-white print:p-0">
@@ -222,24 +220,6 @@ const education = [
 </style>
 
 <script>
-  // Handle PDF Generation
-  const printBtn = document.getElementById('print-btn');
-  printBtn?.addEventListener('click', () => {
-    // Optional: Change title temporarily so the PDF file name is nice
-    const originalTitle = document.title;
-    document.title = "Stevan_Doe_Resume";
-    window.print();
-    document.title = originalTitle;
-  });
-
-  // Handle "Delete Item" buttons (Simple DOM removal)
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      // Find the parent group and remove it
-      const item = (e.target as HTMLElement).closest('.group');
-      if (item && confirm('Remove this item?')) {
-        item.remove();
-      }
-    });
-  });
+  import { initResumeGenerator } from "../../lib/resume-generator";
+  initResumeGenerator();
 </script>

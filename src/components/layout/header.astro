@@ -18,10 +18,10 @@ const isActive = (href: string) => isActivePath(pathname, href);
     <LayoutWrapper class="items-center">
       {/* Main Bar */}
       <div
-        class="glass relative flex h-12 w-full items-center rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20"
+        class="glass-strong hover:shadow-glow-subtle relative flex h-14 w-full items-center rounded-full px-2 shadow-2xl transition-all duration-500 hover:border-foreground/20"
       >
         {/* Left: Logo */}
-        <div class="shrink-0 pl-1">
+        <div class="shrink-0 pl-2">
           <Logo />
         </div>
 
@@ -31,7 +31,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
         </div>
 
         {/* Right: Nav & Mobile Toggle */}
-        <div class="flex items-center gap-2 pr-1">
+        <div class="flex items-center gap-2 pr-2">
           {/* Mobile Search (Visible only on mobile) */}
           <div class="md:hidden">
             <Search variant="mobile" />
@@ -45,9 +45,10 @@ const isActive = (href: string) => isActivePath(pathname, href);
                   <Button
                     aria-current={active ? "page" : undefined}
                     class:list={[
-                      "relative rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-300",
+                      "relative rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300",
                       {
-                        "bg-foreground/10 text-foreground ring-2 ring-offset-foreground/20": active,
+                        "bg-primary/10 text-primary ring-1 ring-primary/20 hover:bg-primary/20 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]":
+                          active,
                         "text-muted-foreground hover:bg-foreground/5 hover:text-foreground": !active,
                       },
                     ]}
@@ -55,12 +56,9 @@ const isActive = (href: string) => isActivePath(pathname, href);
                     href={item.href}
                   >
                     <span>{item.label}</span>
-                    <div
-                      class:list={[
-                        "absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] transition-all duration-300",
-                        !active && "scale-0 opacity-0",
-                      ]}
-                    />
+                    {active && (
+                      <div class="absolute -bottom-1 left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_10px_var(--color-primary)]" />
+                    )}
                   </Button>
                 );
               })

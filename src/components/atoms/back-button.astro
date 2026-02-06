@@ -16,15 +16,19 @@ const { class: className, link, ...props } = Astro.props;
 <Button
   as="a"
   class:list={[
-    "group rounded-full font-mono text-xs font-bold tracking-widest text-foreground uppercase transition-all hover:bg-muted/30 hover:no-underline",
+    "group rounded-full font-mono text-xs font-bold tracking-widest text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:no-underline hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]",
     className,
   ]}
   href={link.href}
   size="sm"
-  variant="outline"
+  variant="glass"
   {...props}
   type="button"
 >
-  <AppIcon class="transition-transform duration-300 group-hover:-translate-x-0.5" name="mdi:arrow-left" size="sm" />
-  <span>{link.label}</span>
+  <AppIcon
+    class="text-primary transition-transform duration-300 group-hover:-translate-x-1"
+    name="mdi:arrow-left"
+    size="sm"
+  />
+  <span class="ml-1">{link.label}</span>
 </Button>

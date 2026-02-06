@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { CollectionKey } from "astro:content";
+
+import CollectionPage from "../../components/templates/collection-page.astro";
+import { ITEMS_PER_PAGE } from "../../config";
+import { collections } from "../../content.config";
+import {
+  buildDisplayUrls,
+  buildPaginationUrls,
+  type DisplayMode,
+  getCollectionConfig,
+  getCollectionData,
+  getItemCardProps,
+  getPageItems,
+} from "../../lib";
+
+export const prerender = true;
+
+export interface Params {
+  collection: CollectionKey;
+  display: DisplayMode;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const collectionNames = Object.keys(collections) as CollectionKey[];
+  const displays: DisplayMode[] = ["list", "grid"];
+
+  return collectionNames.flatMap((collection) =>
+    displays.map((display) => ({
+      params: { collection, display },
+    })),
+  );
+};
+
+const { collection, display } = Astro.params as unknown as Params;
+const currentPage = 1;
+
+const sortedItems = await getCollectionData(collection);
+const totalItems = sortedItems.length;
+const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+const items = getPageItems(sortedItems, currentPage);
+
+const config = getCollectionConfig(collection);
+const baseUrl = `/${collection}`;
+const displayUrls = buildDisplayUrls(collection, currentPage);
+const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
+---
+
+<CollectionPage
+  {...config}
+  baseUrl={baseUrl}
+  collectionItems={items}
+  collectionKey={collection}
+  containerId={`${collection}-container`}
+  currentPage={currentPage}
+  display={display}
+  displayUrls={displayUrls}
+  getItemCardProps={(item) => getItemCardProps(item)}
+  initialPageSize={20}
+  nextUrl={nextUrl}
+  prevUrl={prevUrl}
+  totalItems={totalItems}
+  totalPages={totalPages}
+/>

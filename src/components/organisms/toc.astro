@@ -1,0 +1,51 @@
+---
+import AppIcon from "../atoms/app-icon.astro";
+import Text from "../atoms/text.astro";
+
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+const filteredHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
+---
+
+<nav
+  class="toc-container glass sticky top-24 hidden w-full max-w-[260px] rounded-2xl border border-white/5 p-5 shadow-lg lg:block"
+>
+  <div class="mb-4 flex items-center gap-2 border-b border-border/50 pb-2">
+    <AppIcon class="text-primary" name="mdi:table-of-contents" size="sm" />
+    <Text class="font-bold tracking-widest uppercase" size="xs" variant="muted"> On This Page </Text>
+  </div>
+
+  <div class="js-toc relative">
+    <ul class="relative space-y-1">
+      {/* Active Indicator Line (Optional, managed by CSS usually, but we keep simple layout) */}
+      <div class="absolute top-0 bottom-0 left-0 w-px bg-border/50"></div>
+
+      {
+        filteredHeadings.map((heading) => (
+          <li class:list={["relative", { "pl-0": heading.depth === 2, "pl-3": heading.depth === 3 }]}>
+            <Text
+              as="a"
+              class="toc-link block border-l-2 border-transparent py-1 pl-4 text-[13px] leading-relaxed transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:pl-5 hover:text-primary"
+              href={`#${heading.slug}`}
+              variant="muted"
+            >
+              {heading.text}
+            </Text>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
+
+<script>
+  import { setupTOC } from "../../lib/toc";
+
+  // Lifecycle listeners for Astro (including View Transitions)
+  setupTOC();
+  document.addEventListener("astro:after-swap", setupTOC);
+</script>

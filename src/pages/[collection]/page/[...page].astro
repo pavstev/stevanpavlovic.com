@@ -6,15 +6,7 @@ import type { CollectionKey } from "astro:content";
 import CollectionPage from "../../../components/templates/collection-page.astro";
 import { ITEMS_PER_PAGE } from "../../../config";
 import { collections } from "../../../content.config";
-import {
-  buildDisplayUrls,
-  buildPaginationUrls,
-  type DisplayMode,
-  getCollectionConfig,
-  getCollectionData,
-  getItemCardProps,
-  getPageItems,
-} from "../../../lib";
+import { type DisplayMode, getCollectionData, getCollectionPageData } from "../../../lib";
 import { type Params as BaseParams } from "./../[display].astro";
 
 interface Params extends BaseParams {
@@ -57,30 +49,35 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection, display, page } = Astro.params as unknown as Params;
-const currentPage = parseInt(page, 10);
+const pageData = await getCollectionPageData(collection, page, display);
 
-const sortedItems = await getCollectionData(collection);
-const totalItems = sortedItems.length;
-const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-const items = getPageItems(sortedItems, currentPage);
-
-const config = getCollectionConfig(collection);
-const baseUrl = `/${collection}`;
-const displayUrls = buildDisplayUrls(collection, currentPage);
-const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
+const {
+  baseUrl,
+  collectionItems,
+  config,
+  containerId,
+  currentPage,
+  displayUrls,
+  getItemCardProps,
+  initialPageSize,
+  nextUrl,
+  prevUrl,
+  totalItems,
+  totalPages,
+} = pageData;
 ---
 
 <CollectionPage
   {...config}
   baseUrl={baseUrl}
-  collectionItems={items}
+  collectionItems={collectionItems}
   collectionKey={collection}
-  containerId={`${collection}-container`}
+  containerId={containerId}
   currentPage={currentPage}
   display={display}
   displayUrls={displayUrls}
-  getItemCardProps={(item) => getItemCardProps(item)}
-  initialPageSize={20}
+  getItemCardProps={getItemCardProps}
+  initialPageSize={initialPageSize}
   nextUrl={nextUrl}
   prevUrl={prevUrl}
   totalItems={totalItems}

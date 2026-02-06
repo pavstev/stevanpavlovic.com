@@ -4,15 +4,7 @@ import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
 import CollectionPage from "../../components/templates/collection-page.astro";
-import { ITEMS_PER_PAGE } from "../../config";
-import {
-  buildDisplayUrls,
-  buildPaginationUrls,
-  getCollectionConfig,
-  getCollectionData,
-  getItemCardProps,
-  getPageItems,
-} from "../../lib";
+import { getCollectionPageData } from "../../lib";
 
 export const prerender = true;
 
@@ -29,31 +21,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection } = Astro.params as unknown as Params;
-const display = "list" as const;
-const currentPage = 1;
+const pageData = await getCollectionPageData(collection, 1, "list");
 
-const sortedItems = await getCollectionData(collection);
-const totalItems = sortedItems.length;
-const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-const items = getPageItems(sortedItems, currentPage);
-
-const config = getCollectionConfig(collection);
-const baseUrl = `/${collection}`;
-const displayUrls = buildDisplayUrls(collection, currentPage);
-const { nextUrl, prevUrl } = buildPaginationUrls(collection, display, currentPage, totalPages);
+const {
+  baseUrl,
+  collectionItems,
+  config,
+  containerId,
+  currentPage,
+  display,
+  displayUrls,
+  getItemCardProps,
+  initialPageSize,
+  nextUrl,
+  prevUrl,
+  totalItems,
+  totalPages,
+} = pageData;
 ---
 
 <CollectionPage
   {...config}
   baseUrl={baseUrl}
-  collectionItems={items}
+  collectionItems={collectionItems}
   collectionKey={collection}
-  containerId={`${collection}-container`}
+  containerId={containerId}
   currentPage={currentPage}
   display={display}
   displayUrls={displayUrls}
-  getItemCardProps={(item) => getItemCardProps(item)}
-  initialPageSize={20}
+  getItemCardProps={getItemCardProps}
+  initialPageSize={initialPageSize}
   nextUrl={nextUrl}
   prevUrl={prevUrl}
   totalItems={totalItems}

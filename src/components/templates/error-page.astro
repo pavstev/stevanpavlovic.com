@@ -1,0 +1,127 @@
+---
+import Button from "../atoms/button.astro";
+import Heading from "../atoms/heading.astro";
+import Text from "../atoms/text.astro";
+import LayoutRoot from "../layout/layout-root.astro";
+import Meteors from "../meteor.astro";
+import Container from "../molecules/container.astro";
+
+interface Props {
+  code: string | number;
+  title: string;
+  description: string;
+  message: string;
+  error?: unknown;
+  variant?: "accent" | "danger" | "warning";
+}
+
+const { code, title, description, message, error, variant = "accent" } = Astro.props;
+
+// Map variants to specific color classes/variables if needed,
+// though here we use 'accent' and 'danger' directly in styles.
+// We can use a map or dynamic classes.
+// However, the original code used specific color names in the gradient:
+// 404: var(--color-accent)
+// 500: var(--color-danger)
+// We will construct the gradient dynamically.
+
+const gradientColor = `var(--color-${variant})`;
+// For tailwind bg/border opacities we might need a more robust solution if using arbitrary string interpolation
+// but since we know the variants, we can use a small switch or clsx if needed.
+// Given the simplicity, we will attempt direct injection where safe or conditionals.
+
+const errorMessage = error instanceof Error ? error.message : typeof error === "string" ? error : undefined;
+---
+
+<LayoutRoot description={description} slug={`/${code}`} title={title}>
+  <div class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center">
+    {/* Spotlight Effect */}
+    <div
+      class="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[800px] -translate-1/2 opacity-20"
+      style={`background: radial-gradient(circle, ${gradientColor} 0%, transparent 70%);`}
+    >
+    </div>
+
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <Meteors number={40} />
+    </div>
+
+    <Container class="relative z-10 flex flex-col items-center justify-center p-6 sm:p-8">
+      <div
+        class:list={[
+          "glass-strong flex max-w-2xl flex-col items-center gap-6 rounded-2xl border p-6 text-center shadow-2xl sm:p-8",
+          variant === "danger" && "border-danger/20 shadow-danger/10",
+          variant === "accent" && "border-accent/20 shadow-accent/10",
+        ]}
+      >
+        {/* Error Code */}
+        <div class="relative">
+          <Heading
+            class:list={[
+              "text-9xl font-black tracking-tighter opacity-90 sm:text-[12rem]",
+              variant === "danger" && "text-danger",
+              variant === "accent" && "text-accent",
+            ]}
+            variant="accent"
+          >
+            {code}
+          </Heading>
+          <div
+            class:list={[
+              "absolute inset-0 -z-10 opacity-30 blur-3xl",
+              variant === "danger" && "shadow-glow-danger",
+              variant === "accent" && "shadow-glow-accent",
+            ]}
+          >
+          </div>
+        </div>
+
+        {/* Text Content */}
+        <div class="flex flex-col items-center gap-4">
+          <Heading
+            class:list={[
+              "tracking-widest capitalize",
+              variant === "danger" && "text-danger",
+              variant === "accent" && "text-accent",
+            ]}
+            level={2}
+            size="md"
+          >
+            {title.split(" - ")[1] || title}
+          </Heading>
+
+          <Text class="max-w-md text-balance" size="lg" variant="muted">
+            {message}
+          </Text>
+
+          {
+            errorMessage && (
+              <div class="mt-2 rounded-lg border border-foreground/5 bg-background/40 px-4 py-2 font-mono text-xs text-red-400">
+                Error: {errorMessage}
+              </div>
+            )
+          }
+        </div>
+
+        {/* Actions */}
+        <slot name="actions">
+          <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+            <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:home" size="lg" variant="primary">
+              Return Home
+            </Button>
+            <Button
+              as="a"
+              class="w-full sm:w-auto"
+              href="javascript:history.back()"
+              icon="mdi:arrow-left"
+              size="lg"
+              variant="outline"
+            >
+              Go Back
+            </Button>
+          </div>
+        </slot>
+      </div>
+    </Container>
+  </div>
+</LayoutRoot>

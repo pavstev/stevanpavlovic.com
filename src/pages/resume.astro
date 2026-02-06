@@ -1,0 +1,9 @@
+---
+import LayoutRoot from "../components/layout/layout-root.astro";
+import ResumeGenerator from "../components/organisms/resume-generator.astro";
+import { PROFILE } from "../config";
+---
+
+<LayoutRoot class="bg-slate-100" description="Interactive Resume" slug="/resume" title={`${PROFILE.name} | Resume`}>
+  <ResumeGenerator />
+</LayoutRoot>

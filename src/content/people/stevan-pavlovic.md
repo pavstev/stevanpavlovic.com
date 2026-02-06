@@ -21,6 +21,16 @@ socialLinks:
   - type: Email
     handle: hi@stevanpavlovic.com
     name: Stevan Pavlovic Email
+education:
+  - degree: "B.S. Computer Science"
+    school: "University of Belgrade"
+    year: "2015 — 2019"
+skills:
+  - "JavaScript / TypeScript"
+  - "React / Next.js / Astro"
+  - "Node.js / PostgreSQL"
+  - "AWS / Docker / CI/CD"
+  - "Tailwind CSS / Design Systems"
 ---
 
 Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience delivering high-impact solutions for fintech, betting, and logistics sectors.

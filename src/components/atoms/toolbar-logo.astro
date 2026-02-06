@@ -38,7 +38,7 @@ const { alt, size, src, type } = Astro.props;
     type === "status" ? (
       <span class="relative flex size-2.5">
         <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
-        <span class="relative inline-flex size-2.5 rounded-full bg-accent shadow-glow-accent" />
+        <span class="shadow-glow-accent relative inline-flex size-2.5 rounded-full bg-accent" />
       </span>
     ) : (
       src && (
@@ -47,7 +47,7 @@ const { alt, size, src, type } = Astro.props;
           class:list={[
             "size-full transition-all duration-500",
             {
-              "object-contain opacity-80 group-hover:opacity-100 group-hover:scale-105":
+              "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100":
                 type === "organization" || !type,
               "object-cover": type === "person",
             },

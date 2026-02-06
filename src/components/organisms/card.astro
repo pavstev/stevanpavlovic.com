@@ -124,8 +124,11 @@ const isRowLayout = list && !icon;
       <div
         class:list={[
           cardClasses,
-          isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4 p-5 sm:p-6",
-          align === "center" && !isRowLayout ? "items-center text-center" : "items-start",
+          { "flex-row gap-4 p-4!": isRowLayout, "h-full flex-col gap-4 p-5 sm:p-6": !isRowLayout },
+          {
+            "items-center text-center": align === "center" && !isRowLayout,
+            "items-start": !(align === "center" && !isRowLayout),
+          },
           animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
         ]}
         style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
@@ -165,9 +168,14 @@ const isRowLayout = list && !icon;
           </div>
         )}
 
-        <div class:list={["flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4"]}>
-          <div class:list={["flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row"]}>
-            <div class:list={["flex flex-col", isRowLayout ? "gap-0" : "gap-1"]}>
+        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-4": !isRowLayout }]}>
+          <div
+            class:list={[
+              "flex w-full justify-between gap-4",
+              { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
+            ]}
+          >
+            <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout }]}>
               {date && (
                 <div class:list={["flex items-center justify-between", !isRowLayout && "mb-1"]}>
                   <Text class="font-mono tracking-wider uppercase opacity-70" size="xs" variant="muted">
@@ -179,7 +187,7 @@ const isRowLayout = list && !icon;
               <Heading
                 class:list={[
                   "transition-colors group-hover:text-primary",
-                  isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2",
+                  { "line-clamp-2": !isRowLayout, "mt-1 line-clamp-1": isRowLayout },
                 ]}
                 level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
                 size={isRowLayout ? "sm" : "md"}
@@ -189,7 +197,7 @@ const isRowLayout = list && !icon;
 
               {subtitle && (
                 <Text
-                  class:list={["font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1"]}
+                  class:list={["font-mono tracking-wider uppercase", { "mt-0.5": isRowLayout, "mt-1": !isRowLayout }]}
                   size="xs"
                   variant="muted"
                 >
@@ -206,9 +214,10 @@ const isRowLayout = list && !icon;
                   <div
                     class:list={[
                       "absolute right-0 flex items-center text-muted-foreground transition-all duration-300",
-                      actionLabel
-                        ? "group-hover:-translate-x-2 group-hover:opacity-0"
-                        : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary",
+                      {
+                        "group-hover:-translate-x-2 group-hover:opacity-0": actionLabel,
+                        "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary": !actionLabel,
+                      },
                     ]}
                   >
                     <AppIcon name="mdi:arrow-top-right" size="sm" />
@@ -226,14 +235,19 @@ const isRowLayout = list && !icon;
 
           {description && (
             <Text
-              class:list={["text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "mt-2 line-clamp-2 flex-1"]}
+              class:list={[
+                "text-muted-foreground",
+                { "mt-2 line-clamp-1": isRowLayout, "mt-2 line-clamp-2 flex-1": !isRowLayout },
+              ]}
               size="sm"
             >
               {description}
             </Text>
           )}
 
-          <div class:list={["mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between"]}>
+          <div
+            class:list={["mt-auto flex items-center", { "gap-2": isRowLayout, "w-full justify-between": !isRowLayout }]}
+          >
             {tags && tags.length > 0 && (
               <div class:list={[isRowLayout && "mt-2"]}>
                 <Tags limit={isRowLayout ? 4 : 3} tags={tags} />

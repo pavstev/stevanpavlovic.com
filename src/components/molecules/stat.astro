@@ -23,7 +23,7 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
   <div
     class="relative flex size-12 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:text-accent group-hover:ring-primary/50"
   >
-    <AppIcon hover="scale" name={icon} size="xl" transition="default" />
+    <AppIcon class="transition-transform duration-300 group-hover:scale-110" name={icon} size="xl" />
   </div>
 
   {/* Text Content */}

@@ -39,7 +39,11 @@ const { as: Tag = "div", class: className, icon, iconClass, iconSize, size, vari
 <Tag class:list={[variants({ size, variant }), className]} {...props}>
   {
     icon ? (
-      <AppIcon class={iconClass} name={icon} size={iconSize || (size === "xl" ? "lg" : size === "sm" ? "sm" : "md")} />
+      <AppIcon
+        class:list={iconClass}
+        name={icon}
+        size={iconSize || (size === "xl" ? "lg" : size === "sm" ? "sm" : "md")}
+      />
     ) : (
       <slot />
     )

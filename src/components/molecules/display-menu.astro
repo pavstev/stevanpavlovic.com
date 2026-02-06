@@ -32,7 +32,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
           size="sm"
           variant={isActive ? "primary" : "ghost"}
         >
-          <AppIcon class={!isActive ? "transition-colors group-hover:text-primary" : ""} name={icon} size="md" />
+          <AppIcon class:list={{ "transition-colors group-hover:text-primary": !isActive }} name={icon} size="md" />
           {showLabels && <span class="ml-2.5 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>}
         </Button>
       );

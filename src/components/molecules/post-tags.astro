@@ -20,8 +20,7 @@ const { tags, title } = Astro.props;
           {tags.map((tag) => (
             <Badge
               class="group-hover/toolbar:shadow-glow-accent cursor-pointer transition-all duration-300 group-hover/toolbar:border-accent/50 group-hover/toolbar:bg-accent/10 group-hover/toolbar:text-accent hover:text-foreground"
-              size="sm"
-              variant="secondary"
+              variant="default"
             >
               {tag.label}
             </Badge>

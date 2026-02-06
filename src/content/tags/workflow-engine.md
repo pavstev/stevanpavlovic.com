@@ -1,7 +1,7 @@
 ---
 workflow-engine
 label: Workflow Engine
-category: reference("architecture")
+category: architecture
 description: Workflow Engine - Workflow Engine
 ---
 

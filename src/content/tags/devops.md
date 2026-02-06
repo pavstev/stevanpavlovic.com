@@ -1,7 +1,7 @@
 ---
 devops
 label: DevOps
-category: reference("devops")
+category: devops
 description: DevOps - Development and operations practices for software delivery
 ---
 

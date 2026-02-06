@@ -1,7 +1,7 @@
 ---
 id: rabbitmq
 label: RabbitMQ
-category: reference("database")
+category: database
 description: RabbitMQ - Message broker for distributed systems
 ---
 

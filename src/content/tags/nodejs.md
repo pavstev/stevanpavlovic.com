@@ -1,7 +1,7 @@
 ---
 id: nodejs
 label: Node.js
-category: reference("backend")
+category: backend
 description: Node.js - JavaScript runtime for server-side development
 ---
 

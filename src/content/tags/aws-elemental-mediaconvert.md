@@ -1,7 +1,7 @@
 ---
 aws-elemental-mediaconvert
 label: AWS Elemental MediaConvert
-category: reference("cloud")
+category: cloud
 description: AWS Elemental MediaConvert - Serverless video transcoding service
 ---
 

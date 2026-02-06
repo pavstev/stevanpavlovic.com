@@ -1,7 +1,7 @@
 ---
 ajax
 label: AJAX
-category: reference("frontend")
+category: frontend
 description: AJAX - Asynchronous JavaScript and XML for dynamic web applications
 ---
 

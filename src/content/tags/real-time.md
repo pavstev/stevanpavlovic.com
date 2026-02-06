@@ -1,7 +1,7 @@
 ---
 real-time
 label: Real Time
-category: reference("architecture")
+category: architecture
 description: Real Time - Real Time
 ---
 

@@ -1,7 +1,7 @@
 ---
 websockets
 label: Websockets
-category: reference("architecture")
+category: architecture
 description: Websockets - Websockets
 ---
 

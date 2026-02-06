@@ -1,7 +1,7 @@
 ---
 id: php
 label: PHP
-category: reference("backend")
+category: backend
 description: PHP - Server-side scripting language
 ---
 

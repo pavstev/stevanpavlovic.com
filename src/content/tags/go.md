@@ -1,7 +1,7 @@
 ---
 go
 label: Go
-category: reference("backend")
+category: backend
 description: Go - Programming language for efficient backend development
 ---
 

@@ -1,7 +1,7 @@
 ---
 algorithms
 label: Algorithms
-category: reference("architecture")
+category: architecture
 description: Algorithms - Step-by-step procedures for solving computational problems
 ---
 

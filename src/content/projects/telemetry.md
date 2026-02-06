@@ -6,13 +6,13 @@ desc: "A high-performance full-stack platform for real-time visualization of veh
 image: "../../assets/placeholder.png"
 demoUrl: "https://telemetry.com"
 tags:
-  - reference("react")
-  - reference("typescript")
-  - reference("real-time")
-  - reference("websockets")
-  - reference("maps")
-  - reference("microservices")
-  - reference("time-series-data")
+  - react
+  - typescript
+  - real-time
+  - websockets
+  - maps
+  - microservices
+  - time-series-data
 featured: true
 duration: "10 months"
 teamSize: "5-member full-stack team"

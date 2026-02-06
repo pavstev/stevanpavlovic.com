@@ -1,7 +1,7 @@
 ---
 id: performance-tuning
 label: Performance Tuning
-category: reference("architecture")
+category: architecture
 description: Performance Tuning - Optimizing system performance
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: other
 label: Other
-category: reference("other")
+category: other
 description: Other - Miscellaneous technologies and concepts
 ---
 

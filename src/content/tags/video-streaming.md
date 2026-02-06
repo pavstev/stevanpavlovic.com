@@ -1,7 +1,7 @@
 ---
 video-streaming
 label: Video Streaming
-category: reference("frontend")
+category: frontend
 description: Video Streaming - Video Streaming
 ---
 

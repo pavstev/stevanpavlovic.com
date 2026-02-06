@@ -1,7 +1,7 @@
 ---
 elasticsearch
 label: Elasticsearch
-category: reference("database")
+category: database
 description: Elasticsearch - Distributed search and analytics engine
 ---
 

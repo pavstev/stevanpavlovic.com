@@ -1,7 +1,7 @@
 ---
 id: high-availability
 label: High Availability
-category: reference("architecture")
+category: architecture
 description: High Availability - Ensuring system uptime and reliability
 ---
 

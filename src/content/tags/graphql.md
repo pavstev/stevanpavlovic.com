@@ -1,7 +1,7 @@
 ---
 id: graphql
 label: GraphQL
-category: reference("architecture")
+category: architecture
 description: GraphQL - Query language for APIs
 ---
 

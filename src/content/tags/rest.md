@@ -1,7 +1,7 @@
 ---
 rest
 label: REST
-category: reference("architecture")
+category: architecture
 description: REST - REST
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: javascript
 label: JavaScript
-category: reference("frontend")
+category: frontend
 description: JavaScript - Programming language for web development
 ---
 

@@ -1,7 +1,7 @@
 ---
 cloud
 label: Cloud
-category: reference("cloud")
+category: cloud
 description: Cloud - Cloud computing platforms and infrastructure services
 ---
 

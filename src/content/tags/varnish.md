@@ -1,7 +1,7 @@
 ---
 varnish
 label: Varnish
-category: reference("devops")
+category: devops
 description: Varnish - Varnish
 ---
 

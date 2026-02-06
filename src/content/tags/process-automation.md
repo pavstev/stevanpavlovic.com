@@ -1,7 +1,7 @@
 ---
 id: process-automation
 label: Process Automation
-category: reference("devops")
+category: devops
 description: Process Automation - Automating business processes
 ---
 

@@ -1,7 +1,7 @@
 ---
 database
 label: Database
-category: reference("database")
+category: database
 description: Database - Data storage and management systems
 ---
 

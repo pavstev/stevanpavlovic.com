@@ -1,7 +1,7 @@
 ---
 api
 label: API
-category: reference("architecture")
+category: architecture
 description: API - Application Programming Interfaces for software communication
 ---
 

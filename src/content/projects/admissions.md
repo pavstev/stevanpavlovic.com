@@ -6,13 +6,13 @@ desc: "An innovative auto-evaluation system that transforms college admissions p
 image: "../../assets/placeholder.png"
 demoUrl: "https://admissions.com"
 tags:
-  - reference("algorithms")
-  - reference("automation")
-  - reference("crm")
-  - reference("edtech")
-  - reference("nodejs")
-  - reference("mongodb")
-  - reference("workflow-engine")
+  - algorithms
+  - automation
+  - crm
+  - edtech
+  - nodejs
+  - mongodb
+  - workflow-engine
 featured: true
 duration: "6 months"
 teamSize: "Solo project within 10-member team"

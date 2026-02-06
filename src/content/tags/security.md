@@ -1,7 +1,7 @@
 ---
 security
 label: Security
-category: reference("security")
+category: security
 description: Security - Security
 ---
 

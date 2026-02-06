@@ -1,7 +1,7 @@
 ---
 id: postgresql
 label: PostgreSQL
-category: reference("database")
+category: database
 description: PostgreSQL - Open-source relational database
 ---
 

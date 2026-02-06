@@ -1,7 +1,7 @@
 ---
 id: mysql
 label: MySQL
-category: reference("database")
+category: database
 description: MySQL - Relational database management system
 ---
 

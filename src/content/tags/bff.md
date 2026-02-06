@@ -1,7 +1,7 @@
 ---
 bff
 label: BFF
-category: reference("architecture")
+category: architecture
 description: BFF - Backend for Frontend pattern
 ---
 

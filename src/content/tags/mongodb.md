@@ -1,7 +1,7 @@
 ---
 id: mongodb
 label: MongoDB
-category: reference("database")
+category: database
 description: MongoDB - NoSQL document database
 ---
 

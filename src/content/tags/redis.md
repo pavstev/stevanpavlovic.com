@@ -1,7 +1,7 @@
 ---
 redis
 label: Redis
-category: reference("database")
+category: database
 description: Redis - Redis
 ---
 

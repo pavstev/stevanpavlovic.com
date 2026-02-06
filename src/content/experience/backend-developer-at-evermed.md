@@ -8,12 +8,12 @@ startDate: 2021-01-01
 endDate: 2021-08-01
 type: Contract
 skills:
-  - reference("aws-lambda")
-  - reference("serverless")
-  - reference("php")
-  - reference("symfony")
-  - reference("aws-elemental-mediaconvert")
-  - reference("postgresql")
+  - aws-lambda
+  - serverless
+  - php
+  - symfony
+  - aws-elemental-mediaconvert
+  - postgresql
 description: "Pioneered the modernization of a healthcare-focused video streaming platform, transitioning legacy monolithic systems into a resilient, cloud-native serverless architecture. Architected and implemented automated video transcoding pipelines using AWS Lambda and Elemental MediaConvert, ensuring secure, HIPAA-compliant delivery of sensitive medical content."
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: mediaconvert
 label: MediaConvert
-category: reference("cloud")
+category: cloud
 description: MediaConvert - Video transcoding service
 ---
 

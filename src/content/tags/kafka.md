@@ -1,7 +1,7 @@
 ---
 id: kafka
 label: Kafka
-category: reference("database")
+category: database
 description: Kafka - Distributed event streaming platform
 ---
 

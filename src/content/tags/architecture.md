@@ -1,7 +1,7 @@
 ---
 architecture
 label: Architecture
-category: reference("architecture")
+category: architecture
 description: Architecture - Software architecture patterns and design principles
 ---
 

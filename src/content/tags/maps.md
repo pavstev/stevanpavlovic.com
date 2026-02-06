@@ -1,7 +1,7 @@
 ---
 id: maps
 label: Maps
-category: reference("frontend")
+category: frontend
 description: Maps - Geographic mapping and location services
 ---
 

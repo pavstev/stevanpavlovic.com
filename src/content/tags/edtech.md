@@ -1,7 +1,7 @@
 ---
 edtech
 label: EdTech
-category: reference("other")
+category: other
 description: EdTech - Educational technology and learning platforms
 ---
 

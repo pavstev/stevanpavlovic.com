@@ -1,7 +1,7 @@
 ---
 frontend
 label: Frontend
-category: reference("frontend")
+category: frontend
 description: Frontend - Client-side development and user interfaces
 ---
 

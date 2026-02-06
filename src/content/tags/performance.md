@@ -1,7 +1,7 @@
 ---
 id: performance
 label: Performance
-category: reference("architecture")
+category: architecture
 description: Performance - System performance optimization and tuning
 ---
 

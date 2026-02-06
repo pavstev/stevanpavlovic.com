@@ -1,7 +1,7 @@
 ---
 acid
 label: ACID
-category: reference("database")
+category: database
 description: ACID - Database transaction properties ensuring data integrity
 ---
 

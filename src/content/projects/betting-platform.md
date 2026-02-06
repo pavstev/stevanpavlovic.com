@@ -6,14 +6,14 @@ desc: "A state-of-the-art sports betting and gaming ecosystem architected for ex
 image: "../../assets/placeholder.png"
 demoUrl: "https://167pluto.com"
 tags:
-  - reference("nodejs")
-  - reference("nestjs")
-  - reference("kafka")
-  - reference("redis")
-  - reference("postgresql")
-  - reference("microservices")
-  - reference("event-sourcing")
-  - reference("high-availability")
+  - nodejs
+  - nestjs
+  - kafka
+  - redis
+  - postgresql
+  - microservices
+  - event-sourcing
+  - high-availability
 featured: true
 duration: "16 months"
 teamSize: "Backend core team of 8"

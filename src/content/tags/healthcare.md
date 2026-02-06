@@ -1,7 +1,7 @@
 ---
 id: healthcare
 label: Healthcare
-category: reference("other")
+category: other
 description: Healthcare - Medical and healthcare technology
 ---
 

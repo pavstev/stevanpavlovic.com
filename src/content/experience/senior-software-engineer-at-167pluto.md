@@ -8,13 +8,13 @@ startDate: 2024-02-01
 endDate: 2025-06-01
 type: Full-time
 skills:
-  - reference("nodejs")
-  - reference("nestjs")
-  - reference("kafka")
-  - reference("postgresql")
-  - reference("redis")
-  - reference("aws")
-  - reference("ci-cd")
+  - nodejs
+  - nestjs
+  - kafka
+  - postgresql
+  - redis
+  - aws
+  - ci-cd
   - microservices
 description: "Architected and spearheaded the development of a state-of-the-art, high-throughput betting platform leveraging a cutting-edge Node.js and NestJS microservices architecture. Engineering focus on extreme scalability and event-driven consistency, processing millions of concurrent transactions with millisecond latency."
 ---

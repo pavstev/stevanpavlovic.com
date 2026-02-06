@@ -1,7 +1,7 @@
 ---
 react
 label: React
-category: reference("frontend")
+category: frontend
 description: React - React
 ---
 

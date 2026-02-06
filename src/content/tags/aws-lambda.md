@@ -1,7 +1,7 @@
 ---
 aws-lambda
 label: AWS Lambda
-category: reference("cloud")
+category: cloud
 description: AWS Lambda - Serverless compute service
 ---
 

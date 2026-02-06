@@ -1,7 +1,7 @@
 ---
 api-orchestration
 label: API Orchestration
-category: reference("architecture")
+category: architecture
 description: API Orchestration - Coordinating multiple API calls into unified workflows
 ---
 

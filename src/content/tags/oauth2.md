@@ -1,7 +1,7 @@
 ---
 id: oauth2
 label: OAuth2
-category: reference("security")
+category: security
 description: OAuth2 - Authorization framework for secure access delegation
 ---
 

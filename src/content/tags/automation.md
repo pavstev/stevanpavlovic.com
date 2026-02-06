@@ -1,7 +1,7 @@
 ---
 automation
 label: Automation
-category: reference("devops")
+category: devops
 description: Automation - Automation
 ---
 

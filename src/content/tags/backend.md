@@ -1,7 +1,7 @@
 ---
 backend
 label: Backend
-category: reference("backend")
+category: backend
 description: Backend - Server-side development and infrastructure
 ---
 

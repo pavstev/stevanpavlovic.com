@@ -1,7 +1,7 @@
 ---
 crm
 label: CRM
-category: reference("backend")
+category: backend
 description: CRM - Customer Relationship Management systems
 ---
 

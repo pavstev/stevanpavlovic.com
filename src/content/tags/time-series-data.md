@@ -1,7 +1,7 @@
 ---
 time-series-data
 label: Time Series Data
-category: reference("database")
+category: database
 description: Time Series Data - Time Series Data
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: microservices
 label: Microservices
-category: reference("architecture")
+category: architecture
 description: Microservices - Distributed system architecture
 ---
 

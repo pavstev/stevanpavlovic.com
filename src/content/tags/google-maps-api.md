@@ -1,7 +1,7 @@
 ---
 google-maps-api
 label: Google Maps API
-category: reference("frontend")
+category: frontend
 description: Google Maps API - Mapping and location services
 ---
 

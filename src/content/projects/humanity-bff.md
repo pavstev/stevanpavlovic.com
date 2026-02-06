@@ -6,13 +6,13 @@ desc: "Architected and optimized the Backend-for-Frontend (BFF) infrastructure f
 image: "../../assets/placeholder.png"
 demoUrl: "https://humanity.com"
 tags:
-  - reference("nodejs")
-  - reference("go")
-  - reference("redis")
-  - reference("bff")
-  - reference("microservices")
-  - reference("performance")
-  - reference("api-orchestration")
+  - nodejs
+  - go
+  - redis
+  - bff
+  - microservices
+  - performance
+  - api-orchestration
 featured: true
 duration: "14 months"
 teamSize: "Backend team of 5"

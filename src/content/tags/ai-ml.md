@@ -1,7 +1,7 @@
 ---
 ai-ml
 label: AI/ML
-category: reference("ai-ml")
+category: ai-ml
 description: AI/ML - Artificial Intelligence and Machine Learning technologies
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: mobile
 label: Mobile
-category: reference("mobile")
+category: mobile
 description: Mobile - Mobile development technologies and platforms
 ---
 

@@ -1,7 +1,7 @@
 ---
 design-patterns
 label: Design Patterns
-category: reference("architecture")
+category: architecture
 description: Design Patterns - Reusable solutions to common software problems
 ---
 

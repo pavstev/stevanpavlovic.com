@@ -1,7 +1,7 @@
 ---
 symfony
 label: Symfony
-category: reference("backend")
+category: backend
 description: Symfony - Symfony
 ---
 

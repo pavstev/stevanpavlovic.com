@@ -1,7 +1,7 @@
 ---
 tech
 label: Tech
-category: reference("other")
+category: other
 description: Tech - Tech
 ---
 

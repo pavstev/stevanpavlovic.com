@@ -1,7 +1,7 @@
 ---
 typescript
 label: Typescript
-category: reference("frontend")
+category: frontend
 description: Typescript - Typescript
 ---
 

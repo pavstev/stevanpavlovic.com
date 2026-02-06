@@ -1,7 +1,7 @@
 ---
 fintech
 label: Fintech
-category: reference("other")
+category: other
 description: Fintech - Financial technology and digital financial services
 ---
 

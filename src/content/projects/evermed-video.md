@@ -6,13 +6,13 @@ desc: "Designed and implemented a cloud-native, serverless video processing pipe
 image: "../../assets/placeholder.png"
 demoUrl: "https://evermed.com"
 tags:
-  - reference("aws-lambda")
-  - reference("s3")
-  - reference("mediaconvert")
-  - reference("serverless")
-  - reference("nodejs")
-  - reference("healthcare")
-  - reference("video-streaming")
+  - aws-lambda
+  - s3
+  - mediaconvert
+  - serverless
+  - nodejs
+  - healthcare
+  - video-streaming
 featured: true
 duration: "8 months"
 teamSize: "Backend dev + DevOps lead"

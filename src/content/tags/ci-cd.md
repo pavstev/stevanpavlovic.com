@@ -1,7 +1,7 @@
 ---
 ci-cd
 label: CI/CD
-category: reference("devops")
+category: devops
 description: CI/CD - Continuous Integration and Continuous Deployment
 ---
 

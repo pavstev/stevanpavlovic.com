@@ -1,7 +1,7 @@
 ---
 id: nestjs
 label: NestJS
-category: reference("backend")
+category: backend
 description: NestJS - Node.js framework for efficient and scalable server-side applications
 ---
 

@@ -1,7 +1,7 @@
 ---
 data-analytics
 label: Data Analytics
-category: reference("backend")
+category: backend
 description: Data Analytics - Analyzing and interpreting data to gain insights
 ---
 

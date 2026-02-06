@@ -1,7 +1,7 @@
 ---
 web-development
 label: Web Development
-category: reference("frontend")
+category: frontend
 description: Web Development - Web Development
 ---
 

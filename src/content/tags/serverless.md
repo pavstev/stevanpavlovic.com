@@ -1,7 +1,7 @@
 ---
 serverless
 label: Serverless
-category: reference("cloud")
+category: cloud
 description: Serverless - Serverless
 ---
 

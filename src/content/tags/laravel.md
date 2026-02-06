@@ -1,7 +1,7 @@
 ---
 id: laravel
 label: Laravel
-category: reference("backend")
+category: backend
 description: Laravel - PHP web application framework
 ---
 

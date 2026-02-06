@@ -1,7 +1,7 @@
 ---
 docker
 label: Docker
-category: reference("devops")
+category: devops
 description: Docker - Container platform for application deployment
 ---
 

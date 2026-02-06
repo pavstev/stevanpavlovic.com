@@ -1,7 +1,7 @@
 ---
 aws
 label: AWS
-category: reference("cloud")
+category: cloud
 description: AWS - Amazon Web Services cloud computing platform
 ---
 

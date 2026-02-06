@@ -106,8 +106,7 @@ const pages = Object.fromEntries(
           title,
         },
       ];
-    }),
-  ),
+    }),),
 );
 
 /**

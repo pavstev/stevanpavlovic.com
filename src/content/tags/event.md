@@ -10,11 +10,13 @@ Event plays a critical role in modern software architecture. This section aggreg
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to Event principles.
 - **Architecture**: How Event fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up Event.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for Event.
 - **Scaling**: Managing Event at scale.
 - **Security**: Best practices for securing Event implementations.

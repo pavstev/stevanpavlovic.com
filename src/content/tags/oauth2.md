@@ -10,11 +10,13 @@ OAuth2 plays a critical role in modern software architecture. This section aggre
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to OAuth2 principles.
 - **Architecture**: How OAuth2 fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up OAuth2.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for OAuth2.
 - **Scaling**: Managing OAuth2 at scale.
 - **Security**: Best practices for securing OAuth2 implementations.

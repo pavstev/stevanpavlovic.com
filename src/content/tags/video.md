@@ -10,11 +10,13 @@ Video plays a critical role in modern software architecture. This section aggreg
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to Video principles.
 - **Architecture**: How Video fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up Video.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for Video.
 - **Scaling**: Managing Video at scale.
 - **Security**: Best practices for securing Video implementations.

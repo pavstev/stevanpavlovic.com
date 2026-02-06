@@ -10,11 +10,13 @@ Go plays a critical role in modern software architecture. This section aggregate
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to Go principles.
 - **Architecture**: How Go fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up Go.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for Go.
 - **Scaling**: Managing Go at scale.
 - **Security**: Best practices for securing Go implementations.

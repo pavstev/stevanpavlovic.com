@@ -10,11 +10,13 @@ Elasticsearch plays a critical role in modern software architecture. This sectio
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to Elasticsearch principles.
 - **Architecture**: How Elasticsearch fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up Elasticsearch.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for Elasticsearch.
 - **Scaling**: Managing Elasticsearch at scale.
 - **Security**: Best practices for securing Elasticsearch implementations.

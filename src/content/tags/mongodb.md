@@ -10,11 +10,13 @@ MongoDB plays a critical role in modern software architecture. This section aggr
 ## Core Concepts
 
 ### Fundamentals
+
 - **Basics**: Introduction to MongoDB principles.
 - **Architecture**: How MongoDB fits into the broader ecosystem.
 - **Implementation**: Practical guides for setting up MongoDB.
 
 ### Advanced Topics
+
 - **Performance**: Optimization strategies for MongoDB.
 - **Scaling**: Managing MongoDB at scale.
 - **Security**: Best practices for securing MongoDB implementations.

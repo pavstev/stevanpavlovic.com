@@ -1,6 +1,6 @@
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 
-import { PROFILE } from "../config";
+import { PROFILE } from "../../config";
 import { createAuthorItem } from "./toolbar-items";
 
 const getClassificationToolbarItem = (item: CollectionItem<"projects">): ToolbarItem | undefined => {

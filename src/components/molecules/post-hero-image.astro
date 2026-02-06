@@ -15,8 +15,7 @@ const { image } = Astro.props;
     <div class="relative mx-auto mb-12 aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border/50 bg-muted shadow-2xl shadow-primary/5 transition-all sm:rounded-3xl">
       <ZoomableImage
         alt={image.src}
-        className="size-full object-cover"
-        client:load
+        class="size-full object-cover"
         height={image.height}
         src={image.src}
         width={image.width}

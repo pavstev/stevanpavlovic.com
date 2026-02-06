@@ -3,7 +3,7 @@ import duration from "dayjs/plugin/duration";
 
 import type { CollectionItem, ToolbarItem as TI, ViewPageProps } from "./types";
 
-import { PROFILE } from "../config";
+import { PROFILE } from "../../config";
 import { createAuthorItem } from "./toolbar-items";
 
 dayjs.extend(duration);

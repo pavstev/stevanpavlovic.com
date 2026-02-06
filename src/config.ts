@@ -1,4 +1,13 @@
-import profileImage from "../assets/profile.jpeg";
+import type { DisplayMode } from "./lib/list";
+
+import profileImage from "./assets/profile.jpeg";
+
+// ============================================================================
+// Site Metadata
+// ============================================================================
+
+export const SITE_TITLE = "Astro Blog";
+export const SITE_DESCRIPTION = "Welcome to my website!";
 
 export const SITE_CONFIG = {
   author: "Stevan Pavlovic",
@@ -8,9 +17,13 @@ export const SITE_CONFIG = {
   title: "Stevan Pavlovic - Senior Software Engineer",
 } as const;
 
+// ============================================================================
+// Navigation
+// ============================================================================
+
 export interface NavItem {
   color: string;
-  defaultView: "grid" | "list";
+  defaultView: DisplayMode;
   description: string;
   href: string;
   icon: `mdi:${string}`;
@@ -19,7 +32,7 @@ export interface NavItem {
   tagTitle: string;
 }
 
-export const NAV_ITEMS: Record<string, NavItem> = {
+export const NAV_ITEMS = {
   blog: {
     color: "var(--color-accent)",
     defaultView: "list",
@@ -60,9 +73,13 @@ export const NAV_ITEMS: Record<string, NavItem> = {
     order: 2,
     tagTitle: "Technologies",
   },
-} as const;
+} as const satisfies Record<string, NavItem>;
 
 export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS).sort((a, b) => a.order - b.order);
+
+// ============================================================================
+// Personal Profile
+// ============================================================================
 
 export const PROFILE = {
   avatar: profileImage,
@@ -109,3 +126,25 @@ export const STATS: Stat[] = [
   { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },
   { icon: "mdi:earth", label: "Countries", value: 15 },
 ] as const;
+
+// ============================================================================
+// UI / List Settings
+// ============================================================================
+
+export const ITEMS_PER_PAGE = 10;
+
+export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = [
+  { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
+  { icon: "mdi:view-column", label: "Grid", mode: "grid" },
+];
+
+export const CHATBOT_VARIANTS = {
+  ai: "rounded-tl-none bg-muted/80 text-foreground/90",
+  user: "ml-auto rounded-tr-none bg-primary text-primary-foreground",
+};
+
+export const RESUME_CONTEXT = `
+Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
+He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
+Based in Belgrade, Serbia.
+`.trim();

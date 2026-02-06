@@ -3,6 +3,7 @@
 import type { GetStaticPaths } from "astro";
 
 import CollectionPage from "../../../components/templates/collection-page.astro";
+import { ITEMS_PER_PAGE } from "../../../config";
 import { collections } from "../../../content.config";
 import {
   buildDisplayUrls,
@@ -13,8 +14,7 @@ import {
   getCollectionData,
   getItemCardProps,
   getPageItems,
-  ITEMS_PER_PAGE,
-} from "../../../lib/collection-pages";
+} from "../../../lib";
 import { type Params as BaseParams } from "./../[display].astro";
 
 interface Params extends BaseParams {

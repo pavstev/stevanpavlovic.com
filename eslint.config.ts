@@ -1,3 +1,4 @@
+import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import eslint from "@eslint/js";
 import markdown from "@eslint/markdown";
 import stylistic from "@stylistic/eslint-plugin";
@@ -48,6 +49,7 @@ export default defineConfig(
     "worker-configuration.d.ts",
     ".vscode/**/*",
   ]),
+  comments.recommended,
   { ...eslint.configs.recommended, ignores: ["**/*.md", "**/*.mdx"], name: "eslint" },
   {
     ...perfectionist.configs["recommended-natural"],

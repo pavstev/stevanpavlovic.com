@@ -1,4 +1,4 @@
-import { PROFILE } from "./config";
+import { PROFILE } from "../config";
 
 /**
  * Generates the copyright text with the current year

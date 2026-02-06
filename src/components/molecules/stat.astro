@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 
 import { formatCompactNumber } from "../../lib/content";
-import { NumberTicker } from "../atoms/number-ticker";
+import NumberTicker from "../atoms/number-ticker.astro";
 import Text from "../atoms/text.astro";
 
 interface Props {
@@ -31,7 +31,7 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
   <div class="flex flex-col text-left">
     <div class="flex items-baseline gap-0.5">
       <span class="text-gradient-accent text-3xl font-bold tracking-tight tabular-nums md:text-4xl">
-        {format === "compact" ? displayValue : <NumberTicker client:visible value={value} />}
+        {format === "compact" ? displayValue : <NumberTicker value={value} />}
       </span>
       {unit && <span class="text-2xl font-bold text-primary md:text-3xl">{unit}</span>}
     </div>

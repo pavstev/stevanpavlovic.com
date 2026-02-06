@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
 
-import { PROFILE } from "../config";
+import { PROFILE } from "../../config";
 import { createAuthorItem } from "./toolbar-items";
 
 const getPublishedToolbarItem = (item: CollectionItem<"blog">): ToolbarItem => ({
@@ -14,7 +14,6 @@ export const getBlogProps = (item: CollectionItem<"blog">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
 
   return {
-    author,
     backLink: {
       href: "/blog",
       label: "Back to Blog",

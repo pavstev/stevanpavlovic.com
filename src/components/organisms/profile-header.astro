@@ -1,5 +1,5 @@
 ---
-import HeroAvatar from "../molecules/hero-avatar";
+import HeroAvatar from "../molecules/hero-avatar.astro";
 import HeroContent from "../molecules/hero-content.astro";
 
 interface Props {
@@ -16,7 +16,7 @@ const { class: className } = Astro.props;
 
     <!-- Avatar Section -->
     <div class="order-1 flex justify-center md:order-2 md:justify-end">
-      <HeroAvatar className="group" client:load />
+      <HeroAvatar class="group" />
     </div>
   </div>
 </section>

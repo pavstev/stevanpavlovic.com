@@ -1,18 +1,13 @@
 ---
 import { Icon } from "astro-icon/components";
 
+import { CHATBOT_VARIANTS } from "../../config";
 import Button from "../atoms/button.astro";
 import Stack from "../atoms/stack.astro";
-import Text from "../atoms/text.astro";
-
 // ============================================================================
 // Message Bubble Variants
 // ============================================================================
-
-const variants = {
-  ai: "rounded-tl-none bg-muted/80 text-foreground/90",
-  user: "ml-auto rounded-tr-none bg-primary text-primary-foreground",
-};
+import Text from "../atoms/text.astro";
 
 // ============================================================================
 // Chatbot Props
@@ -61,7 +56,7 @@ const { class: className } = Astro.props;
     <div class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-4" id="chat-messages">
       <!-- Welcome Message -->
       <div class="flex flex-col gap-1">
-        <div class:list={["max-w-[85%] rounded-2xl px-4 py-2.5 text-sm", variants.ai]}>
+        <div class:list={["max-w-[85%] rounded-2xl px-4 py-2.5 text-sm", CHATBOT_VARIANTS.ai]}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
         <Text class="px-1 text-[10px]" variant="muted">Powered by AI</Text>
@@ -104,12 +99,8 @@ const { class: className } = Astro.props;
 </div>
 
 <script>
-  // Resume Context
-  const RESUME_CONTEXT = `
-    Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-    He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
-    Based in Belgrade, Serbia.
-  `.trim();
+  import { CHATBOT_VARIANTS, RESUME_CONTEXT } from "../../config";
+  import { createMessageElement, createTypingIndicator, generateId, scrollToBottom, updateStatus } from "../../lib/dom";
 
   let qaPipeline: any = null;
   let isInitializing = false;
@@ -123,74 +114,12 @@ const { class: className } = Astro.props;
   const statusEl = document.getElementById("chat-status");
   const closeBtn = document.getElementById("close-chat");
 
-  function generateId() {
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-  }
-
-  function scrollToBottom() {
-    if (messagesContainer) {
-      messagesContainer.scrollTo({
-        top: messagesContainer.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }
-
-  function updateStatus(text: string) {
-    if (statusEl) {
-      statusEl.textContent = text;
-    }
-  }
-
-  function createMessageElement(message: { id: string; text: string; isAi: boolean }) {
-    const container = document.createElement("div");
-    container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? "" : "items-end"}`;
-
-    const bubble = document.createElement("div");
-    bubble.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-      message.isAi
-        ? "rounded-tl-none bg-muted/80 text-foreground/90"
-        : "rounded-tr-none bg-primary text-primary-foreground ml-auto"
-    }`;
-    bubble.textContent = message.text;
-
-    const timestamp = document.createElement("span");
-    timestamp.className = "text-[10px] text-muted-foreground/60 px-1";
-    timestamp.textContent = message.isAi ? "AI" : "You";
-
-    container.appendChild(bubble);
-    container.appendChild(timestamp);
-    return container;
-  }
-
-  function createTypingIndicator() {
-    const container = document.createElement("div");
-    container.className = "flex flex-col gap-1 animate-in fade-in";
-    container.id = "typing-indicator";
-
-    const bubble = document.createElement("div");
-    bubble.className = "flex items-center gap-1 rounded-2xl rounded-tl-none bg-muted/80 px-4 py-3";
-    bubble.innerHTML = `
-      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 0ms;"></span>
-      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 150ms;"></span>
-      <span class="inline-block size-2 animate-bounce rounded-full bg-muted-foreground/60" style="animation-delay: 300ms;"></span>
-    `;
-
-    const timestamp = document.createElement("span");
-    timestamp.className = "text-[10px] text-muted-foreground/60 px-1";
-    timestamp.textContent = "AI";
-
-    container.appendChild(bubble);
-    container.appendChild(timestamp);
-    return container;
-  }
-
   function addMessage(text: string, isAi: boolean) {
     const message = { id: generateId(), text, isAi };
-    const element = createMessageElement(message);
+    const element = createMessageElement(message, CHATBOT_VARIANTS);
     if (messagesContainer) {
       messagesContainer.appendChild(element);
-      scrollToBottom();
+      scrollToBottom(messagesContainer);
     }
   }
 
@@ -202,16 +131,16 @@ const { class: className } = Astro.props;
   async function initModel() {
     if (qaPipeline || isInitializing) return;
     isInitializing = true;
-    updateStatus("Loading AI...");
+    updateStatus(statusEl, "Loading AI...");
 
     try {
       const { pipeline } = await import("@xenova/transformers");
       qaPipeline = await pipeline("question-answering", "Xenova/distilbert-base-uncased-distilled-squad");
-      updateStatus("Ready");
-      setTimeout(() => updateStatus("Ready"), 2000);
+      updateStatus(statusEl, "Ready");
+      setTimeout(() => updateStatus(statusEl, "Ready"), 2000);
     } catch (err) {
       console.error("Failed to load model:", err);
-      updateStatus("Error");
+      updateStatus(statusEl, "Error");
     } finally {
       isInitializing = false;
     }
@@ -258,7 +187,7 @@ const { class: className } = Astro.props;
     const typingIndicator = createTypingIndicator();
     if (messagesContainer) {
       messagesContainer.appendChild(typingIndicator);
-      scrollToBottom();
+      scrollToBottom(messagesContainer);
     }
 
     try {

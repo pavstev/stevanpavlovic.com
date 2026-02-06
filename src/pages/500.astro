@@ -3,7 +3,7 @@ import Button from "../components/atoms/button.astro";
 import Heading from "../components/atoms/heading.astro";
 import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import { Meteors } from "../components/meteor";
+import Meteors from "../components/meteor.astro";
 import Container from "../components/molecules/container.astro";
 
 interface Props {
@@ -27,7 +27,7 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
     </div>
 
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
-      <Meteors client:load number={40} />
+      <Meteors number={40} />
     </div>
 
     <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">

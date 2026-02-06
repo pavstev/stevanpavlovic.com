@@ -1,0 +1,154 @@
+---
+import profileImage from "../../assets/profile.jpeg";
+import { PROFILE } from "../../config";
+import { generateId } from "../../lib/dom";
+import MagnifyOverlay from "../atoms/magnify-overlay.astro";
+import Modal from "../atoms/modal.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const uniqueId = generateId(); // this might cause hydration mismatch if used for ID generation on server vs client?
+// Astro components run on server only unless script is involved. But ID generation on build is static.
+// If it changes per request (SSR) it's fine. If static build, it's fine.
+// But generateId uses Date.now(). If pages are static, it's consistent.
+// Usage in client script needs to match safely.
+// Better to pass ID or just rely on a determined ID?
+// We will use a unique ID generation strategy that is safe.
+// Actually, relying on `generateId` here effectively hardcodes it into the HTML at build time.
+// The script can query by the ID present in DOM.
+const modalId = `avatar-modal-${uniqueId}`;
+const triggerId = `avatar-trigger-${uniqueId}`;
+---
+
+<div class:list={["group relative z-10 cursor-pointer", className]} id={triggerId} role="button" tabindex="0">
+  {/* Ambient Glow - Back */}
+  <div
+    class="absolute -inset-4 -z-10 animate-pulse rounded-full bg-linear-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"
+  >
+  </div>
+  <div
+    class="absolute -inset-0.5 -z-10 rounded-[1.25rem] bg-linear-to-br from-white/20 via-white/5 to-white/20 opacity-50 blur-sm transition-all duration-500 group-hover:blur-md"
+  >
+  </div>
+
+  {/* Main Card */}
+  <div
+    class="group-hover:shadow-glow-accent relative w-56 rounded-2xl border border-white/10 bg-black/20 p-1.5 shadow-2xl backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:border-white/20 md:w-64"
+  >
+    {/* Inner Image Container */}
+    <div class="relative aspect-4/5 overflow-hidden rounded-xl bg-neutral-900">
+      <img
+        alt={PROFILE.name}
+        class="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+        loading="eager"
+        src={profileImage.src}
+      />
+
+      {/* Overlay Shine */}
+      <div
+        class="absolute inset-0 bg-linear-to-tr from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      >
+      </div>
+      <div class="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/20"></div>
+
+      {/* Magnifying Glass Icon */}
+      <MagnifyOverlay />
+    </div>
+  </div>
+</div>
+
+<Modal
+  class="max-h-[95vh] max-w-[95vw] overflow-visible border-none bg-transparent shadow-none"
+  id={modalId}
+  showCloseButton={true}
+>
+  <div
+    class="magnify-container relative max-h-[90vh] max-w-[95vw] cursor-zoom-in overflow-hidden transition-transform duration-100"
+    role="button"
+    tabindex="0"
+  >
+    <img alt={PROFILE.name} class="magnify-image object-contain transition-all duration-100" src={profileImage.src} />
+  </div>
+</Modal>
+
+<script define:vars={{ modalId, triggerId }} is:inline>
+  // @ts-ignore
+  function initHeroAvatar() {
+    const trigger = document.getElementById(triggerId);
+    const dialog = document.getElementById(modalId);
+
+    if (!trigger || !dialog) return;
+
+    const container = dialog.querySelector(".magnify-container");
+    const img = dialog.querySelector(".magnify-image");
+
+    let isMagnified = false;
+    let position = { x: 50, y: 50 };
+
+    // Open Modal
+    const openModal = () => {
+      dialog.showModal();
+    };
+
+    trigger.addEventListener("click", openModal);
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    // Reset on close
+    dialog.addEventListener("close", () => {
+      isMagnified = false;
+      updateTransform();
+    });
+
+    // Magnify Logic
+    const updateTransform = () => {
+      if (isMagnified) {
+        container.classList.remove("cursor-zoom-in");
+        container.classList.add("cursor-zoom-out");
+        img.classList.add("scale-150");
+        img.style.transformOrigin = `${position.x}% ${position.y}%`;
+      } else {
+        container.classList.remove("cursor-zoom-out");
+        container.classList.add("cursor-zoom-in");
+        img.classList.remove("scale-150");
+        img.style.transformOrigin = "center";
+      }
+    };
+
+    container?.addEventListener("click", () => {
+      isMagnified = !isMagnified;
+      updateTransform();
+    });
+
+    container?.addEventListener("mousemove", (e) => {
+      if (!isMagnified) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      position = { x, y };
+      img.style.transformOrigin = `${x}% ${y}%`;
+    });
+  }
+
+  initHeroAvatar(); // Initial run
+  // document.addEventListener("astro:page-load", initHeroAvatar);
+  // No, since define:vars creates an inline script, it runs once per component instance rendering.
+  // But astro view transitions? if we use them, then we need to re-run?
+  // If `script define:vars` is used, Astro wraps it.
+  // We should verify if it runs on navigation.
+  // The user project seems to use ViewTransitions (implied by `astro:page-load` usage elsewhere).
+  // `script define:vars` runs once per component mount? No, it runs when HTML is inserted.
+  // But with ViewTransitions in SPA mode, scripts might not re-run if body kept?
+  // Standard advice: wrap logic in function, run it, and listen for astro:page-load?
+  // But we have local vars `modalId`, `triggerId`. `astro:page-load` won't have access to them unless captured.
+  // Since `define:vars` creates a script block specific to this instance, it should be fine to capturing them.
+  // However, on subsequent navigations, if this component is re-rendered, a NEW script block is executed.
+  // So simple execution is fine.
+</script>

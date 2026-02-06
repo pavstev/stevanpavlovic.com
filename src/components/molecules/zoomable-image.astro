@@ -1,0 +1,110 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { generateId } from "../../lib/dom";
+import MagnifyOverlay from "../atoms/magnify-overlay.astro";
+import Modal from "../atoms/modal.astro";
+
+interface Props {
+  alt: string;
+  class?: string;
+  height?: number;
+  loading?: "eager" | "lazy";
+  src: ImageMetadata | string;
+  width?: number;
+}
+
+const { alt, class: className, height, loading = "lazy", src, width } = Astro.props;
+
+const imgSrc = typeof src === "string" ? src : src.src;
+const uniqueId = generateId();
+const modalId = `zoom-modal-${uniqueId}`;
+const triggerId = `zoom-trigger-${uniqueId}`;
+---
+
+<div
+  class:list={["group relative block cursor-pointer overflow-hidden transition-all hover:opacity-90", className]}
+  id={triggerId}
+  role="button"
+  tabindex="0"
+>
+  <img alt={alt} class="size-full object-cover" height={height} loading={loading} src={imgSrc} width={width} />
+  <MagnifyOverlay />
+</div>
+
+<Modal
+  class="max-h-[95vh] max-w-[95vw] overflow-visible border-none bg-transparent shadow-none"
+  id={modalId}
+  showCloseButton={true}
+>
+  <div
+    class="magnify-container relative max-h-[90vh] max-w-[95vw] cursor-zoom-in overflow-hidden transition-transform duration-100"
+    role="button"
+    tabindex="0"
+  >
+    <img alt={alt} class="magnify-image object-contain transition-all duration-100" src={imgSrc} />
+  </div>
+</Modal>
+
+<script define:vars={{ modalId, triggerId }} is:inline>
+  // Using closure to isolate scope
+  (() => {
+    // @ts-ignore
+    const trigger = document.getElementById(triggerId);
+    // @ts-ignore
+    const dialog = document.getElementById(modalId);
+
+    if (!trigger || !dialog) return;
+
+    const container = dialog.querySelector(".magnify-container");
+    const img = dialog.querySelector(".magnify-image");
+
+    let isMagnified = false;
+    let position = { x: 50, y: 50 };
+
+    const openModal = () => {
+      dialog.showModal();
+    };
+
+    trigger.addEventListener("click", openModal);
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    dialog.addEventListener("close", () => {
+      isMagnified = false;
+      updateTransform();
+    });
+
+    const updateTransform = () => {
+      if (isMagnified) {
+        container.classList.remove("cursor-zoom-in");
+        container.classList.add("cursor-zoom-out");
+        img.classList.add("scale-150");
+        img.style.transformOrigin = `${position.x}% ${position.y}%`;
+      } else {
+        container.classList.remove("cursor-zoom-out");
+        container.classList.add("cursor-zoom-in");
+        img.classList.remove("scale-150");
+        img.style.transformOrigin = "center";
+      }
+    };
+
+    container?.addEventListener("click", () => {
+      isMagnified = !isMagnified;
+      updateTransform();
+    });
+
+    container?.addEventListener("mousemove", (e) => {
+      if (!isMagnified) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      position = { x, y };
+      img.style.transformOrigin = `${x}% ${y}%`;
+    });
+  })();
+</script>

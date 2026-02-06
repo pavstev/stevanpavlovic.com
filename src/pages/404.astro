@@ -3,7 +3,7 @@ import Button from "../components/atoms/button.astro";
 import Heading from "../components/atoms/heading.astro";
 import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import { Meteors } from "../components/meteor";
+import Meteors from "../components/meteor.astro";
 import Container from "../components/molecules/container.astro";
 
 const title = "404 - Lost in Space";
@@ -20,7 +20,7 @@ const description = "The coordinates you entered do not correspond to a known se
     </div>
 
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
-      <Meteors client:load number={40} />
+      <Meteors number={40} />
     </div>
 
     <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">

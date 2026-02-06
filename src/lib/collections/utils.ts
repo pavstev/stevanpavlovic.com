@@ -1,6 +1,6 @@
 import type { CollectionItem, CollectionName, DisplayMode } from "./types";
 
-export const ITEMS_PER_PAGE = 10;
+import { ITEMS_PER_PAGE } from "../../config";
 
 export const buildPaginationUrls = (
   collection: CollectionName,

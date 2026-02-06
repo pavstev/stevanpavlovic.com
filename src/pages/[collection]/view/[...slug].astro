@@ -4,11 +4,11 @@ import type { CollectionEntry } from "astro:content";
 
 import { getCollection, render } from "astro:content";
 
-import type { CollectionName } from "../../../lib/collection-pages";
 import type { Params as BaseParams } from "./../index.astro";
 
 import PostView from "../../../components/organisms/post-view.astro";
-import { collections } from "../../../lib/collection-pages";
+import { type CollectionName } from "../../../lib";
+import { collections } from "../../../lib";
 
 export const prerender = true;
 

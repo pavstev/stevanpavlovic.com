@@ -7,10 +7,7 @@ export interface ViewUrls {
   list: string;
 }
 
-export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = [
-  { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
-  { icon: "mdi:view-column", label: "Grid", mode: "grid" },
-];
+// VIEW_MODES moved to src/config.ts
 
 /**
  * Helper to build a URL by merging a base path with current query params and overrides.

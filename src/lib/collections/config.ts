@@ -1,7 +1,7 @@
-import type { CollectionName } from "./types";
+import type { CollectionName, Nullable } from "./types";
 
-import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
-import { NAV_ITEMS, type NavItem, PROFILE } from "../config";
+import { type NavItem, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
+import { NAV_ITEMS, PROFILE } from "../../config";
 
 export const getCollectionConfig = (
   collection: CollectionName,
@@ -13,7 +13,7 @@ export const getCollectionConfig = (
   tagTitle: string;
   title: string;
 } => {
-  const navItem = NAV_ITEMS[collection] as NavItem | undefined;
+  const navItem = NAV_ITEMS[collection] as Nullable<NavItem>;
   if (!navItem) {
     throw new Error(`Unknown collection: ${collection}`);
   }

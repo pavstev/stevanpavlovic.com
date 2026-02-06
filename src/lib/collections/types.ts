@@ -23,6 +23,8 @@ export interface CollectionItem<CN extends CollectionName> {
 
 export type DisplayMode = "grid" | "list";
 
+export type Nullable<T> = null | T | undefined;
+
 export interface PostLink {
   href: string;
   label: string;

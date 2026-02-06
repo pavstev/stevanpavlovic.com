@@ -5,7 +5,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import ScrollToTop from "../atoms/scroll-to-top";
+import ScrollToTop from "../atoms/scroll-to-top.astro";
 import Chatbot from "../molecules/chatbot.astro";
 // import Chatbot from '../molecules/chatbot.astro';
 import Container from "../molecules/container.astro";
@@ -70,7 +70,7 @@ const { class: className, description, includeFooter = true, includeHeader = tru
     </Container>
 
     {includeFooter && <Footer data-pagefind-ignore />}
-    <ScrollToTop client:load />
+    <ScrollToTop />
     <Chatbot />
   </body>
 </html>

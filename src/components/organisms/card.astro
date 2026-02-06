@@ -298,27 +298,8 @@ const isRowLayout = list && !icon;
   )
 }
 
-<script is:inline>
-  function initInteractiveCards() {
-    const cards = document.querySelectorAll(".group\\/card");
-
-    for (const card of cards) {
-      if (!(card instanceof HTMLElement)) {
-        continue;
-      }
-
-      const handleMouseMove = (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        card.style.setProperty("--mouse-x", String(x) + "px");
-        card.style.setProperty("--mouse-y", String(y) + "px");
-      };
-
-      card.addEventListener("mousemove", handleMouseMove);
-    }
-  }
+<script>
+  import { initInteractiveCards } from "../../lib/dom";
 
   initInteractiveCards();
   document.addEventListener("astro:page-load", initInteractiveCards);

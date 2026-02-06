@@ -5,80 +5,28 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-// import Chatbot from '../molecules/chatbot.astro';
-import Container from "../atoms/Container.astro";
-import Chatbot from "../molecules/ChatInterface.astro";
-import CodeCopy from "../molecules/ClipAction.astro";
-import ScrollToTop from "../molecules/ScrollAction.astro";
-import Atmosphere from "../organisms/atmosphere.astro";
-import Footer from "./footer.astro";
-import Head from "./head.astro";
-import Header from "./header.astro";
-import NavigationProgress from "./navigation-progress.astro";
+import MetaData from "../atoms/MetaData.astro";
+import Analytics from "../atoms/Analytics.astro";
 
-interface Props {
-  class?: string;
-  description?: string;
-  includeFooter?: boolean;
-  includeHeader?: boolean;
-  slug: string;
+export interface Props {
   title: string;
+  description: string;
+  image?: URL;
+  lang?: string;
 }
 
-const { class: className, description, includeFooter = true, includeHeader = true, slug, title } = Astro.props;
-const ogImageUrl = new URL(`/api/og/${slug}.png`, Astro.site);
+const { title, description, image, lang = "en" } = Astro.props;
 ---
 
 <!doctype html>
-<html class="scroll-smooth" lang="en">
+<html class="scroll-smooth" lang={lang}>
   <head>
-    <Head description={description} image={ogImageUrl.toString()} title={title} />
+    <MetaData description={description} image={image} title={title} />
+    <Analytics />
     <ClientRouter />
+    <slot name="head" />
   </head>
-  <body class="font-body bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
-    {/* Modern Mesh Gradient Background */}
-    <div
-      class="pointer-events-none fixed inset-0 z-0"
-      style="background: radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--color-primary), transparent 92%) 0%, transparent 50%), radial-gradient(circle at 80% 70%, color-mix(in srgb, var(--color-accent), transparent 92%) 0%, transparent 50%);"
-    >
-    </div>
-
-    {/* Soft Middle Foundation Layer */}
-    <div
-      class="pointer-events-none fixed inset-0 z-0"
-      style="background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-primary), transparent 96%) 0%, transparent 100%);"
-    >
-    </div>
-
-    {/* Subtle Grid Pattern */}
-    <div
-      class="pointer-events-none fixed inset-0 z-0 opacity-[0.05]"
-      style={{
-        backgroundImage:
-          "linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
-      }}
-    >
-    </div>
-
-    {/* Top Glow Accent */}
-    <div
-      class="pointer-events-none fixed inset-0 z-0 opacity-30"
-      style="background: radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, var(--color-primary), transparent 90%), transparent);"
-    >
-    </div>
-
-    {includeHeader && <Header data-pagefind-ignore />}
-
-    <Container as="main" class:list={["relative z-10 pt-24", className]} data-pagefind-body transition:name="main">
-      <slot />
-    </Container>
-
-    {includeFooter && <Footer data-pagefind-ignore />}
-    <ScrollToTop />
-    <Chatbot />
-    <NavigationProgress />
-    <CodeCopy />
-    <Atmosphere />
+  <body class="bg-background text-foreground antialiased selection:bg-primary/20">
+    <slot />
   </body>
 </html>

@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+
+interface Props extends HTMLAttributes<"div"> {
+  as?: any;
+  variant?: "default" | "cyber" | "simple";
+}
+
+const { as: Tag = "div", class: className, variant = "default", ...props } = Astro.props;
+
+const variants = {
+  cyber:
+    "prose-cyber prose-invert max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-pre:bg-neutral-900/50 prose-pre:backdrop-blur-sm prose-hr:border-white/10",
+  default:
+    "prose prose-neutral prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-strong:text-foreground prose-code:text-primary prose-hr:border-white/10",
+  simple: "prose prose-sm prose-neutral prose-invert max-w-none",
+};
+---
+
+<Tag class:list={[cn(variants[variant], className)]} {...props}>
+  <slot />
+</Tag>
+
+<style is:global>
+  .prose-cyber {
+    --tw-prose-body: var(--color-foreground);
+    --tw-prose-headings: var(--color-foreground);
+    --tw-prose-links: var(--color-primary);
+    --tw-prose-bold: var(--color-foreground);
+    --tw-prose-counters: var(--color-muted-foreground);
+    --tw-prose-bullets: var(--color-primary);
+    --tw-prose-quotes: var(--color-primary);
+    --tw-prose-code: var(--color-primary);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-th-borders: var(--color-border);
+    --tw-prose-td-borders: var(--color-border);
+  }
+</style>

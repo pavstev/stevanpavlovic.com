@@ -1,0 +1,53 @@
+---
+import { cn } from "../../lib/cn";
+import CompositionGrid from "../organisms/CompositionGrid.astro";
+import Stack from "../atoms/Stack.astro";
+import Heading from "../atoms/Heading.astro";
+import Text from "../atoms/Text.astro";
+
+export interface Props {
+  class?: string;
+  title: string;
+  description?: string;
+}
+
+const { class: className, title, description } = Astro.props;
+---
+
+<CompositionGrid as="main" class={cn("pt-20 md:pt-32 pb-20", className)}>
+  {/* Header Section: Discovery Blueprint */}
+  <Stack gap={4} class="mb-16">
+    <Heading level={1} size="display" variant="primary">
+      {title}
+    </Heading>
+    {
+      description && (
+        <Text variant="muted" class="text-xl max-w-3xl leading-relaxed">
+          {description}
+        </Text>
+      )
+    }
+
+    {
+      Astro.slots.has("filters") && (
+        <div class="mt-8 flex flex-wrap gap-4">
+          <slot name="filters" />
+        </div>
+      )
+    }
+  </Stack>
+
+  {/* Content Layer: Responsive Discovery Grid */}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <slot />
+  </div>
+
+  {/* Optional Discovery Sidebar */}
+  {
+    Astro.slots.has("sidebar") && (
+      <div slot="sidebar" class="flex flex-col gap-10">
+        <slot name="sidebar" />
+      </div>
+    )
+  }
+</CompositionGrid>

@@ -1,0 +1,51 @@
+---
+import { cn } from "../../lib/cn";
+import Stack from "../atoms/Stack.astro";
+import Container from "../atoms/Container.astro";
+import Prose from "../atoms/Prose.astro";
+import MetaBar from "../molecules/MetaBar.astro";
+import ArticleRenderer from "../organisms/ArticleRenderer.astro";
+
+export interface Props {
+  class?: string;
+  metadata: {
+    description?: string;
+    tags?: any;
+    toolbarItems?: any[];
+  };
+}
+
+const { class: className, metadata } = Astro.props;
+const hasToc = Astro.slots.has("toc");
+---
+
+<ArticleRenderer class={cn("pt-16 md:pt-24", className)}>
+  {/* Position 1: The Context Layer (Hero & Shared Meta) */}
+  <Stack slot="header" gap={8} class="mb-12">
+    <slot name="hero" />
+    <MetaBar description={metadata.description} tags={metadata.tags} toolbarItems={metadata.toolbarItems} />
+  </Stack>
+
+  {/* Position 2: Table of Contents (Dynamic Slot) */}
+  {
+    hasToc && (
+      <div slot="toc">
+        <slot name="toc" />
+      </div>
+    )
+  }
+
+  {/* Position 3: The Content Core */}
+  <Prose variant="cyber">
+    <slot />
+  </Prose>
+
+  {/* Position 4: Related Discovery Region */}
+  {
+    Astro.slots.has("related") && (
+      <div slot="footer" class="mt-20 pt-10 border-t border-white/5">
+        <slot name="related" />
+      </div>
+    )
+  }
+</ArticleRenderer>

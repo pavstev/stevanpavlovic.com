@@ -2,7 +2,6 @@
 import Input from "../atoms/Input.astro";
 import Kbd from "../atoms/Kbd.astro";
 import Stack from "../atoms/Stack.astro";
-import Text from "../atoms/Text.astro";
 import DialogShell from "../molecules/DialogShell.astro";
 
 interface Props {
@@ -21,7 +20,7 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
     class="w-full max-w-2xl origin-top translate-y-4 scale-95 transition-all duration-300"
     id="search-modal-container"
   >
-    <DialogShell class="w-full border-white/10 shadow-2xl shadow-black/50" variant="plain">
+    <DialogShell class="w-full border-white/10 shadow-2xl shadow-black/50" id="todo" variant="plain">
       <Stack class="p-4" gap={4}>
         <div class="group relative">
           <Input
@@ -43,7 +42,7 @@ const { id = "omni-search", placeholder = "Search or jump to... (Cmd+K)" } = Ast
               viewBox="0 0 24 24"
               width="20"
               xmlns="http://www.w3.org/2000/svg"
-              ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
             >
           </div>
 

@@ -304,19 +304,19 @@ export default defineConfig(
   },
 
   {
-    // Override for content files: Configure mdx/remark rule logic
+    // Override for content files: Use settings to pass remark plugins
     files: CONTENT_FILES,
     rules: {
-      "mdx/remark": [
-        "error",
-        {
-          plugins: [
-            "remark-frontmatter",
-            ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }],
-            "remark-lint-no-multiple-toplevel-headings",
-          ],
-        },
-      ],
+      "mdx/remark": "error",
+    },
+    settings: {
+      mdx: {
+        remarkPlugins: [
+          "remark-frontmatter",
+          ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }],
+          "remark-lint-no-multiple-toplevel-headings",
+        ],
+      },
     },
   },
 

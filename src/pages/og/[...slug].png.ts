@@ -142,7 +142,6 @@ export const GET: APIRoute = async ({ props }) => {
     type: "div",
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const svg = await satori(html, {
     fonts: [
       {
@@ -162,7 +161,6 @@ export const GET: APIRoute = async ({ props }) => {
     width: 1200,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const resvg = new Resvg(svg, {
     fitTo: { mode: "width", value: 1200 },
     imageRendering: 0,

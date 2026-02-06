@@ -124,14 +124,15 @@ class RAGPipeline {
       })) as GenerationFunction;
 
       postMessage({ message: "AI Online", progress: 100, status: "ready" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      postMessage({ message: `Initialization failed: ${err.message}`, status: "error" });
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      postMessage({ message: `Initialization failed: ${errorMessage}`, status: "error" });
     }
   }
 
   // Handle User Query
-  public async query(text: string, postMessage: (msg: WorkerResponse) => void) {
+  public async query(text: string, postMessage: (msg: WorkerResponse) => void): Promise<void> {
     if (!this.embedder || !this.generator) {
       postMessage({ message: "Pipeline not initialized", status: "error" });
       return;
@@ -174,8 +175,9 @@ class RAGPipeline {
         sources: topChunks,
         status: "ready", // Return to ready state
       });
-    } catch (err: any) {
-      postMessage({ message: `Generation failed: ${err.message}`, status: "error" });
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      postMessage({ message: `Generation failed: ${errorMessage}`, status: "error" });
     }
   }
 
@@ -201,13 +203,6 @@ self.addEventListener("message", async (e: MessageEvent<WorkerMessage>): Promise
 
   if (type === "init") {
     await rag.initialize((msg) => {
-      self.postMessage(msg);
-    });
-    return;
-  }
-
-  if (type === "query" && text) {
-    await rag.query(text, (msg) => {
       self.postMessage(msg);
     });
     return;

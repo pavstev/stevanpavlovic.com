@@ -6,9 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/cn";
 import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/styles";
 
-const stackVariants = cva("flex");
-
-export interface Props extends HTMLAttributes<"div">, VariantProps<typeof stackVariants> {
+const stackVariants = cva("flex"ort interface Props extends HTMLAttributes<"div">, VariantProps<typeof stackVariants> {
   align?: ResponsiveValue<"baseline" | "center" | "end" | "start" | "stretch">;
   as?: any;
   direction?: ResponsiveValue<"col" | "col-reverse" | "row" | "row-reverse">;

@@ -1,4 +1,4 @@
-export const isActivePath = (currentPath: string, href: string): boolean => {
+const isActivePath = (currentPath: string, href: string): boolean => {
   const cleanPath = currentPath.replace(/\/$/, "") || "/";
   const cleanHref = href.replace(/\/$/, "") || "/";
 

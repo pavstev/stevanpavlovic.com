@@ -24,9 +24,7 @@ const headingVariants = cva("font-display font-bold tracking-tight text-foregrou
       primary: "text-gradient-primary",
     },
   },
-});
-
-export interface Props extends HTMLAttributes<"h1">, VariantProps<typeof headingVariants> {
+}ort interface Props extends HTMLAttributes<"h1">, VariantProps<typeof headingVariants> {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 

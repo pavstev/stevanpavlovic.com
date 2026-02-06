@@ -2,9 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "../../lib/cn";
-import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/styles";
-
-export interface Props extends HTMLAttributes<"div"> {
+import { buildResponsiveClasses, type ResponsiveValue } from "../../lib/stylesort interface Props extends HTMLAttributes<"div"> {
   align?: ResponsiveValue<"baseline" | "center" | "end" | "start" | "stretch">;
   as?: any;
   cols?: ResponsiveValue<number | string>;

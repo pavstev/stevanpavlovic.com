@@ -36,9 +36,7 @@ const buttonVariants = cva(
       },
     },
   },
-);
-
-export interface Props
+ort interface Props
   extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type">, VariantProps<typeof buttonVariants> {
   as?: any;
   icon?: string;

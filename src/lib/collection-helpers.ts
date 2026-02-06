@@ -11,7 +11,7 @@ import {
   getPageItems,
 } from "./index";
 
-export interface CollectionPageData {
+interface CollectionPageData {
   baseUrl: string;
   collectionItems: ReturnType<typeof getPageItems>;
   collectionKey: CollectionKey;

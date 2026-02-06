@@ -3,9 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "../../lib/cn";
 import MeteorEffect from "../atoms/MeteorEffect.astro";
-import SpotlightEffect from "../atoms/SpotlightEffect.astro";
-
-export interface Props extends HTMLAttributes<"div"> {
+import SpotlightEffect from "../atoms/SpotlightEffect.astroort interface Props extends HTMLAttributes<"div"> {
   class?: string;
   intensity?: "high" | "low" | "medium";
 }

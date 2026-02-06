@@ -5,7 +5,7 @@ import tocbot from "tocbot";
 
 let lenis: Lenis | null = null;
 
-export const initLenis = (): void => {
+const initLenis = (): void => {
   if (lenis) lenis.destroy();
 
   lenis = new Lenis({
@@ -34,7 +34,7 @@ export const initLenis = (): void => {
   }
 };
 
-export const initTocbot = (): void => {
+const initTocbot = (): void => {
   tocbot.destroy();
   tocbot.init({
     activeLinkClass: "is-active-link",

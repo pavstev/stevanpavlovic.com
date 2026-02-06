@@ -14,18 +14,20 @@ const getOrganizationToolbarItem = async (item: CollectionItem<"experience">): P
     return undefined;
   }
 
-  const company = await getEntry("companies", item.data.company);
+  const c = await getEntry("companies", item.data.company as string);
 
-  if (!company) {
+  if (!c) {
     return undefined;
   }
 
+  const { data: company } = c;
+
   return {
-    href: item.data.company,
+    href: company.socialLinks?.find((l) => l.type === "Website")?.handle,
     label: "Organization",
-    logo: item.data.company.logo,
+    logo: company.logo,
     type: "organization",
-    value: item.data.company.name,
+    value: company.name,
   };
 };
 
@@ -73,7 +75,7 @@ export const getExperienceProps = async (item: CollectionItem<"experience">): Pr
     image: undefined,
     subtitle: item.data.company,
     tags: {
-      items: await getEntries(item.data.tags ?? []),
+      items: await getEntries(item.data.tags ?? []).then((i) => i.map((i) => i.data)),
       title: "Skills",
     },
     title: item.data.role,

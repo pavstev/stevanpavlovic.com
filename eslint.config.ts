@@ -48,6 +48,8 @@ const GLOBAL_IGNORES = [
   ".unlighthouse/**/*",
   "worker-configuration.d.ts",
   ".vscode/**/*",
+  // TODO: IMPORTANT
+  "**/*.mdx",
 ];
 
 const STYLISTIC_OPTIONS = {

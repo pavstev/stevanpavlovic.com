@@ -1,9 +1,9 @@
 ---
-import type { HTMLAttributes } from "react";
+import { cn } from "../../lib/cn";
 
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 
-interface Props extends HTMLAttributes<"div"> {
+interface Props {
   description: string | undefined;
   maxLength?: number;
 }

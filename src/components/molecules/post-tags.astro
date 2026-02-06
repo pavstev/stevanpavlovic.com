@@ -1,12 +1,12 @@
 ---
-import type { HTMLAttributes } from "react";
+import { cn } from "../../lib/cn";
 
 import type { Tag } from "../../lib/collections";
 
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import Tags from "./tags.astro";
 
-interface Props extends HTMLAttributes<"div"> {
+interface Props {
   tags: Tag[];
   title: string | undefined;
 }

@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 
-// Define the Open-Meteo response structure we care about
-interface OpenMeteoResponse {
+// Weather data interface for Open-Meteo response
+interface WeatherData {
   current: {
     is_day: number;
     precipitation: number;
@@ -22,7 +22,7 @@ export const GET: APIRoute = async () => {
 
     if (!res.ok) throw new Error("Weather API failed");
 
-    const data = await res.json();
+    const data = (await res.json()) as WeatherData;
 
     // Calculate local time manually to be precise server-side
     const belgradeTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" });

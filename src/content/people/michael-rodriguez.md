@@ -5,7 +5,7 @@ title: Backend Engineer
 company: 167pluto
 currentPosition: Senior Backend Developer
 currentCompany: 167pluto
-location: Remote
+location: "remote-belgrade-serbia"
 avatar: ../../assets/michael-rodriguez.png
 email: michael.rodriguez@example.com
 socialLinks:

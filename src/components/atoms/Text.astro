@@ -24,7 +24,9 @@ const textVariants = cva("leading-relaxed", {
       primary: "font-medium text-primary",
     },
   },
-}ort interface Props extends HTMLAttributes<"p">, VariantProps<typeof textVariants> {
+});
+
+interface Props extends HTMLAttributes<"p">, VariantProps<typeof textVariants> {
   as?: any;
 }
 

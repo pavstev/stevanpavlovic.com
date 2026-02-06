@@ -1,0 +1,42 @@
+---
+import { defaultLang, languages } from '../../i18n/ui';
+import { getLangFromUrl } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+
+function getLocalizedPath(locale: string) {
+  let path = currentPath;
+  // Remove current locale prefix if it exists
+  if (lang !== defaultLang && path.startsWith(`/${lang}`)) {
+    path = path.slice(lang.length + 1);
+  }
+
+  // Ensure path starts with /
+  if (!path.startsWith('/')) {
+    path = '/' + path;
+  }
+
+  if (locale === defaultLang) {
+    return path;
+  }
+
+  // Avoid double slashes
+  return `/${locale}${path === '/' ? '' : path}`;
+}
+---
+
+<div class="ml-2 flex items-center gap-1.5 border-l border-white/10 pl-2">
+  {Object.entries(languages).map(([key, label]) => (
+    <a
+      aria-label={`Switch to ${label}`}
+      class:list={[
+        "rounded-sm px-1.5 py-0.5 text-[10px] font-bold uppercase transition-all duration-300 hover:text-primary",
+        {"bg-primary/10 text-primary": key === lang, "text-muted-foreground hover:bg-white/5": key !== lang}
+      ]}
+      href={getLocalizedPath(key)}
+    >
+      {key}
+    </a>
+  ))}
+</div>

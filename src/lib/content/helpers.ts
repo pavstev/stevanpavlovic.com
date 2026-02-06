@@ -4,7 +4,7 @@ import { getEntries, getEntry } from "astro:content";
 
 import type { Author, Company, Tag } from "./types";
 
-const formatCompactNumber = (number: number): string => {
+export const formatCompactNumber = (number: number): string => {
   const formatter = new Intl.NumberFormat("en-US", {
     compactDisplay: "short",
     maximumFractionDigits: 1,

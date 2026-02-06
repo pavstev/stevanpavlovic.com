@@ -79,5 +79,8 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
   {/* Column 4: Tags */}
   <div class="min-w-0 md:col-span-3">
     <LabelGroup items={tags.items} title={tags.title} />
+    <div style="display:none">
+      {tags.items.map(tag => <span data-pagefind-meta={`tag:${tag.label}`}>{tag.label}</span>)}
+    </div>
   </div>
 </div>

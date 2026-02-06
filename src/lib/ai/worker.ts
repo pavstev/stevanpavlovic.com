@@ -81,7 +81,7 @@ class RAGPipeline {
     try {
       // Step A: Load Portfolio Context
       postMessage({ message: "Fetching portfolio data...", progress: 10, status: "loading" });
-      const res = await fetch("/api/portfolio-context.json");
+      const res = await fetch("/ai-context.json");
       if (!res.ok) throw new Error("Failed to load context");
       this.context = await res.json();
 

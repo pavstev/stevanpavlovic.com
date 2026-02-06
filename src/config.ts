@@ -9,7 +9,7 @@ import profileImage from "./assets/profile.jpeg";
 export const SITE_TITLE = "Astro Blog";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
-const SITE_CONFIG = {
+export const SITE_CONFIG = {
   author: "Stevan Pavlovic",
   description: "Technical Lead and Senior Software Engineer",
   email: "hi@stevanpavlovic.com",
@@ -131,7 +131,7 @@ export const PROFILE = {
   status: "Open to Opportunities",
 } as const;
 
-const SOCIALS = [
+export const SOCIALS = [
   {
     handle: "@pavstev",
     href: "https://github.com/pavstev",
@@ -160,7 +160,7 @@ interface Stat {
   value: number;
 }
 
-const STATS: Stat[] = [
+export const STATS: Stat[] = [
   { icon: "mdi:clock-time-eight-outline", label: "Years Exp.", value: 12 },
   { icon: "mdi:server-network", label: "Systems", value: 24 },
   { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },

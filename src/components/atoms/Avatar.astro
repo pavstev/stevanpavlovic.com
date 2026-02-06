@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
+import { Image } from "astro:assets";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
@@ -27,17 +28,18 @@ const avatarVariants = cva("relative flex shrink-0 overflow-hidden rounded-full 
 });
 
 export interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
+  alt?: string;
   fallback?: string;
-  src?: string;
+  src?: any;
 }
 
-const { class: className, fallback, size, src, variant, ...props } = Astro.props;
+const { alt, class: className, fallback, size, src, variant, ...props } = Astro.props;
 ---
 
 <div class:list={cn(avatarVariants({ size, variant }), className)} {...props}>
   {
     src ? (
-      <img alt={fallback || "Avatar"} class="aspect-square size-full object-cover" src={src} />
+      <Image alt={alt || fallback || "Avatar"} class="aspect-square size-full object-cover" format="avif" src={src} widths={[128, 256]} />
     ) : (
       <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
         <span

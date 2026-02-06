@@ -1,6 +1,8 @@
 ---
-import { cn } from "../../lib/cn";
 import type { ResumeData } from "../../lib/types";
+
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { cn } from "../../lib/cn";
 import Badge from "../atoms/Badge.astro";
 import Button from "../atoms/Button.astro";
 import Container from "../atoms/Container.astro";
@@ -17,6 +19,9 @@ interface Props {
 
 const { class: className, data } = Astro.props;
 const { education, experience, profile, skills } = data;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <section
@@ -30,10 +35,10 @@ const { education, experience, profile, skills } = data;
   >
     <Button class="rounded-full px-8 shadow-2xl" id="print-btn" variant="primary">
       <Icon class="mr-2" name="mdi:printer" />
-      Export PDF
+      {t("resume.export")}
     </Button>
     <div class="glass rounded-full border-white/20 px-6 py-3 text-sm font-medium shadow-xl">
-      <Text as="span" class="font-bold" variant="accent">Pro Tip:</Text> Click any field to live edit.
+      <Text as="span" class="font-bold" variant="accent">{t("resume.proTip")}</Text> {t("resume.liveEdit")}
     </div>
   </div>
 
@@ -120,7 +125,7 @@ const { education, experience, profile, skills } = data;
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> Summary
+                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.summary")}
               </Text>
               <div
                 class="rounded-sm p-1 leading-relaxed text-neutral-700 outline-none focus:bg-primary/5"
@@ -135,7 +140,7 @@ const { education, experience, profile, skills } = data;
                 class="mb-6 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> Professional Experience
+                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.experience")}
               </Text>
               <Stack gap={8}>
                 {
@@ -158,7 +163,7 @@ const { education, experience, profile, skills } = data;
                           contenteditable="true"
                         >
                           {job.period ||
-                            `${new Date(job.startDate).getFullYear()} — ${job.endDate ? new Date(job.endDate).getFullYear() : "Present"}`}
+                            `${new Date(job.startDate).getFullYear()} — ${job.endDate ? new Date(job.endDate).getFullYear() : t("resume.present")}`}
                         </span>
                       </div>
                       <div
@@ -189,7 +194,7 @@ const { education, experience, profile, skills } = data;
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> Technical Skills
+                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.skills")}
               </Text>
               <div class="flex flex-wrap gap-2">
                 {
@@ -207,7 +212,7 @@ const { education, experience, profile, skills } = data;
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> Academic Background
+                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.education")}
               </Text>
               <Stack gap={4}>
                 {

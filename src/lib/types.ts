@@ -1,14 +1,9 @@
 import type { ImageMetadata } from "astro";
 
-export interface Profile {
-  avatar?: ImageMetadata;
-  email: string;
-  location: string;
-  name: string;
-  phone?: string;
-  role: string;
-  summary: string;
-  website?: string;
+export interface Education {
+  degree: string;
+  school: string;
+  year: string;
 }
 
 export interface Experience {
@@ -20,10 +15,15 @@ export interface Experience {
   startDate: string;
 }
 
-export interface Education {
-  degree: string;
-  school: string;
-  year: string;
+export interface Profile {
+  avatar?: ImageMetadata;
+  email: string;
+  location: string;
+  name: string;
+  phone?: string;
+  role: string;
+  summary: string;
+  website?: string;
 }
 
 export interface ResumeData {

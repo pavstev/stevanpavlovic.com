@@ -20,8 +20,10 @@ const badgeVariants = cva(
         primary: "shadow-glow-primary border-primary/40 bg-primary/10 text-primary",
       },
     },
-  },
-ort interface Props extends HTMLAttributes<"div">, VariantProps<typeof badgeVariants> {}
+  }
+);
+
+interface Props extends HTMLAttributes<"div">, VariantProps<typeof badgeVariants> {}
 
 const { class: className, variant, ...props } = Astro.props;
 ---

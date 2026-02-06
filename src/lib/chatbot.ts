@@ -27,6 +27,7 @@ export class RagChat {
     statusDot: document.getElementById("rag-status-indicator"),
     statusText: document.getElementById("rag-status-text"),
     submit: document.getElementById("rag-submit") as HTMLButtonElement,
+    suggestions: document.getElementById("rag-suggestions"),
     toggle: document.getElementById("rag-toggle"),
     window: document.getElementById("rag-window"),
   };
@@ -186,6 +187,7 @@ export class RagChat {
 
   private init(): void {
     this.bindEvents();
+    this.renderSuggestions();
   }
 
   private initWorker(): void {
@@ -198,6 +200,57 @@ export class RagChat {
     });
 
     this.worker.postMessage({ type: "init" });
+  }
+
+  private renderSuggestions(): void {
+    if (!this.ui.suggestions) return;
+
+    // Simple context awareness
+    const path = window.location.pathname;
+    let questions = [
+      "What is Stevan's primary tech stack?",
+      "Summarize his professional experience.",
+      "How can I contact him?",
+    ];
+
+    if (path.includes("projects")) {
+      questions = [
+        "What was the most challenging project?",
+        "Tell me about the technical architecture used.",
+        "List all projects involving React.",
+      ];
+    } else if (path.includes("experience") || path.includes("resume")) {
+      questions = [
+        "What is his current role?",
+        "Describe his leadership experience.",
+        "What are his key achievements?",
+      ];
+    } else if (path.includes("blog")) {
+      questions = ["Summarize the latest blog post.", "What topics does he write about?"];
+    }
+
+    this.ui.suggestions.innerHTML = questions
+      .map(
+        (q) =>
+          `<button class="text-left text-[11px] bg-muted/40 hover:bg-primary/10 hover:text-primary transition-colors px-3 py-2 rounded-lg border border-border/40 text-muted-foreground w-full max-w-[240px]">
+           ${q}
+         </button>`,
+      )
+      .join("");
+
+    this.ui.suggestions.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const text = btn.innerText;
+        this.ui.input.value = text;
+        this.ui.suggestions?.remove(); // Remove suggestions after selection
+        this.handleSubmit(new SubmitEvent("submit"));
+      });
+    });
+
+    // Show
+    setTimeout(() => {
+      this.ui.suggestions?.classList.remove("opacity-0");
+    }, 600);
   }
 
   private scrollToBottom(): void {

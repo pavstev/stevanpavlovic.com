@@ -1,57 +1,127 @@
 ---
+import { getCollection } from "astro:content";
+
+import Badge from "../components/atoms/Badge.astro";
 import Heading from "../components/atoms/Heading.astro";
+import Stack from "../components/atoms/Stack.astro";
 import Text from "../components/atoms/Text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
+import BrandIdentity from "../components/molecules/BrandIdentity.astro";
 import GridTile from "../components/molecules/GridTile.astro";
+import Card from "../components/organisms/card.astro";
 import CompositionGrid from "../components/organisms/CompositionGrid.astro";
 import EnvironmentalBackground from "../components/organisms/EnvironmentalBackground.astro";
-import { NAV_ITEMS_ARRAY, PROFILE } from "../config";
+import StatsGrid from "../components/organisms/stats-grid.astro";
+import { PROFILE, STATS } from "../config";
+import { getItemCardProps } from "../lib/content/api";
 
-const navItems = NAV_ITEMS_ARRAY.filter((i) => i.label !== "Home");
+// 1. Data Orchestration: Fetch Featured Highlights
+const featuredProjects = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .slice(0, 3);
+
+const latestPosts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+
+const allHighlights = [
+  ...featuredProjects.map(p => ({ entry: p, type: 'project' as const })),
+  ...latestPosts.map(p => ({ entry: p, type: 'blog' as const }))
+];
 ---
 
 <LayoutRoot description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Architect`}>
-  <EnvironmentalBackground density={0.4} />
+  <EnvironmentalBackground intensity="medium" />
 
-  <CompositionGrid class="relative z-10 pt-10 md:pt-20">
-    <GridTile class="p-12 md:p-16" cols="lg:col-span-12">
-      <div class="max-w-3xl space-y-8">
-        <Heading level={1} size="display" variant="primary">
-          Helping brands scale with <br />
-          <span class="text-white">Future-Proof Architecture.</span>
-        </Heading>
-        <Text class="max-w-2xl text-xl leading-relaxed" variant="muted">
-          {PROFILE.bio}
-        </Text>
+  <CompositionGrid class="relative z-10 py-12 md:py-24">
+    {/* PHASE 1: THE SIGNATURE SECTION */}
+    <GridTile class="overflow-hidden p-8 md:p-16" cols="lg:col-span-12">
+      <div class="relative z-10 flex flex-col gap-10">
+        {/* Live Status HUD */}
+        <div class="animate-in fade-in slide-in-from-left-4 flex items-center gap-4 duration-700">
+          <BrandIdentity size="xs" variant="status">
+            <span class="text-[10px] font-bold tracking-[0.2em] text-accent/80 uppercase">
+              {PROFILE.status}
+            </span>
+          </BrandIdentity>
+          <div class="h-px w-12 bg-white/10"></div>
+          <Badge variant="outline">{PROFILE.location}</Badge>
+        </div>
+
+        {/* Brand Core */}
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div class="flex max-w-3xl flex-col gap-4">
+            <BrandIdentity class="mb-4" size="lg" variant="author" />
+            <Heading class="leading-[1.1] tracking-tight" level={1} size="display" variant="primary">
+              Architecting <span class="text-white">Resilient</span> <br />
+              Distributed Systems.
+            </Heading>
+            <Text class="max-w-2xl text-lg leading-relaxed text-muted-foreground/90 md:text-xl">
+              {PROFILE.bio}
+            </Text>
+          </div>
+        </div>
+
+        {/* Global Impact Metrics */}
+        <div class="border-t border-white/5 pt-6">
+          <StatsGrid items={STATS} />
+        </div>
       </div>
+
+      {/* Decorative Brand Accent */}
+      <div class="pointer-events-none absolute -right-20 -bottom-20 size-96 rounded-full bg-primary/5 blur-[120px]"></div>
     </GridTile>
 
+    {/* PHASE 2: DYNAMIC BENTO HIGHLIGHTS */}
     {
-      navItems.map((item) => (
-        <GridTile>
-          <div class="flex h-full flex-col justify-between gap-8">
-            <div class="flex size-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
-              <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d={item.icon || "M12 2v20M2 12h20"} />
-              </svg>
+      allHighlights.map(async ({ entry, type }, index) => {
+        const cardProps = await getItemCardProps(entry as any);
+        const isProject = type === 'project';
+
+        return (
+          <GridTile
+            class="group p-0"
+            cols={index === 0 ? "lg:col-span-8" : index === 1 ? "lg:col-span-4" : "lg:col-span-4"}
+          >
+            <Card
+              {...cardProps}
+              class="h-full rounded-none border-0 bg-transparent transition-all duration-500 hover:bg-white/5"
+              showVisual={index === 0}
+            />
+
+            {/* Context Badge */}
+            <div class="pointer-events-none absolute top-4 right-4 z-20">
+              <Badge class="opacity-0 transition-opacity group-hover:opacity-100" variant={isProject ? "primary" : "cyber"}>
+                {isProject ? 'Featured Project' : 'Latest Insight'}
+              </Badge>
             </div>
-            <div class="space-y-2">
-              <Heading level={3} size="sm">
-                {item.label}
-              </Heading>
-              <Text size="sm" variant="muted">
-                {item.description}
-              </Text>
-            </div>
-            <a
-              class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-white"
-              href={item.href}
-            >
-              Explore Item
-            </a>
-          </div>
-        </GridTile>
-      ))
+          </GridTile>
+        )
+      })
     }
+
+    {/* PHASE 3: THE ECOSYSTEM NAVIGATOR */}
+    <GridTile class="border-primary/10 bg-primary/5 p-8 lg:col-span-12">
+      <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
+        <Stack gap={2}>
+          <Heading level={3} size="md">Ready to build something extraordinary?</Heading>
+          <Text variant="muted">Explore my full repository of projects and technical writing.</Text>
+        </Stack>
+        <div class="flex gap-4">
+          <a class="hover:shadow-glow-primary rounded-full bg-primary px-6 py-3 font-bold text-white transition-all" href="/projects">Browse Projects</a>
+          <a class="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10" href="/blog">Read Blog</a>
+        </div>
+      </div>
+    </GridTile>
   </CompositionGrid>
 </LayoutRoot>
+
+<style>
+  /* High-Performance Micro-Animations */
+  @starting-style {
+    .animate-in {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+</style>

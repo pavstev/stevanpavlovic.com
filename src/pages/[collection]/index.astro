@@ -3,7 +3,9 @@
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
-import CollectionPage from "../../components/templates/collection-page.astro";
+import LayoutRoot from "../../components/layout/layout-root.astro";
+import ResourceDiscovery from "../../components/organisms/ResourceDiscovery.astro";
+import { NAV_ITEMS } from "../../config";
 import { getCollectionPageData } from "../../lib";
 
 export const prerender = true;
@@ -13,7 +15,7 @@ export interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections: CollectionKey[] = ["blog", "projects", "experience"];
+  const collections = Object.keys(NAV_ITEMS).filter(k => k !== 'home') as CollectionKey[];
 
   return collections.map((collection) => ({
     params: { collection },
@@ -40,19 +42,21 @@ const {
 } = pageData;
 ---
 
-<CollectionPage
-  {...config}
-  baseUrl={baseUrl}
-  collectionItems={collectionItems}
-  collectionKey={collection}
-  containerId={containerId}
-  currentPage={currentPage}
-  display={display}
-  displayUrls={displayUrls}
-  getItemCardProps={getItemCardProps}
-  initialPageSize={initialPageSize}
-  nextUrl={nextUrl}
-  prevUrl={prevUrl}
-  totalItems={totalItems}
-  totalPages={totalPages}
-/>
+<LayoutRoot description={config.description} slug={`/${collection}`} title={config.title}>
+  <ResourceDiscovery
+    {...config}
+    baseUrl={baseUrl}
+    collectionItems={collectionItems}
+    collectionKey={collection}
+    containerId={containerId}
+    currentPage={currentPage}
+    display={display}
+    displayUrls={displayUrls}
+    getItemCardProps={getItemCardProps}
+    initialPageSize={initialPageSize}
+    nextUrl={nextUrl}
+    prevUrl={prevUrl}
+    totalItems={totalItems}
+    totalPages={totalPages}
+  />
+</LayoutRoot>

@@ -4,7 +4,9 @@ import type { HTMLAttributes } from "astro/types";
 import { cn } from "../../lib/cn";
 import Container from "../atoms/Container.astro";
 import Grid from "../atoms/Grid.astro";
-import Stack from "../atoms/Stack.astroort interface Props extends HTMLAttributes<"section"> {
+import Stack from "../atoms/Stack.astro";
+
+interface Props extends HTMLAttributes<"section"> {
   as?: "article" | "div" | "main" | "section";
   class?: string;
   gap?: number;

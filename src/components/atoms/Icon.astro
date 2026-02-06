@@ -24,7 +24,9 @@ const iconVariants = cva("shrink-0 transition-all duration-300", {
       primary: "text-primary drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] filter",
     },
   },
-}ort interface Props extends VariantProps<typeof iconVariants> {
+});
+
+interface Props extends VariantProps<typeof iconVariants> {
   class?: string;
   name: string;
 }

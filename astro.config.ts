@@ -18,6 +18,7 @@ import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
 
 import { PROFILE } from "./src/config";
+import { generateAiContext } from "./src/lib/generate-ai-context";
 
 export default defineConfig({
   adapter: cloudflare({
@@ -28,11 +29,30 @@ export default defineConfig({
     },
   }),
 
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "sr"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
 
   integrations: [
+    {
+      hooks: {
+        "astro:build:start": async () => {
+          await generateAiContext();
+        },
+        "astro:server:setup": async () => {
+          await generateAiContext();
+        },
+      },
+      name: "generate-ai-context",
+    },
     mdx(),
     sitemap(),
     favicons({
@@ -64,7 +84,7 @@ export default defineConfig({
       project: "stevanpavlovic",
       telemetry: false,
     }),
-    playground(),
+    // playground(),
   ],
 
   markdown: {

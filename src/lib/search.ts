@@ -6,14 +6,12 @@ interface PagefindInstance {
   }>;
 }
 
-/**
- * Interface for Pagefind search results
- */
 interface PagefindResult {
   data: () => Promise<{
     content: string;
     excerpt: string;
     meta: {
+      category?: string;
       image?: string;
       title: string;
     };
@@ -28,280 +26,227 @@ declare global {
   }
 }
 
-/**
- * Initializes a single search dropdown instance
- */
-const initSingleSearch = (
-  container: HTMLElement,
-  searchInput: HTMLInputElement,
-  clearButton: HTMLElement | null,
-  dropdown: HTMLElement,
-  resultsContainer: HTMLElement,
-): void => {
-  let isOpen = false;
-  let pagefind: null | PagefindInstance = null;
+interface QuickAction {
+  category: "Action" | "Navigation";
+  href?: string;
+  icon: string;
+  id: string;
+  label: string;
+  onSelect?: () => void;
+}
 
-  const loadPagefind = async (): Promise<void> => {
-    if (pagefind) {
-      return;
+const QUICK_ACTIONS: QuickAction[] = [
+  { category: "Navigation", href: "/", icon: "mdi:home", id: "nav-home", label: "Go to Home" },
+  { category: "Navigation", href: "/blog", icon: "mdi:newspaper", id: "nav-blog", label: "Go to Blog" },
+  { category: "Navigation", href: "/projects", icon: "mdi:console", id: "nav-projects", label: "Go to Projects" },
+  { category: "Navigation", href: "/resume", icon: "mdi:file-account", id: "nav-resume", label: "Go to Resume" },
+  {
+    category: "Action",
+    icon: "mdi:download",
+    id: "action-download-resume",
+    label: "Download Resume PDF",
+    onSelect: () => window.print(),
+  },
+  {
+    category: "Action",
+    icon: "mdi:theme-light-dark",
+    id: "action-toggle-focus",
+    label: "Toggle Focus Mode",
+    onSelect: () => document.documentElement.classList.toggle("focus-mode"),
+  },
+];
+
+export class CommandPalette {
+  private currentIndex = -1;
+  private dropdown: HTMLElement;
+  private input: HTMLInputElement;
+  private isOpen = false;
+  private modal: HTMLElement;
+  private pagefind: null | PagefindInstance = null;
+  private resultsContainer: HTMLElement;
+
+  constructor(modalId: string) {
+    this.modal = document.getElementById(modalId) as HTMLElement;
+    this.input = this.modal?.querySelector("#search-input") as HTMLInputElement;
+    this.resultsContainer = this.modal?.querySelector("#search-results") as HTMLElement;
+    this.dropdown = this.modal?.querySelector("dialog") as HTMLElement;
+
+    if (this.modal) {
+      this.init();
     }
-    try {
-      // Dynamic import based on environment
-      // In dev, we might need to point to a specific location if not served from root
-      // Pagefind is generated at build time, so we suppress the TS error for the missing module
+  }
 
-      // Use a variable to prevent Vite from trying to resolve this at build time
-      const pagefindUrl = "/pagefind/pagefind.js";
-
-      if (import.meta.env.DEV) {
-        try {
-          pagefind = await import(/* @vite-ignore */ pagefindUrl);
-        } catch (e) {
-          console.warn("Pagefind not found in dev (expected if not built)", e);
-          return;
-        }
-      }
-
-      if (!import.meta.env.DEV) {
-        pagefind = await import(/* @vite-ignore */ pagefindUrl);
-      }
-
-      if (pagefind) {
-        pagefind.options({ showImages: false });
-      }
-    } catch (e) {
-      console.warn("Pagefind failed to load. Is the site built?", e);
-      resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-muted-foreground">Search is available after build.</div>`;
-    }
-  };
-
-  const renderResults = async (results: PagefindResult[]): Promise<void> => {
-    resultsContainer.innerHTML = "";
-
-    if (results.length === 0) {
-      resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-muted-foreground">No results found.</div>`;
-      return;
-    }
-
-    const list = document.createElement("ul");
-    list.className = "flex flex-col gap-1";
-
-    // Limit to top 5 results for better UX in dropdown
-    const topResults = results.slice(0, 5);
-
-    for (const result of topResults) {
-      const data = await result.data();
-      const item = document.createElement("li");
-      item.innerHTML = `
-            <a href="${data.url.replace(/\/$/, "")}" class="group flex flex-col gap-1 rounded-xl p-2 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none">
-                <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                    ${data.meta.title}
-                </span>
-                <span class="text-xs text-muted-foreground line-clamp-2">
-                    ${data.excerpt}
-                </span>
-            </a>
-        `;
-      list.appendChild(item);
-    }
-
-    resultsContainer.appendChild(list);
-
-    // Add click listeners to links to close dropdown on navigation
-    const links = list.querySelectorAll("a");
-    for (const link of links) {
-      link.addEventListener("click", () => {
-        closeDropdown();
-      });
-    }
-  };
-
-  const performSearch = async (query: string): Promise<void> => {
+  private async fetchResults(query: string) {
     if (!query) {
-      resultsContainer.innerHTML = "";
+      this.renderQuickActions();
       return;
     }
 
-    if (!pagefind) {
-      await loadPagefind();
+    if (!this.pagefind) {
+      await this.loadPagefind();
     }
 
-    if (!pagefind) {
-      return; // Already showed error in loadPagefind
+    if (this.pagefind) {
+      const search = await this.pagefind.search(query);
+      this.renderSearchResults(search.results);
     }
+  }
 
-    resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-muted-foreground animate-pulse">Searching...</div>`;
+  private handleKeyDown(e: KeyboardEvent) {
+    if (!this.isOpen) return;
 
+    const items = this.resultsContainer.querySelectorAll("a, button");
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      this.currentIndex = Math.min(this.currentIndex + 1, items.length - 1);
+      this.updateSelection(items);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      this.currentIndex = Math.max(this.currentIndex - 1, 0);
+      this.updateSelection(items);
+    } else if (e.key === "Enter") {
+      if (this.currentIndex >= 0) {
+        e.preventDefault();
+        (items[this.currentIndex] as HTMLElement).click();
+      }
+    } else if (e.key === "Escape") {
+      this.close();
+    }
+  }
+
+  private init() {
+    this.input.addEventListener("input", (e) => {
+      this.fetchResults((e.target as HTMLInputElement).value);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        this.toggle();
+      }
+    });
+
+    this.modal.addEventListener("keydown", (e) => this.handleKeyDown(e));
+
+    // Close on backdrop click
+    this.modal.addEventListener("click", (e) => {
+      if (e.target === this.modal) this.close();
+    });
+
+    this.renderQuickActions();
+  }
+
+  private async loadPagefind() {
     try {
-      const search = await pagefind.search(query);
-      await renderResults(search.results);
+      this.pagefind = (await import(/* @vite-ignore */ "/pagefind/pagefind.js")) as any;
+      this.pagefind?.options({ showImages: false });
     } catch (e) {
-      console.error("Search failed", e);
-      resultsContainer.innerHTML = `<div class="p-4 text-center text-sm text-red-500">Search failed.</div>`;
+      console.warn("Pagefind failed to load", e);
     }
-  };
+  }
 
-  const updateClearButton = (): void => {
-    if (!clearButton) {
-      return;
-    }
-    if (searchInput.value.length > 0) {
-      clearButton.classList.add("visible", "flex");
-      clearButton.classList.remove("hidden");
-      return;
-    }
-    clearButton.classList.remove("visible", "flex");
-    clearButton.classList.add("hidden");
-  };
+  private renderQuickActions() {
+    this.resultsContainer.innerHTML = `
+      <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Quick Actions</div>
+      <div class="flex flex-col gap-1">
+        ${QUICK_ACTIONS.map(
+          (action) => `
+          <button data-id="${action.id}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-sm text-foreground/80 group">
+            <span class="size-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:border-primary/30 transition-colors">
+               <svg class="size-4"><use href="/icons.svg#${action.icon.replace("mdi:", "")}"></use></svg>
+            </span>
+            ${action.label}
+            <span class="ml-auto text-[10px] font-mono text-muted-foreground/40">Action</span>
+          </button>
+        `,
+        ).join("")}
+      </div>
+    `;
 
-  const closeDropdown = (): void => {
-    isOpen = false;
-    dropdown.classList.remove("visible");
-    dropdown.classList.add("invisible", "opacity-0");
-    searchInput.setAttribute("aria-expanded", "false");
-  };
+    this.currentIndex = -1;
 
-  const openDropdown = (): void => {
-    isOpen = true;
-    dropdown.classList.add("visible");
-    dropdown.classList.remove("invisible", "opacity-0");
-    searchInput.setAttribute("aria-expanded", "true");
-
-    // Trigger search if we have value
-    if (searchInput.value.length > 2) {
-      void performSearch(searchInput.value);
-    }
-  };
-
-  // Handle input changes with debounce
-  let debounceTimer: ReturnType<typeof setTimeout>;
-
-  searchInput.addEventListener("input", (e) => {
-    const value = (e.target as HTMLInputElement).value;
-
-    // Update clear button visibility
-    updateClearButton();
-
-    clearTimeout(debounceTimer);
-
-    // Only search/show dropdown if more than 2 characters
-    if (value.length > 2) {
-      if (!isOpen) {
-        openDropdown();
-      }
-
-      debounceTimer = setTimeout(() => {
-        void performSearch(value);
-      }, 300);
-      return;
-    }
-
-    if (isOpen) {
-      closeDropdown();
-    }
-    resultsContainer.innerHTML = "";
-  });
-
-  // Handle touch events for mobile
-  searchInput.addEventListener(
-    "touchstart",
-    () => {
-      if (!isOpen && searchInput.value.length > 2) {
-        openDropdown();
-      }
-    },
-    { passive: true },
-  );
-
-  // Clear button click handler
-  if (clearButton) {
-    clearButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      searchInput.value = "";
-      updateClearButton();
-      closeDropdown();
-      searchInput.focus();
-      resultsContainer.innerHTML = "";
+    this.resultsContainer.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        const action = QUICK_ACTIONS.find((a) => a.id === id);
+        if (action?.href) {
+          window.location.href = action.href;
+        } else if (action?.onSelect) {
+          action.onSelect();
+          this.close();
+        }
+      });
     });
   }
 
-  // Focus handling - open dropdown on click/focus
-  searchInput.addEventListener("focus", () => {
-    if (!isOpen && searchInput.value.length > 2) {
-      openDropdown();
-    }
-    // Preload pagefind on focus
-    void loadPagefind();
-  });
+  private async renderSearchResults(results: PagefindResult[]) {
+    this.resultsContainer.innerHTML = `
+      <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Search Results</div>
+      <div class="flex flex-col gap-1"></div>
+    `;
+    const list = this.resultsContainer.querySelector(".flex-col") as HTMLElement;
 
-  // Close on outside click/touch
-  const closeOnOutside = (e: MouseEvent | TouchEvent): void => {
-    const target = e.target as Node;
-    if (!container.contains(target)) {
-      closeDropdown();
-    }
-  };
-
-  document.addEventListener("click", closeOnOutside);
-
-  // Handle touch outside to close dropdown on mobile
-  document.addEventListener(
-    "touchstart",
-    (e: TouchEvent) => {
-      const target = e.target as Node;
-      if (!container.contains(target)) {
-        closeDropdown();
-      }
-    },
-    { passive: true },
-  );
-
-  // Close on Escape key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && isOpen) {
-      e.preventDefault();
-      closeDropdown();
-      searchInput.blur();
-    }
-  });
-
-  // Keyboard shortcut: / to focus
-  document.addEventListener("keydown", (e) => {
-    const target = e.target;
-    if (e.key === "/" && !["INPUT", "TEXTAREA"].includes((target as HTMLElement).tagName)) {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  });
-
-  // Keyboard shortcut: Cmd/Ctrl + K to focus
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  });
-};
-
-/**
- * Initializes all search dropdowns on the page
- */
-export const initSearchDropdown = (): void => {
-  // Find all search containers and initialize each one
-  const containers = document.querySelectorAll(".search-dropdown-container");
-
-  for (const container of containers) {
-    const variant = container.getAttribute("data-search-variant") || "desktop";
-    const idPrefix = variant === "mobile" ? "mobile-search" : "desktop-search";
-    const searchInput = document.getElementById(`${idPrefix}-input`) as HTMLInputElement;
-    const clearButton = document.getElementById(`${idPrefix}-clear`);
-    const dropdown = document.getElementById(`${idPrefix}-dropdown`);
-    const resultsContainer = document.getElementById(`${idPrefix}-results`);
-
-    if (!searchInput || !dropdown || !resultsContainer) {
-      continue;
+    if (results.length === 0) {
+      list.innerHTML = `<div class="p-8 text-center text-sm text-muted-foreground">No results found for "${this.input.value}"</div>`;
+      return;
     }
 
-    initSingleSearch(container as HTMLElement, searchInput, clearButton, dropdown, resultsContainer);
+    for (const result of results.slice(0, 8)) {
+      const data = await result.data();
+      const item = document.createElement("a");
+      item.href = data.url;
+      item.className =
+        "flex flex-col gap-1 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors group border border-transparent hover:border-white/5";
+      item.innerHTML = `
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">${data.meta.title}</span>
+          ${data.meta.category ? `<span class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono uppercase tracking-wider">${data.meta.category}</span>` : ""}
+        </div>
+        <span class="text-xs text-muted-foreground line-clamp-1">${data.excerpt}</span>
+      `;
+      list.appendChild(item);
+    }
+    this.currentIndex = -1;
   }
+
+  private updateSelection(items: NodeListOf<Element>) {
+    items.forEach((item, i) => {
+      if (i === this.currentIndex) {
+        item.classList.add("bg-white/10", "border-primary/20");
+        item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } else {
+        item.classList.remove("bg-white/10", "border-primary/20");
+      }
+    });
+  }
+
+  public close() {
+    this.isOpen = false;
+    this.modal.classList.add("invisible", "opacity-0");
+    this.dropdown?.classList.add("scale-95", "translate-y-4");
+    document.body.style.overflow = "";
+  }
+
+  public open() {
+    this.isOpen = true;
+    this.modal.classList.remove("invisible", "opacity-0");
+    this.dropdown?.classList.remove("scale-95", "translate-y-4");
+    this.input.focus();
+    document.body.style.overflow = "hidden";
+    void this.loadPagefind();
+  }
+
+  public toggle() {
+    this.isOpen ? this.close() : this.open();
+  }
+}
+
+export const initSearchDropdown = () => {
+  const palette = new CommandPalette("omni-search");
+
+  // Global search trigger buttons (if any)
+  document.querySelectorAll("[data-search-trigger]").forEach((btn) => {
+    btn.addEventListener("click", () => palette.open());
+  });
 };

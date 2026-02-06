@@ -1,0 +1,184 @@
+---
+import type { CollectionKey } from "astro:content";
+
+import type { CollectionItem } from "../../lib/content/types";
+import type { DisplayMode } from "../../lib/list";
+import type { CardData } from "../organisms/card.astro";
+
+import Stack from "../atoms/Stack.astro";
+import Text from "../atoms/Text.astro";
+import ListActions from "../molecules/list-actions.astro";
+import MasonryGrid from "../molecules/masonry-grid.astro";
+import Card from "../organisms/card.astro";
+import CollectionHeader from "../organisms/collection-header.astro";
+import CompositionGrid from "../organisms/CompositionGrid.astro";
+
+interface Props {
+  baseUrl: string;
+  collectionItems: CollectionItem<CollectionKey>[];
+  collectionKey: CollectionKey;
+  containerId: string;
+  currentPage?: number;
+  description: string;
+  display: DisplayMode;
+  displayUrls?: { grid: string; list: string };
+  getItemCardProps: (item: CollectionItem<CollectionKey>) => Promise<{ actionLabel?: string; data: CardData; }>;
+  headerDescription: string;
+  headerIcon: string;
+  headerTitle: string;
+  initialPageSize?: number;
+  nextUrl?: string;
+  prevUrl?: string;
+  title: string;
+  totalItems: number;
+  totalPages?: number;
+}
+
+const {
+  baseUrl,
+  collectionItems: items,
+  containerId,
+  currentPage = 1,
+  display,
+  displayUrls,
+  getItemCardProps,
+  headerDescription,
+  headerIcon,
+  headerTitle,
+  initialPageSize = 6,
+  nextUrl,
+  prevUrl,
+  totalPages = 1,
+} = Astro.props;
+
+const isList = display === "list";
+const isGrid = display === "grid";
+---
+
+<CompositionGrid class="py-12 md:py-24">
+  <CollectionHeader description={headerDescription} icon={headerIcon} level={1} title={headerTitle}>
+    <ListActions
+      baseUrl={baseUrl}
+      currentPage={currentPage}
+      display={display}
+      displayUrls={displayUrls}
+      getPageUrl={(p) => (p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`)}
+      nextUrl={nextUrl}
+      paginationType="path"
+      prevUrl={prevUrl}
+      totalPages={totalPages}
+    />
+  </CollectionHeader>
+
+  <Stack gap={12}>
+    <div
+      class:list={[
+        "view-container transition-all duration-500",
+        {"opacity-0": false} // Placeholder for skeleton loading logic
+      ]}
+      data-initial-page-size={initialPageSize}
+      id={containerId}
+    >
+      {/* VIEW MODE: LIST */}
+      {
+        isList && (
+          <div class="list-view flex flex-col gap-4">
+            {items.map(async (item) => (
+              <div class="card-item group">
+                <Card list {...(await getItemCardProps(item))} class="group-hover:shadow-glow-primary transition-all duration-300" />
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      {/* VIEW MODE: GRID */}
+      {
+        isGrid && (
+          <div class="grid-view">
+            <MasonryGrid columns={2}>
+              {items.map(async (item) => (
+                <div class="masonry-item card-item group">
+                  <Card {...(await getItemCardProps(item))} class="group-hover:shadow-glow-primary transition-all duration-300" />
+                </div>
+              ))}
+            </MasonryGrid>
+          </div>
+        )
+      }
+
+      {/* No Results HUD */}
+      <div class="mt-20 hidden text-center" id="no-results">
+        <Stack align="center" gap={4}>
+          <div class="flex size-20 items-center justify-center rounded-full border border-white/10 bg-white/5 text-4xl">
+            🔍
+          </div>
+          <Text class="text-2xl font-bold">No results found</Text>
+          <Text variant="muted">Try adjusting your filters or search terms.</Text>
+          <a
+            class="hover:shadow-glow-primary mt-4 rounded-full bg-primary px-8 py-3 font-bold text-white transition-all"
+            href={baseUrl}
+          >
+            Clear All Filters
+          </a>
+        </Stack>
+      </div>
+    </div>
+  </Stack>
+</CompositionGrid>
+
+<script>
+  import { initInteractiveCards } from "../../lib/interactive-cards";
+
+  // Stateful UI Preservation
+  const handleState = () => {
+    const url = new URL(window.location.href);
+    
+    // Sync View Mode
+    const currentPath = window.location.pathname;
+    const isGrid = currentPath.includes('/grid');
+    const isList = currentPath.includes('/list');
+    
+    if (isGrid) sessionStorage.setItem('preferred-view', 'grid');
+    if (isList) sessionStorage.setItem('preferred-view', 'list');
+
+    // Handle deep linking for filters (if tags/categories are implemented as search params)
+    const filters = document.querySelectorAll('[data-filter-value]');
+    filters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        const key = filter.getAttribute('data-filter-key');
+        const val = filter.getAttribute('data-filter-value');
+        if (key && val) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set(key, val);
+          window.history.pushState({}, '', newUrl);
+        }
+      });
+    });
+
+    // Handle smooth hydration after View Transitions
+    window.addEventListener('astro:after-swap', () => {
+      const savedScroll = sessionStorage.getItem('scroll-pos-' + currentPath);
+      if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
+    });
+
+    window.addEventListener('scroll', () => {
+      sessionStorage.setItem('scroll-pos-' + currentPath, window.scrollY.toString());
+    }, { passive: true });
+  };
+
+  const setup = () => {
+    initInteractiveCards();
+    handleState();
+  };
+
+  setup();
+  document.addEventListener("astro:page-load", setup);
+</script>
+
+<style>
+  /* Fluid Cards via Container Queries */
+  .card-item {
+    container-type: inline-size;
+  }
+</style>

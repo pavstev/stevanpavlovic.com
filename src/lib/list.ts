@@ -1,3 +1,5 @@
+export type DisplayMode = "grid" | "list";
+
 export type PaginationType = "path" | "query";
 
 export type ViewUrls = {

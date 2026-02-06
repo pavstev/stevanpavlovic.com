@@ -25,11 +25,14 @@ const description = "The coordinates you entered do not correspond to a known se
 
     <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">
       <div
-        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-3xl border border-accent/20 p-8 text-center shadow-2xl shadow-accent/10 sm:p-12"
+        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-2xl border border-accent/20 p-8 text-center shadow-2xl shadow-accent/10 sm:p-12"
       >
         {/* Error Code */}
         <div class="relative">
-          <Heading class="text-9xl font-black tracking-tighter opacity-90 sm:text-[12rem]" variant="gradient-accent">
+          <Heading
+            class="text-9xl font-black tracking-tighter text-accent opacity-90 sm:text-[12rem]"
+            variant="gradient"
+          >
             404
           </Heading>
           <div class="shadow-glow-accent absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
@@ -37,7 +40,7 @@ const description = "The coordinates you entered do not correspond to a known se
 
         {/* Text Content */}
         <div class="flex flex-col items-center gap-4">
-          <Heading class="tracking-widest uppercase" level={2} size="h4" variant="accent"> Signal Lost </Heading>
+          <Heading class="tracking-widest text-accent capitalize" level={2} size="md"> Signal Lost </Heading>
 
           <Text class="max-w-md text-balance" size="lg" variant="muted">
             The coordinates you provided lead to empty space. Recalibrating route to nearest outpost.
@@ -46,7 +49,7 @@ const description = "The coordinates you entered do not correspond to a known se
 
         {/* Actions */}
         <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:rocket-launch-outline" size="lg" variant="accent">
+          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:rocket-launch-outline" size="lg" variant="primary">
             Warp Home
           </Button>
           <Button
@@ -55,7 +58,7 @@ const description = "The coordinates you entered do not correspond to a known se
             href="javascript:history.back()"
             icon="mdi:arrow-u-left-bottom"
             size="lg"
-            variant="glass"
+            variant="outline"
           >
             Go Back
           </Button>

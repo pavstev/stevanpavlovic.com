@@ -3,6 +3,7 @@ import type { CollectionItem, CollectionName } from "../../lib/collections";
 import type { DisplayMode } from "../../lib/list";
 
 import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
 import LayoutRoot from "../layout/layout-root.astro";
 import ListActions from "../molecules/list-actions.astro";
 import MasonryGrid from "../molecules/masonry-grid.astro";
@@ -113,7 +114,7 @@ const isGrid = display === "grid";
         <div class="mt-12 hidden text-center text-muted-foreground" id="no-results">
           <div class="flex flex-col items-center justify-center gap-2">
             <span class="text-4xl">🔍</span>
-            <p class="text-lg font-medium">No results found.</p>
+            <Text class="font-medium" size="lg">No results found.</Text>
             <a
               class="mt-4 rounded-full bg-secondary/10 px-4 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/20"
               href={baseUrl}

@@ -7,8 +7,19 @@ import { createAuthorItem } from "./toolbar-items";
 
 const getPublishedToolbarItem = (item: CollectionItem<"blog">): ToolbarItem => ({
   label: "Published",
+  type: "date",
   value: dayjs(item.data.pubDate).format("MMMM YYYY"),
 });
+
+const getReadingTimeToolbarItem = (item: CollectionItem<"blog">): ToolbarItem => {
+  const wordCount = item.body ? item.body.split(/\s+/).length : 0;
+  const readingTime = Math.ceil(wordCount / 200);
+  return {
+    label: "Read Time",
+    type: "text",
+    value: `${readingTime} min read`,
+  };
+};
 
 export const getBlogProps = (item: CollectionItem<"blog">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
@@ -26,6 +37,6 @@ export const getBlogProps = (item: CollectionItem<"blog">): ViewPageProps => {
       title: "Tags",
     },
     title: item.data.title,
-    toolbarItems: [author, getPublishedToolbarItem(item)],
+    toolbarItems: [author, getPublishedToolbarItem(item), getReadingTimeToolbarItem(item)],
   };
 };

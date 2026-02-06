@@ -3,10 +3,9 @@ interface Props {
   navItems: readonly { href: string; label: string }[];
 }
 
-import { Icon } from "astro-icon/components";
-
 import { SOCIALS } from "../../config";
 import { isActivePath } from "../../lib/nav";
+import AppIcon from "../atoms/app-icon.astro";
 
 const { navItems } = Astro.props;
 const { pathname } = Astro.url;
@@ -47,7 +46,7 @@ const isActive = (href: string) => isActivePath(pathname, href);
           rel="noreferrer"
           target="_blank"
         >
-          <Icon class="size-5" name={social.icon} />
+          <AppIcon name={social.icon} size="lg" />
         </a>
       ))
     }

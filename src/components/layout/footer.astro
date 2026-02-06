@@ -1,8 +1,7 @@
 ---
-import { Icon } from "astro-icon/components";
-
 import { SOCIALS } from "../../config";
 import { getCopyrightText } from "../../lib/footer";
+import AppIcon from "../atoms/app-icon.astro";
 import Text from "../atoms/text.astro";
 import Container from "../molecules/container.astro";
 ---
@@ -29,7 +28,7 @@ import Container from "../molecules/container.astro";
                 rel="noreferrer"
                 target="_blank"
               >
-                <Icon class="size-4" name={social.icon} />
+                <AppIcon name={social.icon} size="md" />
               </a>
             ))
           }
@@ -40,14 +39,14 @@ import Container from "../molecules/container.astro";
           data-tooltip="RSS Feed"
           href="/rss.xml"
         >
-          <Icon class="size-4" name="mdi:rss" />
+          <AppIcon name="mdi:rss" size="md" />
         </a>
         <a
           class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           data-tooltip="Sitemap"
           href="/sitemap-index.xml"
         >
-          <Icon class="size-4" name="mdi:sitemap" />
+          <AppIcon name="mdi:sitemap" size="md" />
         </a>
       </div>
     </div>

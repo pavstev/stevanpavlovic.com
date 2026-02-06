@@ -1,4 +1,5 @@
-import type { CollectionItem, CollectionName, DisplayMode } from "./types";
+import type { DisplayMode } from "../list";
+import type { CollectionItem, CollectionName } from "./types";
 
 import { ITEMS_PER_PAGE } from "../../config";
 

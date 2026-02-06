@@ -3,6 +3,8 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
+import AppIcon, { type Props as AppIconProps } from "./app-icon.astro";
+
 const variants = cva("flex items-center justify-center rounded-xl transition-colors duration-200", {
   defaultVariants: {
     size: "md",
@@ -12,27 +14,51 @@ const variants = cva("flex items-center justify-center rounded-xl transition-col
     size: {
       lg: "size-12 rounded-xl",
       md: "size-10 rounded-xl",
-      sm: "size-8 rounded-md",
+      sm: "size-8 rounded-lg",
       xl: "size-16 rounded-xl",
     },
     variant: {
-      accent: "border border-accent/10 bg-accent/5 text-accent",
       default: "border border-border bg-muted/30 text-muted-foreground",
-      dimmed: "border border-secondary/20 bg-secondary/10 text-secondary-foreground",
-      filled: "border border-primary bg-primary text-primary-foreground",
       ghost: "border-transparent bg-transparent text-muted-foreground hover:text-foreground",
-      glass: "border border-foreground/10 bg-foreground/5 text-foreground backdrop-blur-md",
       outline: "border border-border bg-transparent text-foreground",
+      primary: "border border-primary bg-primary text-primary-foreground",
     },
   },
 });
 
 interface Props extends HTMLAttributes<"div">, Omit<VariantProps<typeof variants>, "size"> {
   as?: string;
+  /** Name of the icon to render */
+  icon?: string;
+  /** Act/State for the icon */
+  iconAct?: AppIconProps["act"];
+  /** Class for the icon */
+  iconClass?: string;
+  /** Group hover effect for the icon */
+  iconHover?: AppIconProps["hover"];
+  /** Size for the icon */
+  iconSize?: AppIconProps["size"];
+  /** Tone for the icon */
+  iconTone?: AppIconProps["tone"];
+  /** Transition effect for the icon */
+  iconTransition?: AppIconProps["transition"];
   size?: "lg" | "md" | "sm" | "xl" | number;
 }
 
-const { as: Tag = "div", class: className, size = "md", variant, ...props } = Astro.props;
+const {
+  as: Tag = "div",
+  class: className,
+  icon,
+  iconAct,
+  iconClass,
+  iconHover,
+  iconSize,
+  iconTone,
+  iconTransition,
+  size = "md",
+  variant,
+  ...props
+} = Astro.props;
 
 const isNumericSize = typeof size === "number";
 const numericStyle = isNumericSize ? { height: `${size}px`, width: `${size}px` } : {};
@@ -43,5 +69,19 @@ const numericStyle = isNumericSize ? { height: `${size}px`, width: `${size}px` }
   style={numericStyle}
   {...props}
 >
-  <slot />
+  {
+    icon ? (
+      <AppIcon
+        act={iconAct}
+        class:list={[iconClass]}
+        hover={iconHover}
+        name={icon}
+        size={iconSize}
+        tone={iconTone}
+        transition={iconTransition}
+      />
+    ) : (
+      <slot />
+    )
+  }
 </Tag>

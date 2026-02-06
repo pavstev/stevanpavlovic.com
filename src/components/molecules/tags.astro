@@ -19,7 +19,7 @@ const { class: className, limit, tags } = Astro.props;
       {tags.slice(0, limit || tags.length).map((tag) => (
         <Badge variant="secondary">{tag.label}</Badge>
       ))}
-      {limit && tags.length > limit && <Badge variant="muted">+{tags.length - limit}</Badge>}
+      {limit && tags.length > limit && <Badge variant="secondary">+{tags.length - limit}</Badge>}
     </Stack>
   )
 }

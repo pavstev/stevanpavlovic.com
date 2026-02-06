@@ -1,7 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
-
 import { CHATBOT_VARIANTS } from "../../config";
+import AppIcon from "../atoms/app-icon.astro";
 import Button from "../atoms/button.astro";
 import Stack from "../atoms/stack.astro";
 // ============================================================================
@@ -39,8 +38,8 @@ const { class: className } = Astro.props;
     <!-- Header -->
     <header class="flex items-center justify-between border-b border-border bg-card px-4 py-3">
       <Stack align="center" direction="row" gap={3}>
-        <div class="flex size-8 items-center justify-center rounded-md bg-primary/20 text-primary">
-          <Icon name="mdi:robot-outline" size={16} />
+        <div class="flex size-8 items-center justify-center rounded-lg bg-primary/20 text-primary">
+          <AppIcon name="mdi:robot-outline" size="base" />
         </div>
         <Stack gap={0}>
           <Text class="text-xs font-bold tracking-tight uppercase">Resume Assistant</Text>
@@ -48,7 +47,7 @@ const { class: className } = Astro.props;
         </Stack>
       </Stack>
       <Button aria-label="Close chat" class="size-8" id="close-chat" size="icon" variant="ghost">
-        <Icon name="mdi:close" size={18} />
+        <AppIcon name="mdi:close" size="md" />
       </Button>
     </header>
 
@@ -75,7 +74,7 @@ const { class: className } = Astro.props;
           />
         </div>
         <Button aria-label="Send message" class="size-9" id="send-button" size="icon" type="submit">
-          <Icon name="mdi:send" size={16} />
+          <AppIcon name="mdi:send" size="base" />
         </Button>
       </form>
     </div>
@@ -84,17 +83,9 @@ const { class: className } = Astro.props;
   <!-- Toggle Button -->
   <Button aria-label="Toggle Chatbot" class="size-11" id="chat-toggle" size="icon" variant="fab">
     <!-- Robot Icon (visible when closed) -->
-    <Icon
-      class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"
-      name="mdi:robot-outline"
-      size={20}
-    />
+    <AppIcon extraClasses="chatbot-robot" name="mdi:robot-outline" size="lg" transition="all" />
     <!-- Close Icon (visible when open) -->
-    <Icon
-      class="absolute scale-0 transition-all duration-300 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0"
-      name="mdi:close"
-      size={20}
-    />
+    <AppIcon extraClasses="chatbot-close" name="mdi:close" size="lg" transition="all" />
   </Button>
 </div>
 

@@ -2,11 +2,11 @@
 import type { ImageMetadata } from "astro";
 import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from "astro-icon/components";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import type { Tag } from "../../lib/collections";
 
+import AppIcon from "../atoms/app-icon.astro";
 import Badge from "../atoms/badge.astro";
 import FormattedDate from "../atoms/formatted-date.astro";
 import Heading from "../atoms/heading.astro";
@@ -148,15 +148,13 @@ const isRowLayout = list && !icon;
             <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
             <IconBox
               class="relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5"
+              icon={isRowLayout ? icon : icon}
+              iconHover="color"
+              iconSize="xl"
+              iconTransition="colors"
               size="lg"
-              variant="glass"
-            >
-              <Icon
-                class="transition-colors duration-300 group-hover:text-accent"
-                name={isRowLayout ? icon : icon}
-                size={24}
-              />
-            </IconBox>
+              variant="ghost"
+            />
           </div>
         )}
 
@@ -195,7 +193,7 @@ const isRowLayout = list && !icon;
               {/* Date (List View / Grid View) */}
               {date && (
                 <div class:list={["flex items-center justify-between", !isRowLayout && "mb-1"]}>
-                  <Text class="font-mono tracking-wider uppercase" size="xs" variant="muted">
+                  <Text class="font-mono tracking-wider uppercase" size="sm" variant="muted">
                     <FormattedDate date={date} full />
                   </Text>
                 </div>
@@ -208,7 +206,7 @@ const isRowLayout = list && !icon;
                   { "line-clamp-2": !isRowLayout, "mt-1 line-clamp-1": isRowLayout },
                 ]}
                 level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
-                size={isRowLayout ? "md" : "lg"}
+                size={isRowLayout ? "sm" : "md"}
               >
                 {title}
               </Heading>
@@ -217,7 +215,7 @@ const isRowLayout = list && !icon;
               {subtitle && (
                 <Text
                   class:list={["font-mono tracking-wider uppercase", { "mt-0.5": isRowLayout, "mt-1": !isRowLayout }]}
-                  size="xs"
+                  size="sm"
                   variant="muted"
                 >
                   {subtitle}
@@ -240,12 +238,12 @@ const isRowLayout = list && !icon;
                       },
                     ]}
                   >
-                    <Icon name="mdi:arrow-top-right" />
+                    <AppIcon name="mdi:arrow-top-right" />
                   </div>
                   {actionLabel && (
                     <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                       {actionLabel}
-                      <Icon class="size-3" name={actionIcon} />
+                      <AppIcon name={actionIcon} size="sm" />
                     </div>
                   )}
                 </div>
@@ -280,7 +278,7 @@ const isRowLayout = list && !icon;
             {footerMeta && (
               <Text
                 class="ml-auto font-mono tracking-wider whitespace-nowrap uppercase transition-colors group-hover:text-primary/80"
-                size="xs"
+                size="sm"
                 variant="muted"
               >
                 {footerMeta}
@@ -288,9 +286,7 @@ const isRowLayout = list && !icon;
             )}
 
             {/* Icon Card Bottom Arrow (if no meta/header arrow used) */}
-            {icon && url && (
-              <Icon class="size-4 text-muted-foreground/50 group-hover:text-primary" name="mdi:arrow-top-right" />
-            )}
+            {icon && url && <AppIcon hover="primary" name="mdi:arrow-top-right" size="base" tone="muted" />}
           </div>
         </div>
       </div>

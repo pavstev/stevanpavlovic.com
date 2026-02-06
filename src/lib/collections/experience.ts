@@ -16,33 +16,50 @@ const getOrganizationToolbarItem = (item: CollectionItem<"experience">): TI | un
         href: item.data.company.website,
         label: "Organization",
         logo: item.data.company.logo,
+        type: "organization",
         value: item.data.company.name,
       }
     : {
         label: "Organization",
+        type: "organization",
         value: item.data.company,
       };
 };
 
-const getTimelineToolbarItem = (item: CollectionItem<"experience">): TI => {
+const getDurationToolbarItem = (item: CollectionItem<"experience">): TI => {
   const start = dayjs(item.data.startDate);
   const end = item.data.endDate ? dayjs(item.data.endDate) : dayjs();
-  const dateRange = `${start.format("MMM YY")} - ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YY") : "Present"}`;
-
   const diffMonths = end.diff(start, "month") + 1;
   const years = Math.floor(diffMonths / 12);
   const months = diffMonths % 12;
-  const durationStr = [years > 0 ? `${years}y` : "", months > 0 ? `${months}m` : ""].filter(Boolean).join(" ");
+  const durationStr = [years > 0 ? `${years} yr` : "", months > 0 ? `${months} mo` : ""].filter(Boolean).join(" ");
 
   return {
-    label: "Timeline",
-    value: `${dateRange} (${durationStr})`,
+    label: "Duration",
+    type: "text",
+    value: durationStr || "Less than a month",
+  };
+};
+
+const getDateRangeToolbarItem = (item: CollectionItem<"experience">): TI => {
+  const start = dayjs(item.data.startDate);
+  const dateRange = `${start.format("MMM YYYY")} - ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YYYY") : "Present"}`;
+
+  return {
+    label: "Date",
+    type: "date",
+    value: dateRange,
   };
 };
 
 export const getExperienceProps = (item: CollectionItem<"experience">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
-  const toolbarItems = [author, getOrganizationToolbarItem(item), getTimelineToolbarItem(item)];
+  const toolbarItems = [
+    author,
+    getOrganizationToolbarItem(item),
+    getDateRangeToolbarItem(item),
+    getDurationToolbarItem(item),
+  ];
 
   return {
     backLink: {

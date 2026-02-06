@@ -1,7 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
-
 import { cn } from "../../lib/cn";
+import AppIcon from "./app-icon.astro";
 
 interface Props {
   caption?: string;
@@ -39,7 +38,7 @@ const { caption, class: className, id, showCloseButton = true } = Astro.props;
             class="close-modal-btn absolute top-4 right-4 cursor-pointer rounded-full p-1 text-muted-foreground transition-all duration-300 hover:scale-105 hover:bg-foreground/10 hover:text-foreground hover:shadow-lg focus:scale-105 focus:ring-2 focus:ring-foreground/20 focus:outline-none active:scale-95 active:shadow-md"
             type="button"
           >
-            <Icon class="size-5 transition-all duration-300 hover:scale-110 hover:rotate-90" name="mdi:close-thick" />
+            <AppIcon hover="scale" name="mdi:close-thick" size="lg" transition="default" />
           </button>
         )
       }

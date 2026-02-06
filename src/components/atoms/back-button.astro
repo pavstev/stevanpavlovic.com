@@ -1,10 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from "astro-icon/components";
-
 import type { PostLink } from "../../lib";
 
+import AppIcon from "./app-icon.astro";
 import Button from "./button.astro";
 
 interface Props extends HTMLAttributes<"a"> {
@@ -26,6 +25,6 @@ const { class: className, link, ...props } = Astro.props;
   {...props}
   type="button"
 >
-  <Icon class="mr-1.5 size-3.5 transition-transform group-hover:-translate-x-1" name="mdi:arrow-left" />
+  <AppIcon hover="move" name="mdi:arrow-left" size="sm" transition="default" />
   <span>{link.label}</span>
 </Button>

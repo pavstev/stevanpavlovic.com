@@ -17,7 +17,7 @@
   --color-secondary: hsl(0 0% 2%);
   --color-secondary-foreground: hsl(210 100% 85%);
 
-  --color-muted: hsl(0 0% 2%);
+  --color-muted: hsl(0 0% 3%);
   --color-muted-foreground: hsl(0 0% 60%);
 
   --color-accent: hsl(85 100% 55%);
@@ -251,7 +251,7 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in srgb, var(--color-border), white 10%);
+    background-color: color-mix(in srgb, var(--color-border), foreground 10%);
   }
 
   html {
@@ -371,7 +371,7 @@
     border-radius: 0.75rem !important;
     font-size: 1rem !important;
     padding: 0.75rem 1rem 0.75rem 3rem !important;
-    color: white !important;
+    color: foreground !important;
     font-weight: 500 !important;
     @apply focus:ring-1 focus:ring-foreground/20;
   }
@@ -472,7 +472,7 @@
     font-weight: 500;
     border-radius: 0.25rem;
     border: 1px solid var(--color-border);
-    white-space: nowrap;
+    foreground-space: nowrap;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;

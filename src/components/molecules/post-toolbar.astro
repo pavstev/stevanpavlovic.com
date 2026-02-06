@@ -1,6 +1,7 @@
 ---
-import { type Tag, type ToolbarItem, type ViewPagePropsTags } from "../../lib";
-import ToolbarItemComponent from "../atoms/toolbar-item.astro";
+import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib";
+import AppIcon from "../atoms/app-icon.astro";
+import ToolbarItem from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
 import PostDescription from "./post-description.astro";
 import PostTags from "./post-tags.astro";
@@ -8,7 +9,7 @@ import PostTags from "./post-tags.astro";
 interface Props {
   description?: string;
   tags: undefined | ViewPagePropsTags;
-  toolbarItems: (ToolbarItem | undefined)[];
+  toolbarItems: (ToolbarItemType | undefined)[];
 }
 
 const {
@@ -20,40 +21,60 @@ const {
   toolbarItems = [],
 } = Astro.props;
 
-const items = toolbarItems.filter((i): i is ToolbarItem => !!i);
+const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
 ---
 
-<div class="flex flex-col gap-4 border-t-2 border-foreground/30 bg-foreground/5 px-6 py-4">
-  {/* Top row: Items left, Tags/Description right */}
-  <div class="grid grow-0 grid-cols-1 items-start gap-4 md:grid-cols-2">
+<div
+  class="group/toolbar grid w-full grid-cols-1 gap-8 rounded-2xl border border-border/40 bg-background/40 p-6 backdrop-blur-md md:grid-cols-4"
+>
+  {/* Column 1: Description (Wider) */}
+  <div class="min-w-0 md:col-span-2">
     <PostDescription description={description} />
-    <div class="flex flex-col gap-1">
-      <div class="grid grid-cols-3">
-        {
-          items.map((item) => (
-            <ToolbarItemComponent label={item.label}>
+  </div>
+
+  {/* Column 2 & 3: Metadata (Author, Published, etc.) */}
+  <div class="flex min-w-0 flex-col gap-6 md:border-x md:border-border/40 md:px-8">
+    {
+      items.map((item) => (
+        <div class="flex items-center gap-4">
+          {item.logo && (
+            <ToolbarLogo
+              alt={item.value}
+              size="md"
+              src={item.logo}
+              type={item.type === "person" ? "person" : "organization"}
+            />
+          )}
+
+          <ToolbarItem className="min-w-0 flex-1" label={item.label}>
+            {item.href ? (
+              <a
+                class="group/link flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
+                href={item.href}
+                target="_blank"
+              >
+                <span class="truncate">{item.value}</span>
+                <AppIcon extraClasses="external-link-arrow" name="mdi:arrow-top-right" />
+              </a>
+            ) : (
               <div class="flex items-center gap-2">
-                {item.href ? (
-                  <a
-                    class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
-                    href={item.href}
-                    target="_blank"
-                  >
-                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                    <span>{item.value}</span>
-                  </a>
-                ) : (
-                  <div class="flex items-center gap-2.5">
-                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                    <span>{item.value}</span>
-                  </div>
+                <span class="text-sm font-semibold text-foreground">{item.value}</span>
+                {item.type === "status" && (
+                  <span class="relative flex size-2">
+                    <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span class="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                  </span>
                 )}
               </div>
-            </ToolbarItemComponent>
-          ))
-        }
-      </div>
-      <PostTags tags={tags.items} title={tags.title} />
-    </div>
+            )}
+          </ToolbarItem>
+        </div>
+      ))
+    }
+  </div>
+
+  {/* Column 4: Tags */}
+  <div class="min-w-0">
+    <PostTags tags={tags.items} title={tags.title} />
   </div>
 </div>

@@ -1,8 +1,7 @@
 ---
-import { Icon } from "astro-icon/components";
-
 import { VIEW_MODES } from "../../config";
 import { buildListUrl, type DisplayMode, type ViewUrls } from "../../lib";
+import AppIcon from "../atoms/app-icon.astro";
 import Button from "../atoms/button.astro";
 
 interface Props {
@@ -31,16 +30,9 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
           data-active={isActive}
           href={displayUrls ? buildUrl(displayUrls[mode]) : buildUrl(Astro.url.pathname, { view: mode })}
           size="sm"
-          variant={isActive ? "default" : "subtle"}
+          variant={isActive ? "primary" : "secondary"}
         >
-          <Icon
-            class:list={[
-              "shrink-0 transition-colors duration-300",
-              { "group-hover:text-accent": !isActive, "text-primary-foreground": isActive },
-            ]}
-            name={icon}
-            size={18}
-          />
+          <AppIcon hover={!isActive ? "color" : undefined} name={icon} size="md" />
           {showLabels && <span class="ml-2.5 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>}
         </Button>
       );

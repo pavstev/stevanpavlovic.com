@@ -1,9 +1,10 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from "astro-icon/components";
 import { type VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
+
+import AppIcon from "./app-icon.astro";
 
 const variants = cva(
   "inline-flex cursor-pointer items-center justify-center gap-2 font-medium ring-offset-background transition-all duration-300 ease-out select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
@@ -11,46 +12,30 @@ const variants = cva(
     compoundVariants: [
       {
         class: "h-auto rounded-none p-0",
-        size: ["default", "sm", "lg", "xl", "icon"],
-        variant: ["link", "primary", "muted", "back", "nav", "unstyled"],
+        size: ["default", "icon", "lg", "sm"],
+        variant: ["ghost", "link", "primary", "secondary"],
       },
     ],
     defaultVariants: {
       size: "default",
-      variant: "default",
+      variant: "primary",
     },
     variants: {
       size: {
         default: "h-10 rounded-xl px-5 py-2 text-sm",
         icon: "size-10 rounded-xl",
         lg: "h-12 rounded-2xl px-8 text-base",
-        none: "",
         sm: "h-9 rounded-lg px-4 text-xs",
-        xl: "h-14 rounded-2xl px-10 text-lg",
       },
       variant: {
-        accent:
-          "hover:shadow-glow-accent bg-accent text-accent-foreground shadow-sm hover:-translate-y-0.5 hover:bg-accent/90 active:scale-95",
-        back: "text-sm text-muted-foreground no-underline hover:text-foreground",
-        danger:
-          "hover:shadow-glow-danger bg-danger text-danger-foreground shadow-sm hover:-translate-y-0.5 hover:bg-danger/90 active:scale-95",
-        default:
-          "hover:shadow-glow-primary bg-primary text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:bg-primary/90 active:scale-95",
-        fab: "hover:shadow-glow-primary fixed right-6 bottom-6 z-50 size-12 rounded-full bg-primary text-primary-foreground shadow-lg hover:-translate-y-1 hover:bg-primary/90 active:scale-95",
         ghost: "text-muted-foreground hover:bg-foreground/5 hover:text-foreground active:scale-95",
-        glass:
-          "glass hover:shadow-glow-subtle border border-foreground/10 text-foreground hover:border-foreground/30 hover:bg-foreground/10 active:scale-95",
         link: "text-foreground underline-offset-4 hover:underline",
-        muted: "text-muted-foreground/80 no-underline hover:text-muted-foreground",
-        nav: "relative py-1 text-sm transition-colors duration-200",
         outline:
           "border border-foreground/15 bg-transparent shadow-sm hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground active:scale-95",
-        primary: "text-primary underline-offset-4 hover:underline",
+        primary:
+          "hover:shadow-glow-primary bg-primary text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:bg-primary/90 active:scale-95",
         secondary:
           "hover:shadow-glow-primary/10 bg-primary/10 text-primary shadow-sm hover:bg-primary/20 active:scale-95",
-        subtle: "bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:scale-95",
-        tabs: "relative h-9 rounded-lg px-4 text-sm transition-all hover:bg-muted/50 data-[active=true]:bg-background data-[active=true]:text-foreground data-[active=true]:shadow-sm",
-        unstyled: "",
       },
     },
   },
@@ -73,11 +58,11 @@ const rel = isExternal ? "noopener noreferrer" : undefined;
 
 const { pathname } = Astro.url;
 const isActive =
-  variant === "nav" && (hrefString === pathname || (hrefString !== "/" && pathname.startsWith(hrefString || "")));
+  variant === "ghost" && (hrefString === pathname || (hrefString !== "/" && pathname.startsWith(hrefString || "")));
 
 const navActiveClasses = isActive
   ? "text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-primary after:content-['']"
-  : "text-muted-foreground hover:text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-muted-foreground after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
+  : "relative py-1 text-sm transition-colors duration-200 text-muted-foreground hover:text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-muted-foreground after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
 
 const Tag = Element as any;
 const elementProps = {
@@ -93,26 +78,20 @@ if (Element === "button" && !elementProps.type) {
 ---
 
 <Tag
-  class:list={[
-    variants({ className, size, variant }),
-    variant === "nav" && navActiveClasses,
-    (icon || withArrow) && "group",
-  ]}
+  class:list={[variants({ className, size, variant }), isActive && navActiveClasses, (icon || withArrow) && "group"]}
   {...elementProps}
 >
   {
     icon && (
-      <Icon
-        class:list={["size-4", variant === "back" && "transition-transform group-hover:-translate-x-0.5"]}
+      <AppIcon
+        hover={variant === "ghost" ? "move" : undefined}
         name={icon}
+        size="md"
+        transition={variant === "ghost" ? "default" : undefined}
       />
     )
   }
   <slot />
-  {
-    withArrow && (
-      <Icon class="size-3.5 opacity-60 transition-transform group-hover:translate-x-0.5" name="mdi:arrow-top-right" />
-    )
-  }
+  {withArrow && <AppIcon hover="move" name="mdi:arrow-top-right" size="sm" tone="muted" transition="default" />}
   {isExternal && !withArrow && size !== "icon" && <span class="sr-only">(opens in new tab)</span>}
 </Tag>

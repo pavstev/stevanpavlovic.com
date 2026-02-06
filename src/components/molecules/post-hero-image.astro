@@ -12,7 +12,7 @@ const { image } = Astro.props;
 
 {
   image && (
-    <div class="relative mx-auto mb-12 aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border/50 bg-muted shadow-2xl shadow-primary/5 transition-all sm:rounded-3xl">
+    <div class="relative mx-auto mb-12 aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border/50 bg-muted shadow-2xl shadow-primary/5 transition-all sm:rounded-2xl">
       <ZoomableImage
         alt={image.src}
         class="size-full object-cover"
@@ -20,7 +20,7 @@ const { image } = Astro.props;
         src={image.src}
         width={image.width}
       />
-      <div class="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset sm:rounded-3xl" />
+      <div class="pointer-events-none absolute inset-0 ring-1 ring-foreground/10 ring-inset sm:rounded-2xl" />
     </div>
   )
 }

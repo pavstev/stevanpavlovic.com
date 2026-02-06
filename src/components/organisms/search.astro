@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import AppIcon from "../atoms/app-icon.astro";
 
 interface Props {
   variant?: "desktop" | "mobile";
@@ -12,10 +12,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
 <div class="search-dropdown-container relative" data-search-variant={variant} id={`${id}-container`}>
   {/* Search Input */}
   <div class="group/search relative flex items-center transition-all duration-300">
-    <Icon
-      class="absolute left-3 size-5 text-muted-foreground transition-colors group-focus-within/search:text-primary md:size-4"
-      name="mdi:magnify"
-    />
+    <AppIcon act="focus" name="mdi:magnify" size="lg" tone="command" transition="colors" />
     <input
       aria-controls={`${id}-dropdown`}
       autocomplete="off"
@@ -31,7 +28,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
         id={`${id}-clear`}
         type="button"
       >
-        <Icon class="size-3" name="mdi:close" />
+        <AppIcon name="mdi:close" size="sm" />
       </button>
       <div class="mx-2 h-4 w-px bg-foreground/10"></div>
       <kbd
@@ -62,15 +59,15 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
         class="flex flex-wrap items-center gap-2 border-t border-foreground/5 bg-foreground/5 px-4 py-2 text-xs font-medium text-muted-foreground md:text-[10px]"
       >
         <span class="flex items-center gap-1">
-          <kbd class="rounded-sm bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd>
+          <kbd class="rounded-lg bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd>
           close
         </span>
         <span class="flex items-center gap-1">
-          <kbd class="rounded-sm bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd>
+          <kbd class="rounded-lg bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">↑↓</kbd>
           navigate
         </span>
         <span class="flex items-center gap-1">
-          <kbd class="rounded-sm bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd>
+          <kbd class="rounded-lg bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">↵</kbd>
           select
         </span>
       </div>

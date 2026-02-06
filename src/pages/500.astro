@@ -32,11 +32,14 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
 
     <Container class="relative z-10 flex flex-col items-center justify-center p-8 sm:p-12">
       <div
-        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-3xl border border-danger/20 p-8 text-center shadow-2xl shadow-danger/10 sm:p-12"
+        class="glass-strong flex max-w-2xl flex-col items-center gap-8 rounded-2xl border border-danger/20 p-8 text-center shadow-2xl shadow-danger/10 sm:p-12"
       >
         {/* Error Code */}
         <div class="relative">
-          <Heading class="text-9xl font-black tracking-tighter opacity-90 sm:text-[12rem]" variant="gradient-danger">
+          <Heading
+            class="text-9xl font-black tracking-tighter text-danger opacity-90 sm:text-[12rem]"
+            variant="gradient"
+          >
             500
           </Heading>
           <div class="shadow-glow-danger absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
@@ -44,7 +47,7 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
 
         {/* Text Content */}
         <div class="flex flex-col items-center gap-4">
-          <Heading class="tracking-widest uppercase" level={2} size="h4" variant="danger"> System Malfunction </Heading>
+          <Heading class="tracking-widest text-danger capitalize" level={2} size="md"> System Malfunction </Heading>
 
           <Text class="max-w-md text-balance" size="lg" variant="muted">
             The server successfully processed 0% of your request. An anomaly has been detected in the core logic.
@@ -63,11 +66,11 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
             href="/"
             icon="mdi:home-lightning-bolt-outline"
             size="lg"
-            variant="danger"
+            variant="primary"
           >
             Return to Base
           </Button>
-          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:restart" size="lg" variant="glass">
+          <Button as="a" class="w-full sm:w-auto" href="/" icon="mdi:restart" size="lg" variant="outline">
             Retry Sequence
           </Button>
         </div>

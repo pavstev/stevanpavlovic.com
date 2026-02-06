@@ -15,7 +15,7 @@ interface Props extends HTMLAttributes<"div"> {
 const { alt = "", class: className, image, loading = "lazy", wrapperClass, ...rest } = Astro.props;
 ---
 
-<div class:list={["relative overflow-hidden rounded-lg border border-border/50 bg-muted", wrapperClass]} {...rest}>
+<div class:list={["relative overflow-hidden rounded-xl border border-border/50 bg-muted", wrapperClass]} {...rest}>
   {
     typeof image === "string" ? (
       <img

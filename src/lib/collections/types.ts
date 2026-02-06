@@ -16,12 +16,11 @@ export const collections: CollectionName[] = Object.keys(baseCollections).filter
 ) as CollectionName[];
 
 export interface CollectionItem<CN extends CollectionName> {
+  body?: string;
   collection: CN;
   data: CollectionEntry<CN>["data"];
   id: string;
 }
-
-export type DisplayMode = "grid" | "list";
 
 export type Nullable<T> = null | T | undefined;
 

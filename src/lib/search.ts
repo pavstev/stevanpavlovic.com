@@ -93,7 +93,7 @@ const initSingleSearch = (
       const data = await result.data();
       const item = document.createElement("li");
       item.innerHTML = `
-            <a href="${data.url.replace(/\/$/, "")}" class="group flex flex-col gap-1 rounded-lg p-2 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none">
+            <a href="${data.url.replace(/\/$/, "")}" class="group flex flex-col gap-1 rounded-xl p-2 transition-colors hover:bg-foreground/5 focus:bg-foreground/5 focus:outline-none">
                 <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                     ${data.meta.title}
                 </span>

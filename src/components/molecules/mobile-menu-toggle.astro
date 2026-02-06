@@ -1,8 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { Icon } from "astro-icon/components";
-
+import AppIcon from "../atoms/app-icon.astro";
 import Button from "../atoms/button.astro";
 
 interface Props extends HTMLAttributes<"button"> {
@@ -34,22 +33,6 @@ const sizeClasses = {
   variant="ghost"
   {...props}
 >
-  <Icon
-    class:list={[
-      "transition-all duration-200 ease-out",
-      "group-[.open]/toggle:rotate-90 group-[.open]/toggle:opacity-0",
-      "group-hover/toggle:scale-105",
-    ]}
-    name="mdi:menu"
-    size={20}
-  />
-  <Icon
-    class:list={[
-      "absolute transition-all duration-200 ease-out",
-      "rotate-90 opacity-0",
-      "group-[.open]/toggle:rotate-0 group-[.open]/toggle:opacity-100",
-    ]}
-    name="mdi:close"
-    size={20}
-  />
+  <AppIcon extraClasses="mobile-menu-open" name="mdi:menu" size="lg" transition="default" />
+  <AppIcon extraClasses="mobile-menu-close" name="mdi:close" size="lg" transition="default" />
 </Button>

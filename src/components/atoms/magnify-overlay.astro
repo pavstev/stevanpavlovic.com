@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import AppIcon from "./app-icon.astro";
 ---
 
 <div
@@ -12,7 +12,7 @@ import { Icon } from "astro-icon/components";
     <div
       class="flex items-center gap-2 rounded-full bg-accent/95 px-4 py-2.5 shadow-[0_8px_24px_rgba(var(--color-accent-rgb),0.4)] backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_32px_rgba(var(--color-accent-rgb),0.6)]"
     >
-      <Icon class="size-5 text-accent-foreground" name="mdi:magnify-plus-outline" />
+      <AppIcon name="mdi:magnify-plus-outline" size="lg" tone="accent" />
       <span class="text-sm font-semibold text-accent-foreground">Enlarge</span>
     </div>
   </div>

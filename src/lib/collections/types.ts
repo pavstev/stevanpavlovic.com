@@ -39,10 +39,12 @@ export interface ViewPageProps {
   description: string | undefined;
   image?: ImageMetadata;
   subtitle: string | undefined;
-  tags: {
-    items: Tag[];
-    title: string | undefined;
-  };
+  tags: ViewPagePropsTags;
   title: string;
   toolbarItems: ToolbarItem[];
+}
+
+export interface ViewPagePropsTags {
+  items: Tag[];
+  title: string | undefined;
 }

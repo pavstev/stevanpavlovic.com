@@ -2,49 +2,21 @@
 import type { Tag } from "../../lib/collections";
 
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
+import Tags from "./tags.astro";
 
 interface Props {
   heading: string;
-  tags: Tag[];
-  variant?: "default" | "elevated" | "subtle";
+  items: Tag[];
 }
 
-const { heading, tags, variant = "default" } = Astro.props;
+const { heading, items: tags } = Astro.props;
 ---
 
 {
   tags && tags.length > 0 && (
-    <div
-      class:list={[
-        `group relative overflow-hidden rounded-2xl border border-foreground/5 bg-linear-to-br from-background/30 to-transparent p-2 shadow-sm backdrop-blur-sm transition-all duration-500 hover:border-foreground/10 hover:shadow-md`,
-        { "border-foreground/10 bg-foreground/5": variant === "subtle", "shadow-lg": variant === "elevated" },
-      ]}
-    >
-      {/* Subtle gradient overlay */}
-      <div class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-      {/* Content */}
-      <div class="relative flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <h6
-            class:list={[
-              `mb-2 font-medium`,
-              { "text-foreground": variant === "subtle", "text-muted": variant !== "subtle" },
-            ]}
-          >
-            {heading}
-          </h6>
-          <slot name="action" />
-        </div>
-        <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-          {tags.map((tag) => (
-            <ToolbarItemComponent>
-              <span slot="label">{tag.id}</span>
-              <span>{tag.label}</span>
-            </ToolbarItemComponent>
-          ))}
-        </div>
-      </div>
-    </div>
+    <ToolbarItemComponent>
+      <span slot="label">{heading}</span>
+      <Tags tags={tags} />
+    </ToolbarItemComponent>
   )
 }

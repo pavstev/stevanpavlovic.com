@@ -1,14 +1,14 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "./types";
+import type { CollectionItem, ToolbarItem as TI, ViewPageProps } from "./types";
 
 import { PROFILE } from "../config";
 import { createAuthorItem } from "./toolbar-items";
 
 dayjs.extend(duration);
 
-const getOrganizationToolbarItem = (item: CollectionItem<"experience">): ToolbarItem | undefined => {
+const getOrganizationToolbarItem = (item: CollectionItem<"experience">): TI | undefined => {
   if (!item.data.company) return undefined;
 
   return typeof item.data.company !== "string"
@@ -24,7 +24,7 @@ const getOrganizationToolbarItem = (item: CollectionItem<"experience">): Toolbar
       };
 };
 
-const getTimelineToolbarItem = (item: CollectionItem<"experience">): ToolbarItem => {
+const getTimelineToolbarItem = (item: CollectionItem<"experience">): TI => {
   const start = dayjs(item.data.startDate);
   const end = item.data.endDate ? dayjs(item.data.endDate) : dayjs();
   const dateRange = `${start.format("MMM YYYY")} — ${item.data.endDate ? dayjs(item.data.endDate).format("MMM YYYY") : "Present"}`;
@@ -42,14 +42,11 @@ const getTimelineToolbarItem = (item: CollectionItem<"experience">): ToolbarItem
 
 export const getExperienceProps = (item: CollectionItem<"experience">): ViewPageProps => {
   const author = createAuthorItem(PROFILE);
-  const toolbarItems: ToolbarItem[] = [author];
-
-  const orgItem = getOrganizationToolbarItem(item);
-  if (orgItem) toolbarItems.push(orgItem);
-  toolbarItems.push(getTimelineToolbarItem(item));
+  const toolbarItems: TI[] = [author, getOrganizationToolbarItem(item), getTimelineToolbarItem(item)].filter(
+    (i): i is TI => !!i,
+  );
 
   return {
-    author,
     backLink: {
       href: "/experience",
       label: "Back to Experience",

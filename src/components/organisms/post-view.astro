@@ -4,7 +4,6 @@ import type { CollectionEntry } from "astro:content";
 import { type CollectionItem, type CollectionName, getViewPageProps } from "../../lib/collection-pages";
 import Heading from "../atoms/heading.astro";
 import Stack from "../atoms/stack.astro";
-import BodyText from "../atoms/text.astro";
 import LayoutContent from "../layout/layout-content.astro";
 import PostHeroImage from "../molecules/post-hero-image.astro";
 import PostToolbar from "../molecules/post-toolbar.astro";
@@ -26,7 +25,9 @@ const item: CollectionItem<CollectionName> = {
   id,
 };
 
-const { author, backLink: defaultBackLink, description, image, tags, title, toolbarItems } = getViewPageProps(item);
+const viewPageProps = getViewPageProps(item);
+
+const { author, backLink: defaultBackLink, description, image, tags, title, toolbarItems } = viewPageProps;
 
 const backLink = Astro.props.backLink ? { ...defaultBackLink, href: Astro.props.backLink } : defaultBackLink;
 ---
@@ -41,22 +42,13 @@ const backLink = Astro.props.backLink ? { ...defaultBackLink, href: Astro.props.
 
       <PostToolbar
         author={author}
-        backLink={backLink.href}
+        backLink={backLink}
         collection={collection}
         data={data}
+        description={description}
         items={toolbarItems}
-        tags={tags.items}
-        tagsTitle={tags.title}
+        tags={tags}
       />
-
-      <!-- Description -->
-      {
-        description && (
-          <BodyText class="max-w-3xl text-lg leading-relaxed sm:text-xl" variant="muted">
-            {description}
-          </BodyText>
-        )
-      }
     </Stack>
   </div>
 

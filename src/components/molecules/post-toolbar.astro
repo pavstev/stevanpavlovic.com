@@ -2,75 +2,69 @@
 import type { ImageMetadata } from "astro";
 import type { CollectionEntry } from "astro:content";
 
-import { type CollectionName, type Tag, type ToolbarItem } from "../../lib/collection-pages";
+import { type CollectionName, type PostLink, type ToolbarItem, type ViewPagePropsTags } from "../../lib/collection-pages";
 import BackButton from "../atoms/back-button.astro";
 import ToolbarItemComponent from "../atoms/toolbar-item.astro";
 import ToolbarLogo from "../atoms/toolbar-logo.astro";
 import PostActions from "./post-actions.astro";
-import TagItem from "./tag-item.astro";
+import PostDescription from "./post-description.astro";
+import PostTags from "./post-tags.astro";
 
 interface Props {
   author?: { avatar: ImageMetadata; name: string; role: string };
-  backLink: string;
+  backLink: PostLink;
   collection: CollectionName;
   data: CollectionEntry<CollectionName>["data"];
+  description?: string;
   items: ToolbarItem[];
-  tags?: Tag[];
+  tags?: ViewPagePropsTags;
   tagsTitle?: string;
 }
 
-const { backLink, collection, data, items = [], tags = [] } = Astro.props;
+const { backLink, collection, data, description, items = [], tags = {
+  items: [],
+} } = Astro.props;
 ---
 
-<div class="my-6 flex flex-col gap-5 border-t border-b border-foreground/10 py-4">
-  <div class="flex flex-wrap items-center justify-between gap-6">
-    <div class="flex flex-wrap items-center gap-8 sm:gap-12">
-      <div class="scale-90 sm:scale-100">
-        <BackButton collection={collection} href={backLink}> Back </BackButton>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
-        {
-          items.map((item) => (
-            <ToolbarItemComponent>
-              <span slot="label">{item.label}</span>
-              <div class="flex items-center gap-2">
-                {item.href ? (
-                  <a
-                    class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
-                    href={item.href}
-                    target="_blank"
-                  >
-                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                    <span>{item.value}</span>
-                  </a>
-                ) : (
-                  <div class="flex items-center gap-2.5">
-                    {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
-                    <span>{item.value}</span>
-                  </div>
-                )}
-              </div>
-            </ToolbarItemComponent>
-          ))
-        }
-      </div>
+<div class="my-6 flex flex-col gap-3 border-t border-b border-foreground/10 py-4">
+  {/* Top row: Items left, BackButton right */}
+  <div class="flex flex-wrap items-start justify-between gap-4">
+    <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
+      {
+        items.map((item) => (
+          <ToolbarItemComponent>
+            <span slot="label">{item.label}</span>
+            <div class="flex items-center gap-2">
+              {item.href ? (
+                <a
+                  class="flex items-center gap-2.5 transition-colors outline-none hover:text-primary focus-visible:text-primary"
+                  href={item.href}
+                  target="_blank"
+                >
+                  {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                  <span>{item.value}</span>
+                </a>
+              ) : (
+                <div class="flex items-center gap-2.5">
+                  {item.logo && <ToolbarLogo alt={item.value} size="md" src={item.logo} />}
+                  <span>{item.value}</span>
+                </div>
+              )}
+            </div>
+          </ToolbarItemComponent>
+        ))
+      }
     </div>
 
-    <div class="flex items-center gap-6 sm:gap-10">
+    <div class="flex items-center gap-4">
       <PostActions collection={collection} data={data} />
+      <div class="scale-90 sm:scale-100">
+        <BackButton collection={collection} link={backLink} />
+      </div>
     </div>
   </div>
 
-  {
-    tags && tags.length > 0 && (
-      <div class="mt-1 border-t border-foreground/10 pt-3">
-        <div class="flex flex-wrap items-center gap-x-10 gap-y-4">
-          {tags.map((tag) => (
-            <TagItem id={tag.id} label={tag.label} />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  {description && <PostDescription description={description} />}
+
+  {tags.items.length > 0 && <PostTags {...tags} />}
 </div>

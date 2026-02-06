@@ -1,8 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "../../lib/cn";
 
 const badgeVariants = cva(
@@ -17,6 +15,7 @@ const badgeVariants = cva(
         cyber: "neon-border bg-card/80 px-2.5 py-0.5 text-foreground",
         default: "border-border/50 bg-foreground/5 text-muted-foreground hover:border-primary/30",
         primary: "shadow-glow-primary border-primary/40 bg-primary/10 text-primary",
+        outline: "border-border bg-transparent text-foreground hover:bg-foreground/5",
       },
     },
   },

@@ -1,5 +1,5 @@
 ---
-import { cn } from "../lib/cn";
+import { cn } from "../../lib/cn";
 
 interface Props {
   angle?: number;
@@ -36,7 +36,7 @@ const {
 </div>
 
 <script>
-  import { initMeteors } from "../lib/meteor";
+  import { initMeteors } from "../../lib/meteor";
   initMeteors();
   document.addEventListener("astro:page-load", initMeteors);
 </script>

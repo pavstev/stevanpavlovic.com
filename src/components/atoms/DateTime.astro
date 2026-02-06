@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "../../lib/cn";
+
+interface Props extends HTMLAttributes<"time"> {
+  date: Date;
+}
+
+const { class: className, date, ...props } = Astro.props;
+---
+
+<time class={cn("tabular-nums", className)} datetime={date.toISOString()} {...props}>
+  <slot>{date.toLocaleDateString()}</slot>
+</time>

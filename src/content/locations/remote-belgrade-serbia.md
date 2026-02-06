@@ -8,21 +8,9 @@ timezone: CET
 remote: true
 remoteType: Fully Remote
 description: Fully remote work arrangement from Belgrade, Serbia
-companies:
-  - reference("evermed")
-  - reference("apoddo")
-  - reference("pannovate")
-  - reference("creitive")
-  - reference("quantox")
-  - reference("safety-real-time")
-projects: []
-experience:
-  - reference("evermed")
-  - reference("apoddo")
-  - reference("pannovate")
-  - reference("creitive")
-  - reference("quantox")
-  - reference("safety-real-time")
+countryCode: RS
+flag: 🇷🇸
+gallery: []
 ---
 
 Fully remote work arrangement from Belgrade, Serbia. This location represents the remote work model where all work is performed remotely without any in-person office presence.

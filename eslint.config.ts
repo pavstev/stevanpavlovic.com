@@ -5,23 +5,22 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginAstro from "eslint-plugin-astro";
 import tailwind from "eslint-plugin-better-tailwindcss";
 import checkFile from "eslint-plugin-check-file";
-// @ts-expect-error - No types for this plugin
+// @ts-expect-error No types for this
 import editorconfig from "eslint-plugin-editorconfig";
 import eslintPluginJsonSchemaValidator from "eslint-plugin-json-schema-validator";
-// @ts-expect-error - No types for this plugin
+// @ts-expect-error No types for this
 import jsxA11y from "eslint-plugin-jsx-a11y";
-// @ts-expect-error - No types for this plugin
+// @ts-expect-error No types for this
 import markdownlintPlugin from "eslint-plugin-markdownlint";
-// @ts-expect-error - No types for this plugin
+// @ts-expect-error No types for this
 import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
 import * as mdx from "eslint-plugin-mdx";
 import perfectionist from "eslint-plugin-perfectionist";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
+import * as fs from "node:fs";
 import tseslint from "typescript-eslint";
-
-// --- Constants & Groups ---
 
 const TS_FILES = ["**/*.ts", "**/*.tsx"];
 const ASTRO_FILES = ["**/*.astro"];
@@ -58,16 +57,33 @@ const STYLISTIC_OPTIONS = {
   severity: "error",
 } as const;
 
-// --- Config ---
+const CONTENT_DIR = "src/content";
+const ASTRO_COLLECTIONS_DIR = ".astro/collections";
+let _remarkSchemas: Record<string, string[]> = {};
+
+try {
+  if (fs.existsSync(CONTENT_DIR)) {
+    const collections = fs
+      .readdirSync(CONTENT_DIR, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+
+    _remarkSchemas = collections.reduce<Record<string, string[]>>((acc, collection) => {
+      const schemaPath = `${ASTRO_COLLECTIONS_DIR}/${collection}.schema.json`;
+      acc[schemaPath] = [`${CONTENT_DIR}/${collection}/**/*.{md,mdx}`];
+      return acc;
+    }, {});
+  }
+} catch (error) {
+  console.warn("⚠️ ESLint: Could not generate dynamic content schemas:", error);
+}
 
 export default defineConfig(
   globalIgnores(GLOBAL_IGNORES),
 
-  // Base Configs
   comments.recommended,
   {
     ...eslint.configs.recommended,
-    // Explicitly ignore markdown in base JS config to prevent parsing errors
     ignores: [...MARKDOWN_FILES, ...MDX_FILES],
     name: "eslint/recommended",
   },
@@ -77,20 +93,16 @@ export default defineConfig(
     name: "perfectionist",
   },
 
-  // TypeScript (Strict)
   ...tseslint.configs.strictTypeChecked.map((config) => ({
     ...config,
     files: TS_FILES,
   })),
 
-  // Astro
   ...eslintPluginAstro.configs.recommended.map((config) => ({
     ...config,
-    // Prevent Astro parser from processing plain TS/JSON/MD
     ignores: ["**/*.ts", "**/*.tsx", ...MARKDOWN_FILES, ...JSON_FILES],
   })),
 
-  // Tailwind
   {
     files: FRONTEND_FILES,
     name: "tailwindcss",
@@ -114,7 +126,6 @@ export default defineConfig(
     },
   },
 
-  // JSX A11y
   {
     files: FRONTEND_FILES,
     name: "jsx-a11y",
@@ -124,7 +135,6 @@ export default defineConfig(
     rules: jsxA11y.flatConfigs.recommended.rules,
   },
 
-  // EditorConfig (Consolidated)
   {
     files: CODE_FILES,
     name: "editorconfig",
@@ -140,7 +150,6 @@ export default defineConfig(
     },
   },
 
-  // Stylistic
   {
     files: TS_FILES,
     name: "stylistic",
@@ -149,11 +158,9 @@ export default defineConfig(
     },
     rules: {
       ...stylistic.configs.customize(STYLISTIC_OPTIONS).rules,
-      "@stylistic/indent": "off", // Handled by editorconfig
     },
   },
 
-  // TypeScript Rules & Overrides
   {
     files: TS_FILES,
     languageOptions: {
@@ -204,7 +211,6 @@ export default defineConfig(
     },
   },
 
-  // Astro Specifics
   {
     files: ASTRO_FILES,
     name: "astro/overrides",
@@ -222,7 +228,6 @@ export default defineConfig(
     },
   },
 
-  // Components (Naming)
   {
     files: ["src/components/**/*.astro"],
     name: "components/naming",
@@ -239,10 +244,7 @@ export default defineConfig(
     },
   },
 
-  // Scripts (Loose Typing)
   {
-    // CAUTION: Changed from "**/*.ts" to specific script folders.
-    // Targeting "**/*.ts" here would disable strict type checking for your ENTIRE project.
     files: ["scripts/**/*.ts", "**/*.config.ts"],
     name: "scripts/overrides",
     rules: {
@@ -258,7 +260,6 @@ export default defineConfig(
     },
   },
 
-  // Markdown (Linting)
   {
     files: MARKDOWN_FILES,
     languageOptions: {
@@ -269,10 +270,9 @@ export default defineConfig(
     },
     rules: {
       ...markdownlintPlugin.configs.recommended.rules,
-      "markdownlint/md013": "off", // Line length
-      "markdownlint/md041": "off", // First line H1
     },
   },
+
   {
     files: ["src/content/**/*.{md,mdx}"],
     ...mdx.flat,
@@ -284,23 +284,12 @@ export default defineConfig(
       "mdx/remark": [
         "error",
         {
-          plugins: [
-            [
-              "remark-lint-frontmatter-schema",
-              {
-                schemas: {
-                  "src/schemas/blog.json": ["src/content/blog/**/*.{md,mdx}"],
-                  "src/schemas/docs.json": ["src/content/docs/**/*.{md,mdx}"],
-                },
-              },
-            ],
-          ],
+          plugins: [["remark-lint-frontmatter-schema", {}]],
         },
       ],
     },
   },
 
-  // JSON Schema
   ...eslintPluginJsonSchemaValidator.configs.recommended.map((config) => ({
     ...config,
     files: JSON_FILES,
@@ -310,7 +299,6 @@ export default defineConfig(
     },
   })),
 
-  // Prettier (Must be last)
   {
     files: ALL_FILES,
     name: "prettier",

@@ -7,6 +7,13 @@ industry: Logistics Technology / IoT
 founded: 2020
 size: Startup
 type: Full-time
+socialLinks:
+  - type: Website
+    handle: safetyrealtime.com
+    name: Safety Real Time
+  - type: LinkedIn
+    handle: safetyrealtime
+    name: Safety Real Time LinkedIn
 notableProjects:
   - Real-Time Fleet Telemetry
   - IoT Data Processing

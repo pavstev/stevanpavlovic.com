@@ -7,6 +7,13 @@ industry: Digital Agency / Web Development
 founded: 2010
 size: Mid-size
 type: Full-time
+socialLinks:
+  - type: Website
+    handle: creitive.com
+    name: CreITive
+  - type: LinkedIn
+    handle: creitive
+    name: CreITive LinkedIn
 notableProjects:
   - Custom E-commerce Solutions
   - WordPress/WooCommerce Development

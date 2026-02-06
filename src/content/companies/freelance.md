@@ -7,6 +7,13 @@ industry: Software Development / Consulting
 founded: 2015
 size: Solo
 type: Freelance
+socialLinks:
+  - type: LinkedIn
+    handle: freelance
+    name: Freelance LinkedIn
+  - type: GitHub
+    handle: freelance
+    name: Freelance GitHub
 notableProjects:
   - Custom CMS Development
   - AJAX/PHP Web Applications

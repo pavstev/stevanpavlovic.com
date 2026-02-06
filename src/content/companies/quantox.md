@@ -7,6 +7,13 @@ industry: Software Development / Technology
 founded: 2005
 size: Mid-size
 type: Full-time
+socialLinks:
+  - type: Website
+    handle: quantox.com
+    name: Quantox
+  - type: LinkedIn
+    handle: quantox
+    name: Quantox LinkedIn
 notableProjects:
   - AskGamblers Modernization
   - Legacy System Refactoring

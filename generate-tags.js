@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 // Target directory for categories
-const OUT_DIR = join(import.meta.__dirname, "src/content/categories");
+const OUT_DIR = join(process.cwd(), "src/content/categories");
 
 // Input Categories
 const categories = [

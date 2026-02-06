@@ -20,9 +20,70 @@ const collectionResults = await Promise.all(
 /**
  * Helper to calculate reading time based on word count.
  */
-const getReadingTime = (body?: string) => {
+const getReadingTime = (body?: string): string => {
   const wordCount = body ? body.split(/\s+/).length : 0;
   return `${Math.ceil(wordCount / 200)} min read`;
+};
+
+/**
+ * Interface for collection entry data with common fields
+ */
+interface EntryData {
+  description?: string;
+  firstName?: string;
+  industry?: string;
+  lastName?: string;
+  name?: string;
+  pubDate?: Date | number | string;
+  role?: string;
+  size?: string;
+  subtitle?: string;
+  title?: string;
+}
+
+/**
+ * Get metadata for a collection entry based on collection type.
+ * Uses early returns instead of else-if chains.
+ */
+const getMeta = (collection: string, data: EntryData, body?: string): string => {
+  if (collection === "blog") {
+    const dateStr = data.pubDate ? dayjs(data.pubDate).format("MMM D, YYYY") : "";
+    return `${dateStr}${dateStr ? " • " : ""}${getReadingTime(body)}`;
+  }
+
+  if (collection === "projects") {
+    return data.subtitle || "Featured Project";
+  }
+
+  if (collection === "experience") {
+    return `${data.role || "Role"} • Professional Experience`;
+  }
+
+  if (collection === "people") {
+    return data.title || "Technical Specialist";
+  }
+
+  if (collection === "recommendations") {
+    return "Professional Endorsement";
+  }
+
+  if (collection === "companies") {
+    return `${data.industry || "Technology"} • ${data.size || "Enterprise"}`;
+  }
+
+  return "Portfolio Item";
+};
+
+/**
+ * Get title from entry data with fallback logic.
+ */
+const getTitle = (data: EntryData): string => {
+  if (data.title) return data.title;
+  if (data.name) return data.name;
+  if (data.firstName && data.lastName) {
+    return `${data.firstName} ${data.lastName}`;
+  }
+  return "Untitled Content";
 };
 
 /**
@@ -30,44 +91,25 @@ const getReadingTime = (body?: string) => {
  * Keys are prefixed with the collection name to create unique, logical URLs.
  */
 const pages = Object.fromEntries(
-  collectionResults.flatMap(({ collection, entries }) =>
-    entries.map((entry) => {
-      let meta = "Portfolio Item";
-      const data = entry.data as any;
+  collectionResults.flatMap(
+    ({ collection, entries }) =>
+      entries.map((entry) => {
+        const data = entry.data as EntryData;
+        const meta = getMeta(collection, data, entry.body);
+        const title = getTitle(data);
 
-      // Extract high-value metadata per collection
-      if (collection === "blog") {
-        // Use dayjs for consistent and clean date formatting
-        const dateStr = data.pubDate ? dayjs(data.pubDate).format("MMM D, YYYY") : "";
-        meta = `${dateStr}${dateStr ? " • " : ""}${getReadingTime(entry.body)}`;
-      } else if (collection === "projects") {
-        meta = data.subtitle || "Featured Project";
-      } else if (collection === "experience") {
-        meta = `${data.role} • Professional Experience`;
-      } else if (collection === "people") {
-        meta = data.title || "Technical Specialist";
-      } else if (collection === "recommendations") {
-        meta = `Professional Endorsement`;
-      } else if (collection === "companies") {
-        meta = `${data.industry || "Technology"} • ${data.size || "Enterprise"}`;
-      }
-
-      // Robust title fallback logic
-      const title =
-        data.title ||
-        data.name ||
-        (data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : "Untitled Content");
-
-      return [
-        `${collection}/${entry.id}`,
-        {
-          collection,
-          description: data.description || "",
-          meta,
-          title,
-        },
-      ];
-    }),),
+        return [
+          `${collection}/${entry.id}`,
+          {
+            collection,
+            description: data.description || "",
+            meta,
+            title,
+          },
+        ];
+      }),
+    // eslint-disable-next-line @stylistic/exp-list-style -- Conflicting formatting rules
+  ),
 );
 
 /**
@@ -128,6 +170,7 @@ export const { GET, getStaticPaths } = await OGImageRoute({
     };
   },
   getSlug: (path, _page) => {
+    // eslint-disable-next-line no-console -- Debugging OG image generation
     console.log(path, _page.meta);
     return path;
   },

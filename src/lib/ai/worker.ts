@@ -61,7 +61,7 @@ type WorkerStatus = "error" | "generating" | "idle" | "loading" | "ready";
 class RAGPipeline {
   private static instance: RAGPipeline;
   private context: DocumentChunk[] = [];
-  private embedder: PipelineFunction | null = null;
+  private embedder: null | PipelineFunction = null;
   private embeddings: number[][] = [];
   private generator: GenerationFunction | null = null;
 
@@ -198,18 +198,18 @@ class RAGPipeline {
 // 4. Worker Event Listener
 const rag = RAGPipeline.getInstance();
 
-self.addEventListener("message", async (e: MessageEvent<WorkerMessage>): Promise<void> => {
+self.addEventListener("message", (e: MessageEvent<WorkerMessage>): void => {
   const { text, type } = e.data;
 
   if (type === "init") {
-    await rag.initialize((msg) => {
+    void rag.initialize((msg) => {
       self.postMessage(msg);
     });
     return;
   }
 
   if (type === "query" && text) {
-    await rag.query(text, (msg) => {
+    void rag.query(text, (msg) => {
       self.postMessage(msg);
     });
     return;

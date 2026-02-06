@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Icon } from 'astro-icon/components';
 
 const profile = {
   email: "hello@stevan.dev",
@@ -205,8 +205,7 @@ const education = [
       margin: 0;
       size: auto;
     }
-    /* eslint-disable-next-line astro/no-unused-css-selector -- Used for print background */
-    body {
+    :global(body) {
       background: white;
     }
     /* Force background colors/graphics to print */

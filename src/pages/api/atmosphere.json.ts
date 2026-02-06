@@ -36,10 +36,19 @@ export const GET: APIRoute = async () => {
     // Index 1: is_day
     // Index 2: weather_code
     // Index 3: precipitation
-    const temperature = current.variables(0)!.value();
-    const isDayVal = current.variables(1)!.value();
-    const weatherCode = current.variables(2)!.value();
-    const precipitation = current.variables(3)!.value();
+    const tempVar = current.variables(0);
+    const isDayVar = current.variables(1);
+    const weatherCodeVar = current.variables(2);
+    const precipVar = current.variables(3);
+
+    if (!tempVar || !isDayVar || !weatherCodeVar || !precipVar) {
+      throw new Error("Missing weather variable data");
+    }
+
+    const temperature = tempVar.value();
+    const isDayVal = isDayVar.value();
+    const weatherCode = weatherCodeVar.value();
+    const precipitation = precipVar.value();
 
     // 5. Logic for local time and status (kept from your original code)
     const belgradeTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" });

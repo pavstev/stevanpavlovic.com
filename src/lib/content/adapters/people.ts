@@ -5,7 +5,7 @@ import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 import { type CardResult, ContentAdapter } from "../adapter";
 
 export class PeopleAdapter extends ContentAdapter<"people"> {
-  getCardData(item: CollectionItem<"people">): CardResult | Promise<CardResult> {
+  public getCardData(item: CollectionItem<"people">): CardResult {
     return {
       actionLabel: "View Profile",
       data: {
@@ -18,7 +18,7 @@ export class PeopleAdapter extends ContentAdapter<"people"> {
     };
   }
 
-  async getToolbarItems(item: CollectionItem<"people">): Promise<ToolbarItem[]> {
+  public async getToolbarItems(item: CollectionItem<"people">): Promise<ToolbarItem[]> {
     const items: ToolbarItem[] = [];
 
     if (item.data.location) {
@@ -38,7 +38,7 @@ export class PeopleAdapter extends ContentAdapter<"people"> {
     return items;
   }
 
-  getViewProps(item: CollectionItem<"people">): Partial<ViewPageProps<"people">> {
+  public getViewProps(item: CollectionItem<"people">): Partial<ViewPageProps<"people">> {
     return {
       description: item.data.description,
       image: item.data.avatar,

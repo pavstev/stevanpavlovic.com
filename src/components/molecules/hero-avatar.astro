@@ -77,7 +77,9 @@ const triggerId = `avatar-trigger-${uniqueId}`;
 <script define:vars={{ modalId, triggerId }} is:inline>
   // @ts-ignore
   function initHeroAvatar() {
+    // @ts-ignore
     const trigger = document.getElementById(triggerId);
+    // @ts-ignore
     const dialog = document.getElementById(modalId);
 
     if (!trigger || !dialog) return;

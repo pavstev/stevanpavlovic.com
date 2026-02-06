@@ -14,12 +14,12 @@ interface Props {
 const { description, icon, level = 1, title } = Astro.props;
 ---
 
-<div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
-  <Stack align="center" class="min-w-0" direction="row" gap={4}>
+<div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
+  <Stack align="center" class="min-w-0" direction="row" gap={3}>
     {
       icon && (
-        <div class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
-          <AppIcon name={icon} size="xl" />
+        <div class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
+          <AppIcon name={icon} size="lg" />
         </div>
       )
     }

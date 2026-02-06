@@ -55,7 +55,7 @@ const { class: className } = Astro.props;
     <div class="flex max-h-[350px] flex-col gap-3 overflow-y-auto p-3" id="chat-messages">
       <!-- Welcome Message -->
       <div class="flex flex-col gap-1">
-        <div class:list={["max-w-[85%] rounded-2xl px-4 py-2.5 text-sm", CHATBOT_VARIANTS.ai]}>
+        <div class:list={["max-w-[85%] rounded-xl px-3.5 py-2 text-sm", CHATBOT_VARIANTS.ai]}>
           Hi! I'm Stevan's AI assistant. Ask me anything about his experience, skills, or projects.
         </div>
         <Text class="px-1 text-[10px]" variant="muted">Powered by AI</Text>
@@ -81,7 +81,7 @@ const { class: className } = Astro.props;
   </div>
 
   <!-- Toggle Button -->
-  <Button aria-label="Toggle Chatbot" class="size-11" id="chat-toggle" size="icon">
+  <Button aria-label="Toggle Chatbot" class="size-10" id="chat-toggle" size="icon">
     <!-- Robot Icon (visible when closed) -->
     <AppIcon
       class="transition-all duration-300 group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90"

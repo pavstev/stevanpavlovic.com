@@ -13,14 +13,19 @@ import satori from "satori";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { slug: post.id || post.slug },
-    props: {
-      description: post.data.description ?? "",
-      readingTime: post.data.readingTime ?? "5 min read",
-      title: post.data.title ?? "Untitled",
-    },
-  }));
+  return posts.map((post) => {
+    const wordCount = post.body ? post.body.split(/\s+/).length : 0;
+    const readingTime = `${Math.ceil(wordCount / 200)} min read`;
+
+    return {
+      params: { slug: post.id },
+      props: {
+        description: post.data.description ?? "",
+        readingTime,
+        title: post.data.title ?? "Untitled",
+      },
+    };
+  });
 };
 
 export const GET: APIRoute = async ({ props }) => {
@@ -171,7 +176,7 @@ export const GET: APIRoute = async ({ props }) => {
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
 
-  return new Response(pngBuffer, {
+  return new Response(new Uint8Array(pngBuffer), {
     headers: {
       // Aggressive caching for static assets
       "Cache-Control": "public, max-age=31536000, immutable",

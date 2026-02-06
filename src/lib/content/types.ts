@@ -52,7 +52,7 @@ export type ToolbarItemType =
   | "time"
   | "weather";
 
-export interface ViewPageProps {
+export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   author?: Author;
   backLink: PostLink;
   description: string | undefined;

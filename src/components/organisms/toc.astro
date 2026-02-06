@@ -11,16 +11,16 @@ const filteredHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
 ---
 
 <nav class="toc-container sticky top-8 hidden w-full max-w-[240px] lg:block">
-  <Text class="mb-4 font-bold tracking-wider uppercase" size="xs" variant="muted"> On This Page </Text>
+  <Text class="mb-3 font-bold tracking-wider uppercase" size="xs" variant="muted"> On This Page </Text>
 
   <div class="js-toc relative">
-    <ul class="space-y-2 border-l border-border text-sm">
+    <ul class="space-y-1.5 border-l border-border text-sm">
       {
         filteredHeadings.map((heading) => (
           <li class:list={["relative", { "pl-4": heading.depth === 3 }]}>
             <Text
               as="a"
-              class="toc-link -ml-[2px] block border-l-2 border-transparent py-1 pl-4 leading-tight transition-colors hover:text-foreground"
+              class="toc-link -ml-[2px] block border-l-2 border-transparent py-0.5 pl-4 leading-tight transition-colors hover:text-foreground"
               href={`#${heading.slug}`}
               size="sm"
               variant="muted"

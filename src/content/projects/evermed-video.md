@@ -3,7 +3,7 @@ title: "Evermed Video Infrastructure"
 subtitle: "Serverless Video Transcoding & Distribution"
 meta: "2021"
 description: "Designed and implemented a cloud-native, serverless video processing pipeline for a global healthcare education platform, ensuring secure, high-definition content delivery with 100% HIPAA compliance."
-image: "../../assets/placeholder.png"
+image: "../../assets/evermed-video.png"
 demoUrl: "https://evermed.com"
 tags:
   - aws-lambda

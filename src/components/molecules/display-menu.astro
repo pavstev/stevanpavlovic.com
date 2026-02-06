@@ -16,7 +16,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
   buildListUrl(Astro.url, "path", path, paramsToSet);
 ---
 
-<div class="display-menu glass relative flex items-center gap-2 rounded-2xl p-2 shadow-2xl">
+<div class="display-menu glass relative flex items-center gap-1.5 rounded-2xl p-1.5 shadow-2xl">
   {
     VIEW_MODES.map(({ icon, label, mode }) => {
       const isActive = display === mode;
@@ -24,7 +24,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
         <Button
           as="a"
           class:list={[
-            "relative min-h-10 overflow-hidden transition-all duration-300 hover:no-underline",
+            "relative min-h-9 overflow-hidden transition-all duration-300 hover:no-underline",
             { "shadow-glow-primary bg-primary text-primary-foreground": isActive },
           ]}
           data-active={isActive}
@@ -33,7 +33,7 @@ const buildUrl = (path: string, paramsToSet: Record<string, number | string | un
           variant={isActive ? "primary" : "ghost"}
         >
           <AppIcon class:list={{ "transition-colors group-hover:text-primary": !isActive }} name={icon} size="md" />
-          {showLabels && <span class="ml-2.5 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>}
+          {showLabels && <span class="ml-2 font-mono text-[12px] font-bold tracking-wider uppercase">{label}</span>}
         </Button>
       );
     })

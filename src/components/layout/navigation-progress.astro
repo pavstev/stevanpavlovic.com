@@ -1,0 +1,42 @@
+<div
+  aria-hidden="true"
+  class="pointer-events-none fixed top-0 left-0 z-250 h-[2px] w-0 bg-primary opacity-0 transition-all duration-300 ease-out"
+  id="nav-progress"
+>
+</div>
+
+<script>
+  /**
+   * Global Progress Bar Logic
+   */
+  const startProgress = () => {
+    const bar = document.getElementById("nav-progress");
+    if (!bar) return;
+
+    // Reset and show
+    bar.style.transition = "none";
+    bar.style.width = "0%";
+    bar.style.opacity = "1";
+
+    // Force reflow
+    bar.getBoundingClientRect();
+
+    // Start trickling (using a long ease to simulate loading)
+    bar.style.transition = "width 10s cubic-bezier(0.1, 0.05, 0, 1)";
+    bar.style.width = "90%";
+  };
+
+  const endProgress = () => {
+    const bar = document.getElementById("nav-progress");
+    if (!bar) return;
+
+    // Fast finish and fade out
+    bar.style.transition = "width 300ms ease-in-out, opacity 300ms 200ms linear";
+    bar.style.width = "100%";
+    bar.style.opacity = "0";
+  };
+
+  // Astro Lifecycle Events for View Transitions
+  document.addEventListener("astro:before-preparation", startProgress);
+  document.addEventListener("astro:after-swap", endProgress);
+</script>

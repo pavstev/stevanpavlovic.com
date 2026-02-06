@@ -1,7 +1,7 @@
 ---
 name: Quantox Technology
 website: https://quantox.com
-logo: ../../assets/placeholder.png
+logo: ../../assets/tech-logo.png
 description: Software development company specializing in high-scale web performance and modernization
 industry: Software
 founded: 2005

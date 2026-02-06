@@ -1,13 +1,11 @@
-import { getEntry } from "astro:content";
 import dayjs from "dayjs";
 
-import type { CollectionItem, Tag, ToolbarItem, ViewPageProps } from "../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
 import { type CardResult, ContentAdapter } from "../adapter";
 
 export class CompaniesAdapter extends ContentAdapter<"companies"> {
-  async getCardData(item: CollectionItem<"companies">): Promise<CardResult> {
-    const tags = await this.getTags(item.data.technologies?.slice(0, 3));
+  getCardData(item: CollectionItem<"companies">): CardResult {
     return {
       actionLabel: "View Entity",
       data: {
@@ -16,7 +14,6 @@ export class CompaniesAdapter extends ContentAdapter<"companies"> {
         logo: item.data.logo,
         meta: item.data.size,
         subtitle: item.data.industry,
-        tags,
         title: item.data.name,
         url: `/companies/view/${item.id}`,
       },
@@ -54,23 +51,12 @@ export class CompaniesAdapter extends ContentAdapter<"companies"> {
     return items;
   }
 
-  async getViewProps(item: CollectionItem<"companies">): Promise<Partial<ViewPageProps<"companies">>> {
-    const tags = await this.getTags(item.data.technologies);
+  getViewProps(item: CollectionItem<"companies">): Partial<ViewPageProps<"companies">> {
     return {
       description: item.data.description,
       image: item.data.logo,
       subtitle: item.data.industry,
-      tags: {
-        items: tags,
-        title: "Tech Stack",
-      },
       title: item.data.name,
     };
-  }
-
-  private async getTags(ids: string[] | undefined): Promise<Tag[]> {
-    if (!ids) return [];
-    const tags = await Promise.all(ids.map(async (id) => getEntry("tags", id)));
-    return tags.filter((t) => t !== undefined).map((t) => t.data);
   }
 }

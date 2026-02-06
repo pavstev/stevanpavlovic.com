@@ -84,12 +84,12 @@ const isGrid = display === "grid";
       />
     </CollectionHeader>
 
-    <Stack gap={4}>
+    <Stack gap={3}>
       <div class="view-container" data-initial-page-size={initialPageSize} id={containerId}>
         {/* VIEW MODE: LIST */}
         {
           isList && (
-            <div class="list-view flex flex-col gap-3 transition-opacity duration-300 sm:gap-4">
+            <div class="list-view flex flex-col gap-2 transition-opacity duration-300 sm:gap-3">
               {items.map((item) => (
                 <div class="card-item transition-all duration-300">
                   <Card list {...getItemCardProps(item)} />
@@ -115,7 +115,7 @@ const isGrid = display === "grid";
         }
 
         {/* No Results */}
-        <div class="mt-12 hidden text-center text-muted-foreground" id="no-results">
+        <div class="mt-8 hidden text-center text-muted-foreground" id="no-results">
           <div class="flex flex-col items-center justify-center gap-2">
             <span class="text-4xl">🔍</span>
             <Text class="font-medium" size="lg">No results found.</Text>

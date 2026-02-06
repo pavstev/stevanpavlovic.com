@@ -7,13 +7,13 @@ interface Props {
 const { className, label } = Astro.props;
 ---
 
-<div class:list={["flex flex-col gap-0.5", className]}>
+<div class:list={["flex flex-col gap-0", className]}>
   <span class="text-[10px] font-bold tracking-widest text-muted-foreground/60 uppercase">
     <slot name="label">
       <span>{label}</span>
     </slot>
   </span>
-  <div class="flex items-center gap-2 text-sm font-semibold text-foreground">
+  <div class="flex items-center gap-1.5 text-sm font-semibold text-foreground">
     <slot />
   </div>
 </div>

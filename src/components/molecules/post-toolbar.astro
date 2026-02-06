@@ -33,7 +33,7 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
   </div>
 
   {/* Column 2 & 3: Metadata (Author, Published, etc.) */}
-  <div class="flex min-w-0 flex-col gap-3 md:col-span-2 md:border-x md:border-border/40 md:px-5">
+  <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:border-x md:border-border/40 md:px-6">
     {
       items.map((item) => (
         <ToolbarItem className="min-w-0" label={item.label}>

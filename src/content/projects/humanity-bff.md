@@ -3,7 +3,7 @@ title: "Humanity Mobile Backend"
 subtitle: "High-Performance BFF & Caching Layer"
 meta: "2021"
 description: "Architected and optimized the Backend-for-Frontend (BFF) infrastructure for Humanity.com, facilitating seamless data orchestration and ultra-fast API responses for hundreds of thousands of daily mobile users."
-image: "../../assets/placeholder.png"
+image: "../../assets/humanity-bff.png"
 demoUrl: "https://humanity.com"
 tags:
   - nodejs

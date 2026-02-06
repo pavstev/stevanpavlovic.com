@@ -1,0 +1,258 @@
+---
+/**
+ * Feature #7: Interactive Resume Generator
+ * A "What You See Is What You Get" (WYSIWYG) resume builder.
+ * * Features:
+ * - Editable: Click any text to modify it live before printing.
+ * - Print-Perfect: Custom @media print CSS for A4/Letter sizing.
+ * - Atomic Design: Clean, professional typography and layout.
+ */
+import { Icon } from 'astro-icon/components';
+
+// Default Data (Acts as the initial placeholder)
+const profile = {
+  email: "hello@stevan.dev",
+  location: "Belgrade, Serbia",
+  name: "Stevan Doe",
+  phone: "+381 60 123 4567",
+  role: "Senior Software Engineer",
+  summary: "Product-minded engineer with 6+ years of experience building scalable web applications. Expert in the JavaScript ecosystem (React, Node.js) and cloud infrastructure. Passionate about DX and performance optimization.",
+  website: "stevan.dev"
+};
+
+const experience = [
+  {
+    company: "TechFlow Systems",
+    description: "Spearheaded the migration of a legacy monolith to a Next.js micro-frontend architecture, reducing build times by 60%. Mentored 3 junior developers and established comprehensive E2E testing protocols.",
+    period: "2022 — Present",
+    role: "Senior Frontend Engineer"
+  },
+  {
+    company: "Creative Solutions",
+    description: "Developed and maintained 5+ client-facing e-commerce platforms using Shopify Hydrogen and React. Optimised database queries resulting in a 30% reduction in API latency.",
+    period: "2019 — 2022",
+    role: "Software Developer"
+  }
+];
+
+const skills = [
+  "JavaScript / TypeScript",
+  "React / Next.js / Astro",
+  "Node.js / PostgreSQL",
+  "AWS / Docker / CI/CD",
+  "Tailwind CSS / Design Systems"
+];
+
+const education = [
+  {
+    degree: "B.S. Computer Science",
+    school: "University of Belgrade",
+    year: "2015 — 2019"
+  }
+];
+---
+
+<section class="relative min-h-screen w-full bg-slate-100 px-4 py-12 print:min-h-0 print:bg-white print:p-0">
+  <!-- Toolbar (Hidden when printing) -->
+  <div class="animate-in slide-in-from-bottom-6 fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 gap-4 duration-700 print:hidden">
+    <button
+      class="flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:bg-slate-800 active:scale-95"
+      id="print-btn"
+    >
+      <Icon class="size-5" name="mdi:printer" />
+      Save as PDF
+    </button>
+    <div class="rounded-full border border-white/20 bg-white/80 px-6 py-3 text-sm font-medium text-slate-600 shadow-xl backdrop-blur-md">
+      <span class="font-bold text-blue-600">Tip:</span> Click any text to edit
+    </div>
+  </div>
+
+  <!-- A4 Paper Container -->
+  <div
+    class="relative mx-auto min-h-[297mm] max-w-[210mm] overflow-hidden bg-white shadow-2xl print:min-h-0 print:w-full print:max-w-none print:shadow-none"
+    id="resume-paper"
+  >
+    <!-- Top Accent Line -->
+    <div class="h-2 w-full bg-slate-900 print:bg-slate-900"></div>
+
+    <div class="p-12 sm:p-16 print:p-0">
+
+      <!-- Header -->
+      <header class="mb-8 flex flex-col items-start justify-between border-b-2 border-slate-100 pb-8 md:flex-row print:mb-6 print:flex-row print:pb-6">
+        <div class="space-y-2">
+          <h1
+            class="-ml-2 rounded-sm px-2 text-4xl font-black tracking-tight text-slate-900 uppercase transition-colors outline-none hover:bg-slate-50 focus:bg-blue-50/50 md:text-5xl"
+            contenteditable="true"
+          >
+            {profile.name}
+          </h1>
+          <p
+            class="-ml-2 rounded-sm px-2 text-xl font-medium text-slate-500 transition-colors outline-none hover:bg-slate-50 focus:bg-blue-50/50"
+            contenteditable="true"
+          >
+            {profile.role}
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-1 text-right text-sm font-medium text-slate-500 md:mt-0 print:mt-0">
+          <a class="group flex items-center justify-end gap-2 transition-colors hover:text-blue-600" href={`mailto:${profile.email}`}>
+            <span class="outline-none" contenteditable="true">{profile.email}</span>
+            <Icon class="size-4 opacity-50 group-hover:opacity-100" name="mdi:email-outline" />
+          </a>
+          <a class="group flex items-center justify-end gap-2 transition-colors hover:text-blue-600" href={`https://${profile.website}`}>
+            <span class="outline-none" contenteditable="true">{profile.website}</span>
+            <Icon class="size-4 opacity-50 group-hover:opacity-100" name="mdi:web" />
+          </a>
+          <div class="flex items-center justify-end gap-2">
+            <span class="outline-none" contenteditable="true">{profile.location}</span>
+            <Icon class="size-4 opacity-50" name="mdi:map-marker-outline" />
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <span class="outline-none" contenteditable="true">{profile.phone}</span>
+            <Icon class="size-4 opacity-50" name="mdi:phone-outline" />
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Layout -->
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-12 print:grid-cols-12 print:gap-8">
+
+        <!-- Left Column (Main Content) -->
+        <div class="space-y-10 md:col-span-8 print:col-span-8 print:space-y-8">
+
+          <!-- Profile Summary -->
+          <section>
+            <h2 class="mb-4 flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">
+              <span class="size-1 rounded-full bg-slate-400"></span> Profile
+            </h2>
+            <p
+              class="-ml-2 rounded-sm px-2 leading-relaxed text-slate-700 transition-colors outline-none hover:bg-slate-50 focus:bg-blue-50/50"
+              contenteditable="true"
+            >
+              {profile.summary}
+            </p>
+          </section>
+
+          <!-- Experience -->
+          <section>
+            <h2 class="mb-6 flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">
+              <span class="size-1 rounded-full bg-slate-400"></span> Experience
+            </h2>
+            <div class="space-y-8 print:space-y-6">
+              {experience.map((job) => (
+                <div class="group relative">
+                  <!-- Hover Action to Delete (Web only) -->
+                  <button class="delete-btn absolute top-1 -left-8 text-red-400 opacity-0 transition-opacity group-hover:opacity-100 print:hidden" title="Remove item">
+                    <Icon name="mdi:trash-can-outline" />
+                  </button>
+
+                  <div class="mb-1 flex items-baseline justify-between">
+                    <h3 class="-ml-1 rounded-sm px-1 text-lg font-bold text-slate-900 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{job.role}</h3>
+                    <span class="rounded-sm px-1 font-mono text-sm whitespace-nowrap text-slate-400 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{job.period}</span>
+                  </div>
+                  <div class="mb-2 -ml-1 inline-block rounded-sm px-1 text-sm font-semibold text-blue-600 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{job.company}</div>
+                  <p class="-ml-1 rounded-sm px-1 text-sm leading-relaxed text-slate-600 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">
+                    {job.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column (Sidebar) -->
+        <div class="space-y-10 md:col-span-4 print:col-span-4 print:space-y-8">
+
+          <!-- Skills -->
+          <section>
+            <h2 class="mb-4 flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">
+              <span class="size-1 rounded-full bg-slate-400"></span> Skills
+            </h2>
+            <ul class="space-y-2">
+              {skills.map(skill => (
+                <li
+                  class="rounded-sm border-b border-slate-100 px-1 pb-2 text-sm font-medium text-slate-700 transition-colors outline-none hover:bg-slate-50 focus:bg-blue-50/50"
+                  contenteditable="true"
+                >
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <!-- Education -->
+          <section>
+            <h2 class="mb-4 flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">
+              <span class="size-1 rounded-full bg-slate-400"></span> Education
+            </h2>
+            <div class="space-y-4">
+              {education.map(edu => (
+                <div>
+                  <div class="rounded-sm px-1 text-sm font-bold text-slate-900 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{edu.degree}</div>
+                  <div class="mt-1 rounded-sm px-1 text-sm text-slate-500 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{edu.school}</div>
+                  <div class="mt-1 rounded-sm px-1 font-mono text-xs text-slate-400 outline-none hover:bg-slate-50 focus:bg-blue-50/50" contenteditable="true">{edu.year}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Watermark (Bottom Right) -->
+    <div class="pointer-events-none absolute right-8 bottom-8 text-[10rem] font-black text-slate-50 opacity-50 select-none print:hidden">
+      CV
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Print Optimization */
+  @media print {
+    @page {
+      margin: 0;
+      size: auto;
+    }
+    body {
+      background: white;
+    }
+    /* Force background colors/graphics to print */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+
+  /* Editable Field Focus Styles */
+  [contenteditable]:focus {
+    cursor: text;
+  }
+  [contenteditable]:empty:before {
+    content: "Type here...";
+    color: #cbd5e1;
+  }
+</style>
+
+<script>
+  // Handle PDF Generation
+  const printBtn = document.getElementById('print-btn');
+  printBtn?.addEventListener('click', () => {
+    // Optional: Change title temporarily so the PDF file name is nice
+    const originalTitle = document.title;
+    document.title = "Stevan_Doe_Resume";
+    window.print();
+    document.title = originalTitle;
+  });
+
+  // Handle "Delete Item" buttons (Simple DOM removal)
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Find the parent group and remove it
+      const item = (e.target as HTMLElement).closest('.group');
+      if (item && confirm('Remove this item?')) {
+        item.remove();
+      }
+    });
+  });
+</script>

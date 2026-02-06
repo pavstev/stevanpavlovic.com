@@ -3,7 +3,7 @@ title: "Intelligent Admissions"
 subtitle: "Automated CRM Scoring Algorithms"
 meta: "2018"
 description: "An innovative auto-evaluation system that transforms college admissions processing by analyzing hundreds of applicant properties, generating weighted scores, and automatically routing applications through customizable workflows, reducing manual review time by 75%."
-image: "../../assets/placeholder.png"
+image: "../../assets/admissions.png"
 demoUrl: "https://admissions.com"
 tags:
   - algorithms

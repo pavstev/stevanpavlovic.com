@@ -1,0 +1,95 @@
+---
+import Button from "../atoms/button.astro";
+
+/**
+ * Feature #21: Shiki Code Copy Buttons
+ * Optimized to use the project's custom AppButton and AppIcon.
+ */
+
+// We render these templates once so the script can clone them.
+// They are hidden from the accessibility tree and visual layout.
+---
+
+<div aria-hidden="true" class="hidden" id="copy-button-template">
+  <Button
+    class="copy-code-button absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+    icon="mdi:content-copy"
+    size="sm"
+    variant="glass"
+  />
+</div>
+
+<div aria-hidden="true" class="hidden" id="copy-success-template">
+  <Button class="text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.3)]" icon="mdi:check" size="sm" variant="glass" />
+</div>
+
+<script>
+  /**
+   * Logic to inject copy buttons into Shiki-generated HTML
+   */
+  const initCopyButtons = () => {
+    const codeBlocks = document.querySelectorAll("pre");
+    const idleTemplate = document.querySelector("#copy-button-template > button");
+    const successTemplate = document.querySelector("#copy-success-template > button");
+
+    if (!idleTemplate || !successTemplate) return;
+
+    codeBlocks.forEach((codeBlock) => {
+      // Prevent duplicate buttons on View Transition swap
+      if (codeBlock.querySelector(".copy-code-button")) return;
+
+      // Layout adjustments for the code block
+      codeBlock.style.position = "relative";
+      codeBlock.classList.add("group");
+
+      // Clone the idle button from our Astro template
+      const button = idleTemplate.cloneNode(true) as HTMLButtonElement;
+      codeBlock.appendChild(button);
+
+      button.addEventListener("click", async () => {
+        const code = codeBlock.querySelector("code");
+        if (!code) return;
+
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+
+          // Swap to success state by cloning the success template's inner content
+          const originalHTML = button.innerHTML;
+          const successHTML = successTemplate.innerHTML;
+
+          button.innerHTML = successHTML;
+          button.classList.add("border-green-500/50");
+
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove("border-green-500/50");
+          }, 2000);
+        } catch (err) {
+          console.error("Failed to copy code:", err);
+        }
+      });
+    });
+  };
+
+  // Lifecycle listeners
+  initCopyButtons();
+  document.addEventListener("astro:after-swap", initCopyButtons);
+</script>
+
+<style is:global>
+  /* Ensure Shiki pre tags don't clip the button or the glow */
+  pre {
+    overflow: visible !important;
+  }
+
+  /* Target the code container specifically for internal scrolling */
+  pre > code {
+    display: block;
+    overflow-x: auto;
+    padding-top: 1rem;
+  }
+
+  .copy-code-button {
+    backdrop-filter: blur(8px);
+  }
+</style>

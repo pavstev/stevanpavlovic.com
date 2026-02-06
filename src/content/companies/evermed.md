@@ -1,7 +1,7 @@
 ---
 name: Evermed
 website: https://evermedtv.com
-logo: ../../assets/placeholder.png
+logo: ../../assets/tech-logo.png
 description: Specialized video streaming platform for healthcare and life sciences professionals
 industry: Software
 founded: 2018

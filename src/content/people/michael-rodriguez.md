@@ -6,7 +6,7 @@ company: 167pluto
 currentPosition: Senior Backend Developer
 currentCompany: 167pluto
 location: Remote
-avatar: ../../assets/michael-rodriguez.jpg
+avatar: ../../assets/michael-rodriguez.png
 email: michael.rodriguez@example.com
 socialLinks:
   - type: LinkedIn

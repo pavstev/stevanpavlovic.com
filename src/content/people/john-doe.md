@@ -7,7 +7,7 @@ company: Quantox
 currentPosition: Senior Backend Developer
 currentCompany: Quantox
 location: Belgrade, Serbia
-avatar: ../../assets/john-doe.jpg
+avatar: ../../assets/john-doe.png
 linkedIn: https://linkedin.com/in/johndoe
 website: https://johndoe.dev
 github: https://github.com/johndoe
@@ -267,9 +267,9 @@ John is open to new opportunities and collaborations, including:
 John has received multiple recommendations from colleagues and clients for his technical expertise and leadership skills:
 
 > "John is an exceptional backend developer with deep technical knowledge and excellent problem-solving skills. He consistently delivers high-quality solutions and is a valuable team member." - Senior Developer, Quantox
-
+>
 > "John's expertise in microservices architecture and cloud infrastructure has been instrumental in our company's digital transformation. His leadership and technical guidance have been invaluable." - CTO, Enterprise Client
-
+>
 > "Working with John has been a pleasure. His attention to detail, technical expertise, and collaborative approach make him an outstanding developer and team member." - Project Manager, Freelance Client
 
 ---

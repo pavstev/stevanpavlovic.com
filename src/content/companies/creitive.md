@@ -1,7 +1,7 @@
 ---
 name: CreITive
 website: https://creitive.com
-logo: ../../assets/placeholder.png
+logo: ../../assets/tech-logo.png
 description: Global digital agency providing web solutions and e-commerce development
 industry: Software
 founded: 2010

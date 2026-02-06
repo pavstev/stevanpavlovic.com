@@ -3,7 +3,7 @@ title: "Fleet Visualizer"
 subtitle: "Real-time Vehicle Telemetry Platform"
 meta: "2023"
 description: "A high-performance full-stack platform for real-time visualization of vehicle telemetry data, processing millions of GPS coordinates and sensor readings daily with sub-second latency through optimized microservices architecture and WebSocket streaming."
-image: "../../assets/placeholder.png"
+image: "../../assets/telemetry.png"
 demoUrl: "https://telemetry.com"
 tags:
   - react

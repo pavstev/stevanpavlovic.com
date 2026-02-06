@@ -26,9 +26,8 @@ export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; 
 
 export const resolveTags = async (tagsRef?: { collection: "tags"; id: string }[]): Promise<Tag[]> => {
   if (!tagsRef || tagsRef.length === 0) return [];
-  // The type of tagsRef is compatible with getEntries
   const resolved = await getEntries(tagsRef);
-  return resolved.map((r) => r.data);
+  return resolved.filter((r) => !!r).map((r) => r.data);
 };
 
 export const resolveCompany = async (

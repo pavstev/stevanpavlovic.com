@@ -1,6 +1,9 @@
+import type { ImageMetadata } from "astro";
+
 import { getCollection } from "astro:content";
 
 import type { CardData } from "../../components/organisms/card.astro";
+import type { ContentAdapter } from "./adapter";
 import type { CollectionItem, CollectionKey, ViewPageProps } from "./types";
 
 import { PROFILE } from "../../config";
@@ -8,7 +11,7 @@ import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
 
 export const getSortDate = (item: CollectionItem): number => {
-  const adapter = adapters[item.collection];
+  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
   return adapter ? adapter.getSortDate(item) : 0;
 };
 
@@ -24,7 +27,7 @@ export const getCollectionData = async <CN extends CollectionKey>(collection: CN
 };
 
 export const getViewPageProps = async (item: CollectionItem): Promise<ViewPageProps> => {
-  const adapter = adapters[item.collection];
+  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
   if (!adapter) {
     throw new Error(`No adapter found for collection: ${item.collection}`);
   }
@@ -33,8 +36,9 @@ export const getViewPageProps = async (item: CollectionItem): Promise<ViewPagePr
   const toolbarItems = await adapter.getToolbarItems(item);
   const author = createAuthorItem(PROFILE);
 
-  const defaultTitle = item.data.title || item.data.name || item.data.role || "";
-  const defaultImage = item.data.image || item.data.logo || item.data.avatar;
+  const data = item.data as Record<string, unknown>;
+  const defaultTitle = (data.title || data.name || data.role || "") as string;
+  const defaultImage = (data.image || data.logo || data.avatar) as ImageMetadata | string | undefined;
 
   return {
     author, // Ensure author provided if needed by template
@@ -49,7 +53,7 @@ export const getViewPageProps = async (item: CollectionItem): Promise<ViewPagePr
     title: defaultTitle,
     toolbarItems: [author, ...toolbarItems].filter(Boolean),
     ...props,
-  };
+  } as ViewPageProps;
 };
 
 export const getItemCardProps = async (
@@ -58,7 +62,7 @@ export const getItemCardProps = async (
   actionLabel: string;
   data: CardData;
 }> => {
-  const adapter = adapters[item.collection];
+  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
 
   if (!adapter) {
     return {

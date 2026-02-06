@@ -6,7 +6,7 @@ company: Creitive
 currentPosition: Senior Frontend Developer
 currentCompany: Creitive
 location: Belgrade, Serbia
-avatar: ../../assets/sarah-chen.jpg
+avatar: ../../assets/sarah-chen.png
 email: sarah.chen@example.com
 socialLinks:
   - type: LinkedIn

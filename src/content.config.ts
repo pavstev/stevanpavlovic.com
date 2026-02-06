@@ -112,17 +112,18 @@ const projects = defineCollection({
 
 const recommendations = defineCollection({
   loader: glob({ base: "./src/content/recommendations", pattern: "**/*.md" }),
-  schema: z.object({
-    avatar: z.string(),
-    company: reference("companies").optional(),
-    context: z.string().optional(),
-    date: z.coerce.date().optional(),
-    linkedInProfile: z.string().url(),
-    name: z.string(),
-    person: reference("people").optional(),
-    relationship: RelationshipType.optional(),
-    title: z.string(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      avatar: image(),
+      company: reference("companies").optional(),
+      context: z.string().optional(),
+      date: z.coerce.date().optional(),
+      linkedInProfile: z.string().url(),
+      name: z.string(),
+      person: reference("people").optional(),
+      relationship: RelationshipType.optional(),
+      title: z.string(),
+    }),
 });
 
 const blog = defineCollection({
@@ -142,7 +143,7 @@ const experience = defineCollection({
   loader: glob({ base: "./src/content/experience", pattern: "**/*.md" }),
   schema: () =>
     z.object({
-      company: reference("company"),
+      company: reference("companies"),
       description: z.string(),
       endDate: z.coerce.date().optional(),
       location: reference("locations"),

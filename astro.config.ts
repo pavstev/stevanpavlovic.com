@@ -26,9 +26,17 @@ export default defineConfig({
       enabled: true,
     },
   }),
+
+  image: {
+    // #30 Standardizing on modern, highly-compressed formats
+    remotePatterns: [{ protocol: "https" }],
+    // CAUTION: 'sharp' is a Node.js binary and will CRASH on Cloudflare runtime.
+    // We let the Cloudflare adapter handle image optimization natively.
+    // service: { entrypoint: "astro/assets/services/sharp" },
+  },
+
   integrations: [
     mdx(),
-
     sitemap(),
     favicons({
       input: {
@@ -47,14 +55,12 @@ export default defineConfig({
     pagefind({
       indexConfig: {},
     }),
-
     brokenLinksChecker({
       cacheExternalLinks: true,
       checkExternalLinks: false,
       throwError: false,
     }),
     playformInline(),
-
     sentry({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "sp-05",
@@ -62,6 +68,7 @@ export default defineConfig({
       telemetry: false,
     }),
   ],
+
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
     remarkPlugins: [readingTimeRemarkPlugin, [remarkToc, { heading: "toc", maxDepth: 3 }]],
@@ -69,7 +76,10 @@ export default defineConfig({
     // #10 VS-Code Caliber Syntax Highlighting
     syntaxHighlight: "shiki",
   },
-  output: "static",
+
+  // #1 Switch to hybrid to support dynamic OG images while keeping the blog static
+  output: "hybrid",
+
   prefetch: {
     defaultStrategy: "hover",
     // #20 Pre-fetching links for instant navigation
@@ -80,6 +90,16 @@ export default defineConfig({
   trailingSlash: "never",
 
   vite: {
-    plugins: [tailwindcss() as any],
+    assetsInclude: ["**/*.wasm"],
+    build: {
+      rollupOptions: {
+        external: ["@resvg/resvg-wasm"],
+      },
+    },
+    // #2 Fix for @resvg/resvg-wasm on Cloudflare
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-wasm"],
+    },
+    plugins: [tailwindcss()],
   },
 });

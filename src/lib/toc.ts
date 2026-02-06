@@ -1,10 +1,8 @@
 /* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import Lenis from "lenis";
 import tocbot from "tocbot";
 
-// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 let lenis: Lenis | null = null;
 
 export const initLenis = (): void => {

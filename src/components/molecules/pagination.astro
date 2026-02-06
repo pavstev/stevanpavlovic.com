@@ -44,30 +44,30 @@ const { nextLink, prevLink } = getPaginationLinks({
     <nav aria-label="Pagination" class="pagination">
       <div class="glass flex items-center justify-center gap-2 rounded-2xl p-2 shadow-2xl">
         <Button
-          class="size-10 p-0 text-muted-foreground transition-all hover:text-foreground"
+          class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
           disabled={!prevLink}
           href={prevLink}
           size="icon"
           variant="ghost"
         >
-          <AppIcon name="mdi:chevron-left" size="xl" />
+          <AppIcon name="mdi:chevron-left" size="lg" />
           <span class="sr-only">Previous page</span>
         </Button>
 
-        <div class="flex items-center px-4 font-mono text-[12px] font-bold tracking-wider uppercase">
+        <div class="flex items-center px-3 font-mono text-[12px] font-bold tracking-wider uppercase">
           <span class="text-primary tabular-nums">{currentPage}</span>
-          <span class="mx-2.5 text-muted-foreground/30">/</span>
+          <span class="mx-2 text-muted-foreground/30">/</span>
           <span class="text-muted-foreground tabular-nums">{totalPages}</span>
         </div>
 
         <Button
-          class="size-10 p-0 text-muted-foreground transition-all hover:text-foreground"
+          class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
           disabled={!nextLink}
           href={nextLink}
           size="icon"
           variant="ghost"
         >
-          <AppIcon name="mdi:chevron-right" size="xl" />
+          <AppIcon name="mdi:chevron-right" size="lg" />
           <span class="sr-only">Next page</span>
         </Button>
       </div>

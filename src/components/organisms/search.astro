@@ -21,7 +21,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
     <input
       aria-controls={`${id}-dropdown`}
       autocomplete="off"
-      class="h-10 w-full min-w-[200px] rounded-full border border-foreground/10 bg-background/80 pr-24 pl-10 text-sm transition-all outline-none hover:bg-background/90 focus:border-primary/50 focus:bg-background/90 focus:ring-2 focus:ring-primary/20 md:h-9 md:w-48 md:min-w-0 md:pr-24 lg:w-64"
+      class="h-9 w-full min-w-[200px] rounded-full border border-foreground/10 bg-background/80 pr-24 pl-10 text-sm transition-all outline-none hover:bg-background/90 focus:border-primary/50 focus:bg-background/90 focus:ring-2 focus:ring-primary/20 md:h-8 md:w-48 md:min-w-0 md:pr-24 lg:w-64"
       id={`${id}-input`}
       placeholder="Search..."
       type="text"
@@ -53,7 +53,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
   >
     <div class="overflow-hidden rounded-2xl border border-foreground/10 bg-background/95 shadow-2xl backdrop-blur-xl">
       {/* Search Results Area */}
-      <div class="p-2">
+      <div class="p-1.5">
         <div class="max-h-[60vh] overflow-y-auto" id={`${id}-results`}>
           {/* Results will be injected here */}
         </div>
@@ -61,7 +61,7 @@ const id = variant === "mobile" ? "mobile-search" : "desktop-search";
 
       {/* Keyboard Shortcuts Footer */}
       <div
-        class="flex flex-wrap items-center gap-2 border-t border-foreground/5 bg-foreground/5 px-4 py-2 text-xs font-medium text-muted-foreground md:text-[10px]"
+        class="flex flex-wrap items-center gap-2 border-t border-foreground/5 bg-foreground/5 px-3 py-1.5 text-xs font-medium text-muted-foreground md:text-[10px]"
       >
         <span class="flex items-center gap-1">
           <kbd class="rounded-lg bg-foreground/10 px-1.5 py-0.5 font-sans text-[10px]">ESC</kbd>

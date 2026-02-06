@@ -20,6 +20,7 @@ import eslintPluginPrettier from "eslint-plugin-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import * as fs from "node:fs";
+import * as path from "node:path";
 import tseslint from "typescript-eslint";
 
 const TS_FILES = ["**/*.ts", "**/*.tsx"];
@@ -28,12 +29,15 @@ const MARKDOWN_FILES = ["**/*.md"];
 const MDX_FILES = ["**/*.mdx"];
 const JSON_FILES = ["**/*.json"];
 
+const ROOT = process.cwd();
+const CONTENT_DIR = path.join(ROOT, "src/content");
+const ASTRO_COLLECTIONS_DIR = path.join(ROOT, ".astro/collections");
+
 // Virtual files created by MDX processor (e.g. filename.mdx/0.ts)
 const MDX_CODE_BLOCKS = ["**/*.md/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.ts", "**/*.mdx/*.tsx"];
 
 const CODE_FILES = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"];
 const FRONTEND_FILES = ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"];
-const CONTENT_FILES = ["src/content/**/*.{md,mdx}"];
 const ALL_FILES = [...CODE_FILES, ...JSON_FILES, ...MARKDOWN_FILES, ...MDX_FILES];
 
 const GLOBAL_IGNORES = [
@@ -63,8 +67,6 @@ const STYLISTIC_OPTIONS = {
   severity: "error",
 } as const;
 
-const CONTENT_DIR = "src/content";
-const ASTRO_COLLECTIONS_DIR = ".astro/collections";
 let _remarkSchemas: Record<string, string[]> = {};
 
 try {
@@ -75,12 +77,15 @@ try {
       .map((d) => d.name);
 
     _remarkSchemas = collections.reduce<Record<string, string[]>>((acc, collection) => {
-      // Use absolute definition for the glob to ensure it matches correctly in the plugin
-      const schemaPath = `${ASTRO_COLLECTIONS_DIR}/${collection}.schema.json`;
-      // Match all md/mdx files in the collection
-      acc[schemaPath] = [`${CONTENT_DIR}/${collection}/**/*.{md,mdx}`];
+      const schemaPath = path.join(ASTRO_COLLECTIONS_DIR, `${collection}.schema.json`);
+      // We use absolute globs here to match absolute paths provided by ESLint
+      acc[schemaPath] = [path.join(CONTENT_DIR, collection, "**/*.{md,mdx}")];
       return acc;
     }, {});
+
+    if (Object.keys(_remarkSchemas).length > 0) {
+      console.warn("✅ ESLint: Loaded", Object.keys(_remarkSchemas).length, "content schemas.");
+    }
   }
 } catch (error) {
   console.warn("⚠️ ESLint: Could not generate dynamic content schemas:", error);
@@ -294,29 +299,20 @@ export default defineConfig(
   },
 
   {
-    // Apply standard MDX rules and processor to all MD/MDX files
+    // Unified MDX / Markdown configuration
     files: [...MARKDOWN_FILES, ...MDX_FILES],
     ...mdx.flat,
     processor: mdx.createRemarkProcessor({
-      languageMapper: {},
-      lintCodeBlocks: true,
-    }),
-  },
-
-  {
-    // Override for content files: Use settings to pass remark plugins
-    files: CONTENT_FILES,
+      lintCodeBlocks: false,
+      remarkPlugins: [
+        "remark-frontmatter",
+        ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }],
+        "remark-lint-no-multiple-toplevel-headings",
+      ],
+    } as any),
     rules: {
+      ...mdx.flat.rules,
       "mdx/remark": "error",
-    },
-    settings: {
-      mdx: {
-        remarkPlugins: [
-          "remark-frontmatter",
-          ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }],
-          "remark-lint-no-multiple-toplevel-headings",
-        ],
-      },
     },
   },
 

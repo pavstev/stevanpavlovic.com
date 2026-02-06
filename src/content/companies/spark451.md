@@ -1,7 +1,7 @@
 ---
 name: Spark451 Inc.
 website: https://spark451.com
-logo: ../../assets/placeholder.png
+logo: ../../assets/tech-logo.png
 description: Leading higher-education CRM platform providing intelligent admissions solutions
 industry: Software
 founded: 2010

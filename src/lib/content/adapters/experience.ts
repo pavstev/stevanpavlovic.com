@@ -73,9 +73,11 @@ export class ExperienceAdapter extends ContentAdapter<"experience"> {
   }
 
   async getViewProps(item: CollectionItem<"experience">): Promise<Partial<ViewPageProps<"experience">>> {
+    const company = await resolveCompany(item.data.company);
+
     return {
       description: item.data.description,
-      subtitle: item.data.company as string,
+      subtitle: company?.name,
       tags: {
         items: await resolveTags(item.data.tags),
         title: "Technologies Used",

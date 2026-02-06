@@ -25,56 +25,58 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
 ---
 
 <div
-  class="group/toolbar grid w-full grid-cols-1 gap-8 rounded-2xl border border-border/40 bg-background/40 p-6 backdrop-blur-md md:grid-cols-4"
+  class="group/toolbar grid w-full grid-cols-1 gap-4 rounded-2xl border border-border/40 bg-background/40 p-4 backdrop-blur-md md:grid-cols-8"
 >
   {/* Column 1: Description (Wider) */}
-  <div class="min-w-0 md:col-span-2">
+  <div class="min-w-0 md:col-span-3">
     <PostDescription description={description} />
   </div>
 
   {/* Column 2 & 3: Metadata (Author, Published, etc.) */}
-  <div class="flex min-w-0 flex-col gap-6 md:border-x md:border-border/40 md:px-8">
+  <div class="flex min-w-0 flex-col gap-6 md:col-span-2 md:border-x md:border-border/40 md:px-8">
     {
       items.map((item) => (
-        <div class="flex items-center gap-4">
-          {item.logo && (
-            <ToolbarLogo
-              alt={item.value}
-              size="md"
-              src={item.logo}
-              type={item.type === "person" ? "person" : "organization"}
-            />
-          )}
+        <ToolbarItem className="min-w-0" label={item.label}>
+          {item.type === "status" ? (
+            <div class="flex items-center gap-2">
+              <ToolbarLogo size="sm" type="status" />
+              <span class="text-sm font-semibold text-foreground">{item.value}</span>
+            </div>
+          ) : (
+            <div class="flex items-center gap-2.5">
+              {item.logo && (
+                <ToolbarLogo
+                  alt={item.value}
+                  size="sm"
+                  src={item.logo}
+                  type={item.type === "person" ? "person" : "organization"}
+                />
+              )}
 
-          <ToolbarItem className="min-w-0 flex-1" label={item.label}>
-            {item.href ? (
-              <a
-                class="group/link flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
-                href={item.href}
-                target="_blank"
-              >
-                <span class="truncate">{item.value}</span>
-                <AppIcon extraClasses="external-link-arrow" name="mdi:arrow-top-right" />
-              </a>
-            ) : (
-              <div class="flex items-center gap-2">
+              {item.href ? (
+                <a
+                  class="group/link flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors group-hover/toolbar:text-foreground hover:text-primary"
+                  href={item.href}
+                  target="_blank"
+                >
+                  <span class="truncate">{item.value}</span>
+                  <AppIcon
+                    class="size-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    name="mdi:arrow-top-right"
+                  />
+                </a>
+              ) : (
                 <span class="text-sm font-semibold text-foreground">{item.value}</span>
-                {item.type === "status" && (
-                  <span class="relative flex size-2">
-                    <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span class="relative inline-flex size-2 rounded-full bg-emerald-500" />
-                  </span>
-                )}
-              </div>
-            )}
-          </ToolbarItem>
-        </div>
+              )}
+            </div>
+          )}
+        </ToolbarItem>
       ))
     }
   </div>
 
   {/* Column 4: Tags */}
-  <div class="min-w-0">
+  <div class="min-w-0 md:col-span-3">
     <PostTags tags={tags.items} title={tags.title} />
   </div>
 </div>

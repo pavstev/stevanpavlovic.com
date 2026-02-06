@@ -1,0 +1,101 @@
+@reference "./global.css";
+
+/* Highly Advanced Table Design System */
+
+.prose table {
+  @apply my-12 block w-full overflow-x-auto rounded-3xl border border-border/40 bg-background/20 shadow-2xl backdrop-blur-md transition-all duration-500 hover:border-primary/20 hover:shadow-primary/5;
+  border-spacing: 0;
+  perspective: 1000px;
+}
+
+.prose thead {
+  @apply border-b-2 border-primary/20 bg-muted/30 backdrop-blur-xl;
+}
+
+.prose th {
+  @apply relative cursor-pointer px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-foreground transition-all duration-300 hover:bg-primary/5;
+  user-select: none;
+}
+
+.prose th::before {
+  content: "";
+  @apply absolute bottom-0 left-0 h-0.5 w-0 bg-primary transition-all duration-500;
+}
+
+.prose th:hover::before {
+  @apply w-full;
+}
+
+.prose tr {
+  @apply border-b border-border/10 transition-all duration-300 last:border-none hover:bg-primary/[0.03] hover:backdrop-blur-sm;
+}
+
+.prose td {
+  @apply px-8 py-5 text-sm font-medium text-muted-foreground/80 transition-colors duration-300;
+}
+
+.prose tr:hover td {
+  @apply text-foreground;
+}
+
+/* Sorting Indicators */
+.prose th::after {
+  content: "⇕";
+  @apply ml-3 inline-block font-mono text-[10px] opacity-20 transition-all duration-300;
+}
+
+.prose th:hover::after {
+  @apply translate-y-[-1px] opacity-60 text-primary;
+}
+
+.prose th[data-sort="asc"] {
+  @apply text-primary bg-primary/5;
+}
+
+.prose th[data-sort="asc"]::after {
+  content: "↑";
+  @apply translate-y-0 opacity-100 scale-125;
+}
+
+.prose th[data-sort="desc"] {
+  @apply text-primary bg-primary/5;
+}
+
+.prose th[data-sort="desc"]::after {
+  content: "↓";
+  @apply translate-y-0 opacity-100 scale-125;
+}
+
+/* Numeric Highlighting */
+.prose td:has(span[data-numeric="true"]),
+.prose td:has(code) {
+  @apply font-mono text-xs tracking-tight text-primary/80;
+}
+
+/* Status Badges within Tables */
+.prose td .status-pill {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-primary;
+}
+
+/* Specialized Cell Shadows */
+.prose td:first-child {
+  @apply font-semibold text-foreground/90;
+}
+
+/* Zebra Striping with a Twist */
+.prose tbody tr:nth-child(even) {
+  @apply bg-muted/[0.02];
+}
+
+/* Modern Scrollbar for the table */
+.prose table::-webkit-scrollbar {
+  height: 4px;
+}
+
+.prose table::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.prose table::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-border/40 transition-colors hover:bg-primary/40;
+}

@@ -25,6 +25,6 @@ const { class: className, link, ...props } = Astro.props;
   {...props}
   type="button"
 >
-  <AppIcon hover="move" name="mdi:arrow-left" size="sm" transition="default" />
+  <AppIcon class="transition-transform duration-300 group-hover:-translate-x-0.5" name="mdi:arrow-left" size="sm" />
   <span>{link.label}</span>
 </Button>

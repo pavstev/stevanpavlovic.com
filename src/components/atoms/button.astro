@@ -1,48 +1,37 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { type VariantProps } from "class-variance-authority";
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import AppIcon from "./app-icon.astro";
 
 const variants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 font-medium ring-offset-background transition-all duration-300 ease-out select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex cursor-pointer items-center justify-center gap-2 font-semibold tracking-tight transition-all duration-300 select-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
   {
-    compoundVariants: [
-      {
-        class: "h-auto rounded-none p-0",
-        size: ["default", "icon", "lg", "sm"],
-        variant: ["ghost", "link", "primary", "secondary"],
-      },
-    ],
     defaultVariants: {
-      size: "default",
+      size: "md",
       variant: "primary",
     },
     variants: {
       size: {
-        default: "h-10 rounded-xl px-5 py-2 text-sm",
-        icon: "size-10 rounded-xl",
-        lg: "h-12 rounded-2xl px-8 text-base",
-        sm: "h-9 rounded-lg px-4 text-xs",
+        icon: "size-10 rounded-full",
+        lg: "h-12 rounded-2xl px-6 text-base",
+        md: "h-10 rounded-xl px-4 text-sm",
+        sm: "h-8 rounded-lg px-3 text-xs",
       },
       variant: {
-        ghost: "text-muted-foreground hover:bg-foreground/5 hover:text-foreground active:scale-95",
-        link: "text-foreground underline-offset-4 hover:underline",
-        outline:
-          "border border-foreground/15 bg-transparent shadow-sm hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground active:scale-95",
-        primary:
-          "hover:shadow-glow-primary bg-primary text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:bg-primary/90 active:scale-95",
-        secondary:
-          "hover:shadow-glow-primary/10 bg-primary/10 text-primary shadow-sm hover:bg-primary/20 active:scale-95",
+        accent: "hover:shadow-glow-accent bg-accent text-accent-foreground hover:bg-accent/90",
+        ghost: "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
+        glass: "glass text-foreground hover:border-foreground/20 hover:bg-background/60",
+        outline: "border border-border bg-transparent text-foreground hover:bg-foreground/5",
+        primary: "hover:shadow-glow-primary bg-primary text-primary-foreground hover:bg-primary/90",
       },
     },
   },
 );
 
 interface Props extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type">, VariantProps<typeof variants> {
-  as?: string;
+  as?: any;
   external?: boolean;
   icon?: string;
   withArrow?: boolean;
@@ -55,14 +44,6 @@ const hrefString = typeof href === "string" ? href : href?.toString();
 const isExternal = external ?? (hrefString?.startsWith("http") || hrefString?.startsWith("mailto"));
 const target = isExternal ? "_blank" : undefined;
 const rel = isExternal ? "noopener noreferrer" : undefined;
-
-const { pathname } = Astro.url;
-const isActive =
-  variant === "ghost" && (hrefString === pathname || (hrefString !== "/" && pathname.startsWith(hrefString || "")));
-
-const navActiveClasses = isActive
-  ? "text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-primary after:content-['']"
-  : "relative py-1 text-sm transition-colors duration-200 text-muted-foreground hover:text-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-muted-foreground after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
 
 const Tag = Element as any;
 const elementProps = {
@@ -77,21 +58,25 @@ if (Element === "button" && !elementProps.type) {
 }
 ---
 
-<Tag
-  class:list={[variants({ className, size, variant }), isActive && navActiveClasses, (icon || withArrow) && "group"]}
-  {...elementProps}
->
+<Tag class:list={[variants({ size, variant }), { group: icon || withArrow }, className]} {...elementProps}>
   {
     icon && (
       <AppIcon
-        hover={variant === "ghost" ? "move" : undefined}
+        class="transition-transform duration-300 group-hover:scale-110"
         name={icon}
-        size="md"
-        transition={variant === "ghost" ? "default" : undefined}
+        size={size === "sm" ? "sm" : "md"}
       />
     )
   }
   <slot />
-  {withArrow && <AppIcon hover="move" name="mdi:arrow-top-right" size="sm" tone="muted" transition="default" />}
+  {
+    withArrow && (
+      <AppIcon
+        class="text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        name="mdi:arrow-top-right"
+        size="sm"
+      />
+    )
+  }
   {isExternal && !withArrow && size !== "icon" && <span class="sr-only">(opens in new tab)</span>}
 </Tag>

@@ -4,65 +4,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
 
-const variants = cva("shrink-0", {
+const variants = cva("shrink-0 transition-transform duration-300", {
   defaultVariants: {
-    hover: "none",
     size: "md",
-    tone: "default",
-    transition: "none",
+    variant: "default",
   },
   variants: {
-    act: {
-      closed: "group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90",
-      focus: "group-focus-within/search:text-primary",
-      none: "",
-      open: "absolute scale-0 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0",
-    },
-    extraClasses: {
-      "chatbot-close": "absolute scale-0 group-data-[open=true]:scale-100 group-data-[open=true]:rotate-0",
-      "chatbot-robot": "group-data-[open=true]:scale-0 group-data-[open=true]:rotate-90",
-      "display-menu-active": "text-primary-foreground transition-colors duration-300",
-      "display-menu-default": "transition-colors duration-300",
-      "external-link-arrow":
-        "size-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5",
-      "hover-scale-rotate": "hover:scale-110 hover:rotate-90",
-      "md-size-7": "md:size-7",
-      "mobile-menu-close":
-        "absolute rotate-90 opacity-0 ease-out group-[.open]/toggle:rotate-0 group-[.open]/toggle:opacity-100",
-      "mobile-menu-open": "ease-out group-[.open]/toggle:rotate-90 group-[.open]/toggle:opacity-0",
-      "mr-1.5": "mr-1.5",
-      none: "",
-      "opacity-60": "opacity-60",
-      "search-icon": "absolute left-3 text-muted-foreground group-focus-within/search:text-primary md:size-4",
-      "text-accent-foreground": "text-accent-foreground",
-    },
-    hover: {
-      color: "group-hover:text-accent",
-      move: "transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
-      none: "",
-      primary: "group-hover:text-primary",
-      scale: "group-hover:scale-110",
-    },
     size: {
-      "2xl": "size-7",
+      "2xl": "size-8",
       base: "size-4",
-      lg: "size-5",
-      md: "size-[18px]",
-      none: "",
-      sm: "size-3.5",
-      xl: "size-6",
+      lg: "size-6",
+      md: "size-5",
+      sm: "size-4",
+      xl: "size-7",
       xs: "size-3",
     },
-    tone: {
-      accent: "text-accent-foreground",
-      command: "absolute left-3 text-muted-foreground md:size-4",
+    variant: {
+      accent: "text-accent",
       default: "",
-      muted: "opacity-60",
-    },
-    transition: {
-      colors: "transition-colors duration-300",
-      default: "transition-all duration-300",
-      none: "",
+      ghost: "opacity-40",
+      muted: "text-muted-foreground",
+      primary: "text-primary",
     },
   },
 });
@@ -72,11 +34,7 @@ export interface Props extends VariantProps<typeof variants> {
   name: string;
 }
 
-const { act, class: className, extraClasses, hover, name, size, tone, transition, ...props } = Astro.props;
+const { class: className, name, size, variant, ...props } = Astro.props;
 ---
 
-<Icon
-  class:list={cn(variants({ act, extraClasses, hover, size, tone, transition }), className)}
-  name={name}
-  {...props}
-/>
+<Icon class:list={[cn(variants({ size, variant }), className)]} name={name} {...props} />

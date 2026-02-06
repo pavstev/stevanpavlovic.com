@@ -16,15 +16,25 @@ const { description } = Astro.props;
         <div class="relative w-full">
           <details class="group/desc text-sm font-medium text-muted-foreground group-hover/toolbar:text-foreground">
             <summary class="cursor-pointer list-none transition-colors hover:text-primary [&::-webkit-details-marker]:hidden">
-              <div class="description-text line-clamp-4 leading-relaxed group-open/desc:line-clamp-none">
+              <div class="description-text line-clamp-4 leading-relaxed transition-all duration-300 group-open/desc:line-clamp-none">
                 {description}
               </div>
-              <div class="toggle-buttons mt-3 hidden">
-                <div class="hover:shadow-glow-subtle inline-flex items-center gap-1 rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[10px] font-bold tracking-tight text-primary transition-all duration-300 group-open/desc:hidden hover:border-primary/20 hover:bg-primary/10">
-                  Read full description <AppIcon name="mdi:chevron-down" size="xs" />
+              <div class="toggle-buttons mt-4 hidden">
+                <div class="group-open/desc:hidden">
+                  <div class="inline-flex items-center gap-1 text-[10px] font-bold tracking-wide text-foreground/50 uppercase transition-all duration-300 hover:tracking-widest hover:text-primary">
+                    Read more
+                    <AppIcon name="mdi:chevron-down" size="md" />
+                  </div>
                 </div>
-                <div class="hover:shadow-glow-subtle mt-2 hidden items-center gap-1 rounded-full border border-primary/10 bg-primary/5 px-2.5 py-1 text-[10px] font-bold tracking-tight text-primary transition-all duration-300 group-open/desc:inline-flex hover:border-primary/20 hover:bg-primary/10">
-                  Show less <AppIcon name="mdi:chevron-up" size="xs" />
+                <div class="hidden group-open/desc:block">
+                  <div class="inline-flex items-center gap-1 text-[10px] font-semibold tracking-widest text-foreground/50 uppercase transition-all duration-300 hover:tracking-widest hover:text-primary">
+                    Show less
+                    <AppIcon
+                      class="opacity-60 transition-transform duration-300 group-hover/toolbar:-translate-y-0.5 group-hover/toolbar:opacity-100"
+                      name="mdi:chevron-up"
+                      size="sm"
+                    />
+                  </div>
                 </div>
               </div>
             </summary>
@@ -37,7 +47,8 @@ const { description } = Astro.props;
 
 <script>
   function setupDescriptionToggles() {
-    const descriptions = document.querySelectorAll("details.group/desc");
+    // Escape the slash in group/desc for the selector
+    const descriptions = document.querySelectorAll("details.group\\/desc");
 
     descriptions.forEach((details) => {
       const text = details.querySelector(".description-text") as HTMLElement;
@@ -45,25 +56,36 @@ const { description } = Astro.props;
 
       if (!text || !toggleWrapper) return;
 
+      // Reset state to measure correctly
+      const isCurrentlyOpen = (details as HTMLDetailsElement).open;
+      if (isCurrentlyOpen) {
+        (details as HTMLDetailsElement).open = false;
+      }
+
       // Check if text is truncated
       const isTruncated = text.scrollHeight > text.offsetHeight;
 
       if (isTruncated) {
         toggleWrapper.classList.remove("hidden");
+        toggleWrapper.classList.add("flex");
       } else {
-        // If not truncated, disable details click to avoid empty toggle
-        details.addEventListener("click", (_e) => {
-          const detailEl = details as HTMLDetailsElement;
-          if (!detailEl.open) {
-            // Prevent opening if it doesn't overflow
-          }
-        });
+        toggleWrapper.classList.add("hidden");
+        toggleWrapper.classList.remove("flex");
         (details.querySelector("summary") as HTMLElement).style.cursor = "default";
+      }
+
+      // Restore state
+      if (isCurrentlyOpen) {
+        (details as HTMLDetailsElement).open = true;
       }
     });
   }
 
   // Run on mount and after a short delay to ensure layout
+  document.addEventListener("astro:page-load", setupDescriptionToggles);
   setupDescriptionToggles();
   window.addEventListener("resize", setupDescriptionToggles);
+
+  // Also watch for class changes or other potential triggers
+  setTimeout(setupDescriptionToggles, 100);
 </script>

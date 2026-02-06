@@ -37,7 +37,7 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
         {/* Error Code */}
         <div class="relative">
           <Heading
-            class="text-9xl font-black tracking-tighter text-danger opacity-90 sm:text-[12rem]"
+            class="font-black text-9xl tracking-tighter text-danger opacity-90 sm:text-[12rem]"
             variant="gradient"
           >
             500
@@ -53,7 +53,9 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
             The server successfully processed 0% of your request. An anomaly has been detected in the core logic.
           </Text>
 
-          <div class="mt-2 rounded-lg border border-white/5 bg-black/40 px-4 py-2 font-mono text-xs text-red-400">
+          <div
+            class="mt-2 rounded-lg border border-foreground/5 bg-background/40 px-4 py-2 font-mono text-xs text-red-400"
+          >
             Error: {errorMessage}
           </div>
         </div>

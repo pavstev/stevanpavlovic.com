@@ -2,6 +2,7 @@
 import VerticalGuideLine from "../atoms/vertical-guide-line.astro";
 import LayoutRoot from "../layout/layout-root.astro";
 import Container from "../molecules/container.astro";
+import "../../styles/tables.css";
 
 interface Props {
   description?: string;
@@ -26,14 +27,14 @@ const { description, title } = Astro.props;
         <div
           class="prose prose-base max-w-none prose-invert
         prose-headings:scroll-mt-20 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground
-        prose-h2:mt-6 prose-h2:border-b prose-h2:border-border/50 prose-h2:pb-3 prose-h2:text-2xl
-        prose-p:leading-7 prose-p:text-muted-foreground
-        prose-a:font-medium prose-a:text-primary prose-a:no-underline prose-a:transition-colors hover:prose-a:text-primary/80 hover:prose-a:underline
-        prose-strong:font-semibold prose-strong:text-foreground
-        prose-code:rounded-lg prose-code:border prose-code:border-border prose-code:bg-muted/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-sm prose-code:font-medium prose-code:text-foreground/80 before:prose-code:content-none after:prose-code:content-none
-        prose-pre:border prose-pre:border-border prose-pre:bg-black/50 prose-pre:shadow-2xl
-        prose-li:text-muted-foreground prose-li:marker:text-muted-foreground/60
-        prose-img:rounded-2xl prose-img:border prose-img:border-border/50 prose-img:shadow-xl"
+        prose-h2:mt-12 prose-h2:border-b prose-h2:border-border/40 prose-h2:pb-4 prose-h2:text-3xl
+        prose-p:leading-8 prose-p:text-muted-foreground/90
+        prose-a:font-semibold prose-a:text-primary prose-a:no-underline prose-a:transition-all hover:prose-a:text-primary hover:prose-a:underline hover:prose-a:underline-offset-4
+        prose-strong:font-bold prose-strong:text-foreground
+        prose-code:rounded-lg prose-code:border prose-code:border-border prose-code:bg-muted/40 prose-code:px-2 prose-code:py-0.5 prose-code:font-mono prose-code:text-sm prose-code:font-medium prose-code:text-foreground before:prose-code:content-none after:prose-code:content-none
+        prose-pre:rounded-2xl prose-pre:border prose-pre:border-border/60 prose-pre:bg-background/40 prose-pre:shadow-2xl prose-pre:backdrop-blur-sm
+        prose-li:my-1 prose-li:text-muted-foreground/90 prose-li:marker:text-primary/50
+        prose-img:rounded-3xl prose-img:border prose-img:border-border/40 prose-img:shadow-2xl"
         >
           <slot />
         </div>
@@ -43,3 +44,70 @@ const { description, title } = Astro.props;
     </div>
   </Container>
 </LayoutRoot>
+
+<script>
+  function setupTableSorting() {
+    const tables = document.querySelectorAll(".prose table");
+
+    tables.forEach((table) => {
+      const headers = table.querySelectorAll("th");
+      const tbody = table.querySelector("tbody");
+
+      if (!tbody) return;
+
+      // Smart Detection for numeric/status cells
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      rows.forEach((row) => {
+        Array.from(row.children).forEach((cell) => {
+          const text = cell.textContent?.trim() ?? "";
+          // Check for pure numeric or currency/percentage strings
+          if (/^[\d.,%$\-kMBt+]+$/.test(text) && text.length > 0) {
+            cell.setAttribute("data-numeric", "true");
+          }
+          // Wrap success/failure keywords in badges if standalone
+          if (
+            /^(✅|❌|Active|Legacy|Target|Improvement|Improvement|Delta|improvement)/i.test(text) &&
+            text.length < 20
+          ) {
+            if (!cell.querySelector(".status-pill")) {
+              const val = cell.innerHTML;
+              cell.innerHTML = `<span class="status-pill">${val}</span>`;
+            }
+          }
+        });
+      });
+
+      headers.forEach((header, index) => {
+        header.addEventListener("click", () => {
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const isAscending = header.getAttribute("data-sort") === "asc";
+
+          // Clear other headers
+          headers.forEach((h) => h.removeAttribute("data-sort"));
+
+          rows.sort((a, b) => {
+            const aVal = a.children[index].textContent?.trim() ?? "";
+            const bVal = b.children[index].textContent?.trim() ?? "";
+
+            const aNum = parseFloat(aVal.replace(/[^0-9.-]+/g, ""));
+            const bNum = parseFloat(bVal.replace(/[^0-9.-]+/g, ""));
+
+            if (!isNaN(aNum) && !isNaN(bNum)) {
+              return isAscending ? bNum - aNum : aNum - bNum;
+            }
+
+            return isAscending ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+          });
+
+          header.setAttribute("data-sort", isAscending ? "desc" : "asc");
+
+          // Re-append rows
+          rows.forEach((row) => tbody.appendChild(row));
+        });
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupTableSorting);
+  setupTableSorting();
+</script>

@@ -65,10 +65,10 @@ const backLink = Astro.props.backLink ? { ...defaultBackLink, href: Astro.props.
               src={image.src}
               width={image.width}
             />
-            <div class="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-black/10 ring-inset" />
+            <div class="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-background/10 ring-inset" />
 
             {/* Subtle reflection/highlight overlay */}
-            <div class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-transparent opacity-0 mix-blend-overlay transition-opacity duration-700 group-hover:opacity-100" />
+            <div class="pointer-events-none absolute inset-0 bg-linear-to-tr from-foreground/5 to-transparent opacity-0 mix-blend-overlay transition-opacity duration-700 group-hover:opacity-100" />
           </div>
         </div>
       )

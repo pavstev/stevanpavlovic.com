@@ -17,7 +17,7 @@ import CardSpotlight from "../molecules/card-spotlight.astro";
 import Tags from "../molecules/tags.astro";
 
 const variants = cva(
-  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card/50 p-5 text-left backdrop-blur-md transition-all duration-300 sm:p-6",
+  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border transition-all duration-300",
   {
     defaultVariants: {
       interactive: false,
@@ -26,13 +26,13 @@ const variants = cva(
     variants: {
       interactive: {
         false: "",
-        true: "cursor-pointer hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 hover:shadow-xl hover:shadow-primary/5",
+        true: "cursor-pointer hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5",
       },
       variant: {
-        default: "",
-        ghost: "border-foreground/5 bg-transparent shadow-none hover:border-foreground/15",
-        glass: "glass border-white/10 text-foreground",
-        outline: "border-2 border-foreground/10 bg-transparent hover:border-primary/20",
+        default: "border-border/50 bg-card/50 backdrop-blur-md hover:border-primary/20",
+        ghost: "border-transparent bg-transparent hover:bg-foreground/5",
+        glass: "glass hover:bg-background/60",
+        outline: "border-2 border-border/50 bg-transparent hover:border-primary/20",
       },
     },
   },
@@ -56,7 +56,7 @@ export interface CardData {
 }
 
 interface BaseProps extends HTMLAttributes<"div">, Omit<VariantProps<typeof variants>, "variant"> {
-  as?: string;
+  as?: any;
   glowColor?: string;
   visual?: "default" | "ghost" | "glass" | "outline";
 }
@@ -84,10 +84,9 @@ const {
   visual = "default",
   ...rest
 } = props;
-// Default to empty object if undefined
+
 const data = _data || {};
 
-// Destructure data properties
 const {
   align = "start",
   animate,
@@ -105,17 +104,12 @@ const {
   url,
 } = data;
 
-// Determine Card State
 const hasData = Object.keys(data).length > 0;
 const isSimpleCard = !hasData;
 
-// Layout Helpers
-const Wrapper = url ? "a" : "div";
+const Wrapper = (url ? "a" : "div") as any;
 const cardClasses = variants({ className, interactive: !!url || interactive, variant: visual });
 
-// Determine Layout Mode
-// If it's a list view, we use row layout. Otherwise default column.
-// Note: Icon cards (with icon) are typically grid/column based.
 const isRowLayout = list && !icon;
 ---
 
@@ -130,80 +124,62 @@ const isRowLayout = list && !icon;
       <div
         class:list={[
           cardClasses,
-          { "flex-row gap-4 p-4!": isRowLayout, "h-full flex-col gap-4": !isRowLayout },
-          {
-            "items-center text-center": align === "center" && !isRowLayout,
-            "items-start": !(align === "center" && !isRowLayout),
-          },
+          isRowLayout ? "flex-row gap-4 p-4!" : "h-full flex-col gap-4 p-5 sm:p-6",
+          align === "center" && !isRowLayout ? "items-center text-center" : "items-start",
           animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
         ]}
         style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
       >
-        {/* Background Effects */}
         <CardSpotlight glowColor={glowColor} />
 
-        {/* Media Section: Icon */}
         {icon && (
           <div class="relative">
-            <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+            <div class="absolute -inset-4 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
             <IconBox
-              class="relative border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5"
-              icon={isRowLayout ? icon : icon}
-              iconHover="color"
-              iconSize="xl"
-              iconTransition="colors"
-              size="lg"
-              variant="ghost"
+              class="relative border-border/50 bg-foreground/5 group-hover:border-primary/30 group-hover:bg-primary/5"
+              icon={icon}
+              iconSize="lg"
+              size="xl"
+              variant="default"
             />
           </div>
         )}
 
-        {/* Media Section: Image */}
         {image && (
           <CardImage
             alt={title || ""}
             image={image}
             loading={loading}
             wrapperClass={
-              isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-2xl"
+              isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-xl"
             }
           />
         )}
 
-        {/* Media Section: Logo */}
         {logo && (
           <div class="relative">
-            <div class="absolute -inset-2 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
-            <div class="relative flex size-16 items-center justify-center overflow-hidden rounded-xl border border-foreground/10 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/20 group-hover:bg-primary/5">
+            <div class="absolute -inset-4 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+            <div class="relative flex size-16 items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/5">
               <img alt={title || ""} class="size-full object-contain p-2" src={logo.src} />
             </div>
           </div>
         )}
 
-        {/* Content Section */}
-        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-4": !isRowLayout }]}>
-          {/* Header Row */}
-          <div
-            class:list={[
-              "flex w-full justify-between gap-4",
-              { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
-            ]}
-          >
-            <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout }]}>
-              {/* Date (List View / Grid View) */}
+        <div class:list={["flex w-full min-w-0 flex-1 flex-col", isRowLayout ? "gap-0" : "gap-4"]}>
+          <div class:list={["flex w-full justify-between gap-4", isRowLayout ? "flex-row" : "flex-col sm:flex-row"]}>
+            <div class:list={["flex flex-col", isRowLayout ? "gap-0" : "gap-1"]}>
               {date && (
                 <div class:list={["flex items-center justify-between", !isRowLayout && "mb-1"]}>
-                  <Text class="font-mono tracking-wider uppercase" size="sm" variant="muted">
+                  <Text class="font-mono tracking-wider uppercase opacity-70" size="xs" variant="muted">
                     <FormattedDate date={date} full />
                   </Text>
                 </div>
               )}
 
-              {/* Title */}
               <Heading
                 class:list={[
                   "transition-colors group-hover:text-primary",
-                  { "line-clamp-2": !isRowLayout, "mt-1 line-clamp-1": isRowLayout },
+                  isRowLayout ? "mt-1 line-clamp-1" : "line-clamp-2",
                 ]}
                 level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
                 size={isRowLayout ? "sm" : "md"}
@@ -211,11 +187,10 @@ const isRowLayout = list && !icon;
                 {title}
               </Heading>
 
-              {/* Subtitle */}
               {subtitle && (
                 <Text
-                  class:list={["font-mono tracking-wider uppercase", { "mt-0.5": isRowLayout, "mt-1": !isRowLayout }]}
-                  size="sm"
+                  class:list={["font-mono tracking-wider uppercase", isRowLayout ? "mt-0.5" : "mt-1"]}
+                  size="xs"
                   variant="muted"
                 >
                   {subtitle}
@@ -223,27 +198,25 @@ const isRowLayout = list && !icon;
               )}
             </div>
 
-            {/* Right Side: Meta & Action */}
-            <div class:list={["flex items-center gap-2 self-start", { hidden: align === "center" && !isRowLayout }]}>
-              {meta && <Badge variant="secondary">{meta}</Badge>}
+            <div class:list={["flex items-center gap-2 self-start", align === "center" && !isRowLayout && "hidden"]}>
+              {meta && <Badge variant="default">{meta}</Badge>}
 
               {url && (
                 <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
                   <div
                     class:list={[
                       "absolute right-0 flex items-center text-muted-foreground transition-all duration-300",
-                      {
-                        "group-hover:-translate-x-2 group-hover:opacity-0": actionLabel,
-                        "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary": !actionLabel,
-                      },
+                      actionLabel
+                        ? "group-hover:-translate-x-2 group-hover:opacity-0"
+                        : "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary",
                     ]}
                   >
-                    <AppIcon name="mdi:arrow-top-right" />
+                    <AppIcon name="mdi:arrow-top-right" size="sm" />
                   </div>
                   {actionLabel && (
                     <div class="flex items-center gap-1 text-[10px] font-bold tracking-widest text-primary uppercase opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                       {actionLabel}
-                      <AppIcon name={actionIcon} size="sm" />
+                      <AppIcon name={actionIcon} size="xs" />
                     </div>
                   )}
                 </div>
@@ -251,42 +224,39 @@ const isRowLayout = list && !icon;
             </div>
           </div>
 
-          {/* Body: Description */}
           {description && (
             <Text
-              class:list={[
-                "text-muted-foreground",
-                { "line-clamp-2 flex-1": !isRowLayout, "mt-2 line-clamp-1": isRowLayout },
-              ]}
+              class:list={["text-muted-foreground", isRowLayout ? "mt-2 line-clamp-1" : "mt-2 line-clamp-2 flex-1"]}
               size="sm"
             >
               {description}
             </Text>
           )}
 
-          {/* Footer Section */}
-          <div
-            class:list={["mt-auto flex items-center", { "gap-2": isRowLayout, "w-full justify-between": !isRowLayout }]}
-          >
+          <div class:list={["mt-auto flex items-center", isRowLayout ? "gap-2" : "w-full justify-between"]}>
             {tags && tags.length > 0 && (
-              <div class:list={[{ "mt-2": isRowLayout }]}>
+              <div class:list={[isRowLayout && "mt-2"]}>
                 <Tags limit={isRowLayout ? 4 : 3} tags={tags} />
               </div>
             )}
 
-            {/* Footer Meta (e.g. Experience Date Range) */}
             {footerMeta && (
               <Text
                 class="ml-auto font-mono tracking-wider whitespace-nowrap uppercase transition-colors group-hover:text-primary/80"
-                size="sm"
+                size="xs"
                 variant="muted"
               >
                 {footerMeta}
               </Text>
             )}
 
-            {/* Icon Card Bottom Arrow (if no meta/header arrow used) */}
-            {icon && url && <AppIcon hover="primary" name="mdi:arrow-top-right" size="base" tone="muted" />}
+            {icon && url && (
+              <AppIcon
+                class="ml-auto text-muted-foreground group-hover:text-primary"
+                name="mdi:arrow-top-right"
+                size="xs"
+              />
+            )}
           </div>
         </div>
       </div>

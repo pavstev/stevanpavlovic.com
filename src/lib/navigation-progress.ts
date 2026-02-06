@@ -1,7 +1,7 @@
 /**
  * Global Progress Bar Logic
  */
-const startProgress = () => {
+const startProgress = (): void => {
   const bar = document.getElementById("nav-progress");
   if (!bar) return;
 
@@ -18,7 +18,7 @@ const startProgress = () => {
   bar.style.width = "90%";
 };
 
-const endProgress = () => {
+const endProgress = (): void => {
   const bar = document.getElementById("nav-progress");
   if (!bar) return;
 
@@ -28,7 +28,7 @@ const endProgress = () => {
   bar.style.opacity = "0";
 };
 
-export function initNavigationProgress() {
+export const initNavigationProgress = (): void => {
   document.addEventListener("astro:before-preparation", startProgress);
   document.addEventListener("astro:after-swap", endProgress);
-}
+};

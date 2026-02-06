@@ -72,7 +72,7 @@ export default defineConfig({
     syntaxHighlight: "shiki",
   },
 
-  output: "server",
+  output: "static",
 
   prefetch: {
     defaultStrategy: "hover",

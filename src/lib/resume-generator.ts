@@ -1,4 +1,4 @@
-export function initResumeGenerator() {
+export const initResumeGenerator = (): void => {
   // Handle PDF Generation
   const printBtn = document.getElementById("print-btn");
   printBtn?.addEventListener("click", () => {
@@ -20,4 +20,4 @@ export function initResumeGenerator() {
       }
     });
   }
-}
+};

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 interface AtmosphereResponse {
   localTime: string;
   status: "active" | "sleeping";
@@ -23,7 +25,9 @@ export class AtmosphereWidget {
   private isOpen = false;
 
   constructor() {
-    this.init();
+    this.init().catch(() => {
+      /* ignore */
+    });
     this.bindEvents();
   }
 
@@ -59,9 +63,9 @@ export class AtmosphereWidget {
     try {
       const res = await fetch("/api/atmosphere.json");
       if (!res.ok) throw new Error("Failed");
-      const data = (await res.json()) as AtmosphereResponse;
+      const data: AtmosphereResponse = await res.json();
 
-      this.belgradeTime = new Date(data.localTime);
+      this.belgradeTime = dayjs(data.localTime).toDate() as Date;
       this.updateUI(data);
       this.startClock();
     } catch {
@@ -70,11 +74,9 @@ export class AtmosphereWidget {
   }
 
   private simulateZone(offset: number, isLocal = false): void {
-    let simulatedTime: Date;
+    let simulatedTime = new Date();
 
-    if (isLocal) {
-      simulatedTime = new Date();
-    } else {
+    if (!isLocal) {
       // Just a visual simulation for the "You" time in the popover
       const now = new Date();
       const utc = now.getTime() + now.getTimezoneOffset() * 60000;
@@ -118,7 +120,7 @@ export class AtmosphereWidget {
       // Advance time manually since we fetched a snapshot
       this.belgradeTime.setSeconds(this.belgradeTime.getSeconds() + 1);
 
-      const fmt = (d: Date) => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const fmt = (d: Date): string => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
       if (this.els.time) this.els.time.innerText = fmt(this.belgradeTime);
       if (this.els.stevanTime) this.els.stevanTime.innerText = fmt(this.belgradeTime);

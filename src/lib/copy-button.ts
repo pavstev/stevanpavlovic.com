@@ -1,14 +1,14 @@
 /**
  * Logic to inject copy buttons into Shiki-generated HTML
  */
-export const initCopyButtons = () => {
+export const initCopyButtons = (): void => {
   const codeBlocks = document.querySelectorAll("pre");
   const idleTemplate = document.querySelector("#copy-button-template > button");
   const successTemplate = document.querySelector("#copy-success-template > button");
 
   if (!idleTemplate || !successTemplate) return;
 
-  codeBlocks.forEach((codeBlock) => {
+  for (const codeBlock of codeBlocks) {
     // Prevent duplicate buttons on View Transition swap
     if (codeBlock.querySelector(".copy-code-button")) return;
 
@@ -38,11 +38,9 @@ export const initCopyButtons = () => {
           button.innerHTML = originalHTML;
           button.classList.remove("border-green-500/50");
         }, 2000);
-      } catch (err) {
-        throw new Error("Failed to copy code:", {
-          cause: err,
-        });
+      } catch {
+        console.warn("Failed to copy code to clipboard");
       }
     });
-  });
+  }
 };

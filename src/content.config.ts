@@ -196,9 +196,20 @@ const people = defineCollection({
     z.object({
       avatar: image().optional(),
       description: z.string().optional(),
+      education: z
+        .array(
+          z.object({
+            degree: z.string(),
+            school: z.string(),
+            year: z.string(),
+          }),
+        )
+        .optional(),
+      email: z.string().email().optional(),
       firstName: z.string(),
       lastName: z.string(),
       location: reference("locations").optional(),
+      skills: z.array(z.string()).optional(),
       socialLinks: PersonSocialLinks,
       title: z.string(),
     }),

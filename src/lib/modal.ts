@@ -1,12 +1,12 @@
-export function initModals() {
+export const initModals = (): void => {
   const dialogs = document.querySelectorAll("dialog.group\\/modal");
 
-  dialogs.forEach((dialog) => {
-    if (!(dialog instanceof HTMLDialogElement)) return;
+  for (const dialog of dialogs) {
+    if (!(dialog instanceof HTMLDialogElement)) continue;
 
     const closeBtn = dialog.querySelector(".close-modal-btn");
 
-    const close = () => {
+    const close = (): void => {
       dialog.close();
       document.body.style.overflow = "";
     };
@@ -27,7 +27,7 @@ export function initModals() {
     // The script opening it should handle scroll lock?
     // Or we can observe attributes.
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+      for (const mutation of mutations) {
         if (mutation.type === "attributes" && mutation.attributeName === "open") {
           if (dialog.open) {
             document.body.style.overflow = "hidden";
@@ -36,8 +36,8 @@ export function initModals() {
             document.body.style.overflow = "";
           }
         }
-      });
+      }
     });
     observer.observe(dialog, { attributes: true });
-  });
-}
+  }
+};

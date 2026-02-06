@@ -9,7 +9,7 @@ import satori from "satori";
 // Initialize the Wasm module *once*
 let wasmInitialized = false;
 
-const initResvg = async () => {
+const initResvg = async (): Promise<void> => {
   if (wasmInitialized) return;
   try {
     const wasmPath = path.resolve("node_modules/@resvg/resvg-wasm/index_bg.wasm");
@@ -188,7 +188,7 @@ export const GET: APIRoute = async ({ props }) => {
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
 
-  return new Response(pngBuffer as any, {
+  return new Response(pngBuffer as unknown as BodyInit, {
     headers: {
       // Aggressive caching for static assets
       "Cache-Control": "public, max-age=31536000, immutable",

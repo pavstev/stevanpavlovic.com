@@ -1,14 +1,21 @@
 ---
 import dayjs from "dayjs";
 
+import { cn } from "../../lib/cn";
+
 interface Props {
+  class?: string;
   date: Date;
   full?: boolean;
 }
 
-const { date, full = false } = Astro.props;
+const { class: className, date, full = false } = Astro.props;
 ---
 
-<time datetime={dayjs(date).toISOString()} title={dayjs(date).format("MMMM D, YYYY")}>
-  {full ? dayjs(date).format("MMMM D, YYYY") : dayjs(date).format("MMM YYYY")}
+<time
+  class:list={cn("font-mono text-xs font-bold tracking-widest text-muted-foreground uppercase opacity-80", className)}
+  datetime={dayjs(date).toISOString()}
+  title={dayjs(date).format("MMMM D, YYYY")}
+>
+  {full ? dayjs(date).format("MMMM D, YYYY") : dayjs(date).format("MMM D, YYYY")}
 </time>

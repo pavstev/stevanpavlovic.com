@@ -1,12 +1,12 @@
-export function setupDescriptionToggles() {
+export const setupDescriptionToggles = (): void => {
   // Escape the slash in group/description for the selector
   const descriptions = document.querySelectorAll("details.group\\/description");
 
-  descriptions.forEach((details) => {
+  for (const details of descriptions) {
     const text = details.querySelector(".description-text") as HTMLElement;
     const toggleWrapper = details.querySelector(".toggle-buttons") as HTMLElement;
 
-    if (!text || !toggleWrapper) return;
+    if (!text || !toggleWrapper) continue;
 
     // Reset state to measure correctly
     const isCurrentlyOpen = (details as HTMLDetailsElement).open;
@@ -30,5 +30,5 @@ export function setupDescriptionToggles() {
     if (isCurrentlyOpen) {
       (details as HTMLDetailsElement).open = true;
     }
-  });
-}
+  }
+};

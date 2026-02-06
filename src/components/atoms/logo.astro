@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 
 import { PROFILE, SITE_CONFIG } from "../../config";
+import { cn } from "../../lib/cn";
 import Button from "./button.astro";
 
 interface Props {
@@ -12,13 +13,15 @@ const { class: className } = Astro.props;
 ---
 
 <Button
-  class:list={["group flex items-center gap-2.5 no-underline transition-opacity hover:opacity-90", className]}
+  class:list={cn("group flex items-center gap-2.5 no-underline transition-opacity hover:opacity-90", className)}
   href="/"
   variant="ghost"
 >
   {/* Rounded Tinted Avatar */}
   <div
-    class="relative flex size-8 items-center justify-center overflow-hidden rounded-full ring-2 ring-foreground/10 transition-all duration-300 group-hover:ring-primary/40"
+    class:list={cn(
+      "relative flex size-8 items-center justify-center overflow-hidden rounded-full ring-2 ring-foreground/10 transition-all duration-300 group-hover:ring-primary/40",
+    )}
   >
     <Image alt={SITE_CONFIG.author} class="size-full object-cover" src={PROFILE.avatar} />
 
@@ -28,7 +31,9 @@ const { class: className } = Astro.props;
 
     {/* Shine effect */}
     <div
-      class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-foreground/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
+      class:list={cn(
+        "absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-foreground/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full",
+      )}
     >
     </div>
   </div>
@@ -36,7 +41,9 @@ const { class: className } = Astro.props;
   {/* Author Text Container */}
   <div class="flex items-center">
     <span
-      class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-sm font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-base"
+      class:list={cn(
+        "inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-sm font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-base",
+      )}
     >
       {SITE_CONFIG.author}
     </span>

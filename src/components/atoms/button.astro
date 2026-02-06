@@ -21,15 +21,17 @@ const variants = cva(
         sm: "h-8 rounded-md px-3 text-[12px]",
       },
       variant: {
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        destructive:
+          "shadow-glow-destructive hover:shadow-glow-destructive/80 bg-destructive text-destructive-foreground hover:bg-destructive/90",
         ghost: "hover:shadow-glow-subtle text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
         glass:
           "glass hover:shadow-glow border-white/10 text-foreground shadow-sm hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10",
         outline:
-          "border border-border bg-transparent text-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]",
+          "hover:shadow-glow-primary border border-border bg-transparent text-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary",
         primary:
-          "relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] hover:brightness-110",
-        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          "shadow-glow-primary relative border border-primary/50 bg-linear-to-b from-primary to-primary/80 text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_30px_hsl(210_100%_45%_/_0.6)] hover:brightness-110",
+        secondary:
+          "shadow-glow-secondary hover:shadow-glow-secondary/80 bg-secondary text-secondary-foreground hover:bg-secondary/80",
       },
     },
   },

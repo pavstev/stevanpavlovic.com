@@ -4,6 +4,8 @@ import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 import { cva, type VariantProps } from "class-variance-authority";
 
+import { cn } from "../../lib/cn";
+
 const variants = cva("relative shrink-0 overflow-hidden leading-none transition-all duration-300", {
   defaultVariants: {
     size: "md",
@@ -33,7 +35,7 @@ interface Props extends VariantProps<typeof variants> {
 const { alt, size, src, type } = Astro.props;
 ---
 
-<div class:list={[variants({ size, type })]}>
+<div class:list={[cn(variants({ size, type }))]}>
   {
     type === "status" ? (
       <span class="relative flex size-2.5">
@@ -44,14 +46,12 @@ const { alt, size, src, type } = Astro.props;
       src && (
         <Image
           alt={alt || ""}
-          class:list={[
+          class:list={cn(
             "size-full transition-all duration-500",
-            {
-              "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100":
-                type === "organization" || !type,
-              "object-cover": type === "person",
-            },
-          ]}
+            (type === "organization" || !type) &&
+              "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100",
+            type === "person" && "object-cover",
+          )}
           src={src}
         />
       )

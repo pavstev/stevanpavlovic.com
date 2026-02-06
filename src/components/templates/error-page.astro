@@ -7,15 +7,15 @@ import Meteors from "../meteor.astro";
 import Container from "../molecules/container.astro";
 
 interface Props {
-  code: string | number;
-  title: string;
+  code: number | string;
   description: string;
-  message: string;
   error?: unknown;
+  message: string;
+  title: string;
   variant?: "accent" | "danger" | "warning";
 }
 
-const { code, title, description, message, error, variant = "accent" } = Astro.props;
+const { code, description, error, message, title, variant = "accent" } = Astro.props;
 
 // Map variants to specific color classes/variables if needed,
 // though here we use 'accent' and 'danger' directly in styles.

@@ -3,6 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 import type { PostLink } from "../../lib";
 
+import { cn } from "../../lib/cn";
 import AppIcon from "./app-icon.astro";
 import Button from "./button.astro";
 
@@ -16,8 +17,10 @@ const { class: className, link, ...props } = Astro.props;
 <Button
   as="a"
   class:list={[
-    "group rounded-full font-mono text-xs font-bold tracking-widest text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:no-underline hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]",
-    className,
+    cn(
+      "group hover:shadow-glow-primary rounded-full font-mono text-xs font-bold tracking-widest text-muted-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:no-underline",
+      className,
+    ),
   ]}
   href={link.href}
   size="sm"

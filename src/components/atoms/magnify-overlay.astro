@@ -1,16 +1,23 @@
 ---
+import { cn } from "../../lib/cn";
 import AppIcon from "./app-icon.astro";
 ---
 
 <div
-  class="absolute inset-0 flex items-center justify-center bg-background/0 transition-all duration-500 ease-out group-hover:bg-background/40"
+  class:list={cn(
+    "absolute inset-0 flex items-center justify-center bg-background/0 transition-all duration-500 ease-out group-hover:bg-background/40",
+  )}
 >
   <div
-    class="flex scale-90 flex-col items-center gap-2 opacity-0 transition-all duration-500 ease-out group-hover:scale-100 group-hover:opacity-100"
+    class:list={cn(
+      "flex scale-90 flex-col items-center gap-2 opacity-0 transition-all duration-500 ease-out group-hover:scale-100 group-hover:opacity-100",
+    )}
   >
     <!-- Icon with Label -->
     <div
-      class="flex items-center gap-2 rounded-full bg-accent/95 px-3.5 py-2 shadow-[0_8px_24px_rgba(var(--color-accent-rgb),0.4)] backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_32px_rgba(var(--color-accent-rgb),0.6)]"
+      class:list={cn(
+        "shadow-glow-accent hover:shadow-glow-accent/80 flex items-center gap-2 rounded-full bg-accent/95 px-3.5 py-2 backdrop-blur-sm transition-all duration-300 hover:scale-105",
+      )}
     >
       <AppIcon class="text-accent-foreground" name="mdi:magnify-plus-outline" size="lg" />
       <span class="text-sm font-semibold text-accent-foreground">Enlarge</span>

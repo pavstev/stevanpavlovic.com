@@ -1,7 +1,7 @@
-export function initScrollToTop() {
+export const initScrollToTop = (): void => {
   const btn = document.getElementById("smart-scroll-to-top");
 
-  function updateVisibility() {
+  const updateVisibility = (): void => {
     if (!btn) return;
     const currentScrollY = window.scrollY;
     const threshold = 200;
@@ -9,15 +9,16 @@ export function initScrollToTop() {
     if (currentScrollY > threshold) {
       btn.classList.remove("translate-y-20", "opacity-0");
       btn.classList.add("translate-y-0", "opacity-100");
-    } else {
-      btn.classList.remove("translate-y-0", "opacity-100");
-      btn.classList.add("translate-y-20", "opacity-0");
+      return;
     }
-  }
 
-  function scrollToTop() {
+    btn.classList.remove("translate-y-0", "opacity-100");
+    btn.classList.add("translate-y-20", "opacity-0");
+  };
+
+  const scrollToTop = (): void => {
     window.scrollTo({ behavior: "smooth", top: 0 });
-  }
+  };
 
   if (btn) {
     btn.addEventListener("click", scrollToTop);
@@ -25,4 +26,4 @@ export function initScrollToTop() {
     // Initial check
     updateVisibility();
   }
-}
+};

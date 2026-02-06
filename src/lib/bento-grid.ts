@@ -1,6 +1,6 @@
 // 1. Clock Logic with Timezone Awareness & Locale
-export function initBentoClock() {
-  function updateTime() {
+export const initBentoClock = (): void => {
+  const updateTime = (): void => {
     const clock = document.getElementById("clock");
     if (clock) {
       const timezone = clock.dataset.timezone || "UTC";
@@ -14,23 +14,23 @@ export function initBentoClock() {
           second: "2-digit",
           timeZone: timezone,
         }).format(now);
-      } catch (e) {
+      } catch {
         // Fallback to local time if timezone/locale is invalid
         clock.textContent = now.toLocaleTimeString();
       }
     }
-  }
+  };
   setInterval(updateTime, 1000);
   updateTime();
-}
+};
 
-export function initBentoGrid() {
+export const initBentoGrid = (): void => {
   initBentoClock();
   initThemeToggle();
-}
+};
 
 // 2. Theme Toggle Logic (Shadcn Compatible)
-export function initThemeToggle() {
+export const initThemeToggle = (): void => {
   const toggleBtn = document.getElementById("theme-toggle");
   const htmlEl = document.documentElement;
 
@@ -51,4 +51,4 @@ export function initThemeToggle() {
     htmlEl.classList.add("dark");
     localStorage.setItem("theme", "dark");
   });
-}
+};

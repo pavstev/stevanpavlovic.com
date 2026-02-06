@@ -1,31 +1,35 @@
 import Worker from "./ai/worker?worker";
 
+interface Source {
+  title: string;
+}
+
 export class RagChat {
   private isOpen = false;
   private isReady = false;
 
   private ui = {
-    close: document.getElementById("rag-close")!,
+    close: document.getElementById("rag-close"),
     form: document.getElementById("rag-form") as HTMLFormElement,
     input: document.getElementById("rag-input") as HTMLInputElement,
-    loader: document.getElementById("rag-loading-overlay")!,
-    loaderBar: document.getElementById("rag-loader-bar")!,
-    loaderText: document.getElementById("rag-loader-text")!,
-    messages: document.getElementById("rag-messages")!,
-    statusDot: document.getElementById("rag-status-indicator")!,
-    statusText: document.getElementById("rag-status-text")!,
+    loader: document.getElementById("rag-loading-overlay"),
+    loaderBar: document.getElementById("rag-loader-bar"),
+    loaderText: document.getElementById("rag-loader-text"),
+    messages: document.getElementById("rag-messages"),
+    statusDot: document.getElementById("rag-status-indicator"),
+    statusText: document.getElementById("rag-status-text"),
     submit: document.getElementById("rag-submit") as HTMLButtonElement,
-    toggle: document.getElementById("rag-toggle")!,
-    window: document.getElementById("rag-window")!,
+    toggle: document.getElementById("rag-toggle"),
+    window: document.getElementById("rag-window"),
   };
 
-  private worker: null | Worker = null;
+  private worker: Worker | null = null;
 
   constructor() {
     this.init();
   }
 
-  private addBotResponse(text: string, sources: any[]) {
+  private addBotResponse(text: string, sources: Source[]): void {
     const msg = document.createElement("div");
     msg.className = "flex gap-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-500";
 
@@ -56,10 +60,12 @@ export class RagChat {
         </div>
       `;
 
-    this.ui.messages.appendChild(msg);
+    this.ui.messages?.appendChild(msg);
 
     // Typing Effect
-    const textContainer = msg.querySelector(".bot-text")!;
+    const textContainer = msg.querySelector(".bot-text");
+    if (!textContainer) return;
+
     let i = 0;
     const typeInterval = setInterval(() => {
       textContainer.textContent += text.charAt(i);
@@ -69,7 +75,7 @@ export class RagChat {
     }, 15); // Speed of typing
   }
 
-  private addMessage(text: string, type: "bot-error" | "user") {
+  private addMessage(text: string, type: "bot-error" | "user"): void {
     const msg = document.createElement("div");
 
     if (type === "user") {
@@ -91,11 +97,11 @@ export class RagChat {
         `;
     }
 
-    this.ui.messages.appendChild(msg);
+    this.ui.messages?.appendChild(msg);
     this.scrollToBottom();
   }
 
-  private bindEvents() {
+  private bindEvents(): void {
     this.ui.toggle?.addEventListener("click", () => {
       this.toggle();
     });
@@ -107,44 +113,45 @@ export class RagChat {
     });
   }
 
-  private handleMessage(e: MessageEvent) {
+  private handleMessage(e: MessageEvent): void {
     const { message, progress, response, sources, status } = e.data;
 
     switch (status) {
       case "error":
         this.addMessage(message || "An error occurred.", "bot-error");
         this.updateStatus("error");
-        break;
+        return;
       case "generating":
         this.updateStatus("thinking");
-        break;
+        return;
       case "loading":
         this.updateLoader(progress || 0, message);
-        break;
+        return;
       case "ready":
         if (!this.isReady) {
           // First load complete
           this.isReady = true;
           this.hideLoader();
           this.updateStatus("online");
-        } else {
-          // Finished generating
-          this.ui.input.disabled = false;
-          this.ui.submit.disabled = false;
-          this.ui.input.focus();
-          this.updateStatus("online");
+          return;
         }
-        break;
+        // Finished generating
+        this.ui.input.disabled = false;
+        this.ui.submit.disabled = false;
+        this.ui.input.focus();
+        this.updateStatus("online");
+        return;
       default:
-        if (response) {
-          // Add the bot response with typing effect
-          this.addBotResponse(response, sources);
-        }
         break;
+    }
+
+    if (response) {
+      // Add the bot response with typing effect
+      this.addBotResponse(response, sources);
     }
   }
 
-  private handleSubmit(e: SubmitEvent) {
+  private handleSubmit(e: SubmitEvent): void {
     e.preventDefault();
     const text = this.ui.input.value.trim();
     if (!text || !this.isReady) return;
@@ -157,8 +164,8 @@ export class RagChat {
     this.worker?.postMessage({ text, type: "query" });
   }
 
-  private hideLoader() {
-    this.ui.loader.classList.add("opacity-0", "pointer-events-none");
+  private hideLoader(): void {
+    this.ui.loader?.classList.add("opacity-0", "pointer-events-none");
     // Wait for transition then enable inputs
     setTimeout(() => {
       this.ui.input.disabled = false;
@@ -167,11 +174,11 @@ export class RagChat {
     }, 300);
   }
 
-  private init() {
+  private init(): void {
     this.bindEvents();
   }
 
-  private initWorker() {
+  private initWorker(): void {
     if (this.worker) return;
 
     this.worker = new Worker();
@@ -183,19 +190,19 @@ export class RagChat {
     this.worker.postMessage({ type: "init" });
   }
 
-  private scrollToBottom() {
-    this.ui.messages.scrollTo({
+  private scrollToBottom(): void {
+    this.ui.messages?.scrollTo({
       behavior: "smooth",
       top: this.ui.messages.scrollHeight,
     });
   }
 
-  private toggle(force?: boolean) {
+  private toggle(force?: boolean): void {
     this.isOpen = force !== undefined ? force : !this.isOpen;
 
     if (this.isOpen) {
-      this.ui.window.classList.remove("invisible", "opacity-0", "translate-y-8", "scale-95");
-      this.ui.toggle.classList.add("scale-0", "opacity-0");
+      this.ui.window?.classList.remove("invisible", "opacity-0", "translate-y-8", "scale-95");
+      this.ui.toggle?.classList.add("scale-0", "opacity-0");
 
       if (!this.worker) this.initWorker();
       else
@@ -205,19 +212,19 @@ export class RagChat {
       return;
     }
 
-    this.ui.window.classList.add("opacity-0", "translate-y-8", "scale-95");
-    this.ui.toggle.classList.remove("scale-0", "opacity-0");
+    this.ui.window?.classList.add("opacity-0", "translate-y-8", "scale-95");
+    this.ui.toggle?.classList.remove("scale-0", "opacity-0");
     setTimeout(() => {
-      this.ui.window.classList.add("invisible");
+      this.ui.window?.classList.add("invisible");
     }, 300);
   }
 
-  private updateLoader(progress: number, message: string) {
+  private updateLoader(progress: number, message: string): void {
     this.ui.loaderBar.style.width = `${progress}%`;
     this.ui.loaderText.textContent = message;
   }
 
-  private updateStatus(status: "error" | "online" | "thinking") {
+  private updateStatus(status: "error" | "online" | "thinking"): void {
     const colors = {
       error: "bg-red-500",
       online: "bg-green-500",

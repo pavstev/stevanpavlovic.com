@@ -4,32 +4,34 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/cn";
 
-const variants = cva("shrink-0 transition-transform duration-300", {
+const variants = cva("shrink-0 transition-all duration-300", {
   defaultVariants: {
-    size: "md",
+    size: "base",
     variant: "default",
   },
   variants: {
     size: {
-      "2xl": "size-8",
-      base: "size-4",
-      lg: "size-6",
-      md: "size-5",
-      sm: "size-4",
-      xl: "size-7",
-      xs: "size-3",
+      "2xl": "size-7", // 28px
+      base: "size-4.5", // 18px
+      lg: "size-6", // 24px
+      md: "size-5", // 20px
+      sm: "size-4", // 16px
+      xl: "size-6.5", // 26px
+      xs: "size-3", // 12px
     },
     variant: {
-      accent: "text-accent",
+      accent: "text-accent drop-shadow-[0_0_8px_var(--color-accent)]",
       default: "",
       ghost: "opacity-40",
+      highlight: "text-highlight drop-shadow-[0_0_8px_var(--color-highlight)]",
       muted: "text-muted-foreground",
-      primary: "text-primary",
+      primary: "text-primary drop-shadow-[0_0_8px_var(--color-primary)]",
+      white: "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]",
     },
   },
 });
 
-export interface Props extends VariantProps<typeof variants> {
+interface Props extends VariantProps<typeof variants> {
   class?: string;
   name: string;
 }

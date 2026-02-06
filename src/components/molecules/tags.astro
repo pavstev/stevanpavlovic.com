@@ -17,9 +17,9 @@ const { class: className, limit, tags } = Astro.props;
   tags && tags.length > 0 && (
     <Stack class:list={[className, "group flex-wrap"]} direction="row" gap={2}>
       {tags.slice(0, limit || tags.length).map((tag) => (
-        <Badge variant="default">{tag.label}</Badge>
+        <Badge variant="primary">{tag.label}</Badge>
       ))}
-      {limit && tags.length > limit && <Badge variant="default">+{tags.length - limit}</Badge>}
+      {limit && tags.length > limit && <Badge variant="primary">+{tags.length - limit}</Badge>}
     </Stack>
   )
 }

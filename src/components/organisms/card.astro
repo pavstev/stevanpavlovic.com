@@ -29,9 +29,11 @@ const variants = cva(
         true: "cursor-pointer hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5",
       },
       variant: {
+        cyber:
+          "neon-border glass-dark shadow-[0_0_20px_var(--color-primary)/0.1] hover:shadow-[0_0_30px_var(--color-primary)/0.2]",
         default: "border-border/50 bg-card/50 backdrop-blur-md hover:border-primary/20",
         ghost: "border-transparent bg-transparent hover:bg-foreground/5",
-        glass: "glass hover:bg-background/60",
+        glass: "glass-dark border-white/5 hover:bg-white/5",
         outline: "border-2 border-border/50 bg-transparent hover:border-primary/20",
       },
     },
@@ -124,7 +126,7 @@ const isRowLayout = list && !icon;
       <div
         class:list={[
           cardClasses,
-          { "flex-row gap-4 p-4!": isRowLayout, "h-full flex-col gap-4 p-5 sm:p-6": !isRowLayout },
+          { "flex-row gap-3 p-3!": isRowLayout, "h-full flex-col gap-3 p-4 sm:p-5": !isRowLayout },
           {
             "items-center text-center": align === "center" && !isRowLayout,
             "items-start": !(align === "center" && !isRowLayout),
@@ -142,7 +144,7 @@ const isRowLayout = list && !icon;
               class="relative border-border/50 bg-foreground/5 group-hover:border-primary/30 group-hover:bg-primary/5"
               icon={icon}
               iconSize="lg"
-              size="xl"
+              size="lg"
               variant="default"
             />
           </div>
@@ -154,7 +156,7 @@ const isRowLayout = list && !icon;
             image={image}
             loading={loading}
             wrapperClass={
-              isRowLayout ? "hidden size-20 shrink-0 sm:block lg:size-24" : "mb-0 aspect-video w-full rounded-xl"
+              isRowLayout ? "hidden size-16 shrink-0 sm:block lg:size-20" : "mb-0 aspect-video w-full rounded-xl"
             }
           />
         )}
@@ -162,22 +164,22 @@ const isRowLayout = list && !icon;
         {logo && (
           <div class="relative">
             <div class="absolute -inset-4 bg-primary/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-            <div class="relative flex size-16 items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/5">
+            <div class="relative flex size-14 items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-foreground/5 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/30 group-hover:bg-primary/5">
               <img alt={title || ""} class="size-full object-contain p-2" src={logo.src} />
             </div>
           </div>
         )}
 
-        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-4": !isRowLayout }]}>
+        <div class:list={["flex w-full min-w-0 flex-1 flex-col", { "gap-0": isRowLayout, "gap-3": !isRowLayout }]}>
           <div
             class:list={[
-              "flex w-full justify-between gap-4",
+              "flex w-full justify-between gap-3",
               { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
             ]}
           >
-            <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout }]}>
+            <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-0.5": !isRowLayout }]}>
               {date && (
-                <div class:list={["flex items-center justify-between", !isRowLayout && "mb-1"]}>
+                <div class:list={["flex items-center justify-between", !isRowLayout && "mb-0.5"]}>
                   <Text class="font-mono tracking-wider uppercase opacity-70" size="xs" variant="muted">
                     <FormattedDate date={date} full />
                   </Text>
@@ -196,11 +198,7 @@ const isRowLayout = list && !icon;
               </Heading>
 
               {subtitle && (
-                <Text
-                  class:list={["font-mono tracking-wider uppercase", { "mt-0.5": isRowLayout, "mt-1": !isRowLayout }]}
-                  size="xs"
-                  variant="muted"
-                >
+                <Text class="mt-0.5 font-mono tracking-wider uppercase" size="xs" variant="muted">
                   {subtitle}
                 </Text>
               )}
@@ -237,7 +235,7 @@ const isRowLayout = list && !icon;
             <Text
               class:list={[
                 "text-muted-foreground",
-                { "mt-2 line-clamp-1": isRowLayout, "mt-2 line-clamp-2 flex-1": !isRowLayout },
+                { "mt-1.5 line-clamp-2 flex-1": !isRowLayout, "mt-2 line-clamp-1": isRowLayout },
               ]}
               size="sm"
             >

@@ -5,40 +5,52 @@ import AppIcon from "./app-icon.astro";
 interface Props {
   caption?: string;
   class?: string;
+  contentClass?: string;
   id: string;
   showCloseButton?: boolean;
+  variant?: "card" | "plain";
 }
 
-const { caption, class: className, id, showCloseButton = true } = Astro.props;
+const { caption, class: className, contentClass, id, showCloseButton = true, variant = "card" } = Astro.props;
 ---
 
 <dialog
   class:list={cn(
-    "group/modal m-auto bg-transparent p-0 focus:outline-none",
-    "backdrop:bg-background/80 backdrop:backdrop-blur-xl",
-    "open:animate-in open:fade-in open:zoom-in-95 open:duration-300",
-    "before:absolute before:inset-0 before:rounded-2xl before:bg-linear-to-br before:from-primary/30 before:via-accent/20 before:to-secondary/30 before:opacity-20 before:blur-3xl before:grayscale",
+    "fixed inset-0 z-50 m-auto hidden overflow-hidden bg-transparent p-0 open:flex open:size-full open:items-center open:justify-center focus:outline-none",
+    variant === "card" && "open:size-fit",
+    "backdrop:bg-black/60 backdrop:backdrop-blur-xl backdrop:transition-opacity backdrop:duration-300",
+    variant === "card" && "open:animate-in open:fade-in open:zoom-in-95 open:duration-200",
+    variant === "plain" && "open:animate-in open:fade-in open:duration-300",
+    className,
   )}
   id={id}
 >
   <div
     class:list={cn(
-      "relative w-full max-w-lg overflow-hidden rounded-2xl border border-foreground/5 bg-card shadow-2xl backdrop-blur-sm",
-      "hover:shadow-3xl transition-all duration-300",
-      "before:absolute before:-inset-1 before:-z-10 before:rounded-2xl before:bg-linear-to-br before:from-primary/20 before:via-accent/10 before:to-secondary/20 before:opacity-5 before:blur-3xl before:grayscale",
-      className,
+      "relative flex flex-col items-center justify-center",
+      variant === "card" && [
+        "w-full max-w-lg overflow-hidden rounded-2xl border border-foreground/5 bg-card shadow-2xl backdrop-blur-sm",
+        "before:absolute before:-inset-1 before:-z-10 before:rounded-2xl before:bg-linear-to-br before:from-primary/20 before:via-accent/10 before:to-secondary/20 before:opacity-5 before:blur-3xl",
+      ],
+      contentClass,
     )}
   >
-    <div class="absolute inset-0 rounded-2xl bg-card/50 backdrop-blur-sm"></div>
-    <div class="relative z-10 p-6">
+    {variant === "card" && <div class="absolute inset-0 rounded-2xl bg-card/50 backdrop-blur-sm" />}
+
+    <div class:list={cn("relative z-10 w-full", variant === "card" && "p-6")}>
       {
         showCloseButton && (
           <button
             aria-label="Close"
-            class="close-modal-btn absolute top-4 right-4 cursor-pointer rounded-full p-1 text-muted-foreground transition-all duration-300 hover:scale-105 hover:bg-foreground/10 hover:text-foreground hover:shadow-lg focus:scale-105 focus:ring-2 focus:ring-foreground/20 focus:outline-none active:scale-95 active:shadow-md"
+            class:list={cn(
+              "close-modal-btn absolute z-50 cursor-pointer rounded-full p-2 transition-all duration-300 hover:scale-105 active:scale-95",
+              variant === "card"
+                ? "top-4 right-4 text-muted-foreground hover:bg-foreground/10 hover:text-foreground hover:shadow-lg focus:ring-2 focus:ring-foreground/20 focus:outline-none"
+                : "fixed top-6 right-6 flex size-11 items-center justify-center border border-white/10 bg-background/20 text-white shadow-2xl backdrop-blur-xl hover:border-white/20 hover:bg-background/40",
+            )}
             type="button"
           >
-            <AppIcon class="transition-transform duration-300 group-hover:scale-110" name="mdi:close-thick" size="lg" />
+            <AppIcon name="mdi:close" size={variant === "card" ? "lg" : "xl"} />
           </button>
         )
       }
@@ -46,7 +58,7 @@ const { caption, class: className, id, showCloseButton = true } = Astro.props;
       <slot />
 
       {
-        caption && (
+        caption && variant === "card" && (
           <div class="mt-4 border-t border-foreground/10 pt-4">
             <div class="text-sm leading-relaxed text-muted-foreground">{caption}</div>
           </div>

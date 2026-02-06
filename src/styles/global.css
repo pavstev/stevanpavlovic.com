@@ -2,55 +2,56 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-background: hsl(0 0% 0%);
+  --color-background: hsl(240 30% 2%);
   --color-foreground: hsl(0 0% 98%);
 
-  --color-card: hsl(0 0% 1%);
+  --color-card: hsl(240 30% 3%);
   --color-card-foreground: hsl(0 0% 98%);
 
-  --color-popover: hsl(0 0% 1%);
+  --color-popover: hsl(240 30% 3%);
   --color-popover-foreground: hsl(0 0% 98%);
 
-  --color-primary: hsl(210 100% 65%);
-  --color-primary-foreground: hsl(0 0% 0%);
+  --color-primary: hsl(210 100% 45%);
+  --color-primary-foreground: hsl(210 100% 10%);
 
-  --color-secondary: hsl(0 0% 2%);
-  --color-secondary-foreground: hsl(210 100% 85%);
+  --color-secondary: hsl(30 100% 50%);
+  --color-secondary-foreground: hsl(30 100% 5%);
 
-  --color-muted: hsl(0 0% 3%);
-  --color-muted-foreground: hsl(0 0% 60%);
+  --color-muted: hsl(240 10% 8%);
+  --color-muted-foreground: hsl(240 5% 65%);
 
-  --color-accent: hsl(85 100% 55%);
-  --color-accent-foreground: hsl(0 0% 0%);
+  --color-accent: hsl(140 100% 50%);
+  --color-accent-foreground: hsl(140 100% 5%);
 
-  --color-destructive: hsl(0 72% 55%);
-  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-highlight: hsl(75 100% 50%);
+  --color-highlight-foreground: hsl(75 100% 5%);
 
-  --color-danger: hsl(0 90% 60%);
-  --color-danger-foreground: hsl(0 0% 100%);
+  --color-destructive: hsl(340 100% 55%);
+  --color-destructive-foreground: hsl(340 100% 100%);
 
-  --color-border: hsl(0 0% 3%);
-  --color-input: hsl(0 0% 3%);
-  --color-ring: hsl(210 100% 65%);
+  --color-danger: hsl(340 100% 55%);
+  --color-danger-foreground: hsl(340 100% 100%);
+
+  --color-border: hsl(240 10% 12%);
+  --color-input: hsl(240 10% 12%);
+  --color-ring: hsl(210 100% 55% / 0.5);
 
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
+  --radius-sm: 0rem;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
 
   --animate-fade-in: fade-in 0.3s ease-out;
   --animate-fade-out: fade-out 0.2s ease-out;
   --animate-zoom-in: zoom-in 0.2s ease-out;
   --animate-slide-in-from-bottom: slide-in-from-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-meteor: meteor 5s linear infinite;
+  --animate-pulse-neon: pulse-neon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   @keyframes fade-in {
     from {
@@ -70,7 +71,7 @@
   }
   @keyframes zoom-in {
     from {
-      transform: scale(0.95);
+      transform: scale(0.98);
       opacity: 0;
     }
     to {
@@ -78,104 +79,83 @@
       opacity: 1;
     }
   }
-  @keyframes slide-in-from-bottom {
-    from {
-      transform: translateY(10px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
-  @keyframes meteor {
-    0% {
-      transform: rotate(var(--angle)) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
+  @keyframes pulse-neon {
+    0%,
     100% {
-      transform: rotate(var(--angle)) translateX(-500px);
-      opacity: 0;
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
     }
   }
 }
 
 @layer base {
   :root {
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    --spacing-3xl: 4rem;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+    --spacing-2xl: 2rem;
+    --spacing-3xl: 3rem;
 
-    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.5);
-    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.6), 0 2px 4px -2px hsl(0 0% 0% / 0.6);
-    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.7), 0 4px 6px -4px hsl(0 0% 0% / 0.7);
-    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.8), 0 8px 10px -6px hsl(0 0% 0% / 0.8);
-    --shadow-2xl: 0 25px 50px -12px hsl(0 0% 0% / 0.9);
+    --glow-primary: 0 0 20px hsl(210 100% 45% / 0.3);
+    --glow-secondary: 0 0 20px hsl(30 100% 50% / 0.3);
+    --glow-accent: 0 0 20px hsl(140 100% 50% / 0.3);
+    --glow-highlight: 0 0 20px hsl(75 100% 50% / 0.3);
+    --glow-destructive: 0 0 20px hsl(340 100% 55% / 0.3);
 
-    --glow-primary: 0 0 35px hsl(210 100% 65% / 0.25);
-    --glow-accent: 0 0 35px hsl(85 100% 55% / 0.25);
-    --glow-danger: 0 0 35px hsl(0 90% 60% / 0.35);
-    --glow-subtle: 0 0 20px hsl(0 0% 100% / 0.05);
-
-    --shimmer-primary: hsl(210 100% 65%);
-    --shimmer-accent: hsl(85 100% 55%);
+    --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
   body {
-    @apply bg-background text-foreground antialiased font-sans selection:bg-foreground/20 selection:text-foreground;
+    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/30 selection:text-white;
+    position: relative;
   }
 
-  h1 {
-    font-size: 5.61rem;
-    font-size: clamp(2.5rem, 8vw, 5.61rem);
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.03;
+    background: var(--noise);
   }
-  h2 {
-    font-size: 4.209rem;
-    font-size: clamp(2.25rem, 6vw, 4.209rem);
+
+  h1 { @apply text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-[0.9] tracking-tighter uppercase; }
+  h2 { @apply text-[clamp(2rem,6vw,3.25rem)] font-black leading-none tracking-tighter uppercase; }
+  h3 { @apply text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-tight; }
+  p { @apply text-[0.9375rem] leading-[1.6] opacity-80; }
+}
+
+@layer utilities {
+  .neon-border {
+    position: relative;
+    border: 1px solid var(--color-border);
   }
-  h3 {
-    font-size: 3.157rem;
-    font-size: clamp(2rem, 5vw, 3.157rem);
+
+  .neon-border::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid transparent;
+    background: linear-gradient(var(--color-primary), var(--color-accent)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
-  h4 {
-    font-size: 2.369rem;
-    font-size: clamp(1.75rem, 4vw, 2.369rem);
+
+  .neon-border:hover::after {
+    opacity: 1;
   }
-  h5 {
-    font-size: 1.777rem;
-    font-size: clamp(1.5rem, 3vw, 1.777rem);
-  }
-  h6 {
-    font-size: 1.333rem;
-    font-size: clamp(1.25rem, 2vw, 1.333rem);
-  }
-  p {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
+
+  .text-glow-primary { text-shadow: 0 0 10px var(--color-primary); }
+  .text-glow-accent { text-shadow: 0 0 10px var(--color-accent); }
 }
 
 @layer utilities {

@@ -2,11 +2,15 @@
 import type { ImageMetadata } from "astro";
 
 import { generateId } from "../../lib/dom";
+import Badge from "../atoms/badge.astro";
+import Button from "../atoms/button.astro";
 import MagnifyOverlay from "../atoms/magnify-overlay.astro";
 import Modal from "../atoms/modal.astro";
+import Text from "../atoms/text.astro";
 
 interface Props {
   alt: string;
+  caption?: string;
   class?: string;
   height?: number;
   loading?: "eager" | "lazy";
@@ -14,97 +18,472 @@ interface Props {
   width?: number;
 }
 
-const { alt, class: className, height, loading = "lazy", src, width } = Astro.props;
+const { alt, caption, class: className, height, loading = "lazy", src, width } = Astro.props;
 
 const imgSrc = typeof src === "string" ? src : src.src;
 const uniqueId = generateId();
 const modalId = `zoom-modal-${uniqueId}`;
 const triggerId = `zoom-trigger-${uniqueId}`;
+
+const displayCaption = caption || alt;
 ---
 
 <div
-  class:list={["group relative block cursor-pointer overflow-hidden transition-all hover:opacity-90", className]}
+  class:list={[
+    "group relative block cursor-pointer overflow-hidden rounded-2xl border border-foreground/5 bg-muted/30 transition-all hover:opacity-90",
+    className,
+  ]}
   id={triggerId}
   role="button"
   tabindex="0"
 >
-  <img alt={alt} class="size-full object-cover" height={height} loading={loading} src={imgSrc} width={width} />
+  <img
+    alt={alt}
+    class="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    height={height}
+    loading={loading}
+    src={imgSrc}
+    width={width}
+  />
   <MagnifyOverlay />
 </div>
 
-<Modal
-  class="max-h-[95vh] max-w-[95vw] overflow-visible border-none bg-transparent shadow-none"
-  id={modalId}
-  showCloseButton={true}
->
-  <div
-    class="magnify-container relative max-h-[90vh] max-w-[95vw] cursor-zoom-in overflow-hidden transition-transform duration-100"
-    role="button"
-    tabindex="0"
-  >
-    <img alt={alt} class="magnify-image object-contain transition-all duration-100" src={imgSrc} />
+<Modal contentClass="flex size-full flex-col" id={modalId} showCloseButton={true} variant="plain">
+  <div class="relative flex flex-1 flex-col items-center justify-center overflow-hidden">
+    <!-- ADVANCED HUD: Left Top -->
+    <div class="pointer-events-none absolute top-8 left-8 z-30 flex flex-col gap-2">
+      <div
+        class="animate-in fade-in slide-in-from-left-4 flex items-center gap-3 rounded-lg border border-white/10 bg-black/40 p-3 backdrop-blur-xl duration-700"
+      >
+        <div class="flex flex-col gap-1 border-r border-white/10 pr-4">
+          <Text class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase" size="sm">Scale</Text>
+          <Text class="hud-zoom-val font-mono text-lg font-black text-primary" size="sm">100%</Text>
+        </div>
+        <div class="flex flex-col gap-1">
+          <Text class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase" size="sm">Position</Text>
+          <div class="flex gap-3">
+            <span class="font-mono text-[11px] text-white/60">X: <span class="hud-pos-x text-white">0</span></span>
+            <span class="font-mono text-[11px] text-white/60">Y: <span class="hud-pos-y text-white">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Controls -->
+      <div class="animate-in fade-in slide-in-from-left-4 flex gap-1.5 delay-100 duration-700">
+        <Button
+          class="undo-btn size-8 rounded-md bg-black/40 hover:bg-white/10"
+          icon="mdi:undo"
+          size="icon"
+          title="Undo (Ctrl+Z)"
+          variant="ghost"
+        />
+        <Button
+          class="redo-btn size-8 rounded-md bg-black/40 hover:bg-white/10"
+          icon="mdi:redo"
+          size="icon"
+          title="Redo (Ctrl+Y)"
+          variant="ghost"
+        />
+      </div>
+    </div>
+
+    <!-- Top Bar with Caption -->
+    {
+      displayCaption && (
+        <div class="pointer-events-none absolute top-0 right-0 left-0 z-20 flex justify-center p-8">
+          <div class="animate-in fade-in slide-in-from-top-4 pointer-events-auto max-w-xl duration-500">
+            <Badge class="border-white/10 bg-black/40 px-6 py-3 backdrop-blur-2xl" variant="default">
+              <Text class="font-medium tracking-wide text-white" size="sm">
+                {displayCaption}
+              </Text>
+            </Badge>
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Image Container -->
+    <div
+      class="photo-viewer-container flex size-full cursor-grab items-center justify-center overflow-hidden p-20 active:cursor-grabbing"
+      id={`viewer-${uniqueId}`}
+    >
+      <div class="photo-stage group/stage relative flex items-center justify-center">
+        <!-- Sci-fi Corner Marks -->
+        <div
+          class="pointer-events-none absolute -inset-8 opacity-40 transition-opacity duration-300 group-hover/stage:opacity-100"
+        >
+          <div class="absolute top-0 left-0 size-4 border-t-2 border-l-2 border-primary"></div>
+          <div class="absolute top-0 right-0 size-4 border-t-2 border-r-2 border-primary"></div>
+          <div class="absolute bottom-0 left-0 size-4 border-b-2 border-l-2 border-primary"></div>
+          <div class="absolute right-0 bottom-0 size-4 border-r-2 border-b-2 border-primary"></div>
+        </div>
+
+        <img
+          alt={alt}
+          class="photo-viewer-image pointer-events-auto max-h-[85vh] max-w-[85vw] rounded-lg object-contain shadow-2xl ring-1 ring-white/10 transition-transform duration-200 select-none"
+          src={imgSrc}
+        />
+        <canvas
+          class="photo-viewer-canvas pointer-events-none absolute inset-0 size-full transition-transform duration-200"
+        ></canvas>
+      </div>
+    </div>
+
+    <!-- TOOL SELECTOR: Floating Left Side -->
+    <div
+      class="animate-in fade-in slide-in-from-left-4 absolute top-1/2 left-8 flex -translate-y-1/2 flex-col gap-2 rounded-2xl border border-white/10 bg-black/40 p-2 shadow-2xl backdrop-blur-2xl duration-700"
+    >
+      <Button
+        class="tool-btn active size-12 rounded-xl bg-primary text-primary-foreground"
+        data-tool="move"
+        icon="mdi:hand-back-right"
+        size="icon"
+        title="Move Tool (V)"
+        variant="primary"
+      />
+      <Button
+        class="tool-btn size-12 rounded-xl bg-white/5 text-white hover:bg-white/10"
+        data-tool="draw"
+        icon="mdi:pencil"
+        size="icon"
+        title="Draw Tool (B)"
+        variant="ghost"
+      />
+      <Button
+        class="tool-btn size-12 rounded-xl bg-white/5 text-white hover:bg-white/10"
+        data-tool="erase"
+        icon="mdi:eraser"
+        size="icon"
+        title="Eraser Tool (E)"
+        variant="ghost"
+      />
+    </div>
+
+    <!-- SETTINGS PANEL: Floating Right Side -->
+    <div
+      class="animate-in fade-in slide-in-from-right-4 absolute top-1/2 right-8 flex w-64 -translate-y-1/2 flex-col gap-6 rounded-3xl border border-white/10 bg-black/40 p-6 shadow-2xl backdrop-blur-2xl duration-700"
+    >
+      <div class="space-y-4">
+        <Text class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase" size="sm">Brush Settings</Text>
+
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <Text class="text-white/60" size="sm">Size</Text>
+            <Text class="font-mono text-primary" size="sm"><span class="val-size">4</span>px</Text>
+          </div>
+          <input class="slider brush-size-slider w-full accent-primary" max="100" min="1" type="range" value="4" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <Text class="text-white/60" size="sm">Opacity</Text>
+            <Text class="font-mono text-primary" size="sm"><span class="val-opacity">100</span>%</Text>
+          </div>
+          <input class="slider brush-opacity-slider w-full accent-primary" max="100" min="1" type="range" value="100" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <Text class="text-white/60" size="sm">Softness</Text>
+            <Text class="font-mono text-primary" size="sm"><span class="val-softness">0</span>px</Text>
+          </div>
+          <input class="slider brush-softness-slider w-full accent-primary" max="50" min="0" type="range" value="0" />
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <Text class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase" size="sm">Color</Text>
+        <div class="grid grid-cols-5 gap-2">
+          {
+            ["#ff2d55", "#ffcc00", "#007aff", "#34c759", "#ffffff"].map((color) => (
+              <button
+                class="color-picker-btn size-8 rounded-full border border-white/20 transition-all hover:scale-110 focus:outline-none active:scale-95"
+                data-color={color}
+                style={{ backgroundColor: color }}
+              />
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <Text class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase" size="sm">Filters</Text>
+        <div class="grid grid-cols-3 gap-2">
+          {
+            [
+              { name: "None", val: "none" },
+              { name: "Mono", val: "grayscale(100%)" },
+              { name: "Sepia", val: "sepia(100%)" },
+              { name: "Neon", val: "brighten(150%) saturate(200%) hue-rotate(90deg)" },
+              { name: "Inv", val: "invert(100%)" },
+              { name: "Blue", val: "hue-rotate(180deg)" },
+            ].map((f) => (
+              <button
+                class="filter-btn rounded-md border border-white/10 bg-white/5 py-1.5 text-[10px] text-white/60 transition-all hover:bg-white/10 hover:text-white"
+                data-filter={f.val}
+              >
+                {f.name}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <Button
+        class="doodle-clear-btn mt-2 w-full border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
+        icon="mdi:trash-can-outline"
+        variant="outline"
+      >
+        Clear Canvas
+      </Button>
+    </div>
+
+    <!-- BOTTOM BAR: Core Nav -->
+    <div
+      class="animate-in fade-in slide-in-from-bottom-4 absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/40 p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-2xl duration-700"
+    >
+      <div class="flex items-center gap-1 pr-2">
+        <Button
+          class="zoom-out-btn size-10 rounded-full hover:bg-white/10"
+          icon="mdi:minus"
+          size="icon"
+          variant="ghost"
+        />
+        <Button
+          class="reset-btn h-10 rounded-full px-4 text-[11px] font-bold tracking-widest uppercase hover:bg-white/10"
+          variant="ghost">Fit</Button
+        >
+        <Button
+          class="zoom-actual-btn h-10 rounded-full px-4 text-[11px] font-bold tracking-widest uppercase hover:bg-white/10"
+          variant="ghost">1:1</Button
+        >
+        <Button
+          class="zoom-in-btn size-10 rounded-full hover:bg-white/10"
+          icon="mdi:plus"
+          size="icon"
+          variant="ghost"
+        />
+      </div>
+
+      <div class="h-6 w-px bg-white/10"></div>
+
+      <Button
+        class="screenshot-btn h-10 rounded-full bg-primary px-8 shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] transition-all hover:scale-105 active:scale-95"
+        icon="mdi:export-variant"
+        size="lg"
+        variant="primary"
+      >
+        <span class="text-[11px] font-bold tracking-widest uppercase">Export</span>
+      </Button>
+    </div>
   </div>
 </Modal>
 
-<script define:vars={{ modalId, triggerId }} is:inline>
-  // Using closure to isolate scope
-  (() => {
-    // @ts-ignore
-    const trigger = document.getElementById(triggerId);
-    // @ts-ignore
-    const dialog = document.getElementById(modalId);
+<style>
+  .slider {
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-primary, #007aff);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.5);
+  }
+</style>
 
-    if (!trigger || !dialog) return;
+<script>
+  import { PhotoViewer, type PhotoTool } from "../../lib/photo-viewer";
 
-    const container = dialog.querySelector(".magnify-container");
-    const img = dialog.querySelector(".magnify-image");
+  function initAdvancedPhotoViewer() {
+    const containers = document.querySelectorAll<HTMLElement>('[id^="viewer-"]');
 
-    let isMagnified = false;
-    let position = { x: 50, y: 50 };
+    containers.forEach((container) => {
+      const viewerId = container.getAttribute("id");
+      const uniqueId = viewerId?.replace("viewer-", "");
+      const modalId = `zoom-modal-${uniqueId}`;
+      const triggerId = `zoom-trigger-${uniqueId}`;
 
-    const openModal = () => {
-      dialog.showModal();
-    };
+      const trigger = document.getElementById(triggerId);
+      const dialog = document.getElementById(modalId) as HTMLDialogElement;
+      const img = container.querySelector(".photo-viewer-image") as HTMLImageElement;
+      const canvas = container.querySelector(".photo-viewer-canvas") as HTMLCanvasElement;
 
-    trigger.addEventListener("click", openModal);
-    trigger.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openModal();
-      }
+      if (!trigger || !dialog || !img || !canvas) return;
+
+      const viewer = new PhotoViewer({ container, image: img, canvas });
+
+      // HUD Elements
+      const hudZoom = dialog.querySelector(".hud-zoom-val");
+      const hudPosX = dialog.querySelector(".hud-pos-x");
+      const hudPosY = dialog.querySelector(".hud-pos-y");
+
+      container.addEventListener("viewer-update", ((e: CustomEvent) => {
+        if (hudZoom) hudZoom.textContent = `${e.detail.zoom}%`;
+        if (hudPosX) hudPosX.textContent = e.detail.posX;
+        if (hudPosY) hudPosY.textContent = e.detail.posY;
+      }) as EventListener);
+
+      // Tool Selection
+      const toolBtns = dialog.querySelectorAll<HTMLButtonElement>(".tool-btn");
+      toolBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tool = btn.dataset.tool as PhotoTool;
+          viewer.setTool(tool);
+          toolBtns.forEach((b) => {
+            b.classList.remove("bg-primary", "text-primary-foreground");
+            b.classList.add("bg-white/5", "text-white");
+          });
+          btn.classList.add("bg-primary", "text-primary-foreground");
+          btn.classList.remove("bg-white/5", "text-white");
+        });
+      });
+
+      // Brush Settings
+      const sizeSlider = dialog.querySelector<HTMLInputElement>(".brush-size-slider");
+      const sizeVal = dialog.querySelector(".val-size");
+      sizeSlider?.addEventListener("input", (e) => {
+        const val = (e.target as HTMLInputElement).value;
+        viewer.setBrushSize(parseInt(val));
+        if (sizeVal) sizeVal.textContent = val;
+      });
+
+      const opacitySlider = dialog.querySelector<HTMLInputElement>(".brush-opacity-slider");
+      const opacityVal = dialog.querySelector(".val-opacity");
+      opacitySlider?.addEventListener("input", (e) => {
+        const val = (e.target as HTMLInputElement).value;
+        viewer.setBrushOpacity(parseInt(val) / 100);
+        if (opacityVal) opacityVal.textContent = val;
+      });
+
+      const softnessSlider = dialog.querySelector<HTMLInputElement>(".brush-softness-slider");
+      const softnessVal = dialog.querySelector(".val-softness");
+      softnessSlider?.addEventListener("input", (e) => {
+        const val = (e.target as HTMLInputElement).value;
+        viewer.setBrushSoftness(parseInt(val));
+        if (softnessVal) softnessVal.textContent = val;
+      });
+
+      // Colors & Filters
+      const colorBtns = dialog.querySelectorAll<HTMLButtonElement>(".color-picker-btn");
+      colorBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const color = btn.dataset.color!;
+          viewer.setBrushColor(color);
+          colorBtns.forEach((b) => b.classList.remove("ring-4", "ring-primary/40"));
+          btn.classList.add("ring-4", "ring-primary/40");
+        });
+      });
+
+      const filterBtns = dialog.querySelectorAll<HTMLButtonElement>(".filter-btn");
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          viewer.setFilter(btn.dataset.filter!);
+          filterBtns.forEach((b) => b.classList.remove("border-primary", "text-primary"));
+          btn.classList.add("border-primary", "text-primary");
+        });
+      });
+
+      // History & Base Controls
+      dialog.querySelector(".undo-btn")?.addEventListener("click", () => viewer.undo());
+      dialog.querySelector(".redo-btn")?.addEventListener("click", () => viewer.redo());
+      dialog.querySelector(".doodle-clear-btn")?.addEventListener("click", () => viewer.clearDoodle());
+
+      dialog.querySelector(".zoom-in-btn")?.addEventListener("click", () => viewer.zoomIn());
+      dialog.querySelector(".zoom-out-btn")?.addEventListener("click", () => viewer.zoomOut());
+      dialog.querySelector(".reset-btn")?.addEventListener("click", () => viewer.reset());
+      dialog.querySelector(".zoom-actual-btn")?.addEventListener("click", () => viewer.zoomToActualSize());
+      dialog
+        .querySelector(".screenshot-btn")
+        ?.addEventListener("click", () => viewer.download(`export-${uniqueId}.png`));
+
+      // Keyboard support
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (!dialog.open) return;
+
+        // Command/Ctrl + Z / Y
+        if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+          e.preventDefault();
+          viewer.undo();
+          return;
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === "y") {
+          e.preventDefault();
+          viewer.redo();
+          return;
+        }
+
+        switch (e.key.toLowerCase()) {
+          case "v":
+            dialog.querySelector<HTMLButtonElement>('[data-tool="move"]')?.click();
+            break;
+          case "b":
+            dialog.querySelector<HTMLButtonElement>('[data-tool="draw"]')?.click();
+            break;
+          case "e":
+            dialog.querySelector<HTMLButtonElement>('[data-tool="erase"]')?.click();
+            break;
+          case "+":
+          case "=":
+            viewer.zoomIn();
+            break;
+          case "-":
+          case "_":
+            viewer.zoomOut();
+            break;
+          case "0":
+            viewer.reset();
+            break;
+          case "1":
+            viewer.zoomToActualSize();
+            break;
+          case "s":
+            viewer.download(`export-${uniqueId}.png`);
+            break;
+          case "c":
+            viewer.clearDoodle();
+            break;
+          case "arrowup":
+            viewer.pan(0, 50);
+            break;
+          case "arrowdown":
+            viewer.pan(0, -50);
+            break;
+          case "arrowleft":
+            viewer.pan(50, 0);
+            break;
+          case "arrowright":
+            viewer.pan(-50, 0);
+            break;
+        }
+      };
+
+      const openModal = () => {
+        dialog.showModal();
+        viewer.reset();
+        window.addEventListener("keydown", handleKeydown);
+      };
+
+      trigger.addEventListener("click", openModal);
+      trigger.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal();
+        }
+      });
+
+      dialog.addEventListener("close", () => {
+        viewer.reset();
+        window.removeEventListener("keydown", handleKeydown);
+      });
     });
+  }
 
-    dialog.addEventListener("close", () => {
-      isMagnified = false;
-      updateTransform();
-    });
-
-    const updateTransform = () => {
-      if (isMagnified) {
-        container.classList.remove("cursor-zoom-in");
-        container.classList.add("cursor-zoom-out");
-        img.classList.add("scale-150");
-        img.style.transformOrigin = `${position.x}% ${position.y}%`;
-      } else {
-        container.classList.remove("cursor-zoom-out");
-        container.classList.add("cursor-zoom-in");
-        img.classList.remove("scale-150");
-        img.style.transformOrigin = "center";
-      }
-    };
-
-    container?.addEventListener("click", () => {
-      isMagnified = !isMagnified;
-      updateTransform();
-    });
-
-    container?.addEventListener("mousemove", (e) => {
-      if (!isMagnified) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      position = { x, y };
-      img.style.transformOrigin = `${x}% ${y}%`;
-    });
-  })();
+  initAdvancedPhotoViewer();
+  document.addEventListener("astro:page-load", initAdvancedPhotoViewer);
 </script>

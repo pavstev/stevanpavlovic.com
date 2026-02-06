@@ -11,15 +11,15 @@ const variants = cva("relative shrink-0 overflow-hidden leading-none transition-
   },
   variants: {
     size: {
-      lg: "size-10",
-      md: "size-8",
-      sm: "size-6",
+      lg: "size-9",
+      md: "size-7.5",
+      sm: "size-5",
     },
     type: {
       organization:
-        "flex items-center justify-center rounded-lg border border-border/50 bg-background/50 p-1.5 shadow-sm ring-1 ring-border/5 backdrop-blur-md",
+        "flex items-center justify-center rounded-md border border-white/5 bg-white/5 p-1 shadow-sm ring-1 ring-white/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
       person:
-        "rounded-full border border-border/80 bg-background/50 shadow-sm ring-2 ring-background/50 backdrop-blur-md",
+        "rounded-full border border-white/10 bg-white/5 shadow-sm ring-2 ring-white/10 backdrop-blur-xl group-hover:border-primary/30",
       status: "flex items-center justify-center",
     },
   },

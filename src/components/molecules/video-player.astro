@@ -6,10 +6,9 @@ import Icon from "../atoms/Icon.astro";
 
 interface Props extends HTMLAttributes<"div"> {
   poster?: string;
-  src: string;
 }
 
-const { class: className, poster, src, ...props } = Astro.props;
+const { class: className, poster, ...props } = Astro.props;
 ---
 
 <div

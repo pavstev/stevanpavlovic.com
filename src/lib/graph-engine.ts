@@ -13,11 +13,37 @@ export interface GraphLink {
 }
 
 export interface GraphNode {
-  [key: string]: any;
-  data?: any;
+  [key: string]: unknown;
+  bg?: string;
+  border?: string;
+  data?: GraphNodeData;
   id: string;
   label: string;
+  radius?: number;
   type: string;
+  vx?: number;
+  vy?: number;
+  x?: number;
+  y?: number;
+}
+
+export interface GraphNodeData {
+  [key: string]: unknown;
+}
+
+export interface ProcessedLink {
+  source: ProcessedNode;
+  target: ProcessedNode;
+}
+
+export interface ProcessedNode extends GraphNode {
+  bg: string;
+  border: string;
+  radius: number;
+  vx: number;
+  vy: number;
+  x: number;
+  y: number;
 }
 
 export interface ThemeConfig {
@@ -29,22 +55,42 @@ export interface ThemeConfig {
 
 export type ThemeMap = Record<string, ThemeConfig>;
 
+interface Camera {
+  targetX: number;
+  targetY: number;
+  targetZoom: number;
+  x: number;
+  y: number;
+  zoom: number;
+}
+
+interface WorldPosition {
+  x: number;
+  y: number;
+}
+
 export class GraphEngine {
   // Camera state
-  private cam = { targetX: 0, targetY: 0, targetZoom: 0.8, x: 0, y: 0, zoom: 0.8 };
+  private cam: Camera = {
+    targetX: 0,
+    targetY: 0,
+    targetZoom: 0.8,
+    x: 0,
+    y: 0,
+    zoom: 0.8,
+  };
+
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private data: GraphData;
-
-  private dragNode: any = null;
+  private dragNode: null | ProcessedNode = null;
   private height: number = 0;
-  private hoverNode: any = null;
+  private hoverNode: null | ProcessedNode = null;
   private isDragging = false;
-  private links: any[] = [];
+  private links: ProcessedLink[] = [];
 
   // Physics state
-  private nodes: any[] = [];
-  private particles: any[] = [];
+  private nodes!: ProcessedNode[];
   private themeMap: ThemeMap;
   private width: number = 0;
 
@@ -59,13 +105,13 @@ export class GraphEngine {
     this.init();
   }
 
-  public resetView() {
+  public resetView(): void {
     this.cam.targetX = this.width / 2;
     this.cam.targetY = this.height / 2;
     this.cam.targetZoom = 0.8;
   }
 
-  private draw() {
+  private draw(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.save();
 
@@ -77,14 +123,14 @@ export class GraphEngine {
     this.ctx.lineWidth = 1;
     this.ctx.strokeStyle = this.getThemeColor("--color-border");
     this.ctx.beginPath();
-    this.links.forEach((link: any) => {
+    for (const link of this.links) {
       this.ctx.moveTo(link.source.x, link.source.y);
       this.ctx.lineTo(link.target.x, link.target.y);
-    });
+    }
     this.ctx.stroke();
 
     // Nodes
-    this.nodes.forEach((node) => {
+    for (const node of this.nodes) {
       const isHover = node === this.hoverNode;
       const r = node.radius + (isHover ? 4 : 0);
 
@@ -109,7 +155,7 @@ export class GraphEngine {
         this.ctx.fillStyle = this.getThemeColor("--color-foreground");
         this.ctx.fillText(node.label, node.x, node.y + r + 15);
       }
-    });
+    }
 
     this.ctx.restore();
   }
@@ -124,7 +170,7 @@ export class GraphEngine {
     return `hsl(${hsl})`;
   }
 
-  private getWorldPos(clientX: number, clientY: number) {
+  private getWorldPos(clientX: number, clientY: number): WorldPosition {
     const rect = this.canvas.getBoundingClientRect();
     const cx = this.width / 2;
     const cy = this.height / 2;
@@ -137,7 +183,7 @@ export class GraphEngine {
     };
   }
 
-  private init() {
+  private init(): void {
     this.width = this.canvas.clientWidth;
     this.height = this.canvas.clientHeight;
 
@@ -152,7 +198,7 @@ export class GraphEngine {
     this.canvas.height = this.height * dpr;
     this.ctx.scale(dpr, dpr);
 
-    this.nodes = this.data.nodes.map((n) => {
+    this.nodes = this.data.nodes.map((n): ProcessedNode => {
       const config = this.themeMap[n.type] || { color: "var(--color-primary)", radius: 10 };
       const color = this.getThemeColor(config.color);
 
@@ -168,16 +214,23 @@ export class GraphEngine {
       };
     });
 
-    const nodeMap = new Map(this.nodes.map((n) => [n.id, n]));
+    const nodeMap = new Map<ProcessedNode["id"], ProcessedNode>(this.nodes.map((n) => [n.id, n]));
     this.links = this.data.links
-      .map((l) => ({ source: nodeMap.get(l.source), target: nodeMap.get(l.target) }))
-      .filter((l) => l.source && l.target);
+      .map((l): ProcessedLink | undefined => {
+        const source = nodeMap.get(l.source);
+        const target = nodeMap.get(l.target);
+        if (source && target) {
+          return { source, target };
+        }
+        return undefined;
+      })
+      .filter((l): l is ProcessedLink => l !== undefined);
 
     this.setupListeners();
     this.render();
   }
 
-  private render() {
+  private render(): void {
     this.update();
     this.draw();
     requestAnimationFrame(() => {
@@ -185,8 +238,8 @@ export class GraphEngine {
     });
   }
 
-  private setupListeners() {
-    this.canvas.addEventListener("mousedown", (e) => {
+  private setupListeners(): void {
+    this.canvas.addEventListener("mousedown", () => {
       if (this.hoverNode) {
         this.isDragging = true;
         this.dragNode = this.hoverNode;
@@ -201,7 +254,7 @@ export class GraphEngine {
     this.canvas.addEventListener("mousemove", (e) => {
       const pos = this.getWorldPos(e.clientX, e.clientY);
 
-      let found = null;
+      let found: null | ProcessedNode = null;
       let minDist = Infinity;
 
       for (const node of this.nodes) {
@@ -244,7 +297,7 @@ export class GraphEngine {
     );
   }
 
-  private update() {
+  private update(): void {
     this.cam.x += (this.cam.targetX - this.cam.x) * 0.1;
     this.cam.y += (this.cam.targetY - this.cam.y) * 0.1;
     this.cam.zoom += (this.cam.targetZoom - this.cam.zoom) * 0.1;
@@ -280,7 +333,7 @@ export class GraphEngine {
       }
     }
 
-    this.links.forEach((link: any) => {
+    for (const link of this.links) {
       const dx = link.target.x - link.source.x;
       const dy = link.target.y - link.source.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -293,14 +346,14 @@ export class GraphEngine {
       link.source.vy += fy;
       link.target.vx -= fx;
       link.target.vy -= fy;
-    });
+    }
 
-    this.nodes.forEach((node) => {
-      if (node === this.dragNode) return;
+    for (const node of this.nodes) {
+      if (node === this.dragNode) continue;
       node.vx *= friction;
       node.vy *= friction;
       node.x += node.vx;
       node.y += node.vy;
-    });
+    }
   }
 }

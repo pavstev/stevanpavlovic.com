@@ -49,7 +49,7 @@ const GLOBAL_IGNORES = [
   "worker-configuration.d.ts",
   ".vscode/**/*",
   // TODO: IMPORTANT
-  "**/*.mdx",
+  // "**/*.mdx", // Removed to enable MDX linting
 ];
 
 const STYLISTIC_OPTIONS = {
@@ -75,7 +75,9 @@ try {
       .map((d) => d.name);
 
     _remarkSchemas = collections.reduce<Record<string, string[]>>((acc, collection) => {
+      // Use absolute definition for the glob to ensure it matches correctly in the plugin
       const schemaPath = `${ASTRO_COLLECTIONS_DIR}/${collection}.schema.json`;
+      // Match all md/mdx files in the collection
       acc[schemaPath] = [`${CONTENT_DIR}/${collection}/**/*.{md,mdx}`];
       return acc;
     }, {});
@@ -302,12 +304,19 @@ export default defineConfig(
   },
 
   {
-    // Override for content files: Use settings to pass remark plugins
+    // Override for content files: Configure mdx/remark rule logic
     files: CONTENT_FILES,
-    settings: {
-      mdx: {
-        remarkPlugins: ["remark-frontmatter", ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }]],
-      },
+    rules: {
+      "mdx/remark": [
+        "error",
+        {
+          plugins: [
+            "remark-frontmatter",
+            ["remark-lint-frontmatter-schema", { schemas: _remarkSchemas }],
+            "remark-lint-no-multiple-toplevel-headings",
+          ],
+        },
+      ],
     },
   },
 

@@ -7,7 +7,7 @@ const CompanyType = z.enum(["Full-time", "Contract", "Freelance", "Agency"]);
 const ExperienceType = z.enum(["Full-time", "Contract", "Freelance"]);
 const Region = z.enum(["North America", "South America", "Europe", "Asia", "Africa", "Oceania", "Remote"]);
 const RemoteType = z.enum(["Fully Remote", "Hybrid", "Remote-First"]);
-const SocialLinkType = z.enum(["LinkedIn", "Twitter", "GitHub", "Facebook", "Instagram", "Website", "Other"]);
+const SocialLinkType = z.enum(["LinkedIn", "Medium", "Twitter", "GitHub", "Facebook", "Instagram", "Website", "Other"]);
 const Industry = z.enum([
   "Technology",
   "Software",

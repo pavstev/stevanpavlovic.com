@@ -13,10 +13,10 @@ import { defineConfig } from "astro/config";
 import { readFile } from "node:fs/promises";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
+import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
 
 import { PROFILE } from "./src/config";
-import { lastUpdatedRemarkPlugin, readingTimeRemarkPlugin } from "./src/lib/plugin/remark";
 
 export default defineConfig({
   adapter: cloudflare({
@@ -64,7 +64,7 @@ export default defineConfig({
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
-    remarkPlugins: [readingTimeRemarkPlugin, lastUpdatedRemarkPlugin, [remarkToc, { heading: "toc", maxDepth: 3 }]],
+    remarkPlugins: [readingTimeRemarkPlugin, [remarkToc, { heading: "toc", maxDepth: 3 }]],
     shikiConfig: { theme: "github-dark-dimmed" },
     // #10 VS-Code Caliber Syntax Highlighting
     syntaxHighlight: "shiki",

@@ -10,7 +10,7 @@ import { PROFILE } from "../../config";
 import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
 
-export const getSortDate = (item: CollectionItem): number => {
+const getSortDate = (item: CollectionItem): number => {
   const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
   return adapter ? adapter.getSortDate(item) : 0;
 };

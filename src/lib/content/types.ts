@@ -17,15 +17,11 @@ export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
 }
 
 export type Company = CollectionEntry<"companies">["data"];
-export type Location = CollectionEntry<"locations">["data"];
 export type Nullable<T> = null | T | undefined;
-export type Person = CollectionEntry<"people">["data"];
-
 export interface PostLink {
   href: string;
   label: string;
 }
-
 export type Tag = CollectionEntry<"tags">["data"];
 
 export interface ToolbarItem {

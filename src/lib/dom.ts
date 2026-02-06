@@ -4,7 +4,7 @@ interface ChatMessage {
   text: string;
 }
 
-export const createMessageElement = (message: ChatMessage, variants: { ai: string; user: string }): HTMLDivElement => {
+const createMessageElement = (message: ChatMessage, variants: { ai: string; user: string }): HTMLDivElement => {
   const container = document.createElement("div");
   container.className = `flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.isAi ? "" : "items-end"}`;
 
@@ -21,7 +21,7 @@ export const createMessageElement = (message: ChatMessage, variants: { ai: strin
   return container;
 };
 
-export const createTypingIndicator = (): HTMLDivElement => {
+const createTypingIndicator = (): HTMLDivElement => {
   const container = document.createElement("div");
   container.className = "flex flex-col gap-1 animate-in fade-in";
   container.id = "typing-indicator";
@@ -67,7 +67,7 @@ export const initInteractiveCards = (): void => {
   }
 };
 
-export const scrollToBottom = (container: HTMLElement | null): void => {
+const scrollToBottom = (container: HTMLElement | null): void => {
   if (container) {
     container.scrollTo({
       behavior: "smooth",
@@ -76,7 +76,7 @@ export const scrollToBottom = (container: HTMLElement | null): void => {
   }
 };
 
-export const updateStatus = (element: HTMLElement | null, text: string): void => {
+const updateStatus = (element: HTMLElement | null, text: string): void => {
   if (element) {
     element.textContent = text;
   }

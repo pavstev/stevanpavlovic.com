@@ -10,6 +10,8 @@ const config: KnipConfig = {
     "@typescript-eslint/parser",
     "astro-eslint-parser",
     "@iconify-json/mdi",
+    "remark-lint-no-multiple-toplevel-headings",
+    "eslint-mdx",
   ],
 };
 

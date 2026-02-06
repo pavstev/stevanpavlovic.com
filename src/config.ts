@@ -177,14 +177,3 @@ export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = 
   { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
   { icon: "mdi:view-column", label: "Grid", mode: "grid" },
 ];
-
-const CHATBOT_VARIANTS = {
-  ai: "rounded-tl-none bg-muted/80 text-foreground/90",
-  user: "ml-auto rounded-tr-none bg-primary text-primary-foreground",
-};
-
-const RESUME_CONTEXT = `
-Stevan Pavlovic is a Senior Software Engineer and Technical Lead with over 10 years of experience.
-He specializes in building scalable web applications, leading technical teams, and implementing modern development practices.
-Based in Belgrade, Serbia.
-`.trim();

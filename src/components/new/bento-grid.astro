@@ -1,0 +1,525 @@
+---
+interface Props {
+  className?: string;
+
+  /**
+   * General Configuration
+   */
+  config?: {
+    injectGlobalStyles?: boolean; // Set false if you have your own Shadcn variables
+    locale?: string; // e.g., 'en-US' for date formatting
+    themeToggleEnabled?: boolean;
+  };
+
+  /**
+   * Location Card Configuration
+   */
+  location?: {
+    city: string;
+    country: string;
+    mapImage?: string;
+    timezone: string; // IANA timezone string (e.g., "America/New_York")
+  };
+
+  /**
+   * Music/Now Playing Card Configuration
+   */
+  music?: {
+    artist: string;
+    cover: string;
+    enabled?: boolean;
+    isPlaying?: boolean;
+    song: string;
+  };
+
+  /**
+   * Newsletter Card Configuration
+   */
+  newsletter?: {
+    buttonText?: string;
+    description?: string;
+    enabled?: boolean;
+    placeholder?: string;
+    title?: string;
+  };
+
+  /**
+   * Profile Card Configuration
+   */
+  profile?: {
+    bio: string;
+    buttons?: {
+      copyEmail?: { label: string; show: boolean };
+      downloadCv?: { label: string; show: boolean };
+    };
+    cvLink?: string;
+    email?: string;
+    name: string;
+    role: string;
+    status?: "available" | "busy" | "focus";
+    statusText?: string;
+  };
+
+  /**
+   * Projects Card Configuration
+   */
+  projects?: {
+    icon?: string;
+    subtitle?: string;
+    title?: string;
+    url?: string;
+  };
+
+  /**
+   * Social Links Configuration
+   */
+  socials?: SocialLink[];
+
+  /**
+   * Tech Stack Card Configuration
+   */
+  stack?: {
+    items: TechItem[];
+    title?: string;
+  };
+}
+
+interface SocialLink {
+  colorClass?: string;
+  icon: string;
+  name: string;
+  url: string;
+}
+
+interface TechItem {
+  colorClass?: string; // Optional tailwind color classes for hover
+  icon: string; // Phosphor icon class name (e.g., "ph-rocket")
+  name: string;
+}
+
+const {
+  className,
+  config = {
+    injectGlobalStyles: true,
+    locale: "en-US",
+    themeToggleEnabled: true
+  },
+  location = {
+    city: "New York",
+    country: "USA",
+    mapImage: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-74.006,40.7128,12,0/400x400?access_token=YOUR_TOKEN",
+    timezone: "America/New_York"
+  },
+  music = {
+    artist: "Electric Youth",
+    cover: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&q=80&w=400",
+    enabled: true,
+    isPlaying: true,
+    song: "Synthesizer"
+  },
+  newsletter = {
+    buttonText: "Subscribe",
+    description: "Get notified when I ship new projects or write about engineering.",
+    enabled: true,
+    placeholder: "Email address",
+    title: "Stay updated"
+  },
+  profile = {
+    bio: "A detail-oriented engineer crafting robust web applications with modern architecture.",
+    buttons: {
+      copyEmail: { label: "Copy Email", show: true },
+      downloadCv: { label: "Download CV", show: true }
+    },
+    cvLink: "#",
+    email: "hello@alex.dev",
+    name: "Alex",
+    role: "Full Stack Engineer",
+    status: "available",
+    statusText: "Available for work"
+  },
+  projects = {
+    icon: "ph-folder-notch-open",
+    subtitle: "View my recent work",
+    title: "Projects",
+    url: "/projects"
+  },
+  socials = [
+    { icon: "ph-github-logo", name: "GitHub", url: "#" },
+    { colorClass: "text-sky-500", icon: "ph-twitter-logo", name: "Twitter", url: "#" }
+  ],
+  stack = {
+    items: [
+      { colorClass: "hover:bg-orange-100 hover:text-orange-600 dark:hover:bg-orange-900/20", icon: "ph-rocket-launch", name: "Astro" },
+      { colorClass: "hover:bg-blue-100 hover:text-blue-600 dark:hover:bg-blue-900/20", icon: "ph-atom", name: "React" },
+      { colorClass: "hover:bg-cyan-100 hover:text-cyan-600 dark:hover:bg-cyan-900/20", icon: "ph-paint-brush", name: "Tailwind" },
+      { colorClass: "hover:bg-yellow-100 hover:text-yellow-600 dark:hover:bg-yellow-900/20", icon: "ph-code", name: "TypeScript" },
+      { colorClass: "hover:bg-green-100 hover:text-green-600 dark:hover:bg-green-900/20", icon: "ph-hard-drives", name: "Node.js" },
+      { colorClass: "hover:bg-purple-100 hover:text-purple-600 dark:hover:bg-purple-900/20", icon: "ph-figma-logo", name: "Figma" },
+      { colorClass: "hover:bg-gray-100 hover:text-black dark:hover:bg-white dark:hover:text-black", icon: "ph-terminal", name: "Next.js" },
+      { colorClass: "hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/20", icon: "ph-git-branch", name: "Git" }
+    ],
+    title: "Toolbox"
+  }
+} = Astro.props;
+
+// Merge defaults for nested objects (in case user provides partial objects)
+const mergedProfile = {
+  ...{
+    bio: "A detail-oriented engineer crafting robust web applications with modern architecture.",
+    cvLink: "#",
+    email: "hello@alex.dev",
+    name: "Alex",
+    role: "Full Stack Engineer",
+    status: "available",
+    statusText: "Available for work",
+  },
+  ...profile,
+  buttons: {
+    copyEmail: { label: "Copy Email", show: true },
+    downloadCv: { label: "Download CV", show: true },
+    ...profile?.buttons
+  }
+};
+
+const mergedMusic = { ...{ artist: "", cover: "", enabled: true, isPlaying: false, song: "" }, ...music };
+const mergedProjects = { ...{ icon: "ph-folder-notch-open", subtitle: "View my recent work", title: "Projects", url: "/projects" }, ...projects };
+const mergedNewsletter = { ...{ buttonText: "Subscribe", description: "", enabled: true, placeholder: "Email address", title: "Stay updated" }, ...newsletter };
+const mergedConfig = { ...{ injectGlobalStyles: true, locale: "en-US", themeToggleEnabled: true }, ...config };
+
+// Helper to determine status color
+const getStatusColor = (status: string) => {
+    switch(status) {
+        case 'available': return { bg: 'bg-green-100 dark:bg-green-900/30', dot: 'bg-green-500', ping: 'bg-green-400', text: 'text-green-700 dark:text-green-400' };
+        case 'busy': return { bg: 'bg-red-100 dark:bg-red-900/30', dot: 'bg-red-500', ping: 'bg-red-400', text: 'text-red-700 dark:text-red-400' };
+        default: return { bg: 'bg-yellow-100 dark:bg-yellow-900/30', dot: 'bg-yellow-500', ping: 'bg-yellow-400', text: 'text-yellow-700 dark:text-yellow-400' };
+    }
+};
+const statusColors = getStatusColor(mergedProfile.status || 'available');
+---
+
+<!--
+  GLOBAL THEME VARIABLES
+  Based on Shadcn UI (Zinc Theme).
+-->
+{mergedConfig.injectGlobalStyles && (
+<style is:global>
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+
+  /* Utility classes mapping to variables for Tailwind */
+  .bg-background { background-color: hsl(var(--background)); }
+  .bg-card { background-color: hsl(var(--card)); }
+  .text-foreground { color: hsl(var(--foreground)); }
+  .text-muted-foreground { color: hsl(var(--muted-foreground)); }
+  .border-border { border-color: hsl(var(--border)); }
+</style>
+)}
+
+<!-- Load Icons (Phosphor) -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<div class:list={["mx-auto w-full max-w-[1200px] p-4 sm:p-6", className]}>
+
+  <!-- Grid Layout -->
+  <div class="grid-auto-rows-[minmax(180px,auto)] grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+
+    <!-- 1. Hero / Bio Card (Large) -->
+    <div class="group relative col-span-1 row-span-2 overflow-hidden rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-8 transition-all hover:shadow-lg md:col-span-2 lg:col-span-2">
+
+      <!-- Background Gradient/Grain -->
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-20 dark:bg-[radial-gradient(#27272a_1px,transparent_1px)]"></div>
+
+      <div class="relative z-10 flex h-full flex-col justify-between">
+        <div class="flex items-start justify-between">
+          <div class="relative">
+            <div class:list={["inline-flex items-center gap-2 rounded-full border border-[hsl(var(--border))] px-3 py-1 text-xs font-medium", statusColors.bg, statusColors.text]} id="status-badge">
+              <span class="relative flex size-2">
+                <span class:list={["absolute inline-flex size-full animate-ping rounded-full opacity-75", statusColors.ping]}></span>
+                <span class:list={["relative inline-flex size-2 rounded-full", statusColors.dot]}></span>
+              </span>
+              <span id="status-text">{mergedProfile.statusText}</span>
+            </div>
+          </div>
+          {mergedConfig.themeToggleEnabled && (
+            <button aria-label="Toggle theme" class="cursor-pointer rounded-full bg-[hsl(var(--secondary))] p-2 text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--muted))]" id="theme-toggle">
+                <i class="ph-fill ph-moon text-xl dark:hidden"></i>
+                <i class="ph-fill ph-sun hidden text-xl dark:block"></i>
+            </button>
+          )}
+        </div>
+
+        <div class="mt-8">
+          <h1 class="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--foreground))] sm:text-5xl">
+            Hello, I'm <span class="bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">{mergedProfile.name}</span>.
+          </h1>
+          <p class="max-w-md text-lg text-[hsl(var(--muted-foreground))]">
+            {mergedProfile.bio}
+          </p>
+        </div>
+
+        <div class="mt-8 flex gap-3">
+          {mergedProfile.buttons?.downloadCv?.show && (
+            <a class="inline-flex items-center justify-center rounded-md bg-[hsl(var(--primary))] px-6 py-2.5 text-sm font-medium text-[hsl(var(--primary-foreground))] shadow-sm transition-colors hover:bg-[hsl(var(--primary))]/90 focus-visible:ring-1 focus-visible:ring-[hsl(var(--ring))] focus-visible:outline-none" href={mergedProfile.cvLink}>
+                {mergedProfile.buttons.downloadCv.label}
+            </a>
+          )}
+          {mergedProfile.buttons?.copyEmail?.show && (
+            <button
+                class="inline-flex cursor-pointer items-center justify-center rounded-md border border-[hsl(var(--input))] bg-transparent px-6 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
+                data-email={mergedProfile.email}
+                onclick="navigator.clipboard.writeText(this.dataset.email); const original = this.innerText; this.innerText = 'Copied!'; setTimeout(() => this.innerText = original, 2000);">
+                {mergedProfile.buttons.copyEmail.label}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Location & Time (Smart Widget) -->
+    <div class="group relative col-span-1 row-span-1 overflow-hidden rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
+      <!-- Interactive Map Background -->
+      {location.mapImage && <div class="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+        <img
+            alt="Location Map"
+            class="size-full object-cover opacity-80 grayscale transition-all group-hover:grayscale-0 dark:opacity-50"
+            src={location.mapImage}
+        />
+      </div>}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+      <div class="relative z-10 flex h-full flex-col justify-between p-6">
+        <div class="self-end rounded-lg border border-white/10 bg-black/40 px-2 py-1 text-xs text-white backdrop-blur-md">
+          {location.timezone}
+        </div>
+        <div>
+          <div class="mb-1 flex items-center gap-2 text-white">
+            <i class="ph-fill ph-map-pin text-indigo-400"></i>
+            <span class="font-medium">{location.city}, {location.country}</span>
+          </div>
+          <time
+            class="text-3xl font-bold tracking-tighter text-white tabular-nums"
+            data-locale={mergedConfig.locale}
+            data-timezone={location.timezone}
+            id="clock">
+            00:00:00
+          </time>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Tech Stack (Dynamic Loop) -->
+    <div class="col-span-1 row-span-1 flex flex-col justify-between overflow-hidden rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 transition-colors hover:border-[hsl(var(--ring))]">
+      <div class="flex items-center gap-2 text-[hsl(var(--foreground))]">
+        <i class="ph-duotone ph-stack text-xl"></i>
+        <h3 class="font-semibold">{stack.title}</h3>
+      </div>
+
+      <div class="mt-4 grid grid-cols-4 gap-4">
+        {stack.items.map((tech) => (
+            <div
+                class:list={`group flex aspect-square items-center justify-center rounded-md bg-[hsl(var(--secondary))] text-2xl transition-colors ${tech.colorClass || 'hover:bg-[hsl(var(--primary))] hover:text-[hsl(var(--primary-foreground))]'}`}
+                title={tech.name}
+            >
+                <i class:list={`ph-fill ${tech.icon}`}></i>
+            </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 4. Spotify / Activity (Tall) -->
+    {mergedMusic.enabled && (
+    <div class="relative col-span-1 row-span-2 overflow-hidden rounded-(--radius) bg-zinc-900 p-6 text-white shadow-xl md:col-span-1">
+        <!-- Animated visualizer background -->
+        <div class="absolute right-0 bottom-0 left-0 h-32 bg-gradient-to-t from-green-500/20 to-transparent"></div>
+
+        <div class="relative z-10 flex h-full flex-col">
+            <div class="mb-6 flex items-center justify-between">
+                <i class="ph-fill ph-spotify-logo text-3xl text-[#1DB954]"></i>
+                {mergedMusic.isPlaying && (
+                    <div class="flex h-3 items-end gap-1">
+                        <span class="w-1 animate-[music-bar_1s_ease-in-out_infinite] bg-[#1DB954]"></span>
+                        <span class="w-1 animate-[music-bar_1.2s_ease-in-out_infinite_0.1s] bg-[#1DB954]"></span>
+                        <span class="w-1 animate-[music-bar_0.8s_ease-in-out_infinite_0.2s] bg-[#1DB954]"></span>
+                    </div>
+                )}
+            </div>
+
+            <!-- Album Art with Spin -->
+            <div class="group relative mx-auto mb-6 size-32">
+                <div class="absolute inset-0 rounded-full bg-white/10 opacity-50 blur-md transition-opacity group-hover:opacity-100"></div>
+                <img
+                    alt="Album Art"
+                    class:list={[`size-full rounded-full border-2 border-white/10 object-cover shadow-2xl`,{"animate-[spin_8s_linear_infinite]": mergedMusic.isPlaying}]}
+                    src={mergedMusic.cover}
+                />
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="size-4 rounded-full border border-white/20 bg-zinc-900"></div>
+                </div>
+            </div>
+
+            <div class="mt-auto space-y-2 text-center">
+                <h3 class="truncate text-lg font-bold">{mergedMusic.song}</h3>
+                <p class="text-sm text-white/60">{mergedMusic.artist}</p>
+
+                <div class="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                    <div class="h-full w-[60%] rounded-full bg-[#1DB954]"></div>
+                </div>
+
+                <div class="mt-4 flex items-center justify-center gap-4 pt-2">
+                    <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-back text-xl"></i></button>
+                    <button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-105">
+                        <i class:list={[`ph-fill text-xl`,{"ph-pause": mergedMusic.isPlaying, "ph-play": !mergedMusic.isPlaying}]}></i>
+                    </button>
+                    <button class="cursor-pointer text-white/60 hover:text-white"><i class="ph-fill ph-skip-forward text-xl"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    )}
+
+    <!-- 5. Projects Link -->
+    <a class="group relative col-span-1 row-span-1 flex flex-col justify-between overflow-hidden rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 transition-all hover:bg-[hsl(var(--accent))]" href={mergedProjects.url}>
+      <div class="flex items-start justify-between">
+        <div class="rounded-full bg-[hsl(var(--secondary))] p-2.5">
+            <i class:list={`ph-duotone ${mergedProjects.icon} text-xl text-[hsl(var(--foreground))]`}></i>
+        </div>
+        <i class="ph-bold ph-arrow-up-right text-[hsl(var(--muted-foreground))] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-[hsl(var(--foreground))]">{mergedProjects.title}</h3>
+        <p class="text-sm text-[hsl(var(--muted-foreground))]">{mergedProjects.subtitle}</p>
+      </div>
+    </a>
+
+    <!-- 6. Connect / Socials -->
+    <div class="col-span-1 row-span-1 flex flex-col justify-center gap-3 rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
+        {socials.map(social => (
+            <a class="flex items-center gap-3 rounded-lg border border-transparent p-2 transition-colors hover:bg-[hsl(var(--secondary))]" href={social.url}>
+                <i class:list={`ph-fill ${social.icon} text-xl ${social.colorClass || 'text-[hsl(var(--foreground))]'}`}></i>
+                <span class="text-sm font-medium text-[hsl(var(--foreground))]">{social.name}</span>
+                <i class="ph-bold ph-arrow-right ml-auto text-xs text-[hsl(var(--muted-foreground))]"></i>
+            </a>
+        ))}
+    </div>
+
+    <!-- 7. Newsletter (Wide) -->
+    {mergedNewsletter.enabled && (
+    <div class="col-span-1 flex flex-col items-center justify-between gap-6 rounded-(--radius) border border-[hsl(var(--border))] bg-[hsl(var(--primary))] p-8 text-[hsl(var(--primary-foreground))] shadow-lg md:col-span-2 md:flex-row lg:col-span-2">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold">{mergedNewsletter.title}</h3>
+        <p class="max-w-sm text-[hsl(var(--primary-foreground))]/80">
+          {mergedNewsletter.description}
+        </p>
+      </div>
+      <div class="flex w-full max-w-sm items-center space-x-2">
+        <input class="flex h-10 w-full rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 py-2 text-sm text-[hsl(var(--foreground))] ring-offset-[hsl(var(--background))] file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[hsl(var(--muted-foreground))] focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" placeholder={mergedNewsletter.placeholder} type="email" />
+        <button class="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-[hsl(var(--secondary))] px-4 py-2 font-medium text-[hsl(var(--secondary-foreground))] transition-colors hover:bg-[hsl(var(--secondary))]/80">
+            {mergedNewsletter.buttonText}
+        </button>
+      </div>
+    </div>
+    )}
+
+  </div>
+</div>
+
+<script>
+    // --- Logic for Interactivity ---
+
+    // 1. Clock Logic with Timezone Awareness & Locale
+    function updateTime() {
+        const clock = document.getElementById('clock');
+        if (clock) {
+            const timezone = clock.dataset.timezone || 'UTC';
+            const locale = clock.dataset.locale || 'en-US';
+            const now = new Date();
+            try {
+                clock.textContent = new Intl.DateTimeFormat(locale, {
+                    timeZone: timezone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).format(now);
+            } catch (e) {
+                // Fallback to local time if timezone/locale is invalid
+                clock.textContent = now.toLocaleTimeString();
+            }
+        }
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // 2. Theme Toggle Logic (Shadcn Compatible)
+    const toggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+
+    // Check system preference on load
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlEl.classList.add('dark');
+    }
+
+    toggleBtn?.addEventListener('click', () => {
+        if (htmlEl.classList.contains('dark')) {
+            htmlEl.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            htmlEl.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
+
+<style>
+    /* Tailwind v4+ CSS Native Variable Usage */
+    @keyframes music-bar {
+        0%, 100% { height: 20%; }
+        50% { height: 80%; }
+    }
+
+    .animate-music-bar {
+        animation: music-bar 1s ease-in-out infinite;
+    }
+</style>

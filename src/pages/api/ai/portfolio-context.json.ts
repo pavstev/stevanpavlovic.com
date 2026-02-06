@@ -22,7 +22,7 @@ export const GET: APIRoute = async () => {
 
     if (!res.ok) throw new Error("Weather API failed");
 
-    const data = await res.json();
+    const data: WeatherData = await res.json();
 
     // Calculate local time manually to be precise server-side
     const belgradeTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" });

@@ -16,29 +16,25 @@ const truncatedText = shouldTruncate ? description.slice(0, maxLength).trim() + 
 
 {
   description && (
-    <div class="max-w-2xl">
-      <ToolbarItemComponent label="Description">
-        <div class="max-w-2xl">
-          {shouldTruncate ? (
-            <details class="group/desc">
-              <summary class="cursor-pointer list-none">
-                <span class="text-sm leading-relaxed text-muted-foreground group-open/desc:hidden">
-                  {truncatedText}
-                </span>
-                <span class="hidden text-sm leading-relaxed text-muted-foreground group-open/desc:inline">
-                  {description}
-                </span>
-                <span class="ml-2 text-xs font-medium text-primary hover:underline">
-                  <span class="group-open/desc:hidden">Read more</span>
-                  <span class="hidden group-open/desc:inline">Show less</span>
-                </span>
-              </summary>
-            </details>
-          ) : (
-            <p class="text-sm leading-relaxed text-muted-foreground">{description}</p>
-          )}
-        </div>
-      </ToolbarItemComponent>
-    </div>
+    <ToolbarItemComponent label="Description">
+      <div class="max-w-2xl">
+        {shouldTruncate ? (
+          <details class="group/desc">
+            <summary class="cursor-pointer list-none">
+              <span class="text-sm leading-relaxed text-muted-foreground group-open/desc:hidden">{truncatedText}</span>
+              <span class="hidden text-sm leading-relaxed text-muted-foreground group-open/desc:inline">
+                {description}
+              </span>
+              <span class="ml-2 text-xs font-medium text-primary hover:underline">
+                <span class="group-open/desc:hidden">Read more</span>
+                <span class="hidden group-open/desc:inline">Show less</span>
+              </span>
+            </summary>
+          </details>
+        ) : (
+          <p class="text-sm leading-relaxed text-muted-foreground">{description}</p>
+        )}
+      </div>
+    </ToolbarItemComponent>
   )
 }

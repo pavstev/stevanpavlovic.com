@@ -25,7 +25,9 @@ const avatarVariants = cva("relative flex shrink-0 overflow-hidden rounded-full 
       primary: "shadow-glow-primary border border-primary/30 bg-primary/10",
     },
   },
-}ort interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
+});
+
+export interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
   alt?: string;
   fallback?: string;
   src?: any;
@@ -37,7 +39,13 @@ const { alt, class: className, fallback, size, src, variant, ...props } = Astro.
 <div class:list={cn(avatarVariants({ size, variant }), className)} {...props}>
   {
     src ? (
-      <Image alt={alt || fallback || "Avatar"} class="aspect-square size-full object-cover" format="avif" src={src} widths={[128, 256]} />
+      <Image
+        alt={alt || fallback || "Avatar"}
+        class="aspect-square size-full object-cover"
+        format="avif"
+        src={src}
+        widths={[128, 256]}
+      />
     ) : (
       <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
         <span

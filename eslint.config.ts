@@ -246,6 +246,7 @@ export default defineConfig(
       "astro/no-unused-define-vars-in-style": "error",
       "astro/prefer-class-list-directive": "error",
       "astro/prefer-object-class-list": "error",
+      "no-unused-vars": "off",
     },
   },
 

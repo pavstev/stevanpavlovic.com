@@ -1,6 +1,6 @@
-const generateId = (): string => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+export const generateId = (): string => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
-const initInteractiveCards = (): void => {
+export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group\\/card");
 
   for (const card of cards) {

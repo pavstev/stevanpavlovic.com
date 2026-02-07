@@ -38,7 +38,7 @@ export const initCodeBlocks = () => {
         <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 10v11a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z"></path></svg>
       </button>
     `;
-    wrapper.prepend(header);
+    wrapper.insertBefore(header, block);
 
     // 3. Copy Logic
     const btn = header.querySelector(".copy-btn");

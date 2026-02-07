@@ -36,3 +36,5 @@ worker-configuration.d.ts
 # unlighthouse
 .unlighthouse
 *.log
+*.txt
+*.png

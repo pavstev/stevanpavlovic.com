@@ -2,8 +2,6 @@ import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
-import playground from "@brattonross/astro-playground";
-import playformInline from "@playform/inline";
 import sentry from "@sentry/astro";
 import tailwindcss from "@tailwindcss/vite";
 import brokenLinksChecker from "astro-broken-links-checker";

@@ -6,10 +6,9 @@ import Stack from "../atoms/Stack.astro";
 interface Props {
   as?: any;
   class?: string;
-  showSidebar?: boolean;
 }
 
-const { as: Tag = "article", class: className } = Astro.props;
+const { as: Tag = "article", class: className } = Astro.props as Props;
 const hasSidebar = Astro.slots.has("sidebar");
 const hasToc = Astro.slots.has("toc");
 ---
@@ -26,8 +25,12 @@ const hasToc = Astro.slots.has("toc");
     }
 
     {/* Primary Layout Engine (12-Col) */}
-    <div class:list={["grid gap-12", {"lg:grid-cols-12": hasSidebar || hasToc, "mx-auto w-full max-w-4xl": !(hasSidebar || hasToc)}]}>
-
+    <div
+      class:list={[
+        "grid gap-12",
+        { "lg:grid-cols-12": hasSidebar || hasToc, "mx-auto w-full max-w-4xl": !(hasSidebar || hasToc) },
+      ]}
+    >
       {/* Position: Left Sidebar (Author/Related) */}
       {
         hasSidebar && (

@@ -27,12 +27,14 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
         id="nav-island"
       >
         {/* Progress Background (for posts) */}
-        {isPost && (
-          <div
-            class="absolute inset-0 -z-10 w-0 rounded-full bg-primary/5 transition-all duration-150"
-            id="nav-progress-bg"
-          ></div>
-        )}
+        {
+          isPost && (
+            <div
+              class="absolute inset-0 -z-10 w-0 rounded-full bg-primary/5 transition-all duration-150"
+              id="nav-progress-bg"
+            />
+          )
+        }
 
         {/* Left: Brand */}
         <div class="shrink-0 pl-2">
@@ -78,7 +80,9 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
             class="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-white/5 hover:text-foreground active:scale-95"
             data-search-trigger
           >
-            <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
+            >
           </button>
 
           <div class="hidden md:block">
@@ -101,20 +105,19 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
     initMobileMenu();
     updateActiveLinks();
 
-    const header = document.getElementById('site-header');
-    const island = document.getElementById('nav-island');
-    const progressBg = document.getElementById('nav-progress-bg');
+    const island = document.getElementById("nav-island");
+    const progressBg = document.getElementById("nav-progress-bg");
 
     const handleScroll = () => {
       const scroll = window.scrollY;
 
       // Shrink header on scroll
       if (scroll > 50) {
-        island?.classList.add('h-12', 'scale-95', 'shadow-glow-subtle');
-        island?.classList.remove('h-14');
+        island?.classList.add("h-12", "scale-95", "shadow-glow-subtle");
+        island?.classList.remove("h-14");
       } else {
-        island?.classList.remove('h-12', 'scale-95', 'shadow-glow-subtle');
-        island?.classList.add('h-14');
+        island?.classList.remove("h-12", "scale-95", "shadow-glow-subtle");
+        island?.classList.add("h-14");
       }
 
       // Progress bar logic
@@ -126,7 +129,7 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
   };
 

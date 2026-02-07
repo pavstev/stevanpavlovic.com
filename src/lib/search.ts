@@ -163,6 +163,7 @@ class CommandPalette {
 
   private async loadPagefind() {
     try {
+      // @ts-ignore - Pagefind is generated at build time
       this.pagefind = await import(/* @vite-ignore */ "/pagefind/pagefind.js");
       this.pagefind?.options({ showImages: false });
     } catch (e) {

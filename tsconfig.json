@@ -12,7 +12,7 @@
       }
     ]
   },
-  "exclude": ["dist"],
+  "exclude": ["dist", "api-bak"],
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"]
 }

@@ -1,5 +1,5 @@
 ---
-// Handles: /blog/grid/2, /blog/list/3, etc. (explicit display, pages 2+)
+// Handles: /blog/page/2, /projects/page/3, etc. (pages 2+)
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
@@ -8,20 +8,18 @@ import ResourceDiscovery from "../../../components/organisms/ResourceDiscovery.a
 import { ITEMS_PER_PAGE } from "../../../config";
 import { collections } from "../../../content.config";
 import { type DisplayMode, getCollectionData, getCollectionPageData } from "../../../lib";
-import { type Params as BaseParams } from "./../[display].astro";
 
-interface Params extends BaseParams {
-  page: `${number}`;
+export interface Params {
+  collection: CollectionKey;
+  page: string;
 }
 
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const displays: DisplayMode[] = ["list", "grid"];
   const paths: Array<{
     params: {
       collection: CollectionKey;
-      display: DisplayMode;
       page: string;
     };
   }> = [];
@@ -32,24 +30,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const totalItems = sortedItems.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
 
-    for (const display of displays) {
-      // Start from page 2 since page 1 is handled by [display].astro
-      for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-        paths.push({
-          params: {
-            collection,
-            display,
-            page: String(pageNum),
-          },
-        });
-      }
+    // Start from page 2 since page 1 is handled by index.astro
+    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+      paths.push({
+        params: {
+          collection,
+          page: String(pageNum),
+        },
+      });
     }
   }
 
   return paths;
 };
 
-const { collection, display, page } = Astro.params as unknown as Params;
+const { collection, page } = Astro.params as unknown as Params;
+const display = (Astro.url.searchParams.get("display") as DisplayMode) || "list";
 const pageData = await getCollectionPageData(collection, page, display);
 
 const {
@@ -68,7 +64,11 @@ const {
 } = pageData;
 ---
 
-<LayoutRoot description={config.description} slug={`/${collection}/${display}/${page}`} title={`${config.title} - Page ${page}`}>
+<LayoutRoot
+  description={config.description}
+  slug={`/${collection}/page/${page}`}
+  title={`${config.title} - Page ${page}`}
+>
   <ResourceDiscovery
     {...config}
     baseUrl={baseUrl}

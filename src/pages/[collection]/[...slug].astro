@@ -53,42 +53,43 @@ const viewProps = await getViewPageProps(entry as any);
   <NavigationProgress />
 
   <CompositionGrid class="py-12 md:py-24">
-    <div class="space-y-10">
-      {/* Dynamic Header HUD */}
-      <header class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700">
-        <Heading class="max-w-4xl leading-[1.1] tracking-tight" data-pagefind-meta="title" data-pagefind-weight="10" level={1} size="display">
+    <ArticleRenderer class="border-0 bg-transparent p-0 shadow-none" showSidebar={headings.length > 0}>
+      <header class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700" slot="header">
+        <Heading
+          class="max-w-4xl leading-[1.1] tracking-tight"
+          data-pagefind-meta="title"
+          data-pagefind-weight="10"
+          level={1}
+          size="display"
+        >
           {viewProps.title}
         </Heading>
         <div data-pagefind-meta={`category:${collection}`} style="display:none"></div>
-
         <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
       </header>
 
-      {/* Main Content & Contextual Sidebar */}
-      <ArticleRenderer class="border-0 bg-transparent p-0 shadow-none" showSidebar={headings.length > 0}>
-        {headings.length > 0 && <ProgressNavigation slot="toc" />}
+      {headings.length > 0 && <ProgressNavigation slot="toc" />}
 
-        <div class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary">
-          <Content />
+      <div
+        class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
+      >
+        <Content />
+      </div>
+
+      <div class="sticky top-24 space-y-8" slot="sidebar">
+        <AuthorBio />
+        <div class="glass space-y-4 rounded-xl border-white/5 p-4">
+          <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
+          <button
+            class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
+            id="toggle-focus"
+          >
+            <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
+            <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
+          </button>
         </div>
-
-        <div class="sticky top-24 space-y-8" slot="sidebar">
-          <AuthorBio />
-
-          {/* Immersive HUD */}
-          <div class="glass space-y-4 rounded-xl border-white/5 p-4">
-            <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
-            <button
-              class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
-              id="toggle-focus"
-            >
-              <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
-              <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
-            </button>
-          </div>
-        </div>
-      </ArticleRenderer>
-    </div>
+      </div>
+    </ArticleRenderer>
   </CompositionGrid>
 </LayoutRoot>
 
@@ -98,16 +99,16 @@ const viewProps = await getViewPageProps(entry as any);
   const init = () => {
     initCodeBlocks();
 
-    const focusBtn = document.getElementById('toggle-focus');
+    const focusBtn = document.getElementById("toggle-focus");
     const toggleFocus = () => {
-      document.documentElement.classList.toggle('focus-mode');
+      document.documentElement.classList.toggle("focus-mode");
     };
 
-    focusBtn?.addEventListener('click', toggleFocus);
+    focusBtn?.addEventListener("click", toggleFocus);
 
     // Shortcut F for focus
-    window.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'f' && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) {
+    window.addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
         toggleFocus();
       }
     });

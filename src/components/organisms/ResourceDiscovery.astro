@@ -50,9 +50,6 @@ const {
   prevUrl,
   totalPages = 1,
 } = Astro.props;
-
-const isList = display === "list";
-const isGrid = display === "grid";
 ---
 
 <CompositionGrid class="py-12 md:py-24">
@@ -62,7 +59,7 @@ const isGrid = display === "grid";
       currentPage={currentPage}
       display={display}
       displayUrls={displayUrls}
-      getPageUrl={(p) => (p === 1 ? `${baseUrl}/${display}` : `${baseUrl}/${display}/${p}`)}
+      getPageUrl={(p) => (p === 1 ? baseUrl : `${baseUrl}/page/${p}`)}
       nextUrl={nextUrl}
       paginationType="path"
       prevUrl={prevUrl}
@@ -77,11 +74,12 @@ const isGrid = display === "grid";
         {[1, 2, 3].map(() => <div class="h-32 w-full rounded-2xl border border-white/5 bg-white/5" />)}
       </div>
 
-      {/* VIEW MODE: LIST */}
-      {
-        isList && (
-          <div class="list-view flex flex-col gap-4">
-            {items.map(async (item) => (
+      {/* DUAL VIEW ENGINE: Both rendered for zero-latency toggling */}
+      <div class="view-content" data-current-view={display}>
+        {/* VIEW MODE: LIST */}
+        <div class="list-view-container flex flex-col gap-4">
+          {
+            items.map(async (item) => (
               <div class="card-item group">
                 <Card
                   list
@@ -89,28 +87,26 @@ const isGrid = display === "grid";
                   class="group-hover:shadow-glow-primary transition-all duration-300"
                 />
               </div>
-            ))}
-          </div>
-        )
-      }
+            ))
+          }
+        </div>
 
-      {/* VIEW MODE: GRID */}
-      {
-        isGrid && (
-          <div class="grid-view">
-            <MasonryGrid columns={2}>
-              {items.map(async (item) => (
+        {/* VIEW MODE: GRID */}
+        <div class="grid-view-container mt-8 hidden">
+          <MasonryGrid columns={2}>
+            {
+              items.map(async (item) => (
                 <div class="masonry-item card-item group">
                   <Card
                     {...await getItemCardProps(item)}
                     class="group-hover:shadow-glow-primary transition-all duration-300"
                   />
                 </div>
-              ))}
-            </MasonryGrid>
-          </div>
-        )
-      }
+              ))
+            }
+          </MasonryGrid>
+        </div>
+      </div>
 
       {/* No Results HUD */}
       <div class="mt-20 hidden text-center" id="no-results">
@@ -133,33 +129,42 @@ const isGrid = display === "grid";
 </CompositionGrid>
 
 <script>
-  import { initInteractiveCards } from "../../lib/interactive-cards";
-
-  const handleState = () => {
-    const currentPath = window.location.pathname;
-    const isGrid = currentPath.includes("/grid");
-    const isList = currentPath.includes("/list");
-
-    if (isGrid) sessionStorage.setItem("preferred-view", "grid");
-    if (isList) sessionStorage.setItem("preferred-view", "list");
-
-    window.addEventListener("astro:after-swap", () => {
-      const savedScroll = sessionStorage.getItem("scroll-pos-" + currentPath);
-      if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
-    });
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        sessionStorage.setItem("scroll-pos-" + currentPath, window.scrollY.toString());
-      },
-      { passive: true },
-    );
-  };
+  import { initInteractiveCards } from "../../lib/dom";
 
   const setup = () => {
     initInteractiveCards();
-    handleState();
+
+    const container = document.querySelector(".view-content");
+    const listView = container?.querySelector(".list-view-container");
+    const gridView = container?.querySelector(".grid-view-container");
+
+    const toggleView = (view: string) => {
+      if (view === "grid") {
+        listView?.classList.add("hidden");
+        gridView?.classList.remove("hidden");
+      } else {
+        listView?.classList.remove("hidden");
+        gridView?.classList.add("hidden");
+      }
+    };
+
+    // Check URL params for display mode
+    const urlParams = new URLSearchParams(window.location.search);
+    const displayParam = urlParams.get("display");
+
+    if (displayParam === "grid" || displayParam === "list") {
+      sessionStorage.setItem("preferred-view", displayParam);
+    }
+
+    const preferredView = sessionStorage.getItem("preferred-view") || "list";
+    toggleView(preferredView);
+
+    // Listen for custom toggle events from DisplayMenu or URL changes
+    window.addEventListener("popstate", () => {
+      const newParams = new URLSearchParams(window.location.search);
+      const newView = newParams.get("display") || sessionStorage.getItem("preferred-view") || "list";
+      toggleView(newView);
+    });
   };
 
   setup();

@@ -9,22 +9,28 @@ export const buildPaginationUrls = (
   currentPage: number,
   totalPages: number,
 ): { nextUrl: string | undefined; prevUrl: string | undefined } => {
+  const displayParam = display !== "list" ? `?display=${display}` : "";
+
   const prevUrl =
     currentPage > 1
       ? currentPage === 2
-        ? `/${collection}/${display}`
-        : `/${collection}/${display}/${(currentPage - 1).toString()}`
+        ? `/${collection}${displayParam}`
+        : `/${collection}/page/${(currentPage - 1).toString()}${displayParam}`
       : undefined;
 
-  const nextUrl = currentPage < totalPages ? `/${collection}/${display}/${(currentPage + 1).toString()}` : undefined;
+  const nextUrl =
+    currentPage < totalPages ? `/${collection}/page/${(currentPage + 1).toString()}${displayParam}` : undefined;
 
   return { nextUrl, prevUrl };
 };
 
-export const buildDisplayUrls = (collection: CollectionKey, currentPage: number): { grid: string; list: string } => ({
-  grid: currentPage === 1 ? `/${collection}/grid` : `/${collection}/grid/${currentPage.toString()}`,
-  list: currentPage === 1 ? `/${collection}/list` : `/${collection}/list/${currentPage.toString()}`,
-});
+export const buildDisplayUrls = (collection: CollectionKey, currentPage: number): { grid: string; list: string } => {
+  const pagePath = currentPage > 1 ? `/page/${currentPage}` : "";
+  return {
+    grid: `/${collection}${pagePath}?display=grid`,
+    list: `/${collection}${pagePath}?display=list`,
+  };
+};
 
 export const getPageItems = <CN extends CollectionKey>(
   sortedItems: CollectionItem<CN>[],

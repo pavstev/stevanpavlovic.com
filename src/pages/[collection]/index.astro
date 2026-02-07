@@ -6,7 +6,7 @@ import type { CollectionKey } from "astro:content";
 import LayoutRoot from "../../components/layout/layout-root.astro";
 import ResourceDiscovery from "../../components/organisms/ResourceDiscovery.astro";
 import { NAV_ITEMS } from "../../config";
-import { getCollectionPageData } from "../../lib";
+import { type DisplayMode, getCollectionPageData } from "../../lib";
 
 export const prerender = true;
 
@@ -15,7 +15,7 @@ export interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections = Object.keys(NAV_ITEMS).filter(k => k !== 'home') as CollectionKey[];
+  const collections = Object.keys(NAV_ITEMS).filter((k) => k !== "home") as CollectionKey[];
 
   return collections.map((collection) => ({
     params: { collection },
@@ -23,7 +23,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection } = Astro.params as unknown as Params;
-const pageData = await getCollectionPageData(collection, 1, "list");
+const display = (Astro.url.searchParams.get("display") as DisplayMode) || "list";
+const pageData = await getCollectionPageData(collection, 1, display);
 
 const {
   baseUrl,
@@ -31,7 +32,6 @@ const {
   config,
   containerId,
   currentPage,
-  display,
   displayUrls,
   getItemCardProps,
   initialPageSize,

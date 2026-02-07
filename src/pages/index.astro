@@ -8,31 +8,17 @@ import Text from "../components/atoms/Text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
 import BrandIdentity from "../components/molecules/BrandIdentity.astro";
 import GridTile from "../components/molecules/GridTile.astro";
-import Card from "../components/organisms/card.astro";
 import CompositionGrid from "../components/organisms/CompositionGrid.astro";
-import EnvironmentalBackground from "../components/organisms/EnvironmentalBackground.astro";
+import ResourceDiscovery from "../components/organisms/ResourceDiscovery.astro";
 import StatsGrid from "../components/organisms/stats-grid.astro";
 import { PROFILE, STATS } from "../config";
 import { getItemCardProps } from "../lib/content/api";
 
 // 1. Data Orchestration: Fetch Featured Highlights
-const featuredProjects = (await getCollection("projects"))
-  .filter((p) => p.data.featured)
-  .slice(0, 3);
-
-const latestPosts = (await getCollection("blog"))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 2);
-
-const allHighlights = [
-  ...featuredProjects.map(p => ({ entry: p, type: 'project' as const })),
-  ...latestPosts.map(p => ({ entry: p, type: 'blog' as const }))
-];
+const featuredProjects = (await getCollection("projects")).filter((p) => p.data.featured).slice(0, 3);
 ---
 
 <LayoutRoot description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Architect`}>
-  <EnvironmentalBackground intensity="medium" />
-
   <CompositionGrid class="relative z-10 py-12 md:py-24">
     {/* PHASE 1: THE SIGNATURE SECTION */}
     <GridTile class="overflow-hidden p-8 md:p-16" cols="lg:col-span-12">
@@ -53,7 +39,8 @@ const allHighlights = [
           <div class="flex max-w-3xl flex-col gap-4">
             <BrandIdentity class="mb-4" size="lg" variant="author" />
             <Heading class="leading-[1.1] tracking-tight" level={1} size="display" variant="primary">
-              Architecting <span class="text-white">Resilient</span> <br />
+              Architecting <span class="text-white">Resilient</span>
+              <br />
               Distributed Systems.
             </Heading>
             <Text class="max-w-2xl text-lg leading-relaxed text-muted-foreground/90 md:text-xl">
@@ -69,36 +56,28 @@ const allHighlights = [
       </div>
 
       {/* Decorative Brand Accent */}
-      <div class="pointer-events-none absolute -right-20 -bottom-20 size-96 rounded-full bg-primary/5 blur-[120px]"></div>
+      <div class="pointer-events-none absolute -right-20 -bottom-20 size-96 rounded-full bg-primary/5 blur-[120px]">
+      </div>
     </GridTile>
 
-    {/* PHASE 2: DYNAMIC BENTO HIGHLIGHTS */}
-    {
-      allHighlights.map(async ({ entry, type }, index) => {
-        const cardProps = await getItemCardProps(entry as any);
-        const isProject = type === 'project';
-
-        return (
-          <GridTile
-            class="group p-0"
-            cols={index === 0 ? "lg:col-span-8" : index === 1 ? "lg:col-span-4" : "lg:col-span-4"}
-          >
-            <Card
-              {...cardProps}
-              class="h-full rounded-none border-0 bg-transparent transition-all duration-500 hover:bg-white/5"
-              showVisual={index === 0}
-            />
-
-            {/* Context Badge */}
-            <div class="pointer-events-none absolute top-4 right-4 z-20">
-              <Badge class="opacity-0 transition-opacity group-hover:opacity-100" variant={isProject ? "primary" : "cyber"}>
-                {isProject ? 'Featured Project' : 'Latest Insight'}
-              </Badge>
-            </div>
-          </GridTile>
-        )
-      })
-    }
+    {/* PHASE 2: DYNAMIC HIGHLIGHTS ENGINE */}
+    <div class="lg:col-span-12">
+      <ResourceDiscovery
+        baseUrl="/projects"
+        collectionItems={featuredProjects as any}
+        collectionKey="projects"
+        containerId="featured-projects"
+        description="Featured Highlights"
+        display="grid"
+        getItemCardProps={getItemCardProps as any}
+        headerDescription="Hand-picked projects that demonstrate technical depth and architectural vision."
+        headerIcon="mdi:star-outline"
+        headerTitle="Featured Highlights"
+        initialPageSize={3}
+        title="Featured Highlights"
+        totalItems={featuredProjects.length}
+      />
+    </div>
 
     {/* PHASE 3: THE ECOSYSTEM NAVIGATOR */}
     <GridTile class="border-primary/10 bg-primary/5 p-8 lg:col-span-12">
@@ -108,8 +87,14 @@ const allHighlights = [
           <Text variant="muted">Explore my full repository of projects and technical writing.</Text>
         </Stack>
         <div class="flex gap-4">
-          <a class="hover:shadow-glow-primary rounded-full bg-primary px-6 py-3 font-bold text-white transition-all" href="/projects">Browse Projects</a>
-          <a class="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10" href="/blog">Read Blog</a>
+          <a
+            class="hover:shadow-glow-primary rounded-full bg-primary px-6 py-3 font-bold text-white transition-all"
+            href="/projects">Browse Projects</a
+          >
+          <a
+            class="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10"
+            href="/blog">Read Blog</a
+          >
         </div>
       </div>
     </GridTile>

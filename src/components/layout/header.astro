@@ -3,11 +3,11 @@ import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../config";
 import { isActivePath } from "../../lib/nav";
 import Button from "../atoms/Button.astro";
 import Container from "../atoms/Container.astro";
+import Stack from "../atoms/Stack.astro";
 import BrandIdentity from "../molecules/BrandIdentity.astro";
 import LanguagePicker from "../molecules/LanguagePicker.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
-import LayoutWrapper from "./layout-wrapper.astro";
 
 const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
@@ -20,7 +20,7 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
   transition:persist
 >
   <Container>
-    <LayoutWrapper class="items-center justify-center">
+    <Stack align="center" class="justify-center" direction="row">
       {/* Dynamic Island Container */}
       <div
         class="glass-strong hover:shadow-glow-subtle relative flex h-14 w-fit min-w-[300px] items-center rounded-full px-2 shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:border-white/20"
@@ -92,7 +92,7 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
           <MobileMenuToggle size="sm" />
         </div>
       </div>
-    </LayoutWrapper>
+    </Stack>
   </Container>
 </header>
 

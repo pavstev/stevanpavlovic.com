@@ -62,18 +62,16 @@ const QUICK_ACTIONS: QuickAction[] = [
 
 class CommandPalette {
   private currentIndex = -1;
-  private dropdown: HTMLElement;
   private input: HTMLInputElement;
   private isOpen = false;
-  private modal: HTMLElement;
+  private modal: HTMLDialogElement;
   private pagefind: null | PagefindInstance = null;
   private resultsContainer: HTMLElement;
 
   constructor(modalId: string) {
-    this.modal = document.getElementById(modalId) as HTMLElement;
+    this.modal = document.getElementById(modalId) as HTMLDialogElement;
     this.input = this.modal?.querySelector("#search-input") as HTMLInputElement;
     this.resultsContainer = this.modal?.querySelector("#search-results") as HTMLElement;
-    this.dropdown = this.modal?.querySelector("dialog") as HTMLElement;
 
     if (this.modal) {
       this.init();
@@ -82,17 +80,13 @@ class CommandPalette {
 
   public close(): void {
     this.isOpen = false;
-    this.modal.classList.add("invisible", "opacity-0");
-    this.dropdown?.classList.add("scale-95", "translate-y-4");
-    document.body.style.overflow = "";
+    this.modal.close();
   }
 
   public open(): void {
     this.isOpen = true;
-    this.modal.classList.remove("invisible", "opacity-0");
-    this.dropdown?.classList.remove("scale-95", "translate-y-4");
+    this.modal.showModal();
     this.input.focus();
-    document.body.style.overflow = "hidden";
     void this.loadPagefind();
   }
 
@@ -170,11 +164,10 @@ class CommandPalette {
       this.handleKeyDown(e);
     });
 
-    // Close on backdrop click
-    this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) {
-        this.close();
-      }
+    this.modal.addEventListener("close", () => {
+      this.isOpen = false;
+      this.input.value = "";
+      this.renderQuickActions();
     });
 
     this.renderQuickActions();
@@ -210,7 +203,7 @@ class CommandPalette {
 
     this.currentIndex = -1;
 
-    for (const btn of this.resultsContainer.querySelectorAll("button")) {
+    for (const btn of Array.from(this.resultsContainer.querySelectorAll("button"))) {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-id");
         const action = QUICK_ACTIONS.find((a) => a.id === id);
@@ -238,7 +231,7 @@ class CommandPalette {
       return;
     }
 
-    for (const result of results.slice(0, 8)) {
+    for (const result of Array.from(results.slice(0, 8))) {
       const data = await result.data();
       const item = document.createElement("a");
       item.href = data.url;
@@ -258,7 +251,7 @@ class CommandPalette {
 
   private updateSelection(items: NodeListOf<Element>): void {
     let i = 0;
-    for (const item of items) {
+    for (const item of Array.from(items)) {
       const isActive = i === this.currentIndex;
       item.classList.toggle("bg-white/10", isActive);
       item.classList.toggle("border-primary/20", isActive);
@@ -274,7 +267,7 @@ export const initSearchDropdown = (): void => {
   const palette = new CommandPalette("omni-search");
 
   // Global search trigger buttons (if any)
-  for (const btn of document.querySelectorAll("[data-search-trigger]")) {
+  for (const btn of Array.from(document.querySelectorAll("[data-search-trigger]"))) {
     btn.addEventListener("click", () => {
       palette.open();
     });

@@ -52,6 +52,7 @@ const GLOBAL_IGNORES = [
   ".unlighthouse/**/*",
   "worker-configuration.d.ts",
   ".vscode/**/*",
+  "api-bak/**/*",
   // TODO: IMPORTANT
   // "**/*.mdx", // Removed to enable MDX linting
 ];

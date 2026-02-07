@@ -45,7 +45,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: "mdi:download",
     id: "action-download-resume",
     label: "Download Resume PDF",
-    onSelect: () => {
+    onSelect: (): void => {
       window.print();
     },
   },
@@ -54,7 +54,9 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: "mdi:theme-light-dark",
     id: "action-toggle-focus",
     label: "Toggle Focus Mode",
-    onSelect: () => document.documentElement.classList.toggle("focus-mode"),
+    onSelect: (): void => {
+      document.documentElement.classList.toggle("focus-mode");
+    },
   },
 ];
 
@@ -78,14 +80,14 @@ class CommandPalette {
     }
   }
 
-  public close() {
+  public close(): void {
     this.isOpen = false;
     this.modal.classList.add("invisible", "opacity-0");
     this.dropdown?.classList.add("scale-95", "translate-y-4");
     document.body.style.overflow = "";
   }
 
-  public open() {
+  public open(): void {
     this.isOpen = true;
     this.modal.classList.remove("invisible", "opacity-0");
     this.dropdown?.classList.remove("scale-95", "translate-y-4");
@@ -94,11 +96,15 @@ class CommandPalette {
     void this.loadPagefind();
   }
 
-  public toggle() {
-    this.isOpen ? this.close() : this.open();
+  public toggle(): void {
+    if (this.isOpen) {
+      this.close();
+      return;
+    }
+    this.open();
   }
 
-  private async fetchResults(query: string) {
+  private async fetchResults(query: string): Promise<void> {
     if (!query) {
       this.renderQuickActions();
       return;
@@ -110,12 +116,14 @@ class CommandPalette {
 
     if (this.pagefind) {
       const search = await this.pagefind.search(query);
-      this.renderSearchResults(search.results);
+      void this.renderSearchResults(search.results);
     }
   }
 
-  private handleKeyDown(e: KeyboardEvent) {
-    if (!this.isOpen) return;
+  private handleKeyDown(e: KeyboardEvent): void {
+    if (!this.isOpen) {
+      return;
+    }
 
     const items = this.resultsContainer.querySelectorAll("a, button");
 
@@ -123,23 +131,32 @@ class CommandPalette {
       e.preventDefault();
       this.currentIndex = Math.min(this.currentIndex + 1, items.length - 1);
       this.updateSelection(items);
-    } else if (e.key === "ArrowUp") {
+      return;
+    }
+
+    if (e.key === "ArrowUp") {
       e.preventDefault();
       this.currentIndex = Math.max(this.currentIndex - 1, 0);
       this.updateSelection(items);
-    } else if (e.key === "Enter") {
+      return;
+    }
+
+    if (e.key === "Enter") {
       if (this.currentIndex >= 0) {
         e.preventDefault();
         (items[this.currentIndex] as HTMLElement).click();
       }
-    } else if (e.key === "Escape") {
+      return;
+    }
+
+    if (e.key === "Escape") {
       this.close();
     }
   }
 
-  private init() {
+  private init(): void {
     this.input.addEventListener("input", (e) => {
-      this.fetchResults((e.target as HTMLInputElement).value);
+      void this.fetchResults((e.target as HTMLInputElement).value);
     });
 
     window.addEventListener("keydown", (e) => {
@@ -155,15 +172,17 @@ class CommandPalette {
 
     // Close on backdrop click
     this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) this.close();
+      if (e.target === this.modal) {
+        this.close();
+      }
     });
 
     this.renderQuickActions();
   }
 
-  private async loadPagefind() {
+  private async loadPagefind(): Promise<void> {
     try {
-      // @ts-ignore - Pagefind is generated at build time
+      // @ts-expect-error - Pagefind is generated at build time
       this.pagefind = await import(/* @vite-ignore */ "/pagefind/pagefind.js");
       this.pagefind?.options({ showImages: false });
     } catch (e) {
@@ -171,7 +190,7 @@ class CommandPalette {
     }
   }
 
-  private renderQuickActions() {
+  private renderQuickActions(): void {
     this.resultsContainer.innerHTML = `
       <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Quick Actions</div>
       <div class="flex flex-col gap-1">
@@ -191,21 +210,23 @@ class CommandPalette {
 
     this.currentIndex = -1;
 
-    this.resultsContainer.querySelectorAll("button").forEach((btn) => {
+    for (const btn of this.resultsContainer.querySelectorAll("button")) {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-id");
         const action = QUICK_ACTIONS.find((a) => a.id === id);
         if (action?.href) {
           window.location.href = action.href;
-        } else if (action?.onSelect) {
+          return;
+        }
+        if (action?.onSelect) {
           action.onSelect();
           this.close();
         }
       });
-    });
+    }
   }
 
-  private async renderSearchResults(results: PagefindResult[]) {
+  private async renderSearchResults(results: PagefindResult[]): Promise<void> {
     this.resultsContainer.innerHTML = `
       <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Search Results</div>
       <div class="flex flex-col gap-1"></div>
@@ -235,25 +256,27 @@ class CommandPalette {
     this.currentIndex = -1;
   }
 
-  private updateSelection(items: NodeListOf<Element>) {
-    items.forEach((item, i) => {
-      if (i === this.currentIndex) {
-        item.classList.add("bg-white/10", "border-primary/20");
+  private updateSelection(items: NodeListOf<Element>): void {
+    let i = 0;
+    for (const item of items) {
+      const isActive = i === this.currentIndex;
+      item.classList.toggle("bg-white/10", isActive);
+      item.classList.toggle("border-primary/20", isActive);
+      if (isActive) {
         item.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      } else {
-        item.classList.remove("bg-white/10", "border-primary/20");
       }
-    });
+      i++;
+    }
   }
 }
 
-export const initSearchDropdown = () => {
+export const initSearchDropdown = (): void => {
   const palette = new CommandPalette("omni-search");
 
   // Global search trigger buttons (if any)
-  document.querySelectorAll("[data-search-trigger]").forEach((btn) => {
+  for (const btn of document.querySelectorAll("[data-search-trigger]")) {
     btn.addEventListener("click", () => {
       palette.open();
     });
-  });
+  }
 };

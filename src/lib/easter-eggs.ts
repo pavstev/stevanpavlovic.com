@@ -1,15 +1,16 @@
-export const initEasterEggs = () => {
+export const initEasterEggs = (): void => {
   // 1. Console ASCII Art
-  const ascii = `
-   _____ __                             
-  / ___// /____ _   ______ _____  ____ 
+  const ascii = String.raw`
+   _____ __
+  / ___// /____ _   ______ _____  ____
   \__ \/ __/ _ \ | / / __ \`/ __ \/ __ \
  ___/ / /_/  __/ |/ / /_/ / / / / / / /
-/____/\__/\___/|___/\__,_/_/ /_/_/ /_/ 
-                                       
+/____/\__/\___/|___/\__,_/_/ /_/_/ /_/
+
   > ARCHITECTING RESILIENT SYSTEMS
   > hire-me@stevanpavlovic.com
   `;
+  // eslint-disable-next-line no-console
   console.log(`%c${ascii}`, "color: #3b82f6; font-weight: bold;");
 
   // 2. Konami Code
@@ -34,12 +35,12 @@ export const initEasterEggs = () => {
         triggerMatrix();
         index = 0;
       }
-    } else {
-      index = 0;
+      return;
     }
+    index = 0;
   });
 
-  const triggerMatrix = () => {
+  const triggerMatrix = (): void => {
     document.documentElement.classList.toggle("cyberpunk-mode");
     const msg = document.createElement("div");
     msg.className =
@@ -50,8 +51,10 @@ export const initEasterEggs = () => {
   };
 
   // 3. Magnetic Hover Effect
-  document.querySelectorAll("[data-magnetic]").forEach((el) => {
-    if (!(el instanceof HTMLElement)) return;
+  for (const el of document.querySelectorAll("[data-magnetic]")) {
+    if (!(el instanceof HTMLElement)) {
+      continue;
+    }
 
     el.addEventListener("mousemove", (e: MouseEvent) => {
       const { clientX, clientY } = e;
@@ -64,5 +67,5 @@ export const initEasterEggs = () => {
     el.addEventListener("mouseleave", () => {
       el.style.transform = "translate(0px, 0px)";
     });
-  });
+  }
 };

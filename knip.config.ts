@@ -5,6 +5,7 @@ const config: KnipConfig = {
     entry: ["src/pages/**/*.astro", "src/content/**/*.config.ts"],
   },
   entry: ["unlighthouse.config.ts", "scripts/*.ts"],
+  ignore: ["src/stories/**/*", "src/lib/api-bak/**/*"],
   ignoreBinaries: ["only-allow"],
   ignoreDependencies: [
     "sharp",
@@ -15,9 +16,8 @@ const config: KnipConfig = {
     "remark-lint-no-multiple-toplevel-headings",
     "eslint-mdx",
     "@astrojs/ts-plugin",
-    "prettier-plugin-astro"
+    "prettier-plugin-astro",
   ],
-  ignore: ["src/stories/**/*", "src/lib/api-bak/**/*"]
 };
 
 export default config;

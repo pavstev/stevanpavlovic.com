@@ -219,13 +219,17 @@ export class RagChat {
         "Tell me about the technical architecture used.",
         "List all projects involving React.",
       ];
-    } else if (path.includes("experience") || path.includes("resume")) {
+    }
+
+    if (path.includes("experience") || path.includes("resume")) {
       questions = [
         "What is his current role?",
         "Describe his leadership experience.",
         "What are his key achievements?",
       ];
-    } else if (path.includes("blog")) {
+    }
+
+    if (path.includes("blog")) {
       questions = ["Summarize the latest blog post.", "What topics does he write about?"];
     }
 
@@ -238,14 +242,14 @@ export class RagChat {
       )
       .join("");
 
-    this.ui.suggestions.querySelectorAll("button").forEach((btn) => {
+    for (const btn of this.ui.suggestions.querySelectorAll("button")) {
       btn.addEventListener("click", () => {
         const text = btn.innerText;
         this.ui.input.value = text;
         this.ui.suggestions?.remove(); // Remove suggestions after selection
         this.handleSubmit(new SubmitEvent("submit"));
       });
-    });
+    }
 
     // Show
     setTimeout(() => {

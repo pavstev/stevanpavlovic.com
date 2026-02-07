@@ -1,7 +1,7 @@
-export const initCodeBlocks = () => {
+export const initCodeBlocks = (): void => {
   const codeBlocks = document.querySelectorAll("pre");
 
-  codeBlocks.forEach((block) => {
+  for (const block of codeBlocks) {
     // 1. Setup Wrapper
     const wrapper = document.createElement("div");
     wrapper.className = "relative group/code mb-6";
@@ -42,16 +42,18 @@ export const initCodeBlocks = () => {
 
     // 3. Copy Logic
     const btn = header.querySelector(".copy-btn");
-    btn?.addEventListener("click", async () => {
-      const code = block.querySelector("code")?.innerText || block.innerText;
-      await navigator.clipboard.writeText(code);
+    btn?.addEventListener("click", () => {
+      void (async (): Promise<void> => {
+        const code = block.querySelector("code")?.innerText || block.innerText;
+        await navigator.clipboard.writeText(code);
 
-      // Feedback
-      const originalIcon = btn.innerHTML;
-      btn.innerHTML = `<svg class="size-3.5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"></path></svg>`;
-      setTimeout(() => {
-        btn.innerHTML = originalIcon;
-      }, 2000);
+        // Feedback
+        const originalIcon = btn.innerHTML;
+        btn.innerHTML = `<svg class="size-3.5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"></path></svg>`;
+        setTimeout(() => {
+          btn.innerHTML = originalIcon;
+        }, 2000);
+      })();
     });
-  });
+  }
 };

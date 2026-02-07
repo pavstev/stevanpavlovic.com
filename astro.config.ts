@@ -42,10 +42,10 @@ export default defineConfig({
   integrations: [
     {
       hooks: {
-        "astro:build:start": async () => {
+        "astro:build:start": async (): Promise<void> => {
           await generateAiContext();
         },
-        "astro:server:setup": async () => {
+        "astro:server:setup": async (): Promise<void> => {
           await generateAiContext();
         },
       },

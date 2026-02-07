@@ -2,7 +2,7 @@ import { globby } from "globby";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-export async function generateAiContext() {
+export const generateAiContext = async (): Promise<void> => {
   const contentDir = path.join(process.cwd(), "src/content");
   const files = await globby([`${contentDir}/**/*.{md,mdx}`]);
 
@@ -14,12 +14,14 @@ export async function generateAiContext() {
 
     // Simple frontmatter parser
     const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-    if (!match) continue;
+    if (!match) {
+      continue;
+    }
 
     const [, frontmatterRaw, body] = match;
-    const frontmatter: Record<string, any> = {};
+    const frontmatter: Record<string, string> = {};
 
-    frontmatterRaw.split("\n").forEach((line) => {
+    for (const line of frontmatterRaw.split("\n")) {
       const [key, ...values] = line.split(":");
       if (key && values.length) {
         let value = values.join(":").trim();
@@ -29,7 +31,7 @@ export async function generateAiContext() {
         }
         frontmatter[key.trim()] = value;
       }
-    });
+    }
 
     // Cleanup body (basic markdown stripping)
     const cleanBody = body
@@ -49,7 +51,7 @@ export async function generateAiContext() {
       id: relativePath,
       tags: frontmatter.tags
         ? frontmatter.tags
-            .replace(/[\[\]"]/g, "")
+            .replace(/[[\]"]/g, "")
             .split(",")
             .map((t: string) => t.trim())
         : [],
@@ -59,5 +61,6 @@ export async function generateAiContext() {
 
   const outDir = path.join(process.cwd(), "public");
   await fs.writeFile(path.join(outDir, "ai-context.json"), JSON.stringify(documents));
+  // eslint-disable-next-line no-console
   console.log(`Generated AI context with ${documents.length} documents.`);
-}
+};

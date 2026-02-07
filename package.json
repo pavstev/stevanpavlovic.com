@@ -16,9 +16,9 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm cf-typegen",
-    "clean": "tsx scripts/clean.ts && pnpm install && pnpm build",
-    "dev": "astro dev",
-    "build": "astro build",
+    "prebuild": "pnpm generate-context",
+    "generate-context": "tsx scripts/generate-context.ts",
+    "build": "pnpm generate-context && astro build",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types",

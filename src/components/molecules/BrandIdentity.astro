@@ -60,7 +60,7 @@ const isStatus = variant === "status";
 
 {
   isStatus ? (
-    <div class:list={[cn(brandVariants({ variant }), className)]} data-magnetic>
+    <div class:list={[cn(brandVariants({ variant }), className)]} data-magnetic="true">
       <div class:list={[cn(logoVariants({ size, variant }))]}>
         <span class="relative flex size-2.5" transition:name="brand-status">
           <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
@@ -70,14 +70,23 @@ const isStatus = variant === "status";
       <slot />
     </div>
   ) : (
-    <Button class:list={[cn(brandVariants({ variant }), className)]} data-magnetic href={href} transition:name="brand-identity" variant="ghost">
+    <Button
+      class:list={[cn(brandVariants({ variant }), className)]}
+      data-magnetic="true"
+      href={href}
+      transition:name="brand-identity"
+      variant="ghost"
+    >
       <div class:list={[cn(logoVariants({ size, variant }))]}>
         {src && (
           <Image
             alt={alt || ""}
             class:list={[
               "size-full transition-all duration-500",
-              {"object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100": variant !== "author", "object-cover": variant === "author"},
+              {
+                "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100": variant !== "author",
+                "object-cover": variant === "author",
+              },
             ]}
             src={src}
           />

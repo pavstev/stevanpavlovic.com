@@ -175,8 +175,7 @@ class CommandPalette {
 
   private async loadPagefind(): Promise<void> {
     try {
-      // @ts-expect-error - Pagefind is generated at build time
-      this.pagefind = await import(/* @vite-ignore */ "/pagefind/pagefind.js");
+      this.pagefind = await import(/* @vite-ignore */ `${window.location.origin}/pagefind/pagefind.js`);
       this.pagefind?.options({ showImages: false });
     } catch (e) {
       console.warn("Pagefind failed to load", e);

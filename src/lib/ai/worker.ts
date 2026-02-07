@@ -20,6 +20,12 @@ const CONFIG = {
 interface DocumentChunk {
   content: string;
   id: string;
+  metadata?: {
+    collection: string;
+    company: string;
+    date: string;
+    role: string;
+  };
   score?: number;
   title: string;
 }
@@ -158,9 +164,24 @@ class RAGPipeline {
         .map((s) => ({ ...this.context[s.index], score: s.score }));
 
       // 3. Prompt Engineering
-      // Note: LaMini models perform best with simple instruction-following formats
-      const contextBlock = topChunks.map((c) => `- ${c.content}`).join("\n");
-      const prompt = `Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.\n\nContext:\n${contextBlock}\n\nQuestion: ${text}\nHelpful Answer:`;
+      const contextBlock = topChunks
+        .map((c) => {
+          const meta = c.metadata
+            ? ` [Source: ${c.metadata.collection}${c.metadata.company ? ` at ${c.metadata.company}` : ""}]`
+            : "";
+          return `- ${c.content}${meta}`;
+        })
+        .join("\n");
+
+      const prompt = `You are Stevan's AI Assistant. Stevan is a Software Architect & Lead Developer.
+Use the following pieces of context to answer the question about Stevan.
+Be professional, concise, and helpful. If you don't know the answer, say "I don't have specific information on that, but I can tell you about Stevan's general expertise in software architecture."
+
+Context:
+${contextBlock}
+
+Question: ${text}
+Helpful Answer:`;
 
       // 4. Generation
       const output = (await this.generator(prompt, {

@@ -28,6 +28,7 @@ export class RagChat {
     statusText: document.getElementById("rag-status-text"),
     submit: document.getElementById("rag-submit") as HTMLButtonElement,
     suggestions: document.getElementById("rag-suggestions"),
+    thinkingIndicator: null as HTMLDivElement | null,
     toggle: document.getElementById("rag-toggle"),
     window: document.getElementById("rag-window"),
   };
@@ -112,6 +113,27 @@ export class RagChat {
     this.scrollToBottom();
   }
 
+  private addThinkingIndicator(): void {
+    if (this.ui.thinkingIndicator) return;
+
+    const msg = document.createElement("div");
+    msg.className = "flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300 thinking-msg";
+    msg.innerHTML = `
+        <div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        </div>
+        <div class="max-w-[85%] rounded-2xl rounded-tl-none bg-muted px-4 py-3 text-sm text-foreground shadow-sm w-full">
+           <div class="space-y-2">
+             <div class="h-2 w-3/4 animate-pulse rounded bg-foreground/10"></div>
+             <div class="h-2 w-1/2 animate-pulse rounded bg-foreground/10"></div>
+           </div>
+        </div>
+      `;
+    this.ui.messages?.appendChild(msg);
+    this.ui.thinkingIndicator = msg;
+    this.scrollToBottom();
+  }
+
   private bindEvents(): void {
     this.ui.toggle?.addEventListener("click", () => {
       this.toggle();
@@ -134,6 +156,7 @@ export class RagChat {
         return;
       case "generating":
         this.updateStatus("thinking");
+        this.addThinkingIndicator();
         return;
       case "loading":
         this.updateLoader(progress || 0, String(message));
@@ -157,6 +180,7 @@ export class RagChat {
     }
 
     if (response) {
+      this.removeThinkingIndicator();
       // Add the bot response with typing effect
       this.addBotResponse(response, sources || []);
     }
@@ -202,6 +226,13 @@ export class RagChat {
     this.worker.postMessage({ type: "init" });
   }
 
+  private removeThinkingIndicator(): void {
+    if (this.ui.thinkingIndicator) {
+      this.ui.thinkingIndicator.remove();
+      this.ui.thinkingIndicator = null;
+    }
+  }
+
   private renderSuggestions(): void {
     if (!this.ui.suggestions) return;
 
@@ -242,7 +273,7 @@ export class RagChat {
       )
       .join("");
 
-    for (const btn of this.ui.suggestions.querySelectorAll("button")) {
+    for (const btn of Array.from(this.ui.suggestions.querySelectorAll("button"))) {
       btn.addEventListener("click", () => {
         const text = btn.innerText;
         this.ui.input.value = text;

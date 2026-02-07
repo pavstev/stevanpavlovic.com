@@ -17,17 +17,17 @@ const { caption, class: className, contentClass, id, showCloseButton = true, var
 <dialog
   class:list={cn(
     "fixed inset-0 z-50 m-auto hidden overflow-hidden bg-transparent p-0 open:flex open:size-full open:items-center open:justify-center focus:outline-none",
+    "transition-discrete duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
     variant === "card" && "open:size-fit",
-    "backdrop:bg-black/60 backdrop:backdrop-blur-xl backdrop:transition-opacity backdrop:duration-300",
-    variant === "card" && "open:animate-in open:fade-in open:zoom-in-95 open:duration-200",
-    variant === "plain" && "open:animate-in open:fade-in open:duration-300",
+    "backdrop:bg-black/40 backdrop:backdrop-blur-xl backdrop:transition-all backdrop:duration-500",
     className,
   )}
   id={id}
 >
   <div
     class:list={cn(
-      "relative flex flex-col items-center justify-center",
+      "relative flex flex-col items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+      "starting:translate-y-4 starting:scale-95 starting:opacity-0",
       variant === "card" && [
         "w-full max-w-lg overflow-hidden rounded-2xl border border-foreground/5 bg-card shadow-2xl backdrop-blur-sm",
         "before:absolute before:-inset-1 before:-z-10 before:rounded-2xl before:bg-linear-to-br before:from-primary/20 before:via-accent/10 before:to-secondary/20 before:opacity-5 before:blur-3xl",

@@ -9,7 +9,7 @@ import Icon from "../atoms/Icon.astro";
 ---
 
 <!-- Chat Widget Container -->
-<div class="pointer-events-none fixed right-6 bottom-6 z-[100] flex flex-col items-end font-sans" id="rag-widget">
+<div class="pointer-events-none fixed right-6 bottom-6 z-100 flex flex-col items-end font-sans" id="rag-widget">
   <!-- Main Window -->
   <div
     class="pointer-events-auto invisible mb-4 flex h-[600px] w-[380px] origin-bottom-right translate-y-8 scale-95 flex-col overflow-hidden rounded-2xl border border-border bg-card/95 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-300"
@@ -60,7 +60,11 @@ import Icon from "../atoms/Icon.astro";
       </div>
 
       <!-- Suggestions -->
-      <div class="ml-11 flex flex-col items-start gap-2 opacity-0 transition-opacity duration-1000" id="rag-suggestions"></div>
+      <div
+        class="ml-11 flex flex-col items-start gap-2 opacity-0 transition-opacity duration-1000"
+        id="rag-suggestions"
+      >
+      </div>
     </div>
 
     <!-- Input Area -->
@@ -112,6 +116,24 @@ import Icon from "../atoms/Icon.astro";
 </div>
 
 <script>
-  import { RagChat } from "../../lib/chatbot";
-  new RagChat();
+  const toggle = document.getElementById("rag-toggle");
+  let initialized = false;
+
+  const initChat = async () => {
+    if (initialized) return;
+    initialized = true;
+
+    // Dynamically import to keep it out of the main bundle initially
+    const { RagChat } = await import("../../lib/chatbot");
+    new RagChat();
+  };
+
+  toggle?.addEventListener("click", initChat, { once: true });
+
+  // Also initialize on search trigger if user might want help
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      initChat();
+    }
+  });
 </script>

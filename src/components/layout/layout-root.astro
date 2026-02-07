@@ -34,6 +34,8 @@ const { class: className, description, image, intensity = "medium", lang = "en",
     <meta content="DENY" http-equiv="X-Frame-Options" />
     <meta content="camera=(), microphone=(), geolocation=()" http-equiv="Permissions-Policy" />
     <MetaData description={description} image={image} title={title} />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
     <Analytics />
     <ClientRouter />
     <slot name="head" />
@@ -60,8 +62,15 @@ const { class: className, description, image, intensity = "medium", lang = "en",
 
     <script>
       import { initEasterEggs } from "../../lib/easter-eggs";
+      import { initMagnetic } from "../../lib/magnetic";
+
       initEasterEggs();
-      document.addEventListener("astro:page-load", initEasterEggs);
+      initMagnetic();
+
+      document.addEventListener("astro:page-load", () => {
+        initEasterEggs();
+        initMagnetic();
+      });
     </script>
 
     <style is:global>

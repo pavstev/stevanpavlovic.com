@@ -25,12 +25,7 @@ const hasToc = Astro.slots.has("toc");
     }
 
     {/* Primary Layout Engine (12-Col) */}
-    <div
-      class:list={[
-        "grid gap-12",
-        { "lg:grid-cols-12": hasSidebar || hasToc, "mx-auto w-full max-w-5xl": !(hasSidebar || hasToc) },
-      ]}
-    >
+    <div class:list={["grid gap-12", { "lg:grid-cols-12": hasSidebar || hasToc, "w-full": !(hasSidebar || hasToc) }]}>
       {/* Position: Left Sidebar (Author/Related) */}
       {
         hasSidebar && (

@@ -17,7 +17,7 @@ const description = "The coordinates you entered do not correspond to a known se
   <div class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center">
     <Container class="relative z-10 flex flex-col items-center justify-center p-6 sm:p-8">
       <div
-        class="glass-strong flex max-w-2xl flex-col items-center gap-6 rounded-2xl border border-accent/20 p-6 text-center shadow-2xl shadow-accent/10 sm:p-8"
+        class="glass-strong flex flex-col items-center gap-6 rounded-2xl border border-accent/20 p-6 text-center shadow-2xl shadow-accent/10 sm:p-8"
       >
         {/* Error Code */}
         <div class="relative">
@@ -31,7 +31,7 @@ const description = "The coordinates you entered do not correspond to a known se
         <div class="flex flex-col items-center gap-4">
           <Heading class="tracking-widest text-accent capitalize" level={2} size="md"> Signal Lost </Heading>
 
-          <Text class="max-w-md text-balance" size="lg" variant="muted">
+          <Text class="text-balance" size="lg" variant="muted">
             The coordinates you provided lead to empty space. Recalibrating route to nearest outpost.
           </Text>
         </div>

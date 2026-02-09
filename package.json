@@ -16,8 +16,6 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm cf-typegen",
-    "prebuild": "pnpm generate-context",
-    "generate-context": "tsx scripts/generate-context.ts",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "wrangler dev",

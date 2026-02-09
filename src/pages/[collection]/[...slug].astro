@@ -12,7 +12,7 @@ import AuthorBio from "../../components/molecules/AuthorBio.astro";
 import MetaBar from "../../components/molecules/MetaBar.astro";
 import ArticleRenderer from "../../components/organisms/ArticleRenderer.astro";
 import CompositionGrid from "../../components/organisms/CompositionGrid.astro";
-import ProgressNavigation from "../../components/organisms/ProgressNavigation.astro";
+import TableOfContents from "../../components/organisms/TableOfContents.astro";
 import { collections } from "../../lib";
 import { getViewPageProps } from "../../lib/content/data-orchestrator";
 
@@ -68,7 +68,7 @@ const viewProps = await getViewPageProps(entry as any);
         <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
       </header>
 
-      {headings.length > 0 && <ProgressNavigation slot="toc" />}
+      {headings.length > 0 && <TableOfContents slot="toc" title="Inside the Article" />}
 
       <div
         class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"

@@ -9,12 +9,7 @@
       "date": "2024-02-22",
       "role": ""
     },
-    "tags": [
-      "api",
-      "rest",
-      "design",
-      "backend"
-    ],
+    "tags": ["api", "rest", "design", "backend"],
     "title": "API Design Principles: RESTful Best Practices"
   },
   {
@@ -27,13 +22,7 @@
       "date": "2024-03-15",
       "role": ""
     },
-    "tags": [
-      "backend",
-      "microservices",
-      "nestjs",
-      "kafka",
-      "architecture"
-    ],
+    "tags": ["backend", "microservices", "nestjs", "kafka", "architecture"],
     "title": "Building Resilient Event-Driven Architectures with NestJS and Kafka"
   },
   {
@@ -46,11 +35,7 @@
       "date": "2024-02-01",
       "role": ""
     },
-    "tags": [
-      "typescript",
-      "design-patterns",
-      "architecture"
-    ],
+    "tags": ["typescript", "design-patterns", "architecture"],
     "title": "TypeScript Design Patterns: Builder, Factory, and Singleton"
   },
   {
@@ -63,10 +48,7 @@
       "date": "Jun 01 2024",
       "role": ""
     },
-    "tags": [
-      "tech",
-      "web-development"
-    ],
+    "tags": ["tech", "web-development"],
     "title": "Using MDX"
   },
   {
@@ -79,14 +61,7 @@
       "date": "2021-01-01",
       "role": "Back-end Developer"
     },
-    "tags": [
-      "nodejs",
-      "go",
-      "redis",
-      "rest-apis",
-      "graphql",
-      "microservices"
-    ],
+    "tags": ["nodejs", "go", "redis", "rest-apis", "graphql", "microservices"],
     "title": "experience/backend-developer-at-apoddo.md"
   },
   {
@@ -99,14 +74,7 @@
       "date": "2016-04-01",
       "role": "Back-end Developer"
     },
-    "tags": [
-      "php",
-      "mysql",
-      "wordpress",
-      "woocommerce",
-      "ci-cd",
-      "process-automation"
-    ],
+    "tags": ["php", "mysql", "wordpress", "woocommerce", "ci-cd", "process-automation"],
     "title": "experience/backend-developer-at-creitive.md"
   },
   {
@@ -119,14 +87,7 @@
       "date": "2021-01-01",
       "role": "Back-end Developer"
     },
-    "tags": [
-      "aws-lambda",
-      "serverless",
-      "php",
-      "symfony",
-      "aws-elemental-mediaconvert",
-      "postgresql"
-    ],
+    "tags": ["aws-lambda", "serverless", "php", "symfony", "aws-elemental-mediaconvert", "postgresql"],
     "title": "experience/backend-developer-at-evermed.md"
   },
   {
@@ -139,14 +100,7 @@
       "date": "2018-11-01",
       "role": "Back-end Developer"
     },
-    "tags": [
-      "php",
-      "symfony",
-      "mongodb",
-      "elasticsearch",
-      "redis",
-      "performance-tuning"
-    ],
+    "tags": ["php", "symfony", "mongodb", "elasticsearch", "redis", "performance-tuning"],
     "title": "experience/backend-developer-at-quantox.md"
   },
   {
@@ -159,13 +113,7 @@
       "date": "2017-09-01",
       "role": "Back-end Developer"
     },
-    "tags": [
-      "php",
-      "laravel",
-      "mongodb",
-      "data-analytics",
-      "crm-integration"
-    ],
+    "tags": ["php", "laravel", "mongodb", "data-analytics", "crm-integration"],
     "title": "experience/backend-developer-at-spark451.md"
   },
   {
@@ -200,13 +148,7 @@
       "date": "2015-02-01",
       "role": "Full Stack Web Developer"
     },
-    "tags": [
-      "php",
-      "ajax",
-      "javascript",
-      "mysql",
-      "responsive-design"
-    ],
+    "tags": ["php", "ajax", "javascript", "mysql", "responsive-design"],
     "title": "experience/full-stack-web-developer-at-freelance.md"
   },
   {
@@ -219,15 +161,7 @@
       "date": "2020-01-01",
       "role": "Lead Back-end Developer"
     },
-    "tags": [
-      "nestjs",
-      "typescript",
-      "postgresql",
-      "oauth2-oidc",
-      "docker",
-      "rabbitmq",
-      "fintech"
-    ],
+    "tags": ["nestjs", "typescript", "postgresql", "oauth2-oidc", "docker", "rabbitmq", "fintech"],
     "title": "experience/lead-backend-developer-at-pannovate.md"
   },
   {
@@ -240,16 +174,7 @@
       "date": "2024-02-01",
       "role": "Senior Software Engineer"
     },
-    "tags": [
-      "nodejs",
-      "nestjs",
-      "kafka",
-      "postgresql",
-      "redis",
-      "aws",
-      "ci-cd",
-      "microservices"
-    ],
+    "tags": ["nodejs", "nestjs", "kafka", "postgresql", "redis", "aws", "ci-cd", "microservices"],
     "title": "experience/senior-software-engineer-at-167pluto.md"
   },
   {
@@ -262,15 +187,7 @@
       "date": "",
       "role": "Lead Backend Developer & System Architect"
     },
-    "tags": [
-      "algorithms",
-      "automation",
-      "crm",
-      "edtech",
-      "nodejs",
-      "mongodb",
-      "workflow-engine"
-    ],
+    "tags": ["algorithms", "automation", "crm", "edtech", "nodejs", "mongodb", "workflow-engine"],
     "title": "Intelligent Admissions"
   },
   {
@@ -283,15 +200,7 @@
       "date": "",
       "role": "Lead Backend Developer"
     },
-    "tags": [
-      "php",
-      "symfony",
-      "mongodb",
-      "elasticsearch",
-      "redis",
-      "varnish",
-      "performance-tuning"
-    ],
+    "tags": ["php", "symfony", "mongodb", "elasticsearch", "redis", "varnish", "performance-tuning"],
     "title": "AskGamblers Modernization"
   },
   {
@@ -326,15 +235,7 @@
       "date": "",
       "role": "Lead Project Engineer"
     },
-    "tags": [
-      "aws-lambda",
-      "s3",
-      "mediaconvert",
-      "serverless",
-      "nodejs",
-      "healthcare",
-      "video-streaming"
-    ],
+    "tags": ["aws-lambda", "s3", "mediaconvert", "serverless", "nodejs", "healthcare", "video-streaming"],
     "title": "Evermed Video Infrastructure"
   },
   {
@@ -347,15 +248,7 @@
       "date": "",
       "role": "Senior Backend Developer"
     },
-    "tags": [
-      "nodejs",
-      "go",
-      "redis",
-      "bff",
-      "microservices",
-      "performance",
-      "api-orchestration"
-    ],
+    "tags": ["nodejs", "go", "redis", "bff", "microservices", "performance", "api-orchestration"],
     "title": "Humanity Mobile Backend"
   },
   {
@@ -368,15 +261,7 @@
       "date": "",
       "role": "Lead Architect & Backend Developer"
     },
-    "tags": [
-      "nestjs",
-      "oauth2",
-      "acid",
-      "microservices",
-      "fintech",
-      "postgresql",
-      "security"
-    ],
+    "tags": ["nestjs", "oauth2", "acid", "microservices", "fintech", "postgresql", "security"],
     "title": "Syllo Ecosystem"
   },
   {
@@ -389,15 +274,7 @@
       "date": "",
       "role": "Full-Stack Architect & Lead Developer"
     },
-    "tags": [
-      "react",
-      "typescript",
-      "real-time",
-      "websockets",
-      "maps",
-      "microservices",
-      "time-series-data"
-    ],
+    "tags": ["react", "typescript", "real-time", "websockets", "maps", "microservices", "time-series-data"],
     "title": "Fleet Visualizer"
   },
   {

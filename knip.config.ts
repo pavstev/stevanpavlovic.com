@@ -15,8 +15,6 @@ const config: KnipConfig = {
     "@iconify-json/mdi",
     "remark-lint-no-multiple-toplevel-headings",
     "eslint-mdx",
-    "@astrojs/ts-plugin",
-    "prettier-plugin-astro",
   ],
 };
 

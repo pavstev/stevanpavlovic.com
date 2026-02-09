@@ -1,5 +1,5 @@
 export * from "./adapter";
-export * from "./api";
+export * from "./data-orchestrator";
 export * from "./helpers";
 export * from "./registry";
 export * from "./types";

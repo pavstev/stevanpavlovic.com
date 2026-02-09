@@ -16,7 +16,7 @@ import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
 
 import { PROFILE } from "./src/config";
-import { generateAiContext } from "./src/lib/generate-ai-context";
+// import { generateAiContext } from "./src/lib/generate-ai-context";
 
 export default defineConfig({
   adapter: cloudflare({
@@ -40,17 +40,17 @@ export default defineConfig({
   },
 
   integrations: [
-    {
-      hooks: {
-        "astro:build:start": async (): Promise<void> => {
-          await generateAiContext();
-        },
-        "astro:server:setup": async (): Promise<void> => {
-          await generateAiContext();
-        },
-      },
-      name: "generate-ai-context",
-    },
+    // {
+    //   hooks: {
+    //     "astro:build:start": async (): Promise<void> => {
+    //       await generateAiContext();
+    //     },
+    //     "astro:server:setup": async (): Promise<void> => {
+    //       await generateAiContext();
+    //     },
+    //   },
+    //   name: "generate-ai-context",
+    // },
     mdx(),
     sitemap(),
     favicons({
@@ -58,7 +58,7 @@ export default defineConfig({
         favicons: [await readFile("src/assets/profile.jpeg")],
       },
       name: PROFILE.name,
-      short_name: PROFILE.name.split(" ").at(0) ?? "",
+      short_name: PROFILE.name,
     }),
     // (await import("@playform/compress")).default(),
     icon(),
@@ -66,9 +66,6 @@ export default defineConfig({
       config: {
         forward: ["dataLayer.push", "gtag"],
       },
-    }),
-    pagefind({
-      indexConfig: {},
     }),
     brokenLinksChecker({
       cacheExternalLinks: true,
@@ -83,6 +80,9 @@ export default defineConfig({
       telemetry: false,
     }),
     // playground(),
+    pagefind({
+      indexConfig: {},
+    }),
   ],
 
   markdown: {

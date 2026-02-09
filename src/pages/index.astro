@@ -12,7 +12,7 @@ import CompositionGrid from "../components/organisms/CompositionGrid.astro";
 import ResourceDiscovery from "../components/organisms/ResourceDiscovery.astro";
 import StatsGrid from "../components/organisms/stats-grid.astro";
 import { PROFILE, STATS } from "../config";
-import { getItemCardProps } from "../lib/content/api";
+import { getItemCardProps } from "../lib/content/data-orchestrator";
 
 // 1. Data Orchestration: Fetch Featured Highlights
 const featuredProjects = (await getCollection("projects")).filter((p) => p.data.featured).slice(0, 3);

@@ -1,9 +1,8 @@
-const generateId = (): string => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-
 export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group\\/card");
 
-  for (const card of cards) {
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards.item(i);
     if (!(card instanceof HTMLElement)) {
       continue;
     }

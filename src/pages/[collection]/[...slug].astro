@@ -4,15 +4,14 @@ import type { CollectionEntry, CollectionKey } from "astro:content";
 
 import { getCollection, render } from "astro:content";
 
-import Heading from "../../components/atoms/Heading.astro";
-import Text from "../../components/atoms/Text.astro";
+import Heading from "../../components/atoms/heading.astro";
+import Text from "../../components/atoms/text.astro";
 import LayoutRoot from "../../components/layout/layout-root.astro";
 import NavigationProgress from "../../components/layout/navigation-progress.astro";
-import AuthorBio from "../../components/molecules/AuthorBio.astro";
-import MetaBar from "../../components/molecules/MetaBar.astro";
-import ArticleRenderer from "../../components/organisms/ArticleRenderer.astro";
-import CompositionGrid from "../../components/organisms/CompositionGrid.astro";
-import TableOfContents from "../../components/organisms/TableOfContents.astro";
+import AuthorBio from "../../components/molecules/author-bio.astro";
+import MetaBar from "../../components/molecules/meta-bar.astro";
+import ArticleRenderer from "../../components/organisms/article-renderer.astro";
+import TableOfContents from "../../components/organisms/table-of-contents.astro";
 import { collections } from "../../lib";
 import { getViewPageProps } from "../../lib/content/data-orchestrator";
 
@@ -52,45 +51,43 @@ const viewProps = await getViewPageProps(entry as any);
 <LayoutRoot description={viewProps.description || ""} slug={`/${collection}/${entry.id}`} title={viewProps.title}>
   <NavigationProgress />
 
-  <CompositionGrid class="py-12 md:py-24">
-    <ArticleRenderer class="border-0 bg-transparent p-0 shadow-none" showSidebar={headings.length > 0}>
-      <header class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700" slot="header">
-        <Heading
-          class="max-w-4xl leading-[1.1] tracking-tight"
-          data-pagefind-meta="title"
-          data-pagefind-weight="10"
-          level={1}
-          size="display"
-        >
-          {viewProps.title}
-        </Heading>
-        <div data-pagefind-meta={`category:${collection}`} style="display:none"></div>
-        <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
-      </header>
-
-      {headings.length > 0 && <TableOfContents slot="toc" title="Inside the Article" />}
-
-      <div
-        class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
+  <ArticleRenderer class="py-12 md:py-24" showSidebar={headings.length > 0}>
+    <header class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700" slot="header">
+      <Heading
+        class="max-w-4xl leading-[1.1] tracking-tight"
+        data-pagefind-meta="title"
+        data-pagefind-weight="10"
+        level={1}
+        size="display"
       >
-        <Content />
-      </div>
+        {viewProps.title}
+      </Heading>
+      <div data-pagefind-meta={`category:${collection}`} style="display:none"></div>
+      <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
+    </header>
 
-      <div class="sticky top-24 space-y-8" slot="sidebar">
-        <AuthorBio />
-        <div class="glass space-y-4 rounded-xl border-white/5 p-4">
-          <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
-          <button
-            class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
-            id="toggle-focus"
-          >
-            <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
-            <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
-          </button>
-        </div>
+    {headings.length > 0 && <TableOfContents slot="toc" title="Inside the Article" />}
+
+    <div
+      class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
+    >
+      <Content />
+    </div>
+
+    <div class="sticky top-24 space-y-8" slot="sidebar">
+      <AuthorBio />
+      <div class="glass space-y-4 rounded-xl border-white/5 p-4">
+        <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
+        <button
+          class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
+          id="toggle-focus"
+        >
+          <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
+          <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
+        </button>
       </div>
-    </ArticleRenderer>
-  </CompositionGrid>
+    </div>
+  </ArticleRenderer>
 </LayoutRoot>
 
 <script>

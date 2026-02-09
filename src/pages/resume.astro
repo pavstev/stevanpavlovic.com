@@ -4,7 +4,7 @@ import { getCollection, getEntry } from "astro:content";
 import type { ResumeData } from "../lib/types";
 
 import LayoutRoot from "../components/layout/layout-root.astro";
-import ResumeEngine from "../components/organisms/ResumeEngine.astro";
+import ResumeEngine from "../components/organisms/resume-engine.astro";
 
 const stevan = await getEntry("people", "stevan-pavlovic");
 const experiences = await getCollection("experience");

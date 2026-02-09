@@ -7,11 +7,10 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import Analytics from "../atoms/Analytics.astro";
-import MetaHead from "../atoms/MetaHead.astro";
-import Chatbot from "../molecules/chatbot.astro";
-import EnvironmentalBackground from "../organisms/EnvironmentalBackground.astro";
-import OmniSearch from "../organisms/OmniSearch.astro";
+import Analytics from "../atoms/analytics.astro";
+import MetaHead from "../atoms/meta-head.astro";
+import EnvironmentalBackground from "../organisms/environmental-background.astro";
+import OmniSearch from "../organisms/omni-search.astro";
 import Footer from "./footer.astro";
 import Header from "./header.astro";
 
@@ -57,7 +56,7 @@ const { class: className, description, image, intensity = "medium", lang = "en",
       <slot />
     </main>
     <Footer />
-    <Chatbot />
+
     <OmniSearch />
 
     <script>

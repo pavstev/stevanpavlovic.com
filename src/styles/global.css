@@ -567,6 +567,148 @@ html {
 }
 
 /* Prevent layout shift during Lenis init */
-.lenis.lenis-smooth {
+  .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+}
+
+/* --- Extracted Component Styles --- */
+
+/* src/pages/[collection]/[...slug].astro */
+.focus-mode header#site-header,
+.focus-mode aside {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.5s ease;
+}
+
+.focus-mode .prose {
+  transform: translateY(-20px);
+  transition: all 0.5s ease;
+}
+
+/* src/pages/index.astro */
+@starting-style {
+  .animate-in {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* src/components/molecules/masonry-grid.astro */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .masonry-grid {
+    grid-template-columns: repeat(var(--masonry-cols), 1fr);
+  }
+}
+
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.masonry-item {
+  width: 100%;
+}
+
+/* src/components/organisms/table-of-contents.astro */
+.toc-link {
+  display: block;
+  border-left: 2px solid transparent;
+  padding-left: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: var(--color-muted-foreground);
+  transition: all 0.3s ease;
+}
+
+.is-active-link {
+  border-left-color: var(--color-primary);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.toc-link:hover {
+  color: var(--color-foreground);
+}
+
+.node-name--H3 {
+  padding-left: 1rem;
+}
+
+/* src/components/organisms/resource-discovery.astro */
+.card-item {
+  container-type: inline-size;
+}
+
+/* src/components/organisms/omni-search.astro */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* src/components/organisms/resume-engine.astro */
+@media print {
+  @page {
+    margin: 0;
+    size: auto;
+  }
+  :global(body) {
+    background: white;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* src/components/layout/layout-root.astro */
+:root {
+  --scrollbar-width: 6px;
+  --scrollbar-thumb-color: var(--color-primary);
+  --scrollbar-thumb-glow: 0 0 10px var(--color-primary);
+}
+
+::-webkit-scrollbar {
+  height: var(--scrollbar-width);
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 10px;
+  box-shadow: var(--scrollbar-thumb-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-primary), transparent 80%);
+  text-shadow: 0 0 8px var(--color-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }

@@ -1,0 +1,23 @@
+/**
+ * Initializes Focus Mode functionality for articles.
+ * Allows toggling focus mode via a button or the 'F' key.
+ */
+export const initFocusMode = (): void => {
+  const focusBtn = document.getElementById("toggle-focus");
+  if (!focusBtn) return;
+
+  const toggleFocus = (): void => {
+    document.documentElement.classList.toggle("focus-mode");
+  };
+
+  focusBtn.addEventListener("click", toggleFocus);
+
+  // Shortcut F for focus
+  const handleKeydown = (e: KeyboardEvent): void => {
+    if (e.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
+      toggleFocus();
+    }
+  };
+
+  window.addEventListener("keydown", handleKeydown);
+};

@@ -134,49 +134,13 @@ const {
 
 <script>
   import { initInteractiveCards } from "../../lib/dom";
+  import { initViewToggle } from "../../lib/view-toggle";
 
   const setup = () => {
     initInteractiveCards();
-
-    const container = document.querySelector(".view-content");
-    const listView = container?.querySelector(".list-view-container");
-    const gridView = container?.querySelector(".grid-view-container");
-
-    const toggleView = (view: string) => {
-      if (view === "grid") {
-        listView?.classList.add("hidden");
-        gridView?.classList.remove("hidden");
-      } else {
-        listView?.classList.remove("hidden");
-        gridView?.classList.add("hidden");
-      }
-    };
-
-    // Check URL params for display mode
-    const urlParams = new URLSearchParams(window.location.search);
-    const displayParam = urlParams.get("display");
-
-    if (displayParam === "grid" || displayParam === "list") {
-      sessionStorage.setItem("preferred-view", displayParam);
-    }
-
-    const preferredView = sessionStorage.getItem("preferred-view") || "list";
-    toggleView(preferredView);
-
-    // Listen for custom toggle events from DisplayMenu or URL changes
-    window.addEventListener("popstate", () => {
-      const newParams = new URLSearchParams(window.location.search);
-      const newView = newParams.get("display") || sessionStorage.getItem("preferred-view") || "list";
-      toggleView(newView);
-    });
+    initViewToggle();
   };
 
   setup();
   document.addEventListener("astro:page-load", setup);
 </script>
-
-<style>
-  .card-item {
-    container-type: inline-size;
-  }
-</style>

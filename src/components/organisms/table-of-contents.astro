@@ -35,31 +35,3 @@ const { class: className, title = "Table of Contents" } = Astro.props;
   document.addEventListener("astro:page-load", init);
   init();
 </script>
-
-<style is:global>
-  /* Custom Tocbot Styles */
-  .toc-link {
-    display: block;
-    border-left: 2px solid transparent;
-    padding-left: 1rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-    color: var(--color-muted-foreground);
-    transition: all 0.3s ease;
-  }
-
-  .is-active-link {
-    border-left-color: var(--color-primary);
-    font-weight: 600;
-    color: var(--color-primary);
-  }
-
-  .toc-link:hover {
-    color: var(--color-foreground);
-  }
-
-  /* Indentation for h3 */
-  .node-name--H3 {
-    padding-left: 1rem;
-  }
-</style>

@@ -38,7 +38,8 @@ const t = useTranslations(lang);
       {t("resume.export")}
     </Button>
     <div class="glass rounded-full border-white/20 px-6 py-3 text-sm font-medium shadow-xl">
-      <Text as="span" class="font-bold" variant="accent">{t("resume.proTip")}</Text> {t("resume.liveEdit")}
+      <Text as="span" class="font-bold" variant="accent">{t("resume.proTip")}</Text>
+      {t("resume.liveEdit")}
     </div>
   </div>
 
@@ -61,12 +62,7 @@ const t = useTranslations(lang);
           >
             {profile.name}
           </Heading>
-          <Text
-            class="rounded-sm p-1 outline-none focus:bg-primary/5"
-            contenteditable="true"
-            size="lg"
-            variant="muted"
-          >
+          <Text class="rounded-sm p-1 outline-none focus:bg-primary/5" contenteditable="true" size="lg" variant="muted">
             {profile.role}
           </Text>
         </Stack>
@@ -125,7 +121,8 @@ const t = useTranslations(lang);
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.summary")}
+                <span class="size-1 rounded-full bg-neutral-300"></span>
+                {t("resume.summary")}
               </Text>
               <div
                 class="rounded-sm p-1 leading-relaxed text-neutral-700 outline-none focus:bg-primary/5"
@@ -140,7 +137,8 @@ const t = useTranslations(lang);
                 class="mb-6 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.experience")}
+                <span class="size-1 rounded-full bg-neutral-300"></span>
+                {t("resume.experience")}
               </Text>
               <Stack gap={8}>
                 {
@@ -194,7 +192,8 @@ const t = useTranslations(lang);
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.skills")}
+                <span class="size-1 rounded-full bg-neutral-300"></span>
+                {t("resume.skills")}
               </Text>
               <div class="flex flex-wrap gap-2">
                 {
@@ -212,7 +211,8 @@ const t = useTranslations(lang);
                 class="mb-4 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase"
                 variant="muted"
               >
-                <span class="size-1 rounded-full bg-neutral-300"></span> {t("resume.education")}
+                <span class="size-1 rounded-full bg-neutral-300"></span>
+                {t("resume.education")}
               </Text>
               <Stack gap={4}>
                 {
@@ -258,19 +258,3 @@ const t = useTranslations(lang);
   document.addEventListener("astro:page-load", setup);
   setup();
 </script>
-
-<style>
-  @media print {
-    @page {
-      margin: 0;
-      size: auto;
-    }
-    :global(body) {
-      background: white;
-    }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-  }
-</style>

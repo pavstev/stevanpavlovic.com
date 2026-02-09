@@ -71,45 +71,5 @@ const { class: className, description, image, intensity = "medium", lang = "en",
         initMagnetic();
       });
     </script>
-
-    <style is:global>
-      /* Scifi Custom Scrollbar Implementation */
-      :root {
-        --scrollbar-width: 6px;
-        --scrollbar-thumb-color: var(--color-primary);
-        --scrollbar-thumb-glow: 0 0 10px var(--color-primary);
-      }
-
-      ::-webkit-scrollbar {
-        height: var(--scrollbar-width);
-        width: var(--scrollbar-width);
-      }
-
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: var(--scrollbar-thumb-color);
-        border-radius: 10px;
-        box-shadow: var(--scrollbar-thumb-glow);
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--color-accent);
-      }
-
-      /* Selection Glow Effect */
-      ::selection {
-        background-color: color-mix(in srgb, var(--color-primary), transparent 80%);
-        text-shadow: 0 0 8px var(--color-primary);
-      }
-
-      /* Focus Visible Ring */
-      :focus-visible {
-        outline: 2px solid var(--color-primary);
-        outline-offset: 2px;
-      }
-    </style>
   </body>
 </html>

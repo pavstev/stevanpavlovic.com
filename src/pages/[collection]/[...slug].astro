@@ -92,40 +92,13 @@ const viewProps = await getViewPageProps(entry as any);
 
 <script>
   import { initCodeBlocks } from "../../lib/code-blocks";
+  import { initFocusMode } from "../../lib/focus-mode";
 
   const init = () => {
     initCodeBlocks();
-
-    const focusBtn = document.getElementById("toggle-focus");
-    const toggleFocus = () => {
-      document.documentElement.classList.toggle("focus-mode");
-    };
-
-    focusBtn?.addEventListener("click", toggleFocus);
-
-    // Shortcut F for focus
-    window.addEventListener("keydown", (e) => {
-      if (e.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
-        toggleFocus();
-      }
-    });
+    initFocusMode();
   };
 
   init();
   document.addEventListener("astro:page-load", init);
 </script>
-
-<style is:global>
-  /* Focus Mode Transitions */
-  .focus-mode header#site-header,
-  .focus-mode aside {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: all 0.5s ease;
-  }
-
-  .focus-mode .prose {
-    transform: translateY(-20px);
-    transition: all 0.5s ease;
-  }
-</style>

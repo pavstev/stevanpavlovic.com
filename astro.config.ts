@@ -56,11 +56,6 @@ export default defineConfig({
         forward: ["dataLayer.push", "gtag"],
       },
     }),
-    brokenLinksChecker({
-      cacheExternalLinks: true,
-      checkExternalLinks: false,
-      throwError: false,
-    }),
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

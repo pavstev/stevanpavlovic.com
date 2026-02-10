@@ -1,12 +1,11 @@
 ---
-import type { CollectionItem } from "@server/types";
-import type { CardData } from "@server/types";
+import type { CardData, CollectionItem } from "@server/types";
 import type { CollectionKey } from "astro:content";
 
 import Container from "../atoms/container.astro";
 import Stack from "../atoms/stack.astro";
 import Text from "../atoms/text.astro";
-import ListActions from "../molecules/list-actions.astro";
+import Pagination from "../molecules/pagination.astro";
 import Card from "../organisms/card.astro";
 import CollectionHeader from "../organisms/collection-header.astro";
 
@@ -55,7 +54,7 @@ const {
       level={1}
       title={headerTitle}
     >
-      <ListActions
+      <Pagination
         baseUrl={baseUrl}
         currentPage={currentPage}
         getPageUrl={(p) => (p === 1 ? baseUrl : `${baseUrl}/page/${p}`)}
@@ -72,7 +71,6 @@ const {
         data-initial-page-size={initialPageSize}
         id={containerId}
       >
-        {/* Skeleton Loading State (Client-side) */}
         <div class="hidden animate-pulse flex-col gap-4" id="skeleton-view">
           {
             [1, 2, 3].map(() => (
@@ -81,41 +79,20 @@ const {
           }
         </div>
 
-        {/* DUAL VIEW ENGINE: Both rendered for zero-latency toggling */}
-        <div class="view-content">
-          {/* VIEW MODE: LIST */}
-          <div class="list-view-container flex flex-col gap-4">
-            {
-              items.map(async (item) => (
-                <div class="card-item group">
-                  <Card
-                    list
-                    {...await getItemCardProps(item)}
-                    class="group-hover:shadow-glow-primary transition-all duration-300"
-                  />
-                </div>
-              ))
-            }
-          </div>
-
-          {/* VIEW MODE: GRID */}
-          <div class="grid-view-container mt-8 hidden">
-            <MasonryGrid columns={2}>
-              {
-                items.map(async (item) => (
-                  <div class="masonry-item card-item group">
-                    <Card
-                      {...await getItemCardProps(item)}
-                      class="group-hover:shadow-glow-primary transition-all duration-300"
-                    />
-                  </div>
-                ))
-              }
-            </MasonryGrid>
-          </div>
+        <div class="list-view-container flex flex-col gap-4">
+          {
+            items.map(async (item) => (
+              <div class="card-item group">
+                <Card
+                  list
+                  {...await getItemCardProps(item)}
+                  class="group-hover:shadow-glow-primary transition-all duration-300"
+                />
+              </div>
+            ))
+          }
         </div>
 
-        {/* No Results HUD */}
         <div class="mt-20 hidden text-center" id="no-results">
           <Stack align="center" gap={4}>
             <div

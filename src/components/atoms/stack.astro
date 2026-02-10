@@ -1,11 +1,10 @@
 ---
+import type { ResponsiveValue } from "@server/types";
 import type { HTMLAttributes } from "astro/types";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import type { ResponsiveValue } from "../../lib/types";
-
-import { cn } from "../../lib/utils";
+import { cn } from "@client/utils";
 
 const stackVariants = cva("flex", {
   defaultVariants: {

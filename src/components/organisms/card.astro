@@ -1,10 +1,9 @@
 ---
+import type { CardData } from "@server/types";
 import type { HTMLAttributes } from "astro/types";
 
 import { Image } from "astro:assets";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import type { CardData } from "../../lib/types";
 
 import Badge from "../atoms/badge.astro";
 import DateTime from "../atoms/date-time.astro";
@@ -265,7 +264,7 @@ const isRowLayout = list && !icon;
 </Wrapper>
 
 <script>
-  import { initInteractiveCards } from "../../lib/dom";
+  import { initInteractiveCards } from "@client/dom";
 
   const init = () => {
     initInteractiveCards();

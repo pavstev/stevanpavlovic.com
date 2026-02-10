@@ -3,8 +3,9 @@ interface Props {
   navItems: readonly { href: string; label: string }[];
 }
 
+import { isActivePath } from "@client/navigation";
+
 import { SOCIALS } from "../../config";
-import { isActivePath } from "../../lib/navigation";
 import Icon from "../atoms/icon.astro";
 
 const { navItems } = Astro.props;

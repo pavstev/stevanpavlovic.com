@@ -2,12 +2,11 @@ import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
-import sentry from "@sentry/astro";
 import tailwindcss from "@tailwindcss/vite";
 import brokenLinksChecker from "astro-broken-links-checker";
 import favicons from "astro-favicons";
 import icon from "astro-icon";
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 import { readFile } from "node:fs/promises";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
@@ -50,12 +49,6 @@ export default defineConfig({
       cacheExternalLinks: true,
       checkExternalLinks: false,
       throwError: false,
-    }),
-    sentry({
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      org: "sp-05",
-      project: "stevanpavlovic",
-      telemetry: false,
     }),
   ],
 

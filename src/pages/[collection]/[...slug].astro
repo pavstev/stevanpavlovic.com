@@ -2,6 +2,8 @@
 import type { GetStaticPathsItem, GetStaticPathsResult } from "astro";
 import type { CollectionEntry, CollectionKey } from "astro:content";
 
+import { getViewPageProps } from "@server/content/api";
+import { collections } from "@server/types";
 import { getCollection, render } from "astro:content";
 
 import Heading from "../../components/atoms/heading.astro";
@@ -12,8 +14,6 @@ import AuthorBio from "../../components/molecules/author-bio.astro";
 import MetaBar from "../../components/molecules/meta-bar.astro";
 import ArticleRenderer from "../../components/organisms/article-renderer.astro";
 import TableOfContents from "../../components/organisms/table-of-contents.astro";
-import { getViewPageProps } from "../../lib/content/api";
-import { collections } from "../../lib/types";
 
 export const prerender = true;
 
@@ -98,7 +98,7 @@ const viewProps = await getViewPageProps(entry as any);
 </LayoutRoot>
 
 <script>
-  import { initFocusMode } from "../../lib/dom";
+  import { initFocusMode } from "@client/dom";
 
   const init = () => {
     initFocusMode();

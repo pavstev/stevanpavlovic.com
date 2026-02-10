@@ -1,11 +1,10 @@
 ---
+import type { ResponsiveValue } from "@server/types";
 import type { HTMLAttributes } from "astro/types";
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import type { ResponsiveValue } from "../../lib/types";
-
-import { cn } from "../../lib/utils";
+import { cn } from "@client/utils";
 
 const gridVariants = cva("grid", {
   variants: {
@@ -67,12 +66,10 @@ const buildResponsive = (value: ResponsiveValue<any>, prefix: string): string =>
 const colsClass = buildResponsive(cols, "grid-cols");
 const rowsClass = rows ? buildResponsive(rows, "grid-rows") : "";
 const gapClass = buildResponsive(gap, "gap");
-const alignClass = buildResponsive(align, "items");
-const justifyClass = buildResponsive(justify, "justify");
 ---
 
 <Tag
-  class:list={[cn("grid", colsClass, rowsClass, gapClass, alignClass, justifyClass, className)]}
+  class:list={[cn(gridVariants({ align, justify }), colsClass, rowsClass, gapClass, className)]}
   {...props}
 >
   <slot />

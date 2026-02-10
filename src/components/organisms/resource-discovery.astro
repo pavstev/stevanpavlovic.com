@@ -1,9 +1,8 @@
 ---
+import type { DisplayMode } from "@server/content/api";
+import type { CollectionItem } from "@server/types";
+import type { CardData } from "@server/types";
 import type { CollectionKey } from "astro:content";
-
-import type { DisplayMode } from "../../lib/content/api";
-import type { CollectionItem } from "../../lib/types";
-import type { CardData } from "../../lib/types";
 
 import Container from "../atoms/container.astro";
 import Stack from "../atoms/stack.astro";
@@ -148,8 +147,8 @@ const {
 </Container>
 
 <script>
-  import { initInteractiveCards } from "../../lib/dom";
-  import { initViewToggle } from "../../lib/dom";
+  import { initInteractiveCards } from "@client/dom";
+  import { initViewToggle } from "@client/dom";
 
   const setup = () => {
     initInteractiveCards();

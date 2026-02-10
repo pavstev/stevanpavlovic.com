@@ -1,4 +1,4 @@
-import type { DisplayMode } from "./lib/types";
+import type { DisplayMode } from "@server/types";
 
 import profileImage from "./assets/profile.jpeg";
 

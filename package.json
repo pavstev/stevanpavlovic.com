@@ -43,7 +43,6 @@
     "@fontsource-variable/space-grotesk": "^5.2.10",
     "@iconify-json/mdi": "^1.2.3",
     "@playform/compress": "^0.2.1",
-    "@sentry/astro": "^10.38.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
     "astro-broken-links-checker": "^1.0.6",

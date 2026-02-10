@@ -85,20 +85,6 @@ export type Company = CollectionEntry<"companies">["data"];
 
 export type DisplayMode = "grid" | "list";
 
-interface Education {
-  degree: string;
-  school: string;
-  year: string;
-}
-
-interface Experience {
-  company: string;
-  description: string;
-  endDate?: string;
-  period?: string;
-  role: string;
-  startDate: string;
-}
 export type Nullable<T> = null | T | undefined;
 
 export interface PaginationLinksOptions {
@@ -111,7 +97,6 @@ export interface PaginationLinksOptions {
   prevUrl?: string;
   totalPages: number;
 }
-
 export type PaginationType = "path" | "query";
 
 export interface PostLink {
@@ -119,25 +104,7 @@ export interface PostLink {
   label: string;
 }
 
-interface Profile {
-  avatar?: ImageMetadata;
-  email: string;
-  location: string;
-  name: string;
-  phone?: string;
-  role: string;
-  summary: string;
-  website?: string;
-}
-
 export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
-
-interface ResumeData {
-  education: Education[];
-  experience: Experience[];
-  profile: Profile;
-  skills: string[];
-}
 
 export type Tag = CollectionEntry<"tags">["data"];
 
@@ -175,6 +142,7 @@ export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   title: string;
   toolbarItems: (ToolbarItem | undefined)[];
 }
+
 export interface ViewPagePropsTags {
   items: Tag[];
   title: string | undefined;

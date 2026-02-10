@@ -8,14 +8,14 @@ const { googleAnalyticsID } = Astro.props;
 
 <script
   is:inline
-  type="text/partytown"
-  src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}></script>
+  src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
+  type="text/partytown"></script>
 <script
-  is:inline
-  type="text/partytown"
   define:vars={{
     googleAnalyticsID,
   }}
+  is:inline
+  type="text/partytown"
 >
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () {

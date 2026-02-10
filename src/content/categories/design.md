@@ -6,7 +6,9 @@ color: "#EC4899"
 icon: "🎨"
 ---
 
-System design, UI/UX principles, and architectural patterns. This category explores the fundamental tools, patterns, and architectural decisions relevant to Design.
+System design, UI/UX principles, and architectural patterns. This category
+explores the fundamental tools, patterns, and architectural decisions relevant
+to Design.
 
 ## Technologies
 

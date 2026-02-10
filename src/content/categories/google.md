@@ -6,7 +6,9 @@ color: "#4285F4"
 icon: "🔍"
 ---
 
-Google Cloud Platform (GCP), tools, and ecosystem integrations. This category explores the fundamental tools, patterns, and architectural decisions relevant to Google.
+Google Cloud Platform (GCP), tools, and ecosystem integrations. This category
+explores the fundamental tools, patterns, and architectural decisions relevant
+to Google.
 
 ## Technologies
 

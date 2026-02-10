@@ -6,7 +6,9 @@ color: "#0EA5E9"
 icon: "⏱️"
 ---
 
-Handling temporal data, scheduling, and time-based analysis. This category explores the fundamental tools, patterns, and architectural decisions relevant to Time Series.
+Handling temporal data, scheduling, and time-based analysis. This category
+explores the fundamental tools, patterns, and architectural decisions relevant
+to Time Series.
 
 ## Technologies
 

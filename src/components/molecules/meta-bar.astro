@@ -1,5 +1,9 @@
 ---
-import { type Tag, type ToolbarItem as ToolbarItemType, type ViewPagePropsTags } from "../../lib/types";
+import {
+  type Tag,
+  type ToolbarItem as ToolbarItemType,
+  type ViewPagePropsTags,
+} from "../../lib/types";
 import Icon from "../atoms/icon.astro";
 import Stack from "../atoms/stack.astro";
 import Tooltip from "../atoms/tooltip.astro";
@@ -15,72 +19,72 @@ interface Props {
 }
 
 const {
-    description,
-    tags = {
-        items: [] as Tag[],
-        title: undefined,
-    },
-    toolbarItems = [],
+  description,
+  tags = {
+    items: [] as Tag[],
+    title: undefined,
+  },
+  toolbarItems = [],
 } = Astro.props;
 
 const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
 ---
 
 <div
-    class="group/toolbar grid w-full grid-cols-1 gap-3 rounded-2xl border border-border/40 bg-background/40 p-3 backdrop-blur-md md:grid-cols-8"
+  class="group/toolbar grid w-full grid-cols-1 gap-3 rounded-2xl border border-border/40 bg-background/40 p-3 backdrop-blur-md md:grid-cols-8"
 >
-    {/* Column 1: Description */}
-    <div class="min-w-0 md:col-span-3">
-        <BriefSummary text={description} />
-    </div>
+  {/* Column 1: Description */}
+  <div class="min-w-0 md:col-span-3">
+    <BriefSummary text={description} />
+  </div>
 
-    {/* Column 2 & 3: Metadata */}
-    <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:border-x md:border-border/40 md:px-6">
-        {
-            items.map((item) => (
-                <PropertyField class="min-w-0" label={item.label}>
-                    {item.type === "status" ? (
-                        <Stack align="center" direction="row" gap={2}>
-                            <BrandIdentity size="sm" variant="status" />
-                            <Tooltip content="Live Availability Status">
-                                <span class="text-sm font-semibold text-foreground">{item.value}</span>
-                            </Tooltip>
-                        </Stack>
-                    ) : (
-                        <Stack align="center" direction="row" gap={2}>
-                            {item.logo && (
-                                <BrandIdentity
-                                    alt={item.value}
-                                    size="sm"
-                                    src={item.logo}
-                                    variant={item.type === "person" ? "author" : "org"}
-                                />
-                            )}
+  {/* Column 2 & 3: Metadata */}
+  <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:border-x md:border-border/40 md:px-6">
+    {
+      items.map((item) => (
+        <PropertyField class="min-w-0" label={item.label}>
+          {item.type === "status" ? (
+            <Stack align="center" direction="row" gap={2}>
+              <BrandIdentity size="sm" variant="status" />
+              <Tooltip content="Live Availability Status">
+                <span class="text-sm font-semibold text-foreground">{item.value}</span>
+              </Tooltip>
+            </Stack>
+          ) : (
+            <Stack align="center" direction="row" gap={2}>
+              {item.logo && (
+                <BrandIdentity
+                  alt={item.value}
+                  size="sm"
+                  src={item.logo}
+                  variant={item.type === "person" ? "author" : "org"}
+                />
+              )}
 
-                            {item.href ? (
-                                <a
-                                    class="group/link flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors group-hover/toolbar:text-foreground hover:text-primary"
-                                    href={item.href}
-                                    target="_blank"
-                                >
-                                    <span class="truncate">{item.value}</span>
-                                    <Icon
-                                        class="size-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                                        name="mdi:arrow-top-right"
-                                    />
-                                </a>
-                            ) : (
-                                <span class="text-sm font-semibold text-foreground">{item.value}</span>
-                            )}
-                        </Stack>
-                    )}
-                </PropertyField>
-            ))
-        }
-    </div>
+              {item.href ? (
+                <a
+                  class="group/link flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors group-hover/toolbar:text-foreground hover:text-primary"
+                  href={item.href}
+                  target="_blank"
+                >
+                  <span class="truncate">{item.value}</span>
+                  <Icon
+                    class="size-3 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    name="mdi:arrow-top-right"
+                  />
+                </a>
+              ) : (
+                <span class="text-sm font-semibold text-foreground">{item.value}</span>
+              )}
+            </Stack>
+          )}
+        </PropertyField>
+      ))
+    }
+  </div>
 
-    {/* Column 4: Tags */}
-    <div class="min-w-0 md:col-span-3">
-        <LabelGroup items={tags.items} title={tags.title} />
-    </div>
+  {/* Column 4: Tags */}
+  <div class="min-w-0 md:col-span-3">
+    <LabelGroup items={tags.items} title={tags.title} />
+  </div>
 </div>

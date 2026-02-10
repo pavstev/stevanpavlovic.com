@@ -6,7 +6,9 @@ color: "#8B5CF6"
 icon: "🔄"
 ---
 
-BFF (Backend for Frontend) is an architectural pattern where separate backend services are created for specific frontend interfaces. This approach tailors the API layer to each client type's specific needs and constraints.
+BFF (Backend for Frontend) is an architectural pattern where separate backend
+services are created for specific frontend interfaces. This approach tailors the
+API layer to each client type's specific needs and constraints.
 
 ## Technologies
 

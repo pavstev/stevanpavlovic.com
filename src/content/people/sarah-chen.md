@@ -23,7 +23,9 @@ socialLinks:
     name: Sarah Chen Website
 ---
 
-Sarah Chen is a Full Stack Developer with 6 years of experience building modern web applications. She specializes in React, TypeScript, and Node.js, with a strong focus on creating intuitive user experiences.
+Sarah Chen is a Full Stack Developer with 6 years of experience building modern
+web applications. She specializes in React, TypeScript, and Node.js, with a
+strong focus on creating intuitive user experiences.
 
 ## Technical Skills
 

@@ -5,7 +5,8 @@ category: data
 description: TypeScript - Technical documentation, patterns, and best practices.
 ---
 
-TypeScript plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+TypeScript plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

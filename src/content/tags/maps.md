@@ -5,7 +5,8 @@ category: data
 description: Maps - Technical documentation, patterns, and best practices.
 ---
 
-Maps plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Maps plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

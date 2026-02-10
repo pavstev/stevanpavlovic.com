@@ -5,7 +5,8 @@ category: data
 description: High - Technical documentation, patterns, and best practices.
 ---
 
-High plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+High plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

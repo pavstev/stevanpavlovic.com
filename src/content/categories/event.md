@@ -1,12 +1,15 @@
 ---
 id: event
-description: Event-driven architectures, streaming data, and asynchronous communication.
+description:
+  Event-driven architectures, streaming data, and asynchronous communication.
 label: Event
 color: "#8B5CF6"
 icon: "🎫"
 ---
 
-Event-driven architectures, streaming data, and asynchronous communication. This category explores the fundamental tools, patterns, and architectural decisions relevant to Event.
+Event-driven architectures, streaming data, and asynchronous communication. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Event.
 
 ## Technologies
 

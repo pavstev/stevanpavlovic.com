@@ -2,10 +2,12 @@
 id: microservices
 label: Microservices
 category: data
-description: Microservices - Technical documentation, patterns, and best practices.
+description:
+  Microservices - Technical documentation, patterns, and best practices.
 ---
 
-Microservices plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Microservices plays a critical role in modern software architecture. This
+section aggregates key resources and technical guides.
 
 ## Core Concepts
 

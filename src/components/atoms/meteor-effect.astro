@@ -12,25 +12,25 @@ interface Props {
 }
 
 const {
-    angle = 215,
-    class: className,
-    maxDelay = 1.2,
-    maxDuration = 10,
-    minDelay = 0.2,
-    minDuration = 2,
-    number = 20,
+  angle = 215,
+  class: className,
+  maxDelay = 1.2,
+  maxDuration = 10,
+  minDelay = 0.2,
+  minDuration = 2,
+  number = 20,
 } = Astro.props;
 ---
 
 <div
-    class:list={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
-    data-angle={angle}
-    data-max-delay={maxDelay}
-    data-max-duration={maxDuration}
-    data-min-delay={minDelay}
-    data-min-duration={minDuration}
-    data-number={number}
-    id="meteors-container"
+  class:list={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
+  data-angle={angle}
+  data-max-delay={maxDelay}
+  data-max-duration={maxDuration}
+  data-min-delay={minDelay}
+  data-min-duration={minDuration}
+  data-number={number}
+  id="meteors-container"
 >
   <!-- Meteors will be injected here -->
 </div>

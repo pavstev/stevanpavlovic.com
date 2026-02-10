@@ -5,7 +5,8 @@ category: data
 description: REST - Technical documentation, patterns, and best practices.
 ---
 
-REST plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+REST plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

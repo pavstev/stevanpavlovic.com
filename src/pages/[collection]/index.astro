@@ -15,11 +15,11 @@ export interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const collections = Object.keys(NAV_ITEMS).filter((k) => k !== "home") as CollectionKey[];
+  const collections = Object.keys(NAV_ITEMS).filter((k) => k !== "home") as CollectionKey[];
 
-    return collections.map((collection) => ({
-        params: { collection },
-    }));
+  return collections.map((collection) => ({
+    params: { collection },
+  }));
 };
 
 const { collection } = Astro.params as unknown as Params;
@@ -27,36 +27,36 @@ const display = (Astro.url.searchParams.get("display") as DisplayMode) || "list"
 const pageData = await getCollectionPageData(collection, 1, display);
 
 const {
-    baseUrl,
-    collectionItems,
-    config,
-    containerId,
-    currentPage,
-    displayUrls,
-    getItemCardProps,
-    initialPageSize,
-    nextUrl,
-    prevUrl,
-    totalItems,
-    totalPages,
+  baseUrl,
+  collectionItems,
+  config,
+  containerId,
+  currentPage,
+  displayUrls,
+  getItemCardProps,
+  initialPageSize,
+  nextUrl,
+  prevUrl,
+  totalItems,
+  totalPages,
 } = pageData;
 ---
 
 <LayoutRoot description={config.description} slug={`/${collection}`} title={config.title}>
-    <ResourceDiscovery
-        {...config}
-        baseUrl={baseUrl}
-        collectionItems={collectionItems}
-        collectionKey={collection}
-        containerId={containerId}
-        currentPage={currentPage}
-        display={display}
-        displayUrls={displayUrls}
-        getItemCardProps={getItemCardProps}
-        initialPageSize={initialPageSize}
-        nextUrl={nextUrl}
-        prevUrl={prevUrl}
-        totalItems={totalItems}
-        totalPages={totalPages}
-    />
+  <ResourceDiscovery
+    {...config}
+    baseUrl={baseUrl}
+    collectionItems={collectionItems}
+    collectionKey={collection}
+    containerId={containerId}
+    currentPage={currentPage}
+    display={display}
+    displayUrls={displayUrls}
+    getItemCardProps={getItemCardProps}
+    initialPageSize={initialPageSize}
+    nextUrl={nextUrl}
+    prevUrl={prevUrl}
+    totalItems={totalItems}
+    totalPages={totalPages}
+  />
 </LayoutRoot>

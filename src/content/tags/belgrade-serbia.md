@@ -2,10 +2,12 @@
 id: belgrade-serbia
 label: Belgrade, Serbia
 category: data
-description: Belgrade, Serbia - Technical documentation, patterns, and best practices.
+description:
+  Belgrade, Serbia - Technical documentation, patterns, and best practices.
 ---
 
-Belgrade, Serbia plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Belgrade, Serbia plays a critical role in modern software architecture. This
+section aggregates key resources and technical guides.
 
 ## Core Concepts
 

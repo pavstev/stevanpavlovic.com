@@ -14,14 +14,25 @@ tags:
   - aws
   - ci-cd
   - microservices
-description: "Architected and spearheaded the development of a state-of-the-art, high-throughput betting platform leveraging a cutting-edge Node.js and NestJS microservices architecture. Engineering focus on extreme scalability and event-driven consistency, processing millions of concurrent transactions with millisecond latency."
+description:
+  "Architected and spearheaded the development of a state-of-the-art,
+  high-throughput betting platform leveraging a cutting-edge Node.js and NestJS
+  microservices architecture. Engineering focus on extreme scalability and
+  event-driven consistency, processing millions of concurrent transactions with
+  millisecond latency."
 ---
 
-As a Senior Software Engineer at **167Pluto**, I was a primary architect for a high-load betting ecosystem. The platform was designed to handle the extreme volatility of live sports betting, where traffic can increase by 100x in a matter of seconds (e.g., during the final minutes of a World Cup match).
+As a Senior Software Engineer at **167Pluto**, I was a primary architect for a
+high-load betting ecosystem. The platform was designed to handle the extreme
+volatility of live sports betting, where traffic can increase by 100x in a
+matter of seconds (e.g., during the final minutes of a World Cup match).
 
 ### Architectural Overview: Event-Driven Scale
 
-The transition from a legacy monolith to a **Kafka-driven microservices architecture** was the cornerstone of our strategy. This allowed us to decouple the high-write "Bet Placement" service from the read-heavy "Odds Display" and "User Profile" services.
+The transition from a legacy monolith to a **Kafka-driven microservices
+architecture** was the cornerstone of our strategy. This allowed us to decouple
+the high-write "Bet Placement" service from the read-heavy "Odds Display" and
+"User Profile" services.
 
 #### System Load Distribution (Regional)
 
@@ -34,7 +45,8 @@ The transition from a legacy monolith to a **Kafka-driven microservices architec
 
 ### Performance Engineering Benchmarks
 
-I led the optimization effort that transformed the platform from a struggling legacy system into a global leader in performance.
+I led the optimization effort that transformed the platform from a struggling
+legacy system into a global leader in performance.
 
 #### Reliability & Latency Matrix
 
@@ -47,19 +59,32 @@ I led the optimization effort that transformed the platform from a struggling le
 
 ### Deep Dive: Distributed Consistency with Kafka
 
-One of our greatest challenges was ensuring that a user's balance was correctly updated across all shards without using global locks that would bottleneck the system.
+One of our greatest challenges was ensuring that a user's balance was correctly
+updated across all shards without using global locks that would bottleneck the
+system.
 
-- **Solution**: Implemented **Event Sourcing** using Apache Kafka. Instead of updating a balance field, we emit "Balance Changed" events into a partitioned topic.
-- **Result**: We achieved **linear scalability**. Adding more consumers to the Kafka topic allowed us to process more transactions per second without increasing database contention.
-- **Latency Gain**: By moving to an asynchronous event-driven model, the user "sees" their bet confirmed in under 50ms, while the heavy financial reconciliation happens in the background.
+- **Solution**: Implemented **Event Sourcing** using Apache Kafka. Instead of
+  updating a balance field, we emit "Balance Changed" events into a partitioned
+  topic.
+- **Result**: We achieved **linear scalability**. Adding more consumers to the
+  Kafka topic allowed us to process more transactions per second without
+  increasing database contention.
+- **Latency Gain**: By moving to an asynchronous event-driven model, the user
+  "sees" their bet confirmed in under 50ms, while the heavy financial
+  reconciliation happens in the background.
 
 ### Infrastructure & Cloud Strategy
 
-The platform runs on a custom **AWS EKS (Kubernetes)** setup across multiple availability zones.
+The platform runs on a custom **AWS EKS (Kubernetes)** setup across multiple
+availability zones.
 
-1. **Spot Instances**: Saved 60% on compute costs by using AWS Spot Instances for non-critical worker nodes.
-2. **Auto-Scaling**: Custom Prometheus-based horizontal pod auto-scaler (HPA) that scales based on _Kafka Lag_ rather than just CPU/Memory.
-3. **Database Sharding**: PostgreSQL database partitioned by `RegionID` and `UserID`, ensuring that no single database node processes more than 20% of the total load.
+1. **Spot Instances**: Saved 60% on compute costs by using AWS Spot Instances
+   for non-critical worker nodes.
+2. **Auto-Scaling**: Custom Prometheus-based horizontal pod auto-scaler (HPA)
+   that scales based on _Kafka Lag_ rather than just CPU/Memory.
+3. **Database Sharding**: PostgreSQL database partitioned by `RegionID` and
+   `UserID`, ensuring that no single database node processes more than 20% of
+   the total load.
 
 #### Infrastructure Reliability Stats
 
@@ -79,10 +104,14 @@ The platform runs on a custom **AWS EKS (Kubernetes)** setup across multiple ava
 
 ### Challenges & Solutions
 
-> **DANGER**
-> **Challenge**: "Thundering Herd" effect when an underdog scores a goal, and 500k+ users attempt to cash out simultaneously.
+> **DANGER** **Challenge**: "Thundering Herd" effect when an underdog scores a
+> goal, and 500k+ users attempt to cash out simultaneously.
 >
-> **Solution**: Implemented a **Virtual Queueing System** at the API Gateway level. During extreme spikes, we throttle non-critical requests (like profile updates) while prioritizing high-value transactional requests. We also utilized **Redis Lua scripts** to perform atomic balance checks and decrements in a single network round-trip.
+> **Solution**: Implemented a **Virtual Queueing System** at the API Gateway
+> level. During extreme spikes, we throttle non-critical requests (like profile
+> updates) while prioritizing high-value transactional requests. We also
+> utilized **Redis Lua scripts** to perform atomic balance checks and decrements
+> in a single network round-trip.
 
 ### Technical Stack Summary
 
@@ -93,8 +122,12 @@ The platform runs on a custom **AWS EKS (Kubernetes)** setup across multiple ava
 
 ### Strategic Impact
 
-Under my tenure, the engineering team grew from 10 to 45 engineers. I established a **"Service Ownership"** model where teams are responsible for the full lifecycle of their services, from design to production monitoring. This culture shift reduced our product-to-market time by **65%**.
+Under my tenure, the engineering team grew from 10 to 45 engineers. I
+established a **"Service Ownership"** model where teams are responsible for the
+full lifecycle of their services, from design to production monitoring. This
+culture shift reduced our product-to-market time by **65%**.
 
 ---
 
-_This experience reflects my ability to architect and scale some of the most demanding real-time systems in the industry today._
+_This experience reflects my ability to architect and scale some of the most
+demanding real-time systems in the industry today._

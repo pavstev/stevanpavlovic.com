@@ -2,7 +2,9 @@
 name: Quantox Technology
 website: https://quantox.com
 logo: ../../assets/tech-logo.png
-description: Software development company specializing in high-scale web performance and modernization
+description:
+  Software development company specializing in high-scale web performance and
+  modernization
 industry: Software
 founded: 2005
 size: Small Business
@@ -16,4 +18,7 @@ socialLinks:
     name: Quantox LinkedIn
 ---
 
-Quantox Technology is a software development company focused on high-scale web performance and legacy system modernization. The company specializes in refactoring complex monoliths and optimizing database performance for enterprise applications.
+Quantox Technology is a software development company focused on high-scale web
+performance and legacy system modernization. The company specializes in
+refactoring complex monoliths and optimizing database performance for enterprise
+applications.

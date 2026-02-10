@@ -11,14 +11,17 @@ const { class: className, label } = Astro.props;
 ---
 
 <Stack class:list={[className]} gap={0}>
-    {
-        label && (
-            <Text class="text-label font-bold tracking-widest text-muted-foreground/60 uppercase" variant="muted">
-                <slot name="label">{label}</slot>
-            </Text>
-        )
-    }
-    <div class="flex items-center gap-1.5 text-sm font-semibold text-foreground">
-        <slot />
-    </div>
+  {
+    label && (
+      <Text
+        class="text-label font-bold tracking-widest text-muted-foreground/60 uppercase"
+        variant="muted"
+      >
+        <slot name="label">{label}</slot>
+      </Text>
+    )
+  }
+  <div class="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+    <slot />
+  </div>
 </Stack>

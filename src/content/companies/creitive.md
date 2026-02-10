@@ -2,7 +2,8 @@
 name: CreITive
 website: https://creitive.com
 logo: ../../assets/tech-logo.png
-description: Global digital agency providing web solutions and e-commerce development
+description:
+  Global digital agency providing web solutions and e-commerce development
 industry: Software
 founded: 2010
 size: Small Business
@@ -25,22 +26,30 @@ socialLinks:
     name: CreITive Twitter
 ---
 
-CreITive is a global digital agency founded in 2010, specializing in custom web solutions, e-commerce development, and process automation. The company delivers high-quality web architectures for a diverse international client base.
+CreITive is a global digital agency founded in 2010, specializing in custom web
+solutions, e-commerce development, and process automation. The company delivers
+high-quality web architectures for a diverse international client base.
 
 ## Company Overview
 
-CreITive is a mid-size digital agency with 100-500 employees, headquartered in [Location]. The company has established itself as a leading provider of digital solutions, serving clients across various industries including e-commerce, technology, healthcare, and education.
+CreITive is a mid-size digital agency with 100-500 employees, headquartered in
+[Location]. The company has established itself as a leading provider of digital
+solutions, serving clients across various industries including e-commerce,
+technology, healthcare, and education.
 
 ### Core Mission
 
-To empower businesses through innovative digital solutions that drive growth, efficiency, and customer engagement. CreITive focuses on delivering measurable results through strategic digital transformation.
+To empower businesses through innovative digital solutions that drive growth,
+efficiency, and customer engagement. CreITive focuses on delivering measurable
+results through strategic digital transformation.
 
 ## Services
 
 ### Web Development
 
 - **Custom Web Applications**: Bespoke web solutions tailored to client needs
-- **E-commerce Platforms**: Comprehensive e-commerce solutions with payment integration
+- **E-commerce Platforms**: Comprehensive e-commerce solutions with payment
+  integration
 - **Content Management Systems**: WordPress, Drupal, and custom CMS development
 - **Mobile Applications**: Native and hybrid mobile app development
 
@@ -96,7 +105,8 @@ To empower businesses through innovative digital solutions that drive growth, ef
 Developed comprehensive e-commerce platforms for various industries:
 
 - **Fashion E-commerce**: Multi-vendor marketplace with advanced filtering
-- **Electronics Store**: High-performance online store with complex product configurations
+- **Electronics Store**: High-performance online store with complex product
+  configurations
 - **Food Delivery Platform**: Real-time order tracking and delivery management
 - **B2B Marketplace**: Wholesale platform with bulk ordering capabilities
 
@@ -125,7 +135,8 @@ Implemented continuous integration and deployment pipelines:
 - **Automated Testing**: Unit, integration, and end-to-end testing automation
 - **Deployment Pipelines**: Automated deployment to staging and production
 - **Monitoring and Alerting**: Real-time monitoring and alerting systems
-- **Rollback Mechanisms**: Automated rollback capabilities for failed deployments
+- **Rollback Mechanisms**: Automated rollback capabilities for failed
+  deployments
 
 ## Industry Expertise
 
@@ -151,7 +162,8 @@ Healthcare technology solutions:
 
 Educational technology solutions:
 
-- **Learning Management Systems**: Online learning platforms and course management
+- **Learning Management Systems**: Online learning platforms and course
+  management
 - **Student Portals**: Student information and academic management systems
 - **Virtual Classrooms**: Real-time online classroom solutions
 - **Assessment Tools**: Online testing and assessment platforms
@@ -169,38 +181,50 @@ Financial technology solutions:
 
 ### Global E-commerce Platform
 
-Developed a multi-vendor e-commerce platform that increased client revenue by 300% within the first year of launch.
+Developed a multi-vendor e-commerce platform that increased client revenue by
+300% within the first year of launch.
 
 ### Healthcare Portal
 
-Created a patient portal system that improved patient engagement by 45% and reduced administrative costs by 25%.
+Created a patient portal system that improved patient engagement by 45% and
+reduced administrative costs by 25%.
 
 ### Educational Platform
 
-Built a learning management system that increased course completion rates by 60% and reduced support tickets by 40%.
+Built a learning management system that increased course completion rates by 60%
+and reduced support tickets by 40%.
 
 ## Awards and Recognition
 
-- **Best Digital Agency 2023**: Recognized for outstanding digital solutions and client satisfaction
-- **E-commerce Excellence Award 2022**: Honored for innovative e-commerce platform development
-- **Innovation in Web Development 2021**: Awarded for cutting-edge web development solutions
-- **Client Satisfaction Award 2020**: Recognized for exceptional client service and project delivery
+- **Best Digital Agency 2023**: Recognized for outstanding digital solutions and
+  client satisfaction
+- **E-commerce Excellence Award 2022**: Honored for innovative e-commerce
+  platform development
+- **Innovation in Web Development 2021**: Awarded for cutting-edge web
+  development solutions
+- **Client Satisfaction Award 2020**: Recognized for exceptional client service
+  and project delivery
 
 ## Company Culture
 
-CreITive fosters a culture of innovation, collaboration, and continuous learning:
+CreITive fosters a culture of innovation, collaboration, and continuous
+learning:
 
-- **Innovation**: Encouraging creative problem-solving and technological innovation
+- **Innovation**: Encouraging creative problem-solving and technological
+  innovation
 - **Collaboration**: Promoting teamwork and cross-functional collaboration
-- **Learning**: Supporting continuous professional development and skill enhancement
+- **Learning**: Supporting continuous professional development and skill
+  enhancement
 - **Quality**: Maintaining high standards for code quality and project delivery
 
 ## Future Vision
 
 CreITive continues to evolve with the digital landscape, focusing on:
 
-- **AI Integration**: Incorporating artificial intelligence into digital solutions
-- **Blockchain Technology**: Exploring blockchain for secure and transparent solutions
+- **AI Integration**: Incorporating artificial intelligence into digital
+  solutions
+- **Blockchain Technology**: Exploring blockchain for secure and transparent
+  solutions
 - **IoT Solutions**: Developing Internet of Things applications and platforms
 - **Sustainability**: Creating eco-friendly digital solutions and practices
 

@@ -5,7 +5,8 @@ category: data
 description: Process - Technical documentation, patterns, and best practices.
 ---
 
-Process plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Process plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

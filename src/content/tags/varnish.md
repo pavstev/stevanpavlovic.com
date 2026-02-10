@@ -5,7 +5,8 @@ category: data
 description: Varnish - Technical documentation, patterns, and best practices.
 ---
 
-Varnish plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Varnish plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

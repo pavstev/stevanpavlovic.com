@@ -13,16 +13,16 @@ const { class: className, title = "Table of Contents" } = Astro.props;
 ---
 
 <nav class:list={[cn("js-toc-container flex flex-col gap-6", className)]}>
-    <Stack class="border-b border-white/5 pb-4" gap={2}>
-        <div class="flex items-center gap-2 text-primary">
-            <Icon name="mdi:format-list-bulleted" size="sm" />
-            <Text class="text-[10px] font-bold tracking-[0.2em] uppercase" variant="accent">{title}</Text>
-        </div>
-    </Stack>
-
-    <div class="js-toc toc">
-        {/* Tocbot will inject the content here */}
+  <Stack class="border-b border-white/5 pb-4" gap={2}>
+    <div class="flex items-center gap-2 text-primary">
+      <Icon name="mdi:format-list-bulleted" size="sm" />
+      <Text class="text-[10px] font-bold tracking-[0.2em] uppercase" variant="accent">{title}</Text>
     </div>
+  </Stack>
+
+  <div class="js-toc toc">
+    {/* Tocbot will inject the content here */}
+  </div>
 </nav>
 
 <script>

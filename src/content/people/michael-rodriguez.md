@@ -23,7 +23,9 @@ socialLinks:
     name: Michael Rodriguez Blog
 ---
 
-Michael Rodriguez is a Backend Engineer specializing in high-performance systems and distributed architectures. With 8 years of experience, he focuses on building scalable APIs and microservices for high-traffic applications.
+Michael Rodriguez is a Backend Engineer specializing in high-performance systems
+and distributed architectures. With 8 years of experience, he focuses on
+building scalable APIs and microservices for high-traffic applications.
 
 ## Core Technologies
 
@@ -35,7 +37,8 @@ Michael Rodriguez is a Backend Engineer specializing in high-performance systems
 ## Professional Experience
 
 - **Senior Backend Developer at 167pluto** (2022-Present)
-  - Built high-throughput betting platform handling millions of concurrent transactions
+  - Built high-throughput betting platform handling millions of concurrent
+    transactions
   - Implemented event-driven microservices with Kafka
   - Optimized database queries for sub-millisecond latency
 
@@ -46,4 +49,5 @@ Michael Rodriguez is a Backend Engineer specializing in high-performance systems
 
 ## Location
 
-Remote-first developer working with global teams across LATAM, Asia, and European markets.
+Remote-first developer working with global teams across LATAM, Asia, and
+European markets.

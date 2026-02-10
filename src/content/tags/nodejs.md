@@ -5,7 +5,8 @@ category: data
 description: Node.js - Technical documentation, patterns, and best practices.
 ---
 
-Node.js plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Node.js plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

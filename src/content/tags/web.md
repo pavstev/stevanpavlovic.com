@@ -5,7 +5,8 @@ category: data
 description: Web - Technical documentation, patterns, and best practices.
 ---
 
-Web plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Web plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

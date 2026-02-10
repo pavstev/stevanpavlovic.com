@@ -1,12 +1,15 @@
 ---
 id: api
-description: Application Programming Interfaces, REST, GraphQL, and connectivity standards.
+description:
+  Application Programming Interfaces, REST, GraphQL, and connectivity standards.
 label: API
 color: "#3B82F6"
 icon: "🔌"
 ---
 
-Application Programming Interfaces, REST, GraphQL, and connectivity standards. This category explores the fundamental tools, patterns, and architectural decisions relevant to API.
+Application Programming Interfaces, REST, GraphQL, and connectivity standards.
+This category explores the fundamental tools, patterns, and architectural
+decisions relevant to API.
 
 ## Technologies
 

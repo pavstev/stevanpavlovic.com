@@ -35,7 +35,9 @@ export class ExperienceAdapter extends ContentAdapter<"experience"> {
     const diffMonths = end.diff(start, "month") + 1;
     const years = Math.floor(diffMonths / 12);
     const months = diffMonths % 12;
-    const durationStr = [years > 0 ? `${years}y` : "", months > 0 ? `${months}m` : ""].filter(Boolean).join(" ");
+    const durationStr = [years > 0 ? `${years}y` : "", months > 0 ? `${months}m` : ""]
+      .filter(Boolean)
+      .join(" ");
 
     const items: ToolbarItem[] = [];
 
@@ -72,7 +74,9 @@ export class ExperienceAdapter extends ContentAdapter<"experience"> {
     return items;
   }
 
-  async getViewProps(item: CollectionItem<"experience">): Promise<Partial<ViewPageProps<"experience">>> {
+  async getViewProps(
+    item: CollectionItem<"experience">
+  ): Promise<Partial<ViewPageProps<"experience">>> {
     const company = await resolveCompany(item.data.company);
 
     return {

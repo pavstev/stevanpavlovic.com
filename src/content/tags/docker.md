@@ -5,7 +5,9 @@ category: devops
 description: Docker - Container platform for application deployment
 ---
 
-Docker is a platform for developing, shipping, and running applications in containers. Containers allow developers to package applications with all their dependencies, ensuring consistent behavior across different environments.
+Docker is a platform for developing, shipping, and running applications in
+containers. Containers allow developers to package applications with all their
+dependencies, ensuring consistent behavior across different environments.
 
 ## Core Concepts
 
@@ -41,7 +43,8 @@ Docker is a platform for developing, shipping, and running applications in conta
 
 ### Docker Compose
 
-- **Multi-Container Applications**: Defining and running multi-container applications
+- **Multi-Container Applications**: Defining and running multi-container
+  applications
 - **YAML Configuration**: Declarative configuration using YAML
 - **Service Definition**: Defining services, networks, and volumes
 - **Environment Management**: Managing different environments

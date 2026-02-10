@@ -2,7 +2,8 @@
 name: Apoddo
 website: https://apoddo.com
 logo: ../../assets/tech-logo.png
-description: Backend-for-Frontend (BFF) infrastructure and API orchestration specialist
+description:
+  Backend-for-Frontend (BFF) infrastructure and API orchestration specialist
 industry: Software
 founded: 2020
 size: Small Business
@@ -25,21 +26,30 @@ socialLinks:
     name: Apoddo Medium
 ---
 
-Apoddo specializes in Backend-for-Frontend (BFF) infrastructure and API orchestration, helping companies optimize their mobile application performance through sophisticated caching strategies and protocol optimization.
+Apoddo specializes in Backend-for-Frontend (BFF) infrastructure and API
+orchestration, helping companies optimize their mobile application performance
+through sophisticated caching strategies and protocol optimization.
 
 ## Company Overview
 
-Apoddo is a specialized software company founded in 2020, focusing on Backend-for-Frontend (BFF) infrastructure and API orchestration. The company helps businesses optimize their mobile application performance through sophisticated caching strategies, protocol optimization, and modern API architecture patterns.
+Apoddo is a specialized software company founded in 2020, focusing on
+Backend-for-Frontend (BFF) infrastructure and API orchestration. The company
+helps businesses optimize their mobile application performance through
+sophisticated caching strategies, protocol optimization, and modern API
+architecture patterns.
 
 ### Core Mission
 
-To revolutionize mobile application performance through intelligent API orchestration, providing seamless user experiences while reducing backend complexity and improving scalability.
+To revolutionize mobile application performance through intelligent API
+orchestration, providing seamless user experiences while reducing backend
+complexity and improving scalability.
 
 ## Technology Stack
 
 ### Backend Technologies
 
-- **Node.js**: Event-driven, non-blocking I/O model for high-performance backend services
+- **Node.js**: Event-driven, non-blocking I/O model for high-performance backend
+  services
 - **Go**: High-performance systems programming language for API services
 - **Redis**: In-memory data store for caching and real-time data processing
 - **REST APIs**: Traditional HTTP-based API development
@@ -147,13 +157,17 @@ Apoddo serves a diverse range of clients across various industries:
 - **Enterprise API Services**: Enterprise companies requiring API optimization
 - **E-commerce Platforms**: E-commerce companies needing mobile optimization
 - **SaaS Companies**: Software-as-a-Service companies
-- **Healthcare Applications**: Healthcare applications requiring performance optimization
+- **Healthcare Applications**: Healthcare applications requiring performance
+  optimization
 
 ## Awards and Recognition
 
-- **Best API Infrastructure 2023**: Recognized for outstanding API infrastructure solutions
-- **Mobile Performance Excellence 2022**: Awarded for excellence in mobile performance optimization
-- **API Architecture Innovation 2021**: Honored for innovative API architecture solutions
+- **Best API Infrastructure 2023**: Recognized for outstanding API
+  infrastructure solutions
+- **Mobile Performance Excellence 2022**: Awarded for excellence in mobile
+  performance optimization
+- **API Architecture Innovation 2021**: Honored for innovative API architecture
+  solutions
 
 ## Technology Leadership
 
@@ -185,7 +199,8 @@ Apoddo continues to innovate in API and mobile technology with focus on:
 
 ### Architecture Improvements
 
-- **Microservices Implementation**: Successfully implemented microservices architecture
+- **Microservices Implementation**: Successfully implemented microservices
+  architecture
 - **API Gateway**: Built scalable API gateway solutions
 - **Caching Architecture**: Designed advanced caching architectures
 - **Containerization**: Implemented containerization for consistent deployment
@@ -225,7 +240,8 @@ Apoddo continues to innovate in API and mobile technology with focus on:
 Apoddo fosters a culture of technical excellence and innovation:
 
 - **Performance Focus**: Deep commitment to performance optimization
-- **Technical Excellence**: High standards for code quality and system performance
+- **Technical Excellence**: High standards for code quality and system
+  performance
 - **Innovation**: Continuous innovation in API and mobile technologies
 - **Best Practices**: Adherence to industry best practices and standards
 - **Client Success**: Focus on client success and satisfaction
@@ -250,6 +266,8 @@ Apoddo represents the future of API and mobile technology, combining:
 - **Client Success**: Focus on client success and satisfaction
 - **Best Practices**: Adherence to industry best practices and standards
 
-The company continues to lead the way in API and mobile technology solutions, helping businesses optimize their mobile application performance through intelligent API orchestration and sophisticated caching strategies.
+The company continues to lead the way in API and mobile technology solutions,
+helping businesses optimize their mobile application performance through
+intelligent API orchestration and sophisticated caching strategies.
 
 ---

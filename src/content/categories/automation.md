@@ -1,12 +1,15 @@
 ---
 id: automation
-description: Automation strategies and tools for streamlining development and operations
+description:
+  Automation strategies and tools for streamlining development and operations
 label: Automation
 color: "#6366F1"
 icon: "⚙️"
 ---
 
-Automation involves using tools and scripts to perform repetitive tasks without manual intervention. This category covers CI/CD pipelines, build automation, deployment automation, and workflow optimization.
+Automation involves using tools and scripts to perform repetitive tasks without
+manual intervention. This category covers CI/CD pipelines, build automation,
+deployment automation, and workflow optimization.
 
 ## Technologies
 

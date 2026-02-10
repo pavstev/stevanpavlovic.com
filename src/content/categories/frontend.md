@@ -6,7 +6,9 @@ color: "#10B981"
 icon: "🎨"
 ---
 
-Frontend development focuses on building user interfaces and client-side experiences. This includes everything users interact with directly in their browsers, from simple websites to complex single-page applications.
+Frontend development focuses on building user interfaces and client-side
+experiences. This includes everything users interact with directly in their
+browsers, from simple websites to complex single-page applications.
 
 ## Technologies
 

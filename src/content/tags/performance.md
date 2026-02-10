@@ -2,10 +2,12 @@
 id: performance
 label: Performance
 category: data
-description: Performance - Technical documentation, patterns, and best practices.
+description:
+  Performance - Technical documentation, patterns, and best practices.
 ---
 
-Performance plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Performance plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

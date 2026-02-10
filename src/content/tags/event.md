@@ -5,7 +5,8 @@ category: data
 description: Event - Technical documentation, patterns, and best practices.
 ---
 
-Event plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Event plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

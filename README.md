@@ -1,6 +1,8 @@
 # spcom-final
 
-A professional portfolio and technical blog built with **Astro**, **TypeScript**, and **Tailwind CSS**. Designed with an Atomic Design architecture for scalability and maintainability.
+A professional portfolio and technical blog built with **Astro**,
+**TypeScript**, and **Tailwind CSS**. Designed with an Atomic Design
+architecture for scalability and maintainability.
 
 ## 📂 Project Structure
 

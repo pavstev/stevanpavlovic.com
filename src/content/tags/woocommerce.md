@@ -2,10 +2,12 @@
 id: woocommerce
 label: WooCommerce
 category: data
-description: WooCommerce - Technical documentation, patterns, and best practices.
+description:
+  WooCommerce - Technical documentation, patterns, and best practices.
 ---
 
-WooCommerce plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+WooCommerce plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -6,12 +6,16 @@ color: "#F59E0B"
 icon: "☁️"
 ---
 
-Cloud computing provides on-demand computing resources over the internet. This includes infrastructure as a service (IaaS), platform as a service (PaaS), and software as a service (SaaS) solutions for building and deploying applications at scale.
+Cloud computing provides on-demand computing resources over the internet. This
+includes infrastructure as a service (IaaS), platform as a service (PaaS), and
+software as a service (SaaS) solutions for building and deploying applications
+at scale.
 
 ## Technologies
 
 - **Providers**: AWS, Google Cloud, Azure, DigitalOcean
-- **Services**: Compute (EC2, Lambda), Storage (S3, EBS), Database (RDS, DynamoDB)
+- **Services**: Compute (EC2, Lambda), Storage (S3, EBS), Database (RDS,
+  DynamoDB)
 - **Networking**: VPC, Load Balancers, CDN
 - **DevOps**: CI/CD, Infrastructure as Code, Monitoring
 

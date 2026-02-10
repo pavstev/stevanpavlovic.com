@@ -6,7 +6,10 @@ color: "#6366F1"
 icon: "🏗️"
 ---
 
-Software architecture encompasses the high-level structure and design patterns that guide software development. This includes architectural styles, design patterns, and principles for building scalable, maintainable, and robust systems.
+Software architecture encompasses the high-level structure and design patterns
+that guide software development. This includes architectural styles, design
+patterns, and principles for building scalable, maintainable, and robust
+systems.
 
 ## Technologies
 

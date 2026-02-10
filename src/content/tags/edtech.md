@@ -5,7 +5,8 @@ category: data
 description: EdTech - Technical documentation, patterns, and best practices.
 ---
 
-EdTech plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+EdTech plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

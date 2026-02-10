@@ -6,7 +6,10 @@ color: "#EF4444"
 icon: "🚀"
 ---
 
-DevOps combines software development and IT operations to shorten the development lifecycle and provide continuous delivery. This includes automation, monitoring, and collaboration practices for building, testing, and deploying software.
+DevOps combines software development and IT operations to shorten the
+development lifecycle and provide continuous delivery. This includes automation,
+monitoring, and collaboration practices for building, testing, and deploying
+software.
 
 ## Technologies
 

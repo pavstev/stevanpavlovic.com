@@ -5,7 +5,8 @@ category: data
 description: Redis - Technical documentation, patterns, and best practices.
 ---
 
-Redis plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Redis plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -2,7 +2,9 @@
 name: 167pluto
 website: https://167pluto.com
 logo: ../../assets/167pluto-logo.png
-description: High-throughput betting platform with extreme scalability for live sports betting
+description:
+  High-throughput betting platform with extreme scalability for live sports
+  betting
 industry: Software
 founded: 2023
 size: Small Business
@@ -22,21 +24,29 @@ socialLinks:
     name: 167pluto GitHub
 ---
 
-167pluto is a cutting-edge betting platform designed to handle extreme traffic spikes during live sports events. The platform processes millions of concurrent transactions with millisecond latency across LATAM, Asia, and European markets.
+167pluto is a cutting-edge betting platform designed to handle extreme traffic
+spikes during live sports events. The platform processes millions of concurrent
+transactions with millisecond latency across LATAM, Asia, and European markets.
 
 ## Company Overview
 
-167pluto is a technology-driven betting platform founded in 2023 with a mission to revolutionize the sports betting industry through innovative technology and extreme scalability. The company specializes in high-throughput betting platforms that can handle massive traffic spikes during live sports events.
+167pluto is a technology-driven betting platform founded in 2023 with a mission
+to revolutionize the sports betting industry through innovative technology and
+extreme scalability. The company specializes in high-throughput betting
+platforms that can handle massive traffic spikes during live sports events.
 
 ### Core Mission
 
-To provide the most reliable, scalable, and performant betting platform for sports betting operators worldwide, enabling them to deliver exceptional user experiences during peak traffic periods.
+To provide the most reliable, scalable, and performant betting platform for
+sports betting operators worldwide, enabling them to deliver exceptional user
+experiences during peak traffic periods.
 
 ## Technology Stack
 
 ### Backend Architecture
 
-- **Node.js**: Event-driven, non-blocking I/O model for high-performance backend services
+- **Node.js**: Event-driven, non-blocking I/O model for high-performance backend
+  services
 - **NestJS**: Enterprise-grade Node.js framework with TypeScript support
 - **Apache Kafka**: Distributed streaming platform for real-time data processing
 - **PostgreSQL**: Robust relational database for transactional data
@@ -47,14 +57,16 @@ To provide the most reliable, scalable, and performant betting platform for spor
 
 - **Docker**: Containerization for consistent deployment across environments
 - **Kubernetes**: Container orchestration for scalable deployments
-- **TypeScript**: Type-safe JavaScript for better code quality and maintainability
+- **TypeScript**: Type-safe JavaScript for better code quality and
+  maintainability
 - **GraphQL**: Flexible API layer for efficient data fetching
 
 ## Notable Projects
 
 ### High-Load Betting Platform
 
-A flagship betting platform capable of processing over 1 million concurrent users during major sporting events. Features include:
+A flagship betting platform capable of processing over 1 million concurrent
+users during major sporting events. Features include:
 
 - **Real-time odds calculation** with sub-millisecond latency
 - **Live betting** with instant updates
@@ -112,24 +124,30 @@ Advanced gaming technology solutions:
 
 167pluto serves clients across multiple continents with a focus on:
 
-- **LATAM markets**: Brazil, Argentina, Mexico, and other Latin American countries
+- **LATAM markets**: Brazil, Argentina, Mexico, and other Latin American
+  countries
 - **Asian markets**: India, Japan, South Korea, and Southeast Asian countries
 - **European markets**: UK, Germany, France, and other European countries
 - **Global expansion**: Continuous expansion into new regulated markets
 
 ## Awards and Recognition
 
-- **Best New Betting Platform 2024**: Recognized for innovative technology and user experience
-- **Innovation in Real-Time Gaming 2024**: Awarded for advancements in real-time gaming technology
-- **Scalability Excellence Award 2024**: Honored for exceptional scalability and performance
+- **Best New Betting Platform 2024**: Recognized for innovative technology and
+  user experience
+- **Innovation in Real-Time Gaming 2024**: Awarded for advancements in real-time
+  gaming technology
+- **Scalability Excellence Award 2024**: Honored for exceptional scalability and
+  performance
 
 ## Technology Leadership
 
 167pluto is at the forefront of betting technology innovation:
 
-- **Extreme scalability**: Platforms designed to handle millions of concurrent users
+- **Extreme scalability**: Platforms designed to handle millions of concurrent
+  users
 - **Real-time processing**: Sub-millisecond latency for critical operations
-- **Event-driven architecture**: Modern microservices architecture for flexibility
+- **Event-driven architecture**: Modern microservices architecture for
+  flexibility
 - **Global deployment**: Multi-region infrastructure for worldwide coverage
 
 ## Future Vision

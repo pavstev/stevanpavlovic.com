@@ -13,14 +13,25 @@ tags:
   - docker
   - rabbitmq
   - fintech
-description: "Architected 'Syllo', a highly secure and scalable fintech microservice ecosystem designed to process millions of payment transactions with sub-second latency. Enforced rigorous security standards by implementing full OAuth2 and OpenID Connect (OIDC) authentication flows for third-party integrations."
+description:
+  "Architected 'Syllo', a highly secure and scalable fintech microservice
+  ecosystem designed to process millions of payment transactions with sub-second
+  latency. Enforced rigorous security standards by implementing full OAuth2 and
+  OpenID Connect (OIDC) authentication flows for third-party integrations."
 ---
 
-At Pannovate, I led the backend engineering effort for **Syllo**, a next-generation "digital bank in a box" orchestration layer. The platform serves as the middle-ware spine for several European fintechs, enabling them to launch full-featured banking apps (KYC, Cards, Wallets, IBANs) in a fraction of the traditional time.
+At Pannovate, I led the backend engineering effort for **Syllo**, a
+next-generation "digital bank in a box" orchestration layer. The platform serves
+as the middle-ware spine for several European fintechs, enabling them to launch
+full-featured banking apps (KYC, Cards, Wallets, IBANs) in a fraction of the
+traditional time.
 
 ### Syllo: The Fintech Orchestrator
 
-Syllo acts as a smart middleware that enables financial institutions to rapidly deploy branded banking apps. The architecture was designed to be vendor-agnostic, allowing clients to swap BaaS (Banking-as-a-Service) providers without rewriting their mobile apps.
+Syllo acts as a smart middleware that enables financial institutions to rapidly
+deploy branded banking apps. The architecture was designed to be
+vendor-agnostic, allowing clients to swap BaaS (Banking-as-a-Service) providers
+without rewriting their mobile apps.
 
 #### Ecosystem Component Architecture
 
@@ -34,7 +45,8 @@ Syllo acts as a smart middleware that enables financial institutions to rapidly 
 
 ### PCI-DSS Compliance & Security
 
-Handling financial data requires the highest level of security. I spearheaded the effort to make Syllo **PCI-DSS Level 1** compliant.
+Handling financial data requires the highest level of security. I spearheaded
+the effort to make Syllo **PCI-DSS Level 1** compliant.
 
 #### Security Implementation Matrix
 
@@ -47,11 +59,13 @@ Handling financial data requires the highest level of security. I spearheaded th
 
 ### Deep Dive: The Transaction Life Cycle
 
-A single payment request in Syllo triggers a complex chain of events across multiple services. Ensuring consistency was our #1 priority.
+A single payment request in Syllo triggers a complex chain of events across
+multiple services. Ensuring consistency was our #1 priority.
 
 1. **Validation**: Verify user identity and session via Identity Core.
 2. **Pre-Auth**: Check balance in Ledger and place a "Pending" hold.
-3. **Vendor Call**: Execute the transaction via a third-party BaaS (e.g., Railsbank).
+3. **Vendor Call**: Execute the transaction via a third-party BaaS (e.g.,
+   Railsbank).
 4. **Finalization**: Update the Ledger state to "Settled" or "Failed".
 5. **Event Emission**: Notify the user and update the Audit Log via RabbitMQ.
 
@@ -66,25 +80,36 @@ A single payment request in Syllo triggers a complex chain of events across mult
 
 ### Strategic Vendor Management
 
-I developed a pluggable "Adapter Architecture". This allowed Syllo to expand into the APAC and LATAM markets by simply adding new vendor adapters for local banking partners without touching the core ledger logic.
+I developed a pluggable "Adapter Architecture". This allowed Syllo to expand
+into the APAC and LATAM markets by simply adding new vendor adapters for local
+banking partners without touching the core ledger logic.
 
-- **Outcome**: Reduced onboarding time for new banking partners from **4 months to 3 weeks**.
-- **Resiliency**: If a primary vendor (e.g., Marqeta) experienced downtime, the hub could automatically failover to a secondary partner for critical transaction types.
+- **Outcome**: Reduced onboarding time for new banking partners from **4 months
+  to 3 weeks**.
+- **Resiliency**: If a primary vendor (e.g., Marqeta) experienced downtime, the
+  hub could automatically failover to a secondary partner for critical
+  transaction types.
 
 ### Technical Leadership & Culture
 
 Beyond code, I managed a team of 6 backend developers. I introduced:
 
-- **RFC Process**: For every architectural change, preventing "design-by-accident".
-- **Strict TDD**: Achieving 90% test coverage on the Ledger and Identity services.
-- **Automated Documentation**: Using Swagger/OpenAPI to keep the frontend teams in sync.
+- **RFC Process**: For every architectural change, preventing
+  "design-by-accident".
+- **Strict TDD**: Achieving 90% test coverage on the Ledger and Identity
+  services.
+- **Automated Documentation**: Using Swagger/OpenAPI to keep the frontend teams
+  in sync.
 
 ### Challenges & Solutions
 
-> **IMPORTANT**
-> **Challenge**: Maintaining strict ACID compliance across distributed microservices without using heavy distributed transactions (2PC).
+> **IMPORTANT** **Challenge**: Maintaining strict ACID compliance across
+> distributed microservices without using heavy distributed transactions (2PC).
 >
-> **Solution**: Implemented the **Saga Pattern** with RabbitMQ. Each service manages its own database and emits "compensation" events if a downstream step fails, allowing for eventual consistency and reliable rollbacks in a high-throughput environment.
+> **Solution**: Implemented the **Saga Pattern** with RabbitMQ. Each service
+> manages its own database and emits "compensation" events if a downstream step
+> fails, allowing for eventual consistency and reliable rollbacks in a
+> high-throughput environment.
 
 ### Project Impact
 
@@ -94,4 +119,5 @@ Beyond code, I managed a team of 6 backend developers. I introduced:
 
 ---
 
-_My time at Pannovate solidified my expertise in building high-integrity financial systems that balance security with extreme scalability._
+_My time at Pannovate solidified my expertise in building high-integrity
+financial systems that balance security with extreme scalability._

@@ -6,7 +6,10 @@ color: "#DC2626"
 icon: "🔒"
 ---
 
-Security encompasses practices and technologies for protecting applications, data, and infrastructure from threats. This includes authentication, authorization, encryption, and compliance with security standards and regulations.
+Security encompasses practices and technologies for protecting applications,
+data, and infrastructure from threats. This includes authentication,
+authorization, encryption, and compliance with security standards and
+regulations.
 
 ## Technologies
 

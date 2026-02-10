@@ -5,7 +5,8 @@ category: data
 description: Tech - Technical documentation, patterns, and best practices.
 ---
 
-Tech plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Tech plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

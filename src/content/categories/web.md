@@ -1,12 +1,15 @@
 ---
 id: web
-description: Modern web development, browsers, standards, and frontend technologies.
+description:
+  Modern web development, browsers, standards, and frontend technologies.
 label: Web
 color: "#14B8A6"
 icon: "🌐"
 ---
 
-Modern web development, browsers, standards, and frontend technologies. This category explores the fundamental tools, patterns, and architectural decisions relevant to Web.
+Modern web development, browsers, standards, and frontend technologies. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Web.
 
 ## Technologies
 

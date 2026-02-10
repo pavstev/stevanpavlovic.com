@@ -6,7 +6,9 @@ color: "#F97316"
 icon: "📱"
 ---
 
-Mobile development focuses on building applications for mobile devices including smartphones and tablets. This includes native development, cross-platform frameworks, and mobile-specific design patterns and technologies.
+Mobile development focuses on building applications for mobile devices including
+smartphones and tablets. This includes native development, cross-platform
+frameworks, and mobile-specific design patterns and technologies.
 
 ## Technologies
 

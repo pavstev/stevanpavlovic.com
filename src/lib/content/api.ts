@@ -22,7 +22,9 @@ const getSortDate = <CN extends CollectionKey>(item: CollectionItem<CN>): number
   return adapter ? adapter.getSortDate(item) : 0;
 };
 
-export const getCollectionData = async <CN extends CollectionKey>(collection: CN): Promise<CollectionItem<CN>[]> => {
+export const getCollectionData = async <CN extends CollectionKey>(
+  collection: CN
+): Promise<CollectionItem<CN>[]> => {
   const allItems = await getCollection(collection);
   const mappedItems: CollectionItem<CN>[] = allItems.map((item) => ({
     body: item.body,
@@ -33,7 +35,9 @@ export const getCollectionData = async <CN extends CollectionKey>(collection: CN
   return mappedItems.sort((a, b) => getSortDate(b) - getSortDate(a));
 };
 
-export const getViewPageProps = async <CN extends CollectionKey>(item: CollectionItem<CN>): Promise<ViewPageProps> => {
+export const getViewPageProps = async <CN extends CollectionKey>(
+  item: CollectionItem<CN>
+): Promise<ViewPageProps> => {
   const adapter = adapters[item.collection];
 
   if (!adapter) {
@@ -46,7 +50,10 @@ export const getViewPageProps = async <CN extends CollectionKey>(item: Collectio
 
   const data = item.data as Record<string, unknown>;
   const defaultTitle = (data.title || data.name || data.role || "") as string;
-  const defaultImage = (data.image || data.logo || data.avatar) as ImageMetadata | string | undefined;
+  const defaultImage = (data.image || data.logo || data.avatar) as
+    | ImageMetadata
+    | string
+    | undefined;
 
   return {
     author,
@@ -65,7 +72,7 @@ export const getViewPageProps = async <CN extends CollectionKey>(item: Collectio
 };
 
 export const getItemCardProps = async <CN extends CollectionKey>(
-  item: CollectionItem<CN>,
+  item: CollectionItem<CN>
 ): Promise<{
   actionLabel: string;
   data: CardData;
@@ -93,7 +100,7 @@ export const getItemCardProps = async <CN extends CollectionKey>(
 export const getCollectionPageData = async (
   collection: CollectionKey,
   page: number | string,
-  displayMode: DisplayMode = "list",
+  displayMode: DisplayMode = "list"
 ): Promise<CollectionPageData> => {
   const currentPage = typeof page === "string" ? parseInt(page, 10) : page;
 
@@ -105,7 +112,12 @@ export const getCollectionPageData = async (
   const config = getCollectionConfig(collection);
   const baseUrl = `/${collection}`;
   const displayUrls = buildDisplayUrls(collection, currentPage);
-  const { nextUrl, prevUrl } = buildPaginationUrls(collection, displayMode, currentPage, totalPages);
+  const { nextUrl, prevUrl } = buildPaginationUrls(
+    collection,
+    displayMode,
+    currentPage,
+    totalPages
+  );
 
   return {
     baseUrl,
@@ -129,7 +141,7 @@ export const buildListUrl = (
   currentUrl: URL,
   paginationType: PaginationType,
   path: string,
-  paramsToSet: Record<string, number | string | undefined> = {},
+  paramsToSet: Record<string, number | string | undefined> = {}
 ): string => {
   const url = new URL(path, currentUrl.origin);
   const currentParams = currentUrl.searchParams;

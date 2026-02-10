@@ -5,7 +5,8 @@ category: data
 description: Video - Technical documentation, patterns, and best practices.
 ---
 
-Video plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Video plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

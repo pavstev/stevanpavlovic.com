@@ -5,7 +5,8 @@ category: data
 description: AJAX - Technical documentation, patterns, and best practices.
 ---
 
-AJAX plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+AJAX plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

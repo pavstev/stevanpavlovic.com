@@ -5,7 +5,8 @@ category: data
 description: PostgreSQL - Technical documentation, patterns, and best practices.
 ---
 
-PostgreSQL plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+PostgreSQL plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

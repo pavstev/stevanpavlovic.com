@@ -5,7 +5,8 @@ category: data
 description: Automation - Technical documentation, patterns, and best practices.
 ---
 
-Automation plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Automation plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -1,19 +1,23 @@
 ---
 id: high
-description: Strategies for maintaining uptime, reliability, and fault tolerance.
+description:
+  Strategies for maintaining uptime, reliability, and fault tolerance.
 label: High Availability
 color: "#EF4444"
 icon: "📈"
 ---
 
-Strategies for maintaining uptime, reliability, and fault tolerance. This category explores the fundamental tools, patterns, and architectural decisions relevant to High Availability.
+Strategies for maintaining uptime, reliability, and fault tolerance. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to High Availability.
 
 ## Technologies
 
 - **Core Tools**: Essential libraries and frameworks for High Availability.
 - **Platforms**: Leading services and infrastructure providers.
 - **Standards**: Industry-standard protocols and specifications.
-- **Monitoring**: Tools for observability and metrics in High Availability systems.
+- **Monitoring**: Tools for observability and metrics in High Availability
+  systems.
 - **Development**: SDKs and utilities for building High Availability solutions.
 
 ## Use Cases

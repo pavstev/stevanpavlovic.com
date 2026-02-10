@@ -6,7 +6,9 @@ color: "#F59E0B"
 icon: "⚡"
 ---
 
-Real-time data processing, live updates, and synchronous systems. This category explores the fundamental tools, patterns, and architectural decisions relevant to Real-time.
+Real-time data processing, live updates, and synchronous systems. This category
+explores the fundamental tools, patterns, and architectural decisions relevant
+to Real-time.
 
 ## Technologies
 

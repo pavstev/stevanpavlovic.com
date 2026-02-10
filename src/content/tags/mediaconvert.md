@@ -2,10 +2,12 @@
 id: mediaconvert
 label: MediaConvert
 category: data
-description: MediaConvert - Technical documentation, patterns, and best practices.
+description:
+  MediaConvert - Technical documentation, patterns, and best practices.
 ---
 
-MediaConvert plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+MediaConvert plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

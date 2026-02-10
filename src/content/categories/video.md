@@ -1,12 +1,15 @@
 ---
 id: video
-description: Video streaming, encoding, processing, and media delivery technologies.
+description:
+  Video streaming, encoding, processing, and media delivery technologies.
 label: Video
 color: "#F43F5E"
 icon: "🎥"
 ---
 
-Video streaming, encoding, processing, and media delivery technologies. This category explores the fundamental tools, patterns, and architectural decisions relevant to Video.
+Video streaming, encoding, processing, and media delivery technologies. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Video.
 
 ## Technologies
 

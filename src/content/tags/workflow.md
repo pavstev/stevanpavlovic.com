@@ -5,7 +5,8 @@ category: data
 description: Workflow - Technical documentation, patterns, and best practices.
 ---
 
-Workflow plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Workflow plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

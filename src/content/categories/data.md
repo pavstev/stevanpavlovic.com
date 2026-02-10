@@ -6,7 +6,9 @@ color: "#F59E0B"
 icon: "📊"
 ---
 
-Data encompasses the collection, storage, processing, and analysis of information. This category covers data engineering, databases, data pipelines, analytics, and data-driven decision making.
+Data encompasses the collection, storage, processing, and analysis of
+information. This category covers data engineering, databases, data pipelines,
+analytics, and data-driven decision making.
 
 ## Technologies
 

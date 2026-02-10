@@ -13,7 +13,11 @@ export const formatCompactNumber = (number: number): string => {
   return formatter.format(number);
 };
 
-export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; role: string }): Author => ({
+export const createAuthorItem = (author: {
+  avatar: ImageMetadata;
+  name: string;
+  role: string;
+}): Author => ({
   avatar: author.avatar,
   href: undefined,
   label: "Author",
@@ -24,14 +28,16 @@ export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; 
   value: author.name,
 });
 
-export const resolveTags = async (tagsRef?: { collection: "tags"; id: string }[]): Promise<Tag[]> => {
+export const resolveTags = async (
+  tagsRef?: { collection: "tags"; id: string }[]
+): Promise<Tag[]> => {
   if (!tagsRef || tagsRef.length === 0) return [];
   const resolved = await getEntries(tagsRef);
   return resolved.filter((r) => !!r).map((r) => r.data);
 };
 
 export const resolveCompany = async (
-  companyRef?: string | { collection: "companies"; id: string },
+  companyRef?: string | { collection: "companies"; id: string }
 ): Promise<Company | undefined> => {
   if (!companyRef) return undefined;
   if (typeof companyRef === "string") {

@@ -20,67 +20,81 @@ export const prerender = true;
 type Props = CollectionEntry<CollectionKey>;
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
-    const result = await Promise.all(
-        collections.map(async (collection): Promise<GetStaticPathsItem[]> => {
-            const items = await getCollection(collection);
+  const result = await Promise.all(
+    collections.map(async (collection): Promise<GetStaticPathsItem[]> => {
+      const items = await getCollection(collection);
 
-            return items.map((item): GetStaticPathsItem => {
-                const { collection, id: slug } = item;
-                return {
-                    params: { collection, slug },
-                    props: item,
-                };
-            });
-        }),
-    );
+      return items.map((item): GetStaticPathsItem => {
+        const { collection, id: slug } = item;
+        return {
+          params: { collection, slug },
+          props: item,
+        };
+      });
+    })
+  );
 
-    return result.flat();
+  return result.flat();
 }
 
 const entry = Astro.props as Props;
 const { collection } = Astro.params;
 
 if (entry === undefined) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 const { Content, headings } = await render(entry);
 const viewProps = await getViewPageProps(entry as any);
 ---
 
-<LayoutRoot description={viewProps.description || ""} slug={`/${collection}/${entry.id}`} title={viewProps.title}>
-    <NavigationProgress />
+<LayoutRoot
+  description={viewProps.description || ""}
+  slug={`/${collection}/${entry.id}`}
+  title={viewProps.title}
+>
+  <NavigationProgress />
 
-    <ArticleRenderer class="py-12 md:py-24" showSidebar={headings.length > 0}>
-        <header class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700" slot="header">
-            <Heading class="leading-header tracking-tight" level={1} size="display">
-                {viewProps.title}
-            </Heading>
-            <MetaBar description={viewProps.description} tags={viewProps.tags} toolbarItems={viewProps.toolbarItems} />
-        </header>
+  <ArticleRenderer class="py-12 md:py-24" showSidebar={headings.length > 0}>
+    <header
+      class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-8 duration-700"
+      slot="header"
+    >
+      <Heading class="leading-header tracking-tight" level={1} size="display">
+        {viewProps.title}
+      </Heading>
+      <MetaBar
+        description={viewProps.description}
+        tags={viewProps.tags}
+        toolbarItems={viewProps.toolbarItems}
+      />
+    </header>
 
-        {headings.length > 0 && <TableOfContents slot="toc" title="Inside the Article" />}
+    {headings.length > 0 && <TableOfContents slot="toc" title="Inside the Article" />}
 
-        <div
-            class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
+    <div
+      class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
+    >
+      <Content />
+    </div>
+
+    <div class="sticky top-24 space-y-8" slot="sidebar">
+      <AuthorBio />
+      <div class="glass space-y-4 rounded-xl border-white/5 p-4">
+        <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40"
+          >Reading Controls</Text
         >
-            <Content />
-        </div>
-
-        <div class="sticky top-24 space-y-8" slot="sidebar">
-            <AuthorBio />
-            <div class="glass space-y-4 rounded-xl border-white/5 p-4">
-                <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40">Reading Controls</Text>
-                <button
-                    class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
-                    id="toggle-focus"
-                >
-                    <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
-                    <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd>
-                </button>
-            </div>
-        </div>
-    </ArticleRenderer>
+        <button
+          class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
+          id="toggle-focus"
+        >
+          <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
+          <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd
+          >
+        </button>
+      </div>
+    </div>
+  </ArticleRenderer>
 </LayoutRoot>
 
 <script>

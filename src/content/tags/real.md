@@ -5,7 +5,8 @@ category: data
 description: Real - Technical documentation, patterns, and best practices.
 ---
 
-Real plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Real plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

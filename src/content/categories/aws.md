@@ -1,12 +1,15 @@
 ---
 id: aws
-description: Amazon Web Services cloud infrastructure, services, and deployment patterns.
+description:
+  Amazon Web Services cloud infrastructure, services, and deployment patterns.
 label: AWS
 color: "#FF9900"
 icon: "☁️"
 ---
 
-Amazon Web Services cloud infrastructure, services, and deployment patterns. This category explores the fundamental tools, patterns, and architectural decisions relevant to AWS.
+Amazon Web Services cloud infrastructure, services, and deployment patterns.
+This category explores the fundamental tools, patterns, and architectural
+decisions relevant to AWS.
 
 ## Technologies
 

@@ -5,7 +5,8 @@ category: data
 description: ACID - Technical documentation, patterns, and best practices.
 ---
 
-ACID plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+ACID plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -1,13 +1,20 @@
 import type { DisplayMode } from "../types";
 import type { CollectionItem, CollectionKey, Nullable } from "../types";
 
-import { ITEMS_PER_PAGE, NAV_ITEMS, type NavItem, PROFILE, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
+import {
+  ITEMS_PER_PAGE,
+  NAV_ITEMS,
+  type NavItem,
+  PROFILE,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+} from "../../config";
 
 export const buildPaginationUrls = (
   collection: CollectionKey,
   display: DisplayMode,
   currentPage: number,
-  totalPages: number,
+  totalPages: number
 ): { nextUrl: string | undefined; prevUrl: string | undefined } => {
   const displayParam = display !== "list" ? `?display=${display}` : "";
 
@@ -19,12 +26,17 @@ export const buildPaginationUrls = (
       : undefined;
 
   const nextUrl =
-    currentPage < totalPages ? `/${collection}/page/${(currentPage + 1).toString()}${displayParam}` : undefined;
+    currentPage < totalPages
+      ? `/${collection}/page/${(currentPage + 1).toString()}${displayParam}`
+      : undefined;
 
   return { nextUrl, prevUrl };
 };
 
-export const buildDisplayUrls = (collection: CollectionKey, currentPage: number): { grid: string; list: string } => {
+export const buildDisplayUrls = (
+  collection: CollectionKey,
+  currentPage: number
+): { grid: string; list: string } => {
   const pagePath = currentPage > 1 ? `/page/${currentPage}` : "";
   return {
     grid: `/${collection}${pagePath}?display=grid`,
@@ -34,7 +46,7 @@ export const buildDisplayUrls = (collection: CollectionKey, currentPage: number)
 
 export const getPageItems = <CN extends CollectionKey>(
   sortedItems: CollectionItem<CN>[],
-  pageNum: number,
+  pageNum: number
 ): CollectionItem<CN>[] => {
   const startIndex = (pageNum - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -42,7 +54,7 @@ export const getPageItems = <CN extends CollectionKey>(
 };
 
 export const getCollectionConfig = (
-  collection: CollectionKey,
+  collection: CollectionKey
 ): {
   description: string;
   headerDescription: string;

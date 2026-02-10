@@ -35,7 +35,11 @@ export class RecommendationsAdapter extends ContentAdapter<"recommendations"> {
     }
 
     if (item.data.date) {
-      items.push({ label: "Received", type: "date", value: dayjs(item.data.date).format("MMM YYYY") });
+      items.push({
+        label: "Received",
+        type: "date",
+        value: dayjs(item.data.date).format("MMM YYYY"),
+      });
     }
 
     if (p) {
@@ -50,7 +54,9 @@ export class RecommendationsAdapter extends ContentAdapter<"recommendations"> {
     return items;
   }
 
-  async getViewProps(item: CollectionItem<"recommendations">): Promise<Partial<ViewPageProps<"recommendations">>> {
+  async getViewProps(
+    item: CollectionItem<"recommendations">
+  ): Promise<Partial<ViewPageProps<"recommendations">>> {
     const person = item.data.person ? await getEntry(item.data.person) : undefined;
 
     return {

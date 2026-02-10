@@ -6,7 +6,9 @@ color: "#8B5CF6"
 icon: "💾"
 ---
 
-Database technologies encompass data storage, retrieval, and management systems. This includes relational databases, NoSQL databases, caching systems, and data warehousing solutions for handling structured and unstructured data.
+Database technologies encompass data storage, retrieval, and management systems.
+This includes relational databases, NoSQL databases, caching systems, and data
+warehousing solutions for handling structured and unstructured data.
 
 ## Technologies
 

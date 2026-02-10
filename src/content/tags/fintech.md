@@ -5,7 +5,8 @@ category: data
 description: FinTech - Technical documentation, patterns, and best practices.
 ---
 
-FinTech plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+FinTech plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -6,7 +6,9 @@ color: "#14B8A6"
 icon: "👥"
 ---
 
-CRM (Customer Relationship Management) systems manage company interactions with customers and prospects. This category covers CRM platforms, integration patterns, data synchronization, and customer data management.
+CRM (Customer Relationship Management) systems manage company interactions with
+customers and prospects. This category covers CRM platforms, integration
+patterns, data synchronization, and customer data management.
 
 ## Technologies
 

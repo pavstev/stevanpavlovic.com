@@ -5,7 +5,8 @@ category: data
 description: Kafka - Technical documentation, patterns, and best practices.
 ---
 
-Kafka plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Kafka plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

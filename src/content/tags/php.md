@@ -5,7 +5,8 @@ category: data
 description: PHP - Technical documentation, patterns, and best practices.
 ---
 
-PHP plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+PHP plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

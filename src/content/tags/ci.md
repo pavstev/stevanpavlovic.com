@@ -5,7 +5,8 @@ category: data
 description: CI - Technical documentation, patterns, and best practices.
 ---
 
-CI plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+CI plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

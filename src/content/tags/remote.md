@@ -5,7 +5,8 @@ category: data
 description: Remote - Technical documentation, patterns, and best practices.
 ---
 
-Remote plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Remote plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

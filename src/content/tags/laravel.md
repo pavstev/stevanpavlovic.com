@@ -5,7 +5,8 @@ category: data
 description: Laravel - Technical documentation, patterns, and best practices.
 ---
 
-Laravel plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Laravel plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

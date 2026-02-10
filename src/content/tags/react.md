@@ -5,7 +5,10 @@ category: frontend
 description: React - JavaScript library for building user interfaces
 ---
 
-React is a JavaScript library for building user interfaces, developed by Facebook. It uses a component-based architecture and a virtual DOM to efficiently update and render UI components, making it ideal for building complex, interactive web applications.
+React is a JavaScript library for building user interfaces, developed by
+Facebook. It uses a component-based architecture and a virtual DOM to
+efficiently update and render UI components, making it ideal for building
+complex, interactive web applications.
 
 ## Core Concepts
 
@@ -103,7 +106,8 @@ React is a JavaScript library for building user interfaces, developed by Faceboo
 
 ### Component Design
 
-- **Single Responsibility Principle**: Components should have one reason to change
+- **Single Responsibility Principle**: Components should have one reason to
+  change
 - **Composition over Inheritance**: Prefer composition to inheritance
 - **Prop Types**: Type checking for component props
 - **Default Props**: Default values for component props
@@ -128,7 +132,8 @@ React is a JavaScript library for building user interfaces, developed by Faceboo
 
 - **Compound Components**: Components that share implicit state
 - **Render Props**: Components that use a function prop to know what to render
-- **Higher-Order Components**: Functions that take a component and return a new component
+- **Higher-Order Components**: Functions that take a component and return a new
+  component
 - **Custom Hooks**: Reusable hook logic
 
 ### State Management Patterns

@@ -12,9 +12,15 @@ const { class: className, decorative = true, orientation = "horizontal", ...prop
 ---
 
 <div
-    class:list={[cn("shrink-0 bg-border", orientation === "horizontal" ? "h-px w-full" : "h-full w-px", className)]}
-    data-orientation={orientation}
-    role={decorative ? "none" : "separator"}
-    {...props}
+  class:list={[
+    cn(
+      "shrink-0 bg-border",
+      orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
+      className
+    ),
+  ]}
+  data-orientation={orientation}
+  role={decorative ? "none" : "separator"}
+  {...props}
 >
 </div>

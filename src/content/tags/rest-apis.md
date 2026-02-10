@@ -5,7 +5,8 @@ category: data
 description: REST APIs - Technical documentation, patterns, and best practices.
 ---
 
-REST APIs plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+REST APIs plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

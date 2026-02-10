@@ -1,12 +1,15 @@
 ---
 id: workflow
-description: Workflow automation, orchestration, and business process management.
+description:
+  Workflow automation, orchestration, and business process management.
 label: Workflow
 color: "#8B5CF6"
 icon: "🔄"
 ---
 
-Workflow automation, orchestration, and business process management. This category explores the fundamental tools, patterns, and architectural decisions relevant to Workflow.
+Workflow automation, orchestration, and business process management. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Workflow.
 
 ## Technologies
 

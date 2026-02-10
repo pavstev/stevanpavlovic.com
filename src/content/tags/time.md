@@ -5,7 +5,8 @@ category: data
 description: Time - Technical documentation, patterns, and best practices.
 ---
 
-Time plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Time plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

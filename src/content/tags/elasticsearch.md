@@ -2,10 +2,12 @@
 id: elasticsearch
 label: Elasticsearch
 category: data
-description: Elasticsearch - Technical documentation, patterns, and best practices.
+description:
+  Elasticsearch - Technical documentation, patterns, and best practices.
 ---
 
-Elasticsearch plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Elasticsearch plays a critical role in modern software architecture. This
+section aggregates key resources and technical guides.
 
 ## Core Concepts
 

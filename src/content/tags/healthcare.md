@@ -5,7 +5,8 @@ category: data
 description: Healthcare - Technical documentation, patterns, and best practices.
 ---
 
-Healthcare plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Healthcare plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

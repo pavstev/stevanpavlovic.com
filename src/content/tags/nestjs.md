@@ -5,7 +5,8 @@ category: data
 description: NestJS - Technical documentation, patterns, and best practices.
 ---
 
-NestJS plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+NestJS plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

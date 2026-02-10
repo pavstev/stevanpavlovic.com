@@ -5,7 +5,8 @@ category: data
 description: BFF - Technical documentation, patterns, and best practices.
 ---
 
-BFF plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+BFF plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

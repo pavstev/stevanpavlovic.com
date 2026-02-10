@@ -1,12 +1,15 @@
 ---
 id: ci
-description: Continuous Integration practices and tools for automated testing and building
+description:
+  Continuous Integration practices and tools for automated testing and building
 label: CI
 color: "#EC4899"
 icon: "🔁"
 ---
 
-Continuous Integration (CI) is the practice of automatically building, testing, and merging code changes. This category covers CI tools, pipelines, testing strategies, and quality assurance automation.
+Continuous Integration (CI) is the practice of automatically building, testing,
+and merging code changes. This category covers CI tools, pipelines, testing
+strategies, and quality assurance automation.
 
 ## Technologies
 

@@ -2,7 +2,9 @@
 name: Pannovate
 website: https://pannovate.net
 logo: ../../assets/tech-logo.png
-description: Fintech middleware orchestration platform enabling rapid banking app deployment
+description:
+  Fintech middleware orchestration platform enabling rapid banking app
+  deployment
 industry: Software
 founded: 2015
 size: Small Business
@@ -22,22 +24,33 @@ socialLinks:
     name: Pannovate GitHub
 ---
 
-Pannovate provides "digital bank in a box" solutions, enabling financial institutions to rapidly deploy branded banking applications. Their Syllo platform serves as middleware for multiple European fintechs, processing $500M+ in transaction volume.
+Pannovate provides "digital bank in a box" solutions, enabling financial
+institutions to rapidly deploy branded banking applications. Their Syllo
+platform serves as middleware for multiple European fintechs, processing $500M+
+in transaction volume.
 
 ## Company Overview
 
-Pannovate is a fintech middleware orchestration platform founded in 2015, specializing in enabling rapid banking application deployment for financial institutions. The company provides comprehensive middleware solutions that allow banks and financial institutions to quickly launch branded digital banking applications without building complex infrastructure from scratch.
+Pannovate is a fintech middleware orchestration platform founded in 2015,
+specializing in enabling rapid banking application deployment for financial
+institutions. The company provides comprehensive middleware solutions that allow
+banks and financial institutions to quickly launch branded digital banking
+applications without building complex infrastructure from scratch.
 
 ### Core Mission
 
-To democratize digital banking by providing middleware orchestration platforms that enable financial institutions to rapidly deploy and scale banking applications, reducing time-to-market and development costs.
+To democratize digital banking by providing middleware orchestration platforms
+that enable financial institutions to rapidly deploy and scale banking
+applications, reducing time-to-market and development costs.
 
 ## Technology Stack
 
 ### Backend Architecture
 
-- **NestJS**: Enterprise-grade Node.js framework for building scalable applications
-- **TypeScript**: Type-safe JavaScript for better code quality and maintainability
+- **NestJS**: Enterprise-grade Node.js framework for building scalable
+  applications
+- **TypeScript**: Type-safe JavaScript for better code quality and
+  maintainability
 - **PostgreSQL**: Robust relational database for financial data management
 - **OAuth2/OIDC**: Industry-standard authentication and authorization protocols
 - **Docker**: Containerization for consistent deployment across environments
@@ -53,20 +66,27 @@ To democratize digital banking by providing middleware orchestration platforms t
 ### Financial Technology
 
 - **Fintech**: Specialized financial technology solutions
-- **Microservices**: Microservices architecture for scalability and maintainability
+- **Microservices**: Microservices architecture for scalability and
+  maintainability
 - **Event-Driven Architecture**: Event-driven systems for real-time processing
-- **PCI-DSS Compliance**: Payment Card Industry Data Security Standard compliance
+- **PCI-DSS Compliance**: Payment Card Industry Data Security Standard
+  compliance
 
 ## Notable Projects
 
 ### Syllo Digital Banking Platform
 
-A comprehensive digital banking platform that serves as middleware for multiple financial institutions:
+A comprehensive digital banking platform that serves as middleware for multiple
+financial institutions:
 
-- **Rapid Deployment**: Enables banks to launch digital banking apps in weeks instead of months
-- **Multi-Vendor Integration**: Integrates with multiple banking vendors and services
-- **Brand Customization**: Allows complete brand customization for different financial institutions
-- **Scalable Architecture**: Designed to handle millions of users and transactions
+- **Rapid Deployment**: Enables banks to launch digital banking apps in weeks
+  instead of months
+- **Multi-Vendor Integration**: Integrates with multiple banking vendors and
+  services
+- **Brand Customization**: Allows complete brand customization for different
+  financial institutions
+- **Scalable Architecture**: Designed to handle millions of users and
+  transactions
 
 ### Fintech Orchestration Layer
 
@@ -146,9 +166,12 @@ Pannovate serves a diverse range of clients in the financial services industry:
 
 ## Awards and Recognition
 
-- **Best Fintech Middleware 2023**: Recognized for outstanding middleware solutions
-- **Banking Innovation Award 2022**: Honored for innovation in banking technology
-- **Financial Technology Excellence 2021**: Awarded for excellence in financial technology
+- **Best Fintech Middleware 2023**: Recognized for outstanding middleware
+  solutions
+- **Banking Innovation Award 2022**: Honored for innovation in banking
+  technology
+- **Financial Technology Excellence 2021**: Awarded for excellence in financial
+  technology
 
 ## Technology Leadership
 
@@ -173,7 +196,8 @@ Pannovate continues to innovate in fintech middleware with focus on:
 
 ### Performance Optimization
 
-- **Transaction Processing**: Optimized transaction processing for high throughput
+- **Transaction Processing**: Optimized transaction processing for high
+  throughput
 - **Database Performance**: Enhanced database performance for financial data
 - **API Optimization**: Optimized API performance for better user experience
 - **Caching Strategy**: Advanced caching strategy for improved response times
@@ -187,7 +211,8 @@ Pannovate continues to innovate in fintech middleware with focus on:
 
 ### Scalability Improvements
 
-- **Microservices Architecture**: Microservices architecture for automatic scaling
+- **Microservices Architecture**: Microservices architecture for automatic
+  scaling
 - **Load Balancing**: Advanced load balancing for high traffic periods
 - **Database Scaling**: Database scaling solutions for large datasets
 - **CDN Optimization**: CDN optimization for global content delivery
@@ -213,14 +238,16 @@ Pannovate continues to innovate in fintech middleware with focus on:
 - **Implementation**: Integrated multiple banking vendors and services
 - **Results**: Reduced integration time by 80% and improved service reliability
 - **Impact**: Enhanced customer experience through better service integration
-- **Compliance**: Maintained full regulatory compliance throughout implementation
+- **Compliance**: Maintained full regulatory compliance throughout
+  implementation
 
 ## Company Culture
 
 Pannovate fosters a culture of financial technology innovation and excellence:
 
 - **Fintech Focus**: Deep commitment to financial technology innovation
-- **Technical Excellence**: High standards for code quality and system performance
+- **Technical Excellence**: High standards for code quality and system
+  performance
 - **Compliance Focus**: Strong focus on financial compliance and security
 - **Innovation**: Continuous innovation in fintech middleware solutions
 - **Collaboration**: Collaborative approach to problem-solving
@@ -244,6 +271,8 @@ Pannovate represents the future of fintech middleware, combining:
 - **Scalability**: Ability to handle large-scale financial operations
 - **Innovation**: Continuous innovation in fintech middleware solutions
 
-The company continues to lead the way in fintech middleware solutions, helping financial institutions rapidly deploy and scale digital banking applications through innovative middleware technology.
+The company continues to lead the way in fintech middleware solutions, helping
+financial institutions rapidly deploy and scale digital banking applications
+through innovative middleware technology.
 
 ---

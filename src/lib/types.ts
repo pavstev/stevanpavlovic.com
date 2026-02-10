@@ -12,7 +12,9 @@ export abstract class ContentAdapter<CN extends CollectionKey> {
   abstract getCardData(item: CollectionItem<CN>): Promise<CardResult>;
   abstract getSortDate(item: CollectionItem<CN>): number;
   abstract getToolbarItems(item: CollectionItem<CN>): Promise<ToolbarItem[]> | ToolbarItem[];
-  abstract getViewProps(item: CollectionItem<CN>): Partial<ViewPageProps<CN>> | Promise<Partial<ViewPageProps<CN>>>;
+  abstract getViewProps(
+    item: CollectionItem<CN>
+  ): Partial<ViewPageProps<CN>> | Promise<Partial<ViewPageProps<CN>>>;
 }
 
 export type { CollectionEntry, CollectionKey };
@@ -22,7 +24,7 @@ import { collections as baseCollections } from "../content.config";
 const DISALLOWED_COLLECTIONS = [] as const;
 
 export const collections: CollectionKey[] = Object.keys(baseCollections).filter(
-  (c) => !DISALLOWED_COLLECTIONS.includes(c as never),
+  (c) => !DISALLOWED_COLLECTIONS.includes(c as never)
 ) as CollectionKey[];
 
 export interface CardData {

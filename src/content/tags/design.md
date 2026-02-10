@@ -5,7 +5,8 @@ category: data
 description: Design - Technical documentation, patterns, and best practices.
 ---
 
-Design plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Design plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

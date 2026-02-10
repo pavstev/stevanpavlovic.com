@@ -5,7 +5,8 @@ category: data
 description: Google - Technical documentation, patterns, and best practices.
 ---
 
-Google plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Google plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

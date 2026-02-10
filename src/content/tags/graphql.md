@@ -5,7 +5,10 @@ category: architecture
 description: GraphQL - Query language for APIs
 ---
 
-GraphQL is a query language for APIs and a runtime for executing those queries with existing data. It provides a more efficient, powerful, and flexible alternative to REST APIs by allowing clients to request exactly the data they need.
+GraphQL is a query language for APIs and a runtime for executing those queries
+with existing data. It provides a more efficient, powerful, and flexible
+alternative to REST APIs by allowing clients to request exactly the data they
+need.
 
 ## Core Concepts
 

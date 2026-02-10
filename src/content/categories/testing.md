@@ -6,7 +6,10 @@ color: "#14B8A6"
 icon: "🧪"
 ---
 
-Testing encompasses methodologies and tools for ensuring software quality and reliability. This includes unit testing, integration testing, end-to-end testing, performance testing, and security testing throughout the software development lifecycle.
+Testing encompasses methodologies and tools for ensuring software quality and
+reliability. This includes unit testing, integration testing, end-to-end
+testing, performance testing, and security testing throughout the software
+development lifecycle.
 
 ## Technologies
 

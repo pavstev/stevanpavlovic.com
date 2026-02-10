@@ -5,7 +5,8 @@ category: data
 description: API - Technical documentation, patterns, and best practices.
 ---
 
-API plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+API plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

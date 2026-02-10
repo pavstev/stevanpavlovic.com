@@ -47,7 +47,9 @@ export class ProjectsAdapter extends ContentAdapter<"projects"> {
     return items;
   }
 
-  async getViewProps(item: CollectionItem<"projects">): Promise<Partial<ViewPageProps<"projects">>> {
+  async getViewProps(
+    item: CollectionItem<"projects">
+  ): Promise<Partial<ViewPageProps<"projects">>> {
     return {
       description: item.data.description,
       image: item.data.image,

@@ -1,12 +1,15 @@
 ---
 id: process
-description: Development methodologies, SDLC, and engineering operational excellence.
+description:
+  Development methodologies, SDLC, and engineering operational excellence.
 label: Process
 color: "#6366F1"
 icon: "⚙️"
 ---
 
-Development methodologies, SDLC, and engineering operational excellence. This category explores the fundamental tools, patterns, and architectural decisions relevant to Process.
+Development methodologies, SDLC, and engineering operational excellence. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Process.
 
 ## Technologies
 

@@ -5,7 +5,8 @@ category: data
 description: JavaScript - Technical documentation, patterns, and best practices.
 ---
 
-JavaScript plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+JavaScript plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

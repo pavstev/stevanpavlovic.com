@@ -5,25 +5,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
 const iconVariants = cva("shrink-0 transition-all duration-300", {
-    defaultVariants: {
-        size: "md",
-        variant: "default",
+  defaultVariants: {
+    size: "md",
+    variant: "default",
+  },
+  variants: {
+    size: {
+      lg: "size-6", // 24px
+      md: "size-5", // 20px
+      sm: "size-3.5", // 14px
+      xl: "size-7", // 28px
     },
-    variants: {
-        size: {
-            lg: "size-6", // 24px
-            md: "size-5", // 20px
-            sm: "size-3.5", // 14px
-            xl: "size-7", // 28px
-        },
-        variant: {
-            accent: "text-accent drop-shadow-glow-accent filter",
-            default: "text-current",
-            glow: "text-foreground drop-shadow-glow-white filter",
-            muted: "text-muted-foreground",
-            primary: "text-primary drop-shadow-glow-primary filter",
-        },
+    variant: {
+      accent: "text-accent drop-shadow-glow-accent filter",
+      default: "text-current",
+      glow: "text-foreground drop-shadow-glow-white filter",
+      muted: "text-muted-foreground",
+      primary: "text-primary drop-shadow-glow-primary filter",
     },
+  },
 });
 
 interface Props extends VariantProps<typeof iconVariants> {

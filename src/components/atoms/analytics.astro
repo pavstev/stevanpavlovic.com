@@ -1,36 +1,34 @@
 ---
-const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
+interface Props {
+  googleAnalyticsID: string;
+}
+
+const { googleAnalyticsID } = Astro.props;
 ---
 
-{googleAnalyticsID && (
-  <>
-    <script
-      is:inline
-      type="text/partytown"
-      src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
-    />
-    <script
-      is:inline
-      type="text/partytown"
-      define:vars={{
-        googleAnalyticsID,
-      }}
-    >
-      window.dataLayer = window.dataLayer || []
-      window.gtag = function () {
-        // eslint-disable-next-line prefer-rest-params
-        dataLayer.push(arguments)
-      }
-      window.gtag('js', new Date())
+<script
+  is:inline
+  type="text/partytown"
+  src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}></script>
+<script
+  is:inline
+  type="text/partytown"
+  define:vars={{
+    googleAnalyticsID,
+  }}
+>
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () {
+    // eslint-disable-next-line prefer-rest-params
+    dataLayer.push(arguments);
+  };
+  window.gtag("js", new Date());
 
-      if (customGoogleAnalyticsJS) {
-        window.gtag('config', googleAnalyticsID, {
-          transport_url: new URL(customGoogleAnalyticsJS).origin,
-        })
-      }
-      else {
-        window.gtag('config', googleAnalyticsID)
-      }
-    </script>
-  </>
-)}
+  if (customGoogleAnalyticsJS) {
+    window.gtag("config", googleAnalyticsID, {
+      transport_url: new URL(customGoogleAnalyticsJS).origin,
+    });
+  } else {
+    window.gtag("config", googleAnalyticsID);
+  }
+</script>

@@ -6,7 +6,9 @@ color: "#10B981"
 icon: "🧮"
 ---
 
-Algorithms are step-by-step procedures for solving problems and processing data. This category covers fundamental algorithms, data structures, and computational thinking approaches used in software development.
+Algorithms are step-by-step procedures for solving problems and processing data.
+This category covers fundamental algorithms, data structures, and computational
+thinking approaches used in software development.
 
 ## Categories
 

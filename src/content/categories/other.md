@@ -6,7 +6,10 @@ color: "#6B7280"
 icon: "✨"
 ---
 
-This category includes technologies and concepts that don't fit into the other specific categories. It serves as a catch-all for miscellaneous technologies, emerging trends, and specialized tools that are important but don't have a dedicated category.
+This category includes technologies and concepts that don't fit into the other
+specific categories. It serves as a catch-all for miscellaneous technologies,
+emerging trends, and specialized tools that are important but don't have a
+dedicated category.
 
 ## Technologies
 

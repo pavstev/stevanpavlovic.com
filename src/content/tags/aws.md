@@ -5,7 +5,8 @@ category: data
 description: AWS - Technical documentation, patterns, and best practices.
 ---
 
-AWS plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+AWS plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -4,7 +4,15 @@ import { defineCollection, reference, z } from "astro:content";
 const CompanySize = z.enum(["Startup", "Small Business", "Mid-size", "Enterprise"]);
 const CompanyType = z.enum(["Full-time", "Contract", "Freelance", "Agency"]);
 const ExperienceType = z.enum(["Full-time", "Contract", "Freelance"]);
-const Region = z.enum(["North America", "South America", "Europe", "Asia", "Africa", "Oceania", "Remote"]);
+const Region = z.enum([
+  "North America",
+  "South America",
+  "Europe",
+  "Asia",
+  "Africa",
+  "Oceania",
+  "Remote",
+]);
 const RemoteType = z.enum(["Fully Remote", "Hybrid", "Remote-First"]);
 const SocialLinkType = z.enum([
   "LinkedIn",
@@ -35,7 +43,15 @@ const Industry = z.enum([
   "Transportation",
   "Energy",
 ]);
-const PersonSocialLinkType = z.enum(["LinkedIn", "Twitter", "GitHub", "Personal Website", "Blog", "Email", "Other"]);
+const PersonSocialLinkType = z.enum([
+  "LinkedIn",
+  "Twitter",
+  "GitHub",
+  "Personal Website",
+  "Blog",
+  "Email",
+  "Other",
+]);
 const RelationshipType = z.enum([
   "Colleague",
   "Manager",
@@ -196,7 +212,7 @@ const people = defineCollection({
             degree: z.string(),
             school: z.string(),
             year: z.string(),
-          }),
+          })
         )
         .optional(),
       email: z.string().email().optional(),

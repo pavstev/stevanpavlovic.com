@@ -5,7 +5,8 @@ category: data
 description: Data - Technical documentation, patterns, and best practices.
 ---
 
-Data plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Data plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

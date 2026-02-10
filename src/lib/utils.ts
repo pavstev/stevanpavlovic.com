@@ -3,7 +3,13 @@ import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
 
-const animateValue = (obj: HTMLElement, start: number, end: number, duration: number, decimalPlaces: number): void => {
+const animateValue = (
+  obj: HTMLElement,
+  start: number,
+  end: number,
+  duration: number,
+  decimalPlaces: number
+): void => {
   let startTimestamp: null | number = null;
   const step = (timestamp: number): void => {
     if (!startTimestamp) startTimestamp = timestamp;
@@ -44,7 +50,7 @@ export const initTickers = (): void => {
         }
       }
     },
-    { threshold: 0.1 },
+    { threshold: 0.1 }
   );
 
   for (const t of tickers) {

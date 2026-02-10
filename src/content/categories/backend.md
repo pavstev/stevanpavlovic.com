@@ -6,7 +6,10 @@ color: "#3B82F6"
 icon: "🔧"
 ---
 
-Backend development encompasses server-side technologies, APIs, databases, and infrastructure that power web applications. This category includes programming languages, frameworks, databases, and architectural patterns used to build the server-side logic of applications.
+Backend development encompasses server-side technologies, APIs, databases, and
+infrastructure that power web applications. This category includes programming
+languages, frameworks, databases, and architectural patterns used to build the
+server-side logic of applications.
 
 ## Technologies
 

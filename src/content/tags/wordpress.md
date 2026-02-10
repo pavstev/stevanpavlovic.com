@@ -5,7 +5,8 @@ category: data
 description: WordPress - Technical documentation, patterns, and best practices.
 ---
 
-WordPress plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+WordPress plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

@@ -5,7 +5,8 @@ category: data
 description: OAuth2 - Technical documentation, patterns, and best practices.
 ---
 
-OAuth2 plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+OAuth2 plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

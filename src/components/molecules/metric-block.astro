@@ -20,26 +20,26 @@ const displayValue = format === "compact" ? formatCompactNumber(value) : value;
 ---
 
 <Stack align="center" class:list={["group", className]} direction="row" gap={3}>
-    {/* Icon Container */}
-    <div
-        class="relative flex size-10 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:text-accent group-hover:ring-primary/50"
-    >
-        <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size="xl" />
-    </div>
+  {/* Icon Container */}
+  <div
+    class="relative flex size-10 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:text-accent group-hover:ring-primary/50"
+  >
+    <Icon class="transition-transform duration-300 group-hover:scale-110" name={icon} size="xl" />
+  </div>
 
-    {/* Text Content */}
-    <Stack gap={0}>
-        <div class="flex items-baseline gap-0.5">
-            <span class="text-gradient-accent text-2xl font-bold tracking-tight tabular-nums md:text-3xl">
-                {format === "compact" ? displayValue : <RollingNumbers value={value} />}
-            </span>
-            {unit && <span class="text-xl font-bold text-primary md:text-2xl">{unit}</span>}
-        </div>
-        <Text
-            class="text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors duration-300 group-hover:text-accent/80"
-            variant="default"
-        >
-            {label}
-        </Text>
-    </Stack>
+  {/* Text Content */}
+  <Stack gap={0}>
+    <div class="flex items-baseline gap-0.5">
+      <span class="text-gradient-accent text-2xl font-bold tracking-tight tabular-nums md:text-3xl">
+        {format === "compact" ? displayValue : <RollingNumbers value={value} />}
+      </span>
+      {unit && <span class="text-xl font-bold text-primary md:text-2xl">{unit}</span>}
+    </div>
+    <Text
+      class="text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors duration-300 group-hover:text-accent/80"
+      variant="default"
+    >
+      {label}
+    </Text>
+  </Stack>
 </Stack>

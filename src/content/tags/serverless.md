@@ -5,7 +5,8 @@ category: data
 description: Serverless - Technical documentation, patterns, and best practices.
 ---
 
-Serverless plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+Serverless plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

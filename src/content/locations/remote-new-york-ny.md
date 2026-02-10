@@ -13,4 +13,7 @@ flag: 🇺🇸
 gallery: []
 ---
 
-Remote work arrangement with occasional presence in New York City, NY. This location represents the hybrid work model for Spark451 Inc. where remote work is combined with periodic in-person collaboration in the New York metropolitan area.
+Remote work arrangement with occasional presence in New York City, NY. This
+location represents the hybrid work model for Spark451 Inc. where remote work is
+combined with periodic in-person collaboration in the New York metropolitan
+area.

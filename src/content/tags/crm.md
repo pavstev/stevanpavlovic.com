@@ -5,7 +5,8 @@ category: data
 description: CRM - Technical documentation, patterns, and best practices.
 ---
 
-CRM plays a critical role in modern software architecture. This section aggregates key resources and technical guides.
+CRM plays a critical role in modern software architecture. This section
+aggregates key resources and technical guides.
 
 ## Core Concepts
 

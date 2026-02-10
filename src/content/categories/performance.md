@@ -6,7 +6,9 @@ color: "#10B981"
 icon: "🚀"
 ---
 
-Optimization techniques, benchmarking, and efficiency improvements. This category explores the fundamental tools, patterns, and architectural decisions relevant to Performance.
+Optimization techniques, benchmarking, and efficiency improvements. This
+category explores the fundamental tools, patterns, and architectural decisions
+relevant to Performance.
 
 ## Technologies
 

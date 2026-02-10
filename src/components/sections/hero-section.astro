@@ -1,37 +1,25 @@
 ---
+import { Image } from "astro:assets";
+
 import profileImg from "../../assets/profile.jpeg";
 import { PROFILE, SITE_CONFIG, STATS } from "../../config";
 import Heading from "../atoms/heading.astro";
 import Text from "../atoms/text.astro";
-import GridTile from "../molecules/grid-tile.astro";
 import StatsGrid from "../organisms/stats-grid.astro";
 ---
 
-<GridTile class="overflow-hidden p-6 md:p-10 lg:col-span-12">
-  <div class="bg-gradient-animated absolute inset-0 -z-10"></div>
-
-  <div class="relative z-10 flex flex-col items-center gap-5 text-center">
-    <div class="flex w-full flex-col gap-6 md:flex-row md:items-center md:justify-center">
-      <div class="max-w-2xl flex-1">
-        <Heading class="leading-header tracking-tight" level={1} size="display" variant="primary">
-          {SITE_CONFIG.hero.title}
-        </Heading>
-        <Text class="mt-3 text-base text-muted-foreground/90 md:text-lg">
-          {SITE_CONFIG.description}
-        </Text>
-      </div>
-
-      <div class="mt-4 shrink-0 self-center md:mt-0 md:ml-8">
-        <div
-          class="relative size-32 animate-fade-in overflow-hidden rounded-full bg-foreground/5 ring-4 ring-background md:size-40"
-        >
-          <img alt={PROFILE.name} class="size-full object-cover" src={profileImg.src} />
-        </div>
-      </div>
-    </div>
-
-    <div class="w-full pt-3">
-      <StatsGrid items={STATS} />
-    </div>
+<div class="relative z-10 flex flex-col items-center gap-5 text-center">
+  <div
+    class="relative size-64 animate-fade-in overflow-hidden rounded-full bg-foreground/5 ring-4 ring-background md:size-40"
+  >
+    <Image alt={PROFILE.name} class="size-full object-cover" src={profileImg} />
   </div>
-</GridTile>
+  <Heading class="leading-header tracking-tight" level={1} size="display" variant="primary">
+    {SITE_CONFIG.hero.title}
+  </Heading>
+  <Text class="mt-3 text-base text-muted-foreground/90 md:text-lg">
+    {SITE_CONFIG.description}
+  </Text>
+
+  <StatsGrid items={STATS} />
+</div>

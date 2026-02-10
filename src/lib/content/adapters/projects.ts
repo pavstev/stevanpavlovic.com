@@ -40,7 +40,6 @@ export class ProjectsAdapter extends ContentAdapter<"projects"> {
       items.push({ label: "Team", type: "person", value: item.data.teamSize });
     }
 
-    // Creative additions
     if (item.data.repoUrl) {
       items.push({ label: "Access", type: "link", value: "Public Repo" });
     }

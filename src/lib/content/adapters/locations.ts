@@ -32,7 +32,6 @@ export class LocationsAdapter extends ContentAdapter<"locations"> {
       items.push({ label: "Region", type: "text", value: item.data.region });
     }
 
-    // Mock weather logic for "creative" request
     if (item.data.city) {
       items.push({ label: "Weather", type: "weather", value: "24°C Sunny" });
     }

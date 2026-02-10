@@ -1,14 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-/**
- * Merges class names using clsx and tailwind-merge.
- */
 export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
 
-/**
- * Animates a numeric value in an HTMLElement.
- */
 const animateValue = (obj: HTMLElement, start: number, end: number, duration: number, decimalPlaces: number): void => {
   let startTimestamp: null | number = null;
   const step = (timestamp: number): void => {
@@ -28,9 +22,6 @@ const animateValue = (obj: HTMLElement, start: number, end: number, duration: nu
   window.requestAnimationFrame(step);
 };
 
-/**
- * Initializes tickers that animate on intersection.
- */
 export const initTickers = (): void => {
   const tickers = document.querySelectorAll<HTMLElement>("[data-ticker]");
   const observer = new IntersectionObserver(

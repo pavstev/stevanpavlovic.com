@@ -1,9 +1,6 @@
 import Lenis from "lenis";
 import tocbot from "tocbot";
 
-/**
- * Focus Mode
- */
 export const initFocusMode = (): void => {
   const focusBtn = document.getElementById("toggle-focus");
   if (!focusBtn) return;
@@ -14,7 +11,6 @@ export const initFocusMode = (): void => {
 
   focusBtn.addEventListener("click", toggleFocus);
 
-  // Shortcut F for focus
   const handleKeydown = (e: KeyboardEvent): void => {
     if (e.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
       toggleFocus();
@@ -24,9 +20,6 @@ export const initFocusMode = (): void => {
   window.addEventListener("keydown", handleKeydown);
 };
 
-/**
- * Mobile Menu
- */
 export const initMobileMenu = (): void => {
   const toggle = document.getElementById("mobile-menu-toggle");
   const menu = document.getElementById("mobile-menu");
@@ -35,7 +28,6 @@ export const initMobileMenu = (): void => {
     return;
   }
 
-  // Remove old listeners by cloning
   const newToggle = toggle.cloneNode(true) as HTMLElement;
   toggle.parentNode?.replaceChild(newToggle, toggle);
 
@@ -54,7 +46,6 @@ export const initMobileMenu = (): void => {
     document.body.style.overflow = "";
   });
 
-  // Close on link click
   const links = menu.querySelectorAll("a");
   for (const link of links) {
     link.addEventListener("click", () => {
@@ -69,7 +60,6 @@ export const updateActiveLinks = (): void => {
   const links = document.querySelectorAll("[data-nav-link]");
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
-  // Standardized classes to match server rendering
   const activeClasses = ["bg-foreground/10", "text-foreground", "ring-2", "ring-offset-foreground/20"];
   const inactiveClasses = ["text-muted-foreground", "hover:bg-foreground/5", "hover:text-foreground"];
 
@@ -104,9 +94,6 @@ export const updateActiveLinks = (): void => {
   }
 };
 
-/**
- * View Toggle
- */
 export const initViewToggle = (): void => {
   const container = document.querySelector(".view-content");
   if (!container) return;
@@ -125,7 +112,6 @@ export const initViewToggle = (): void => {
     gridView?.classList.add("hidden");
   };
 
-  // Check URL params for display mode
   const urlParams = new URLSearchParams(window.location.search);
   const displayParam = urlParams.get("display");
 
@@ -136,7 +122,6 @@ export const initViewToggle = (): void => {
   const preferredView = sessionStorage.getItem("preferred-view") || "list";
   toggleView(preferredView);
 
-  // Listen for custom toggle events from DisplayMenu or URL changes
   const handlePopState = (): void => {
     const newParams = new URLSearchParams(window.location.search);
     const newView = newParams.get("display") || sessionStorage.getItem("preferred-view") || "list";
@@ -146,9 +131,6 @@ export const initViewToggle = (): void => {
   window.addEventListener("popstate", handlePopState);
 };
 
-/**
- * Header Effects
- */
 export const initHeaderEffects = (): void => {
   const island = document.getElementById("nav-island");
   const progressBg = document.getElementById("nav-progress-bg");
@@ -163,7 +145,6 @@ export const initHeaderEffects = (): void => {
     const isScrolled = scroll > 50;
 
     if (isScrolled) {
-      // Compact Island
       island.classList.add("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
       island.classList.remove("h-14", "px-2");
 
@@ -173,7 +154,6 @@ export const initHeaderEffects = (): void => {
     }
 
     if (!isScrolled) {
-      // Default Island
       island.classList.remove("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
       island.classList.add("h-14", "px-2");
 
@@ -182,7 +162,6 @@ export const initHeaderEffects = (): void => {
       if (actionsWrapper) actionsWrapper.style.opacity = "1";
     }
 
-    // Progress bar logic
     if (progressBg) {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -195,19 +174,14 @@ export const initHeaderEffects = (): void => {
   handleScroll();
 };
 
-/**
- * Masonry Grid
- */
 const initMasonry = (): void => {
   const grids = document.querySelectorAll<HTMLElement>(".masonry-grid");
 
   for (const grid of grids) {
     const columnsCount = parseInt(grid.dataset.masonryColumns || "2", 10);
 
-    // Only apply masonry on desktop
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     if (isMobile) {
-      // On mobile, just ensure items are direct children
       const items = Array.from(grid.querySelectorAll(".masonry-item"));
       for (const item of items) {
         if (item.parentElement === grid) continue;
@@ -217,16 +191,13 @@ const initMasonry = (): void => {
       continue;
     }
 
-    // Get all items
     const items = Array.from(grid.querySelectorAll(".masonry-item"));
 
-    // Remove existing columns if any
     const existingColumns = grid.querySelectorAll(".masonry-column");
     for (const col of existingColumns) {
       col.remove();
     }
 
-    // Create columns
     const columns: HTMLDivElement[] = [];
     for (let i = 0; i < columnsCount; i++) {
       const column = document.createElement("div");
@@ -235,7 +206,6 @@ const initMasonry = (): void => {
       grid.appendChild(column);
     }
 
-    // Distribute items across columns in order (left-to-right)
     for (let i = 0; i < items.length; i++) {
       const columnIndex = i % columnsCount;
       columns[columnIndex].appendChild(items[i]);
@@ -248,7 +218,6 @@ const initMasonry = (): void => {
 export const setupMasonry = (): void => {
   initMasonry();
 
-  // Re-initialize on resize with debouncing
   let resizeTimeout: ReturnType<typeof setTimeout>;
   window.addEventListener("resize", (): void => {
     clearTimeout(resizeTimeout);
@@ -256,9 +225,6 @@ export const setupMasonry = (): void => {
   });
 };
 
-/**
- * Table of Contents & Smooth Scroll
- */
 let lenis: Lenis | null = null;
 
 const initLenis = (): void => {
@@ -312,9 +278,6 @@ export const setupTOC = (): void => {
   initTocbot();
 };
 
-/**
- * Interactive Cards
- */
 export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group\\/card");
 

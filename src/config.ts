@@ -2,10 +2,6 @@ import type { DisplayMode } from "./lib/types";
 
 import profileImage from "./assets/profile.jpeg";
 
-// ============================================================================
-
-// ============================================================================
-
 export const SITE_TITLE = "Astro Blog";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
@@ -20,10 +16,6 @@ export const SITE_CONFIG = {
   tagline: "a software engineer focused on distributed systems and backend architecture",
   title: "Stevan Pavlovic - Senior Software Engineer",
 } as const;
-
-// ============================================================================
-
-// ============================================================================
 
 export interface NavItem {
   color: string;
@@ -121,10 +113,6 @@ export const NAV_ITEMS = {
 
 export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS).sort((a, b) => a.order - b.order);
 
-// ============================================================================
-
-// ============================================================================
-
 export const PROFILE = {
   avatar: profileImage,
   bio: "Technical Lead and Senior Software Engineer with over 10 years of experience delivering high-impact solutions for fintech, betting, and logistics sectors. Expert in architecting scalable microservices using Node.js and NestJS, optimizing high-traffic distributed systems, and modernizing legacy infrastructures. Specialized in performance tuning, event-driven architectures (Kafka), and automated DevOps workflows.",
@@ -170,10 +158,6 @@ export const STATS: readonly Stat[] = [
   { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },
   { icon: "mdi:earth", label: "Countries", value: 15 },
 ] as const;
-
-// ============================================================================
-
-// ============================================================================
 
 export const ITEMS_PER_PAGE = 10;
 

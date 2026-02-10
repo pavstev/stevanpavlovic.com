@@ -6,9 +6,6 @@ declare global {
 
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID;
 
-/**
- * Tracks a page view using Google Tag Manager.
- */
 export const trackPageView = (path: string): void => {
   if (typeof window.gtag === "function") {
     window.gtag("config", GTM_ID, {

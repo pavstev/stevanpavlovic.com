@@ -36,7 +36,6 @@ export class PeopleAdapter extends ContentAdapter<"people"> {
       items.push({ label: "Role", type: "text", value: item.data.title });
     }
 
-    // Creative additions
     items.push({ label: "Status", type: "status", value: "Networking" });
 
     return items;

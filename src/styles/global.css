@@ -391,7 +391,6 @@
   }
 }
 
-/* Prose Perfection */
 @layer base {
   .prose {
     --tw-prose-body: var(--color-foreground);
@@ -424,7 +423,6 @@
   }
 }
 
-/* Cyberpunk Override */
 .cyberpunk-mode {
   --color-primary: hsl(320 100% 50%);
   --color-accent: hsl(180 100% 50%);
@@ -437,7 +435,6 @@
   pointer-events: none;
 }
 
-/* Custom View Transitions */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -472,24 +469,19 @@
   view-transition-name: none;
 }
 
-/* TOC Styles */
 .toc-link.is-active-link {
   @apply font-medium text-primary border-primary;
 }
 
-/* Smooth scroll management */
 html {
   scroll-behavior: auto !important;
 }
 
-/* Prevent layout shift during Lenis init */
   .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
 
-/* --- Extracted Component Styles --- */
 
-/* src/pages/[collection]/[...slug].astro */
 .focus-mode header#site-header,
 .focus-mode aside {
   opacity: 0 !important;
@@ -502,7 +494,6 @@ html {
   transition: all 0.5s ease;
 }
 
-/* src/pages/index.astro */
 @starting-style {
   .animate-in {
     opacity: 0;
@@ -510,7 +501,6 @@ html {
   }
 }
 
-/* src/components/molecules/masonry-grid.astro */
 .masonry-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -533,7 +523,6 @@ html {
   width: 100%;
 }
 
-/* src/components/organisms/table-of-contents.astro */
 .toc-link {
   display: block;
   border-left: 2px solid transparent;
@@ -558,12 +547,10 @@ html {
   padding-left: 1rem;
 }
 
-/* src/components/organisms/resource-discovery.astro */
 .card-item {
   container-type: inline-size;
 }
 
-/* src/components/organisms/resume-engine.astro */
 @media print {
   @page {
     margin: 0;
@@ -578,7 +565,6 @@ html {
   }
 }
 
-/* src/components/layout/layout-root.astro */
 :root {
   --scrollbar-width: 6px;
   --scrollbar-thumb-color: var(--color-primary);

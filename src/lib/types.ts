@@ -1,7 +1,6 @@
 import type { ImageMetadata } from "astro";
 import type { CollectionEntry, CollectionKey } from "astro:content";
 
-// --- Content / Collection ---
 export interface Author extends ToolbarItem {
   avatar: ImageMetadata;
   name: string;
@@ -9,9 +8,6 @@ export interface Author extends ToolbarItem {
   type: "person";
 }
 
-/**
- * --- Content Adapters ---
- */
 export abstract class ContentAdapter<CN extends CollectionKey> {
   abstract getCardData(item: CollectionItem<CN>): Promise<CardResult>;
   abstract getSortDate(item: CollectionItem<CN>): number;
@@ -85,10 +81,8 @@ export interface CollectionPageData {
 
 export type Company = CollectionEntry<"companies">["data"];
 
-// --- Display & Pagination ---
 export type DisplayMode = "grid" | "list";
 
-// --- Resume ---
 export interface Education {
   degree: string;
   school: string;
@@ -105,7 +99,6 @@ export interface Experience {
 }
 export type Nullable<T> = null | T | undefined;
 
-// --- Search ---
 export interface PaginationLinksOptions {
   baseUrl: string;
   currentPage: number;

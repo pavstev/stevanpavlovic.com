@@ -17,17 +17,11 @@ import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
 import { buildDisplayUrls, buildPaginationUrls, getCollectionConfig, getPageItems } from "./utils";
 
-/**
- * --- Date Sorting ---
- */
 const getSortDate = <CN extends CollectionKey>(item: CollectionItem<CN>): number => {
   const adapter = adapters[item.collection];
   return adapter ? adapter.getSortDate(item) : 0;
 };
 
-/**
- * --- Collection Fetching ---
- */
 export const getCollectionData = async <CN extends CollectionKey>(collection: CN): Promise<CollectionItem<CN>[]> => {
   const allItems = await getCollection(collection);
   const mappedItems: CollectionItem<CN>[] = allItems.map((item) => ({
@@ -39,9 +33,6 @@ export const getCollectionData = async <CN extends CollectionKey>(collection: CN
   return mappedItems.sort((a, b) => getSortDate(b) - getSortDate(a));
 };
 
-/**
- * --- Page Props & Metadata ---
- */
 export const getViewPageProps = async <CN extends CollectionKey>(item: CollectionItem<CN>): Promise<ViewPageProps> => {
   const adapter = adapters[item.collection];
 
@@ -73,9 +64,6 @@ export const getViewPageProps = async <CN extends CollectionKey>(item: Collectio
   };
 };
 
-/**
- * --- Card Props ---
- */
 export const getItemCardProps = async <CN extends CollectionKey>(
   item: CollectionItem<CN>,
 ): Promise<{
@@ -102,9 +90,6 @@ export const getItemCardProps = async <CN extends CollectionKey>(
   };
 };
 
-/**
- * --- Pagination & Orchestration ---
- */
 export const getCollectionPageData = async (
   collection: CollectionKey,
   page: number | string,
@@ -140,9 +125,6 @@ export const getCollectionPageData = async (
   };
 };
 
-/**
- * --- List URL Helpers (Transferred from list.ts) ---
- */
 export const buildListUrl = (
   currentUrl: URL,
   paginationType: PaginationType,

@@ -25,14 +25,6 @@ export default defineConfig({
     },
   }),
 
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en", "sr"],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
-
   image: {
     remotePatterns: [{ protocol: "https" }],
   },

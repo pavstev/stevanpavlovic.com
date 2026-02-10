@@ -36,6 +36,9 @@
   --color-accent: hsl(140 100% 50%);
   --color-accent-foreground: hsl(140 100% 5%);
 
+  --color-tertiary: hsl(280 100% 60%);
+  --color-tertiary-foreground: hsl(280 100% 5%);
+
   --color-highlight: hsl(75 100% 50%);
   --color-highlight-foreground: hsl(75 100% 5%);
 

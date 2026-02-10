@@ -1,7 +1,7 @@
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../types";
 import { resolveTags } from "../helpers";
+import { type CardResult, ContentAdapter } from "../types";
 
 export class ProjectsAdapter extends ContentAdapter<"projects"> {
   async getCardData(item: CollectionItem<"projects">): Promise<CardResult> {

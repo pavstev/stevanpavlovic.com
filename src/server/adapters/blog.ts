@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 
 import type { CardResult, CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { ContentAdapter } from "../types";
 import { resolveTags } from "../helpers";
+import { ContentAdapter } from "../types";
 
 export class BlogAdapter extends ContentAdapter<"blog"> {
   async getCardData(item: CollectionItem<"blog">): Promise<CardResult> {

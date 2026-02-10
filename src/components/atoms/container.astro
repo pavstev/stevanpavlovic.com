@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 interface Props extends HTMLAttributes<"div"> {
   as?: any;
@@ -10,9 +10,6 @@ interface Props extends HTMLAttributes<"div"> {
 const { as: Tag = "div", class: className, ...props } = Astro.props;
 ---
 
-<Tag
-  class={cn("relative mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6", className)}
-  {...props}
->
+<Tag class={cn("relative mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6", className)} {...props}>
   <slot />
 </Tag>

@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 
 import type { CollectionItem, Company, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../types";
 import { resolveTags } from "../helpers";
+import { type CardResult, ContentAdapter } from "../types";
 
 const resolveCompany = async (
   companyRef?: string | { collection: "companies"; id: string }

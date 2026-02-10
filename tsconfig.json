@@ -10,7 +10,7 @@
     "types": ["./worker-configuration.d.ts", "node"],
     "baseUrl": ".",
     "paths": {
-      "@client/*": ["./src/client/*"],
+      "@client": ["./src/client/index.ts"],
       "@server/*": ["./src/server/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"]

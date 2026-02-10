@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 interface Props extends HTMLAttributes<"span"> {
   decimalPlaces?: number;
@@ -36,7 +36,7 @@ const {
 </span>
 
 <script>
-  import { initTickers } from "@client/tickers";
+  import { initTickers } from "@client";
 
   initTickers();
   document.addEventListener("astro:page-load", initTickers);

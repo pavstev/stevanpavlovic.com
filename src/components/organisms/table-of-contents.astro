@@ -1,5 +1,5 @@
 ---
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 import Icon from "../atoms/icon.astro";
 import Stack from "../atoms/stack.astro";
@@ -27,7 +27,7 @@ const { class: className, title = "Table of Contents" } = Astro.props;
 </nav>
 
 <script>
-  import { setupTOC } from "@client/dom";
+  import { setupTOC } from "@client";
 
   function init() {
     setupTOC();

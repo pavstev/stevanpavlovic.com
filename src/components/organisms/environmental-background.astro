@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 import MeteorEffect from "../atoms/meteor-effect.astro";
 import SpotlightEffect from "../atoms/spotlight-effect.astro";
@@ -42,7 +42,7 @@ const meteorConfig = {
   </div>
 
   <div
-    class="absolute bottom-[-20%] right-[-10%] size-96 rounded-full bg-accent/5 blur-ambient-subtle"
+    class="absolute right-[-10%] bottom-[-20%] size-96 rounded-full bg-accent/5 blur-ambient-subtle"
   >
   </div>
 
@@ -58,7 +58,7 @@ const meteorConfig = {
   <MeteorEffect number={meteorConfig} />
 
   <!-- Layer 6: Spotlight Effect Integration -->
-  <SpotlightEffect class="opacity-20 pointer-events-none" />
+  <SpotlightEffect class="pointer-events-none opacity-20" />
 
   <slot />
 </div>

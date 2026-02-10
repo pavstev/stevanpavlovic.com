@@ -1,6 +1,6 @@
 ---
-import { cn } from "@client/utils";
-import { isActivePath } from "@client/navigation";
+import { isActivePath } from "@client";
+import { cn } from "@client";
 
 import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../config";
 import Button from "../atoms/button.astro";
@@ -80,8 +80,8 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
 <MobileMenu navItems={Object.values(NAV_ITEMS)} />
 
 <script>
-  import { initMobileMenu, updateActiveLinks } from "@client/dom";
-  import { initHeaderEffects } from "@client/dom";
+  import { initMobileMenu, updateActiveLinks } from "@client";
+  import { initHeaderEffects } from "@client";
 
   const init = () => {
     initMobileMenu();

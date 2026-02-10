@@ -1,5 +1,5 @@
 ---
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 import Icon from "../atoms/icon.astro";
 import PropertyField from "./property-field.astro";
@@ -47,7 +47,7 @@ const { class: className, label = "Description", text } = Astro.props;
 }
 
 <script>
-  import { setupDescriptionToggles } from "@client/helpers";
+  import { setupDescriptionToggles } from "@client";
 
   document.addEventListener("astro:page-load", setupDescriptionToggles);
   setupDescriptionToggles();

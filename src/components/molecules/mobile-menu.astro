@@ -1,11 +1,11 @@
 ---
-import { cn } from "@client/utils";
+import { cn } from "@client";
 
 interface Props {
   navItems: readonly { href: string; label: string }[];
 }
 
-import { isActivePath } from "@client/navigation";
+import { isActivePath } from "@client";
 
 import { SOCIALS } from "../../config";
 import Icon from "../atoms/icon.astro";
@@ -24,13 +24,10 @@ const isActive = (href: string) => isActivePath(pathname, href);
     {
       navItems.map((item) => (
         <a
-        class={cn(
-          "text-xl font-medium transition-all duration-300",
-          {
+          class={cn("text-xl font-medium transition-all duration-300", {
             "scale-105 text-foreground": isActive(item.href),
             "text-muted-foreground hover:text-foreground": !isActive(item.href),
-          }
-        )}
+          })}
           href={item.href}
         >
           {item.label}

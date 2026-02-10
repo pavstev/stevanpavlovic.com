@@ -17,7 +17,7 @@ import IconBox from "../molecules/icon-box.astro";
 import LabelGroup from "../molecules/label-group.astro";
 
 const variants = cva(
-  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border transition-all duration-300",
+  "group/card relative flex w-full flex-col overflow-hidden rounded-2xl border bg-card transition-all duration-300",
   {
     defaultVariants: {
       interactive: false,
@@ -29,10 +29,10 @@ const variants = cva(
         true: "cursor-pointer hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5",
       },
       variant: {
-        default: "border-border/50 bg-card/50 backdrop-blur-md hover:border-primary/20",
-        ghost: "border-transparent bg-transparent hover:bg-foreground/5",
+        default: "border-border/50 backdrop-blur-md hover:border-primary/20",
+        ghost: "border-transparent hover:bg-foreground/5",
         glass: "glass-dark border-foreground/5 hover:bg-foreground/5",
-        outline: "border-2 border-border/50 bg-transparent hover:border-primary/20",
+        outline: "border-2 border-border/50 hover:border-primary/20",
       },
     },
   }

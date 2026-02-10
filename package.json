@@ -14,8 +14,9 @@
     "atomic-design"
   ],
   "scripts": {
+    "clean": "find . -type d -empty -delete && git clean -Xfd -e .env.local && pnpm i",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "pnpm cf-typegen > /dev/null",
+    "postinstall": "pnpm cf-typegen > p",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "wrangler dev",

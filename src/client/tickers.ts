@@ -30,11 +30,11 @@ export const initTickers = (): void => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           const el = entry.target as HTMLElement;
-          const val = parseFloat(el.dataset.value || "0");
-          const startVal = parseFloat(el.dataset.startValue || "0");
-          const dir = el.dataset.direction || "up";
-          const delayMs = parseFloat(el.dataset.delay || "0") * 1000;
-          const decimals = parseInt(el.dataset.decimalPlaces || "0", 10);
+          const val = parseFloat(el.dataset.value ?? "0");
+          const startVal = parseFloat(el.dataset.startValue ?? "0");
+          const dir = el.dataset.direction ?? "up";
+          const delayMs = parseFloat(el.dataset.delay ?? "0") * 1000;
+          const decimals = parseInt(el.dataset.decimalPlaces ?? "0", 10);
           const start = dir === "down" ? val : startVal;
           const end = dir === "down" ? startVal : val;
 

@@ -36,7 +36,7 @@ const logoVariants = cva("relative shrink-0 overflow-hidden transition-all durat
     },
     variant: {
       author: "rounded-full ring-2 ring-foreground/10 group-hover:ring-primary/40",
-      org: "rounded-md border border-white/5 bg-white/5 p-1 shadow-sm ring-1 ring-white/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
+      org: "rounded-md border border-foreground/5 bg-foreground/5 p-1 shadow-sm ring-1 ring-foreground/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
       status: "flex items-center justify-center",
     },
   },
@@ -83,7 +83,7 @@ const isStatus = variant === "status";
       <div class={cn(logoVariants({ size, variant }))}>
         {src && (
           <Image
-            alt={alt || ""}
+            alt={alt ?? ""}
             class={cn("size-full transition-all duration-500", {
               "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100":
                 variant !== "author",

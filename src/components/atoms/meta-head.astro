@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { description, image, title } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "http://localhost:4321");
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "http://localhost:4321");
 ---
 
 {/** Global Metadata */}

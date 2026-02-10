@@ -2,13 +2,13 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-background: hsl(240 30% 2%);
+  --color-background: hsl(0 0% 3%);
   --color-foreground: hsl(0 0% 98%);
 
-  --color-card: hsl(240 30% 3%);
+  --color-card: hsl(0 0% 2%);
   --color-card-foreground: hsl(0 0% 98%);
 
-  --color-popover: hsl(240 30% 3%);
+  --color-popover: hsl(0 0% 2%);
   --color-popover-foreground: hsl(0 0% 98%);
 
   --color-primary: hsl(210 100% 45%);
@@ -17,8 +17,8 @@
   --color-secondary: hsl(30 100% 50%);
   --color-secondary-foreground: hsl(30 100% 5%);
 
-  --color-muted: hsl(240 10% 8%);
-  --color-muted-foreground: hsl(240 5% 65%);
+  --color-muted: hsl(0 0% 5%);
+  --color-muted-foreground: hsl(0 0% 60%);
 
   --color-accent: hsl(140 100% 50%);
   --color-accent-foreground: hsl(140 100% 5%);
@@ -32,8 +32,8 @@
   --color-danger: hsl(340 100% 55%);
   --color-danger-foreground: hsl(340 100% 100%);
 
-  --color-border: hsl(240 10% 12%);
-  --color-input: hsl(240 10% 12%);
+  --color-border: hsl(0 0% 8%);
+  --color-input: hsl(0 0% 8%);
   --color-ring: hsl(210 100% 55% / 0.5);
 
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
@@ -63,7 +63,7 @@
 
   --drop-shadow-glow-primary: 0 0 10px rgba(59, 130, 246, 0.5);
   --drop-shadow-glow-accent: 0 0 10px rgba(74, 222, 128, 0.5);
-  --drop-shadow-glow-white: 0 0 10px rgba(255, 255, 255, 0.5);
+  --drop-shadow-glow-foreground: 0 0 10px rgba(255, 255, 255, 0.5);
 
   --radius-2xl: 0.75rem;
   --radius-3xl: 1rem;
@@ -132,7 +132,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/30 selection:text-white;
+    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/30 selection:text-foreground;
     position: relative;
   }
 

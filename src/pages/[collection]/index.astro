@@ -24,7 +24,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection } = Astro.params as unknown as Params;
-const display = (Astro.url.searchParams.get("display") as DisplayMode) || "list";
+const display = (Astro.url.searchParams.get("display") as DisplayMode) ?? "list";
 const pageData = await getCollectionPageData(collection, 1, display);
 
 const {

@@ -22,7 +22,7 @@ const avatarVariants = cva(
       },
       variant: {
         default: "border border-border/50 bg-muted/20",
-        glass: "glass border-white/10 bg-white/5",
+        glass: "glass border-foreground/10 bg-foreground/5",
         primary: "shadow-glow-primary border border-primary/30 bg-primary/10",
       },
     },
@@ -42,7 +42,7 @@ const { alt, class: className, fallback, size, src, variant, ...props } = Astro.
   {
     src ? (
       <Image
-        alt={alt || fallback || "Avatar"}
+        alt={alt ?? fallback ?? "Avatar"}
         class="aspect-square size-full object-cover"
         format="avif"
         src={src}
@@ -60,7 +60,7 @@ const { alt, class: className, fallback, size, src, variant, ...props } = Astro.
             size === "xl" && "text-xl"
           )}
         >
-          {fallback || "?"}
+          {fallback ?? "?"}
         </span>
       </div>
     )

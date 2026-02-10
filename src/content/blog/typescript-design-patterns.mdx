@@ -35,7 +35,7 @@ class UserBuilder {
   }
 
   build(): User {
-    if (!this.user.name || !this.user.email) {
+    if (!this.user.name ?? !this.user.email) {
       throw new Error("Name and email are required");
     }
     return this.user as User;

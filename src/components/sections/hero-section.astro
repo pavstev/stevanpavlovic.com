@@ -17,7 +17,7 @@ import StatsGrid from "../organisms/stats-grid.astro";
           {PROFILE.status}
         </span>
       </BrandIdentity>
-      <div class="h-px w-12 bg-white/10"></div>
+      <div class="h-px w-12 bg-foreground/10"></div>
       <Badge variant="outline">{PROFILE.location}</Badge>
     </div>
 
@@ -27,7 +27,7 @@ import StatsGrid from "../organisms/stats-grid.astro";
         <BrandIdentity class="mb-4" size="lg" variant="author" />
         <Heading class="leading-header tracking-tight" level={1} size="display" variant="primary">
           {SITE_CONFIG.hero.title.split(" ")[0]}
-          <span class="text-white">{SITE_CONFIG.hero.highlight}</span>
+          <span class="text-foreground">{SITE_CONFIG.hero.highlight}</span>
           <br />
           {SITE_CONFIG.hero.title.split(" ").slice(1).join(" ")}
         </Heading>
@@ -38,7 +38,7 @@ import StatsGrid from "../organisms/stats-grid.astro";
     </div>
 
     {/* Global Impact Metrics */}
-    <div class="border-t border-white/5 pt-6">
+    <div class="border-t border-foreground/5 pt-6">
       <StatsGrid items={STATS} />
     </div>
   </div>

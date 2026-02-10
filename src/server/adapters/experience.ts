@@ -73,7 +73,7 @@ export class ExperienceAdapter extends ContentAdapter<"experience"> {
     items.push({
       label: "Tenure",
       type: "time",
-      value: durationStr || "< 1m",
+      value: durationStr ?? "< 1m",
     });
 
     if (item.data.type) {

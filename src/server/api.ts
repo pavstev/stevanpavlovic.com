@@ -49,8 +49,8 @@ export const getViewPageProps = async <CN extends CollectionKey>(
   const author = createAuthorItem(PROFILE);
 
   const data = item.data as Record<string, unknown>;
-  const defaultTitle = (data.title || data.name || data.role || "") as string;
-  const defaultImage = (data.image || data.logo || data.avatar) as
+  const defaultTitle = (data.title ?? data.name ?? data.role ?? "") as string;
+  const defaultImage = (data.image ?? data.logo ?? data.avatar) as
     | ImageMetadata
     | string
     | undefined;
@@ -92,7 +92,7 @@ export const getItemCardProps = async <CN extends CollectionKey>(
   const result = await adapter.getCardData(item);
 
   return {
-    actionLabel: result.actionLabel || "View",
+    actionLabel: result.actionLabel ?? "View",
     data: result.data,
   };
 };

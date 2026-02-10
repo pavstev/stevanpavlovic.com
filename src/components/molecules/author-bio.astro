@@ -16,7 +16,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<Stack class={cn("glass rounded-2xl border-white/5 p-6", className)} gap={6}>
+<Stack class={cn("glass rounded-2xl border-foreground/5 p-6", className)} gap={6}>
   <Stack align="center" direction="row" gap={4}>
     <Avatar alt={PROFILE.name} size="lg" src={PROFILE.avatar} />
     <Stack gap={0.5}>
@@ -36,7 +36,7 @@ const { class: className } = Astro.props;
       SOCIALS.map((social) => (
         <a
           aria-label={social.name}
-          class="flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
+          class="flex size-8 items-center justify-center rounded-full border border-foreground/10 bg-foreground/5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
           href={social.href}
         >
           <Icon name={social.icon} size="sm" />

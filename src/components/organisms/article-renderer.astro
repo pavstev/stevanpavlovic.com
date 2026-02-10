@@ -28,8 +28,8 @@ const hasToc = Astro.slots.has("toc");
     {/* Primary Layout Engine (12-Col) */}
     <div
       class={cn("grid gap-12", {
-        "lg:grid-cols-12": hasSidebar || hasToc,
-        "w-full": !(hasSidebar || hasToc),
+        "lg:grid-cols-12": hasSidebar ?? hasToc,
+        "w-full": !(hasSidebar ?? hasToc),
       })}
     >
       {/* Position: Left Sidebar (Author/Related) */}
@@ -47,7 +47,11 @@ const hasToc = Astro.slots.has("toc");
       <div
         class={cn(
           "min-w-0 transition-all",
-          hasSidebar && hasToc ? "lg:col-span-6" : hasSidebar || hasToc ? "lg:col-span-9" : "w-full"
+          hasSidebar && hasToc
+            ? "lg:col-span-6"
+            : (hasSidebar ?? hasToc)
+              ? "lg:col-span-9"
+              : "w-full"
         )}
       >
         <slot />
@@ -55,7 +59,7 @@ const hasToc = Astro.slots.has("toc");
         {/* Named Slot: Footer (Related, Navigation) */}
         {
           Astro.slots.has("footer") && (
-            <footer class="mt-20 border-t border-white/5 pt-10">
+            <footer class="mt-20 border-t border-foreground/5 pt-10">
               <slot name="footer" />
             </footer>
           )

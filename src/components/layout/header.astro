@@ -6,6 +6,7 @@ import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../config";
 import Button from "../atoms/button.astro";
 import Container from "../atoms/container.astro";
 import Stack from "../atoms/stack.astro";
+import Text from "../atoms/text.astro";
 import BrandIdentity from "../molecules/brand-identity.astro";
 import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
 import MobileMenu from "../molecules/mobile-menu.astro";
@@ -26,7 +27,7 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
       <div
         class={cn(
           "glass-strong relative flex items-center gap-2 overflow-hidden px-2 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          "h-14 min-w-80 rounded-full border-white/5",
+          "h-14 min-w-80 rounded-full border-foreground/5",
           "hover:border-primary/20"
         )}
         id="nav-island"
@@ -52,13 +53,8 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
             NAV_ITEMS_ARRAY.map((item) => {
               const active = isActive(item.href);
               return (
-                <Button
-                  aria-current={active ? "page" : undefined}
-                  data-nav-link
-                  href={item.href}
-                  variant="ghost"
-                >
-                  <span class="relative z-10">{item.label}</span>
+                <Button data-nav-link href={item.href} isActive={active} size="xs" variant="ghost">
+                  <Text class="relative z-10">{item.label}</Text>
                 </Button>
               );
             })

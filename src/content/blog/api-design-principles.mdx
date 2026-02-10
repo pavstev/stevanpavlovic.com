@@ -112,8 +112,8 @@ interface PaginationParams {
 }
 
 app.get("/users", async (req: Request<{}, {}, {}, PaginationParams>, res) => {
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 20;
+  const page = parseInt(req.query.page as string) ?? 1;
+  const limit = parseInt(req.query.limit as string) ?? 20;
   const skip = (page - 1) * limit;
 
   const [users, total] = await Promise.all([

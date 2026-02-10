@@ -49,7 +49,7 @@ const viewProps = await getViewPageProps(entry as any);
 ---
 
 <LayoutRoot
-  description={viewProps.description || ""}
+  description={viewProps.description ?? ""}
   slug={`/${collection}/${entry.id}`}
   title={viewProps.title}
 >
@@ -76,23 +76,6 @@ const viewProps = await getViewPageProps(entry as any);
       class="prose-primary prose max-w-none transition-all prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:brightness-125 prose-code:text-primary"
     >
       <Content />
-    </div>
-
-    <div class="sticky top-24 space-y-8" slot="sidebar">
-      <AuthorBio />
-      <div class="glass space-y-4 rounded-xl border-white/5 p-4">
-        <Text class="text-[10px] font-bold tracking-widest uppercase opacity-40"
-          >Reading Controls</Text
-        >
-        <button
-          class="group flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition-all hover:border-primary/30"
-          id="toggle-focus"
-        >
-          <span class="text-xs font-medium group-hover:text-primary">Focus Mode</span>
-          <kbd class="rounded-sm border border-white/10 bg-black/20 px-1.5 py-0.5 text-[9px]">F</kbd
-          >
-        </button>
-      </div>
     </div>
   </ArticleRenderer>
 </LayoutRoot>

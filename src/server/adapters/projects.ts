@@ -33,7 +33,7 @@ export class ProjectsAdapter extends ContentAdapter<"projects"> {
     items.push({
       label: "Status",
       type: "status",
-      value: item.data.meta || "Active",
+      value: item.data.meta ?? "Active",
     });
 
     if (item.data.teamSize) {

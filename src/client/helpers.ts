@@ -5,7 +5,9 @@ export const setupDescriptionToggles = (): void => {
     const text = details.querySelector(".description-text") as HTMLElement;
     const toggleWrapper = details.querySelector(".toggle-buttons") as HTMLElement;
 
-    if (!text || !toggleWrapper) continue;
+    if (!text || !toggleWrapper) {
+      continue;
+    }
 
     const isCurrentlyOpen = (details as HTMLDetailsElement).open;
     if (isCurrentlyOpen) {

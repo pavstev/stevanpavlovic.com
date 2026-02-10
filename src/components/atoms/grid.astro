@@ -4,9 +4,18 @@ import type { HTMLAttributes } from "astro/types";
 import { cn } from "@client";
 import { cva, type VariantProps } from "class-variance-authority";
 
+type ColsValue = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+interface ResponsiveCols {
+  base?: ColsValue;
+  lg?: ColsValue;
+  md?: ColsValue;
+  sm?: ColsValue;
+  xl?: ColsValue;
+}
+
 const gridVariants = cva("grid", {
   defaultVariants: {
-    cols: 1,
     gap: 4,
   },
   variants: {
@@ -16,14 +25,6 @@ const gridVariants = cva("grid", {
       end: "items-end",
       start: "items-start",
       stretch: "items-stretch",
-    },
-    cols: {
-      1: "grid-cols-1",
-      2: "grid-cols-2",
-      3: "grid-cols-3",
-      4: "grid-cols-4",
-      5: "grid-cols-5",
-      6: "grid-cols-6",
     },
     gap: {
       0: "gap-0",
@@ -57,6 +58,7 @@ const gridVariants = cva("grid", {
 
 interface Props extends HTMLAttributes<"div">, VariantProps<typeof gridVariants> {
   as?: any;
+  cols?: ColsValue | ResponsiveCols;
 }
 
 const {
@@ -69,8 +71,25 @@ const {
   rows,
   ...props
 } = Astro.props;
+
+// Helper function to generate responsive column classes
+function getColsClasses(cols: Props["cols"]): string {
+  if (!cols) return "grid-cols-1";
+  if (typeof cols === "number") return `grid-cols-${cols}`;
+
+  const classes: string[] = [];
+  if (cols.base) classes.push(`grid-cols-${cols.base}`);
+  if (cols.sm) classes.push(`sm:grid-cols-${cols.sm}`);
+  if (cols.md) classes.push(`md:grid-cols-${cols.md}`);
+  if (cols.lg) classes.push(`lg:grid-cols-${cols.lg}`);
+  if (cols.xl) classes.push(`xl:grid-cols-${cols.xl}`);
+
+  return classes.length > 0 ? classes.join(" ") : "grid-cols-1";
+}
+
+const colsClass = getColsClasses(cols);
 ---
 
-<Tag class={cn(gridVariants({ align, cols, gap, justify, rows }), className)} {...props}>
+<Tag class={cn(gridVariants({ align, gap, justify, rows }), colsClass, className)} {...props}>
   <slot />
 </Tag>

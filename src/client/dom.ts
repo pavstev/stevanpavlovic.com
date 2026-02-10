@@ -27,7 +27,7 @@ export const initMobileMenu = (): void => {
   const toggle = document.getElementById("mobile-menu-toggle");
   const menu = document.getElementById("mobile-menu");
 
-  if (!toggle || !menu) {
+  if (!toggle ?? !menu) {
     return;
   }
 
@@ -61,7 +61,7 @@ export const initMobileMenu = (): void => {
 
 export const updateActiveLinks = (): void => {
   const links = document.querySelectorAll("[data-nav-link]");
-  const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+  const currentPath = window.location.pathname.replace(/\/$/, "") ?? "/";
 
   const activeClasses = [
     "bg-foreground/10",
@@ -77,12 +77,12 @@ export const updateActiveLinks = (): void => {
 
   for (const link of links) {
     const href = link.getAttribute("href");
-    const cleanHref = href?.replace(/\/$/, "") || "/";
+    const cleanHref = href?.replace(/\/$/, "") ?? "/";
 
     const isActive =
       cleanHref === "/"
         ? currentPath === "/"
-        : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
+        : (currentPath === cleanHref ?? currentPath.startsWith(`${cleanHref}/`));
 
     const dot = link.querySelector(".rounded-full.bg-primary");
 
@@ -129,16 +129,16 @@ export const initViewToggle = (): void => {
   const urlParams = new URLSearchParams(window.location.search);
   const displayParam = urlParams.get("display");
 
-  if (displayParam === "grid" || displayParam === "list") {
+  if (displayParam === "grid" ?? displayParam === "list") {
     sessionStorage.setItem("preferred-view", displayParam);
   }
 
-  const preferredView = sessionStorage.getItem("preferred-view") || "list";
+  const preferredView = sessionStorage.getItem("preferred-view") ?? "list";
   toggleView(preferredView);
 
   const handlePopState = (): void => {
     const newParams = new URLSearchParams(window.location.search);
-    const newView = newParams.get("display") || sessionStorage.getItem("preferred-view") || "list";
+    const newView = newParams.get("display") ?? sessionStorage.getItem("preferred-view") ?? "list";
     toggleView(newView);
   };
 
@@ -159,7 +159,7 @@ export const initHeaderEffects = (): void => {
     const isScrolled = scroll > 50;
 
     if (isScrolled) {
-      island.classList.add("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
+      island.classList.add("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-background/60");
       island.classList.remove("h-14", "px-2");
 
       if (brandWrapper) brandWrapper.style.opacity = "0.7";
@@ -168,7 +168,13 @@ export const initHeaderEffects = (): void => {
     }
 
     if (!isScrolled) {
-      island.classList.remove("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
+      island.classList.remove(
+        "h-11",
+        "px-1.5",
+        "scale-95",
+        "border-primary/20",
+        "bg-background/60"
+      );
       island.classList.add("h-14", "px-2");
 
       if (brandWrapper) brandWrapper.style.opacity = "1";
@@ -177,7 +183,7 @@ export const initHeaderEffects = (): void => {
     }
 
     if (progressBg) {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const winScroll = document.body.scrollTop ?? document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
       progressBg.style.width = `${scrolled}%`;
@@ -192,7 +198,7 @@ const initMasonry = (): void => {
   const grids = document.querySelectorAll<HTMLElement>(".masonry-grid");
 
   for (const grid of grids) {
-    const columnsCount = parseInt(grid.dataset.masonryColumns || "2", 10);
+    const columnsCount = parseInt(grid.dataset.masonryColumns ?? "2", 10);
 
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     if (isMobile) {

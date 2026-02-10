@@ -2,10 +2,9 @@ import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
   astro: {
-    entry: ["src/pages/**/*.astro", "src/content/**/*.config.ts"],
+    // entry: ["src/pages/**/*.astro", "src/content/**/*.config.ts"],
   },
-  entry: ["unlighthouse.config.ts", "scripts/*.ts"],
-  ignore: ["src/stories/**/*", "src/lib/api-bak/**/*"],
+  entry: ["unlighthouse.config.ts"],
   ignoreBinaries: ["only-allow"],
   ignoreDependencies: [
     "sharp",

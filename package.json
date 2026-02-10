@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "pnpm cf-typegen",
+    "postinstall": "pnpm cf-typegen > /dev/null",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "wrangler dev",
@@ -27,7 +27,6 @@
     "validate": "pnpm lint && pnpm check && pnpm knip",
     "all": "pnpm validate && pnpm build",
     "unlighthouse": "unlighthouse",
-    "extract-links": "tsx scripts/extract-links.ts",
     "mini-all": "pnpm eslint ./src/components/ --cache --fix --max-warnings 0 && pnpm check && pnpm knip"
   },
   "dependencies": {
@@ -41,6 +40,7 @@
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/space-grotesk": "^5.2.10",
     "@iconify-json/mdi": "^1.2.3",
+    "@playform/compress": "^0.2.1",
     "@sentry/astro": "^10.38.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
@@ -63,15 +63,14 @@
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.6",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.8.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^25.2.2",
-    "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@typescript-eslint/parser": "^8.54.0",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
     "astro-eslint-parser": "^1.2.2",
-    "consola": "^3.4.2",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-mdx": "^3.6.2",
     "eslint-plugin-astro": "^1.5.0",
@@ -84,7 +83,6 @@
     "eslint-plugin-mdx": "^3.6.2",
     "eslint-plugin-perfectionist": "^5.5.0",
     "eslint-plugin-prettier": "^5.5.5",
-    "globby": "^16.1.0",
     "jiti": "^2.6.1",
     "jsonc-eslint-parser": "^2.4.2",
     "knip": "^5.83.1",
@@ -92,12 +90,10 @@
     "prettier-plugin-astro": "^0.14.1",
     "remark-lint-no-multiple-toplevel-headings": "^4.0.1",
     "sharp": "^0.34.5",
-    "simple-git": "^3.30.0",
     "tailwindcss": "^4.1.18",
-    "tsx": "^4.21.0",
-    "typescript-eslint": "^8.54.0",
+    "typescript-eslint": "^8.55.0",
     "unlighthouse": "^0.17.4",
-    "wrangler": "^4.63.0"
+    "wrangler": "^4.64.0"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [

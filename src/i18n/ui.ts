@@ -7,6 +7,12 @@ export const defaultLang = "en";
 
 export const ui = {
   en: {
+    "cta.browseProjects": "Browse Projects",
+    "cta.description": "Explore my full repository of projects and technical writing.",
+    "cta.readBlog": "Read Blog",
+    "cta.title": "Ready to build something extraordinary?",
+    "featured.description": "Hand-picked projects that demonstrate technical depth and architectural vision.",
+    "featured.title": "Featured Highlights",
     "nav.about": "About",
     "nav.blog": "Blog",
     "nav.home": "Home",
@@ -22,6 +28,12 @@ export const ui = {
     "search.placeholder": "Search...",
   },
   sr: {
+    "cta.browseProjects": "Pretraži projekte",
+    "cta.description": "Istražite moj puni portfolio projekata i tehničkih tekstova.",
+    "cta.readBlog": "Čitaj blog",
+    "cta.title": "Spremni da izgradimo nešto izvanredno?",
+    "featured.description": "Ručno odabrani projekti koji demonstriraju tehničku dubinu i arhitektonsku viziju.",
+    "featured.title": "Izdvojeni Projekti",
     "nav.about": "O meni",
     "nav.blog": "Blog",
     "nav.home": "Početna",

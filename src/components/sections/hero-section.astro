@@ -1,0 +1,52 @@
+---
+import { PROFILE, SITE_CONFIG, STATS } from "../../config";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import Badge from "../atoms/badge.astro";
+import Heading from "../atoms/heading.astro";
+import Text from "../atoms/text.astro";
+import BrandIdentity from "../molecules/brand-identity.astro";
+import GridTile from "../molecules/grid-tile.astro";
+import StatsGrid from "../organisms/stats-grid.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<GridTile class="overflow-hidden p-8 md:p-16 lg:col-span-12" cols="lg:col-span-12">
+  <div class="relative z-10 flex flex-col gap-10">
+    {/* Live Status HUD */}
+    <div class="animate-in fade-in slide-in-from-left-4 flex items-center gap-4 duration-700">
+      <BrandIdentity size="xs" variant="status">
+        <span class="text-label font-bold tracking-widest text-accent/80 uppercase">
+          {PROFILE.status}
+        </span>
+      </BrandIdentity>
+      <div class="h-px w-12 bg-white/10"></div>
+      <Badge variant="outline">{PROFILE.location}</Badge>
+    </div>
+
+    {/* Brand Core */}
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="flex flex-col gap-4">
+        <BrandIdentity class="mb-4" size="lg" variant="author" />
+        <Heading class="leading-header tracking-tight" level={1} size="display" variant="primary">
+          {SITE_CONFIG.hero.title.split(" ")[0]}
+          <span class="text-white">{SITE_CONFIG.hero.highlight}</span>
+          <br />
+          {SITE_CONFIG.hero.title.split(" ").slice(1).join(" ")}
+        </Heading>
+        <Text class="text-lg leading-relaxed text-muted-foreground/90 md:text-xl">
+          {SITE_CONFIG.description}
+        </Text>
+      </div>
+    </div>
+
+    {/* Global Impact Metrics */}
+    <div class="border-t border-white/5 pt-6">
+      <StatsGrid items={STATS} />
+    </div>
+  </div>
+
+  {/* Decorative Brand Accent */}
+  <div class="pointer-events-none absolute -right-20 -bottom-20 size-96 rounded-full bg-primary/5 blur-ambient"></div>
+</GridTile>

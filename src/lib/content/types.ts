@@ -1,7 +1,16 @@
 import type { ImageMetadata } from "astro";
-import type { CollectionEntry, CollectionKey } from "astro:content";
 
-export type { CollectionEntry, CollectionKey };
+import type {
+  CollectionEntry,
+  CollectionKey,
+  PostLink,
+  Tag,
+  ToolbarItem,
+  ViewPagePropsTags,
+} from "../types";
+
+export type { CollectionEntry, CollectionKey, Tag, ToolbarItem, ViewPagePropsTags };
+
 export interface Author extends ToolbarItem {
   avatar: ImageMetadata;
   name: string;
@@ -18,35 +27,6 @@ export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
 
 export type Company = CollectionEntry<"companies">["data"];
 export type Nullable<T> = null | T | undefined;
-export interface PostLink {
-  href: string;
-  label: string;
-}
-export type Tag = CollectionEntry<"tags">["data"];
-
-export interface ToolbarItem {
-  avatar?: ImageMetadata;
-  href?: string;
-  icon?: string;
-  label: string;
-  logo?: ImageMetadata;
-  type: ToolbarItemType;
-  value: string;
-}
-
-export type ToolbarItemType =
-  | "award"
-  | "category"
-  | "date"
-  | "industry"
-  | "link"
-  | "location"
-  | "organization"
-  | "person"
-  | "status"
-  | "text"
-  | "time"
-  | "weather";
 
 export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   author?: Author;
@@ -57,9 +37,4 @@ export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   tags: ViewPagePropsTags;
   title: string;
   toolbarItems: (ToolbarItem | undefined)[];
-}
-
-export interface ViewPagePropsTags {
-  items: Tag[];
-  title: string | undefined;
 }

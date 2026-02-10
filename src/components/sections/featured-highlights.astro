@@ -1,0 +1,31 @@
+---
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getItemCardProps } from "../../lib/content/data-orchestrator";
+import ResourceDiscovery from "../organisms/resource-discovery.astro";
+
+interface Props {
+  projects: any[];
+}
+
+const { projects } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="lg:col-span-12">
+  <ResourceDiscovery
+    baseUrl="/projects"
+    collectionItems={projects as any}
+    collectionKey="projects"
+    containerId="featured-projects"
+    description={t("featured.title")}
+    display="grid"
+    getItemCardProps={getItemCardProps as any}
+    headerDescription={t("featured.description")}
+    headerIcon="mdi:star-outline"
+    headerTitle={t("featured.title")}
+    initialPageSize={3}
+    title={t("featured.title")}
+    totalItems={projects.length}
+  />
+</div>

@@ -42,8 +42,29 @@
 
   --radius-sm: 0rem;
   --radius-md: 0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
+  --font-size-label: 0.625rem;
+  --font-size-label-sm: 0.562rem;
+  --font-size-ui-xs: 0.6875rem;
+  --font-size-ui-sm: 0.75rem;
+  --font-size-ui-md: 0.8125rem;
+  --font-size-ui-lg: 0.9375rem;
+
+  --leading-display: 0.9;
+  --leading-header: 1.1;
+
+  --tracking-widest: 0.2em;
+
+  --blur-ambient: 120px;
+  --blur-ambient-subtle: 100px;
+
+  --opacity-noise: 0.03;
+
+  --z-overlay: 1000;
+
+  --drop-shadow-glow-primary: 0 0 10px rgba(59, 130, 246, 0.5);
+  --drop-shadow-glow-accent: 0 0 10px rgba(74, 222, 128, 0.5);
+  --drop-shadow-glow-white: 0 0 10px rgba(255, 255, 255, 0.5);
+
   --radius-2xl: 0.75rem;
   --radius-3xl: 1rem;
 
@@ -121,11 +142,11 @@
     inset: 0;
     z-index: 100;
     pointer-events: none;
-    opacity: 0.03;
+    opacity: var(--opacity-noise);
     background: var(--noise);
   }
 
-  h1 { @apply text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-[0.9] tracking-tighter uppercase; }
+  h1 { @apply text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-display tracking-tighter uppercase; }
   h2 { @apply text-[clamp(2rem,6vw,3.25rem)] font-black leading-none tracking-tighter uppercase; }
   h3 { @apply text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-tight; }
   p { @apply text-[0.9375rem] leading-[1.6] opacity-80; }

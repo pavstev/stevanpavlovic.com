@@ -1,10 +1,5 @@
-export type DisplayMode = "grid" | "list";
-
-export type PaginationType = "path" | "query";
-
-export type ViewUrls = {
-  [k in DisplayMode]: string;
-};
+import type { DisplayMode, PaginationLinksOptions, PaginationType } from "./types";
+export type { DisplayMode, PaginationType };
 
 // VIEW_MODES moved to src/config.ts
 
@@ -40,17 +35,6 @@ export const buildListUrl = (
 
   return url.pathname + url.search;
 };
-
-interface PaginationLinksOptions {
-  baseUrl: string;
-  currentPage: number;
-  currentUrl: URL;
-  customGetPageUrl?: (page: number) => string;
-  nextUrl?: string;
-  paginationType: PaginationType;
-  prevUrl?: string;
-  totalPages: number;
-}
 
 export const getPaginationLinks = ({
   baseUrl,

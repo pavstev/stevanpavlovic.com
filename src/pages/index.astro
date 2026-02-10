@@ -1,19 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 
-import Badge from "../components/atoms/badge.astro";
 import Container from "../components/atoms/container.astro";
 import Grid from "../components/atoms/grid.astro";
-import Heading from "../components/atoms/heading.astro";
-import Stack from "../components/atoms/stack.astro";
-import Text from "../components/atoms/text.astro";
 import LayoutRoot from "../components/layout/layout-root.astro";
-import BrandIdentity from "../components/molecules/brand-identity.astro";
-import GridTile from "../components/molecules/grid-tile.astro";
-import ResourceDiscovery from "../components/organisms/resource-discovery.astro";
-import StatsGrid from "../components/organisms/stats-grid.astro";
-import { PROFILE, STATS } from "../config";
-import { getItemCardProps } from "../lib/content/data-orchestrator";
+import CTASection from "../components/sections/cta-section.astro";
+import FeaturedHighlights from "../components/sections/featured-highlights.astro";
+import HeroSection from "../components/sections/hero-section.astro";
+import { PROFILE } from "../config";
 
 // 1. Data Orchestration: Fetch Featured Highlights
 const featuredProjects = (await getCollection("projects")).filter((p) => p.data.featured).slice(0, 3);
@@ -22,84 +16,9 @@ const featuredProjects = (await getCollection("projects")).filter((p) => p.data.
 <LayoutRoot description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Architect`}>
   <Container class="relative z-10 py-12 md:py-24">
     <Grid class="items-start" cols={{ base: 1, lg: 12 }} gap={8}>
-      {/* PHASE 1: THE SIGNATURE SECTION */}
-      <GridTile class="overflow-hidden p-8 md:p-16 lg:col-span-12" cols="lg:col-span-12">
-        <div class="relative z-10 flex flex-col gap-10">
-          {/* Live Status HUD */}
-          <div class="animate-in fade-in slide-in-from-left-4 flex items-center gap-4 duration-700">
-            <BrandIdentity size="xs" variant="status">
-              <span class="text-[10px] font-bold tracking-[0.2em] text-accent/80 uppercase">
-                {PROFILE.status}
-              </span>
-            </BrandIdentity>
-            <div class="h-px w-12 bg-white/10"></div>
-            <Badge variant="outline">{PROFILE.location}</Badge>
-          </div>
-
-          {/* Brand Core */}
-          <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div class="flex flex-col gap-4">
-              <BrandIdentity class="mb-4" size="lg" variant="author" />
-              <Heading class="leading-[1.1] tracking-tight" level={1} size="display" variant="primary">
-                Architecting <span class="text-white">Resilient</span>
-                <br />
-                Distributed Systems.
-              </Heading>
-              <Text class="text-lg leading-relaxed text-muted-foreground/90 md:text-xl">
-                {PROFILE.bio}
-              </Text>
-            </div>
-          </div>
-
-          {/* Global Impact Metrics */}
-          <div class="border-t border-white/5 pt-6">
-            <StatsGrid items={STATS} />
-          </div>
-        </div>
-
-        {/* Decorative Brand Accent */}
-        <div class="pointer-events-none absolute -right-20 -bottom-20 size-96 rounded-full bg-primary/5 blur-[120px]">
-        </div>
-      </GridTile>
-
-      {/* PHASE 2: DYNAMIC HIGHLIGHTS ENGINE */}
-      <div class="lg:col-span-12">
-        <ResourceDiscovery
-          baseUrl="/projects"
-          collectionItems={featuredProjects as any}
-          collectionKey="projects"
-          containerId="featured-projects"
-          description="Featured Highlights"
-          display="grid"
-          getItemCardProps={getItemCardProps as any}
-          headerDescription="Hand-picked projects that demonstrate technical depth and architectural vision."
-          headerIcon="mdi:star-outline"
-          headerTitle="Featured Highlights"
-          initialPageSize={3}
-          title="Featured Highlights"
-          totalItems={featuredProjects.length}
-        />
-      </div>
-
-      {/* PHASE 3: THE ECOSYSTEM NAVIGATOR */}
-      <GridTile class="border-primary/10 bg-primary/5 p-8 lg:col-span-12">
-        <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
-          <Stack gap={2}>
-            <Heading level={3} size="md">Ready to build something extraordinary?</Heading>
-            <Text variant="muted">Explore my full repository of projects and technical writing.</Text>
-          </Stack>
-          <div class="flex gap-4">
-            <a
-              class="hover:shadow-glow-primary rounded-full bg-primary px-6 py-3 font-bold text-white transition-all"
-              href="/projects">Browse Projects</a
-            >
-            <a
-              class="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10"
-              href="/blog">Read Blog</a
-            >
-          </div>
-        </div>
-      </GridTile>
+      <HeroSection />
+      <FeaturedHighlights projects={featuredProjects} />
+      <CTASection />
     </Grid>
   </Container>
 </LayoutRoot>

@@ -1,4 +1,4 @@
-import type { DisplayMode } from "./lib/list";
+import type { DisplayMode } from "./lib/types";
 
 import profileImage from "./assets/profile.jpeg";
 
@@ -13,6 +13,10 @@ export const SITE_CONFIG = {
   author: "Stevan Pavlovic",
   description: "Technical Lead and Senior Software Engineer",
   email: "hi@stevanpavlovic.com",
+  hero: {
+    highlight: "Resilient",
+    title: "Architecting Distributed Systems.",
+  },
   tagline: "a software engineer focused on distributed systems and backend architecture",
   title: "Stevan Pavlovic - Senior Software Engineer",
 } as const;
@@ -160,7 +164,7 @@ interface Stat {
   value: number;
 }
 
-export const STATS: Stat[] = [
+export const STATS: readonly Stat[] = [
   { icon: "mdi:clock-time-eight-outline", label: "Years Exp.", value: 12 },
   { icon: "mdi:server-network", label: "Systems", value: 24 },
   { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },

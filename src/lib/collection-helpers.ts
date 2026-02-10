@@ -1,32 +1,16 @@
-import { type CollectionKey } from "astro:content";
+import type { CollectionKey } from "astro:content";
+
+import type { CollectionPageData, DisplayMode } from "./types";
 
 import { ITEMS_PER_PAGE } from "../config";
 import {
   buildDisplayUrls,
   buildPaginationUrls,
-  type DisplayMode,
   getCollectionConfig,
   getCollectionData,
   getItemCardProps,
   getPageItems,
 } from "./index";
-
-interface CollectionPageData {
-  baseUrl: string;
-  collectionItems: ReturnType<typeof getPageItems>;
-  collectionKey: CollectionKey;
-  config: ReturnType<typeof getCollectionConfig>;
-  containerId: string;
-  currentPage: number;
-  display: DisplayMode;
-  displayUrls: ReturnType<typeof buildDisplayUrls>;
-  getItemCardProps: typeof getItemCardProps;
-  initialPageSize: number;
-  nextUrl?: string;
-  prevUrl?: string;
-  totalItems: number;
-  totalPages: number;
-}
 
 export const getCollectionPageData = async (
   collection: CollectionKey,

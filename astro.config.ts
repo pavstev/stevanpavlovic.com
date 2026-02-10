@@ -14,7 +14,6 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
-
 import { PROFILE } from "./src/config";
 
 export default defineConfig({
@@ -48,7 +47,7 @@ export default defineConfig({
       name: PROFILE.name,
       short_name: PROFILE.name,
     }),
-    // (await import("@playform/compress")).default(),
+    (await import("@playform/compress")).default(),
     icon(),
     partytown({
       config: {
@@ -60,14 +59,12 @@ export default defineConfig({
       checkExternalLinks: false,
       throwError: false,
     }),
-    // playformInline(),
     sentry({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "sp-05",
       project: "stevanpavlovic",
       telemetry: false,
     }),
-    // playground(),
     pagefind({
       indexConfig: {},
     }),

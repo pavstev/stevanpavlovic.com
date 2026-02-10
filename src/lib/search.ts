@@ -1,38 +1,9 @@
-interface PagefindInstance {
-  options: (options: { showImages: boolean }) => void;
-  preload: (term: string) => Promise<void>;
-  search: (query: string) => Promise<{
-    results: PagefindResult[];
-  }>;
-}
-
-interface PagefindResult {
-  data: () => Promise<{
-    content: string;
-    excerpt: string;
-    meta: {
-      category?: string;
-      image?: string;
-      title: string;
-    };
-    url: string;
-  }>;
-  id: string;
-}
+import type { PagefindInstance, PagefindResult, QuickAction } from "./types";
 
 declare global {
   interface Window {
     pagefind?: PagefindInstance;
   }
-}
-
-interface QuickAction {
-  category: "Action" | "Navigation";
-  href?: string;
-  icon: string;
-  id: string;
-  label: string;
-  onSelect?: () => void;
 }
 
 const QUICK_ACTIONS: QuickAction[] = [
@@ -184,7 +155,7 @@ class CommandPalette {
 
   private renderQuickActions(): void {
     this.resultsContainer.innerHTML = `
-      <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Quick Actions</div>
+      <div class="px-2 py-3 text-label font-bold uppercase tracking-widest text-muted-foreground/50">Quick Actions</div>
       <div class="flex flex-col gap-1">
         ${QUICK_ACTIONS.map(
           (action) => `
@@ -193,7 +164,7 @@ class CommandPalette {
                <svg class="size-4"><use href="/icons.svg#${action.icon.replace("mdi:", "")}"></use></svg>
             </span>
             ${action.label}
-            <span class="ml-auto text-[10px] font-mono text-muted-foreground/40">Action</span>
+            <span class="ml-auto text-label font-mono text-muted-foreground/40">Action</span>
           </button>
         `,
         ).join("")}
@@ -220,7 +191,7 @@ class CommandPalette {
 
   private async renderSearchResults(results: PagefindResult[]): Promise<void> {
     this.resultsContainer.innerHTML = `
-      <div class="px-2 py-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Search Results</div>
+      <div class="px-2 py-3 text-label font-bold uppercase tracking-widest text-muted-foreground/50">Search Results</div>
       <div class="flex flex-col gap-1"></div>
     `;
     const list = this.resultsContainer.querySelector(".flex-col") as HTMLElement;
@@ -239,7 +210,7 @@ class CommandPalette {
       item.innerHTML = `
         <div class="flex items-center justify-between gap-2">
           <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">${data.meta.title}</span>
-          ${data.meta.category ? `<span class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono uppercase tracking-wider">${data.meta.category}</span>` : ""}
+          ${data.meta.category ? `<span class="text-label bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono uppercase tracking-wider">${data.meta.category}</span>` : ""}
         </div>
         <span class="text-xs text-muted-foreground line-clamp-1">${data.excerpt}</span>
       `;

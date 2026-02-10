@@ -8,6 +8,7 @@ import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
 import Analytics from "../atoms/analytics.astro";
+import Container from "../atoms/container.astro";
 import MetaHead from "../atoms/meta-head.astro";
 import EnvironmentalBackground from "../organisms/environmental-background.astro";
 import OmniSearch from "../organisms/omni-search.astro";
@@ -53,7 +54,9 @@ const { class: className, description, image, intensity = "medium", lang = "en",
 
     <Header />
     <main class="relative z-10 min-h-screen">
-      <slot />
+      <Container>
+        <slot />
+      </Container>
     </main>
     <Footer />
 

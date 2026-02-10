@@ -10,11 +10,7 @@ interface Props extends HTMLAttributes<"div"> {
   intensity?: "high" | "low" | "medium";
 }
 
-const {
-  class: className,
-  intensity = "medium",
-  ...rest
-} = Astro.props;
+const { class: className, intensity = "medium", ...rest } = Astro.props;
 
 const meteorConfig = {
   high: 50,
@@ -23,28 +19,9 @@ const meteorConfig = {
 }[intensity];
 ---
 
-<div
-  class:list={[
-    cn(
-      "pointer-events-none",
-      "fixed",
-      "inset-0",
-      "-z-50",
-      "overflow-hidden",
-      className,
-    ),
-  ]}
-  {...rest}
->
+<div class:list={[cn("pointer-events-none", "fixed", "inset-0", "-z-50", "overflow-hidden", className)]} {...rest}>
   <!-- Layer 1: Base Deep Space Gradient -->
-  <div
-    aria-hidden="true"
-    class:list={[
-      "absolute",
-      "inset-0",
-      "bg-black/98",
-    ]}
-  ></div>
+  <div aria-hidden="true" class:list={["absolute", "inset-0", "bg-black/98"]}></div>
 
   <!-- Layer 2: Ambient Gradient Flow -->
   <div
@@ -57,7 +34,8 @@ const meteorConfig = {
       "via-(--color-primary/5)",
       "to-(--color-accent/5)",
     ]}
-  ></div>
+  >
+  </div>
 
   <!-- Layer 3: Distant Nebulae (Animated Glow Spheres) -->
   <div
@@ -72,48 +50,29 @@ const meteorConfig = {
       "rounded-full",
       "bg-(--color-primary/10)",
       "opacity-30",
-      "blur-[120px]",
+      "blur-ambient",
     ]}
-  ></div>
+  >
+  </div>
 
   <div
-    aria-hidden="true"
-    class:list={[
-      "pointer-events-none",
-      "absolute",
-      "bottom-[-20%]",
-      "right-[-10%]",
-      "size-[70%]",
-      "animate-pulse",
-      "rounded-full",
-      "bg-(--color-accent/10)",
-      "opacity-20",
-      "blur-[100px]",
-    ]}
-  ></div>
+    class:list={["absolute size-96 rounded-full bg-accent/5", "bottom-[-20%]", "right-[-10%]", "blur-ambient-subtle"]}
+  >
+  </div>
 
   <!-- Layer 4: Visual DNA: Structural Grid Pattern -->
   <div
     aria-hidden="true"
-    class:list={[
-      "pointer-events-none",
-      "absolute",
-      "inset-0",
-      "opacity-[0.03]",
-    ]}
+    class:list={["pointer-events-none", "absolute", "inset-0", "opacity-[0.03]"]}
     style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 64px 64px;"
-  ></div>
+  >
+  </div>
 
   <!-- Layer 5: Meteor Layer -->
   <MeteorEffect number={meteorConfig} />
 
   <!-- Layer 6: Spotlight Effect Integration -->
-  <SpotlightEffect
-    class:list={[
-      "opacity-20",
-      "pointer-events-none",
-    ]}
-  />
+  <SpotlightEffect class:list={["opacity-20", "pointer-events-none"]} />
 
   <slot />
 </div>

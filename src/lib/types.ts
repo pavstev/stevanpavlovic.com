@@ -85,13 +85,13 @@ export type Company = CollectionEntry<"companies">["data"];
 
 export type DisplayMode = "grid" | "list";
 
-export interface Education {
+interface Education {
   degree: string;
   school: string;
   year: string;
 }
 
-export interface Experience {
+interface Experience {
   company: string;
   description: string;
   endDate?: string;
@@ -119,7 +119,7 @@ export interface PostLink {
   label: string;
 }
 
-export interface Profile {
+interface Profile {
   avatar?: ImageMetadata;
   email: string;
   location: string;
@@ -132,7 +132,7 @@ export interface Profile {
 
 export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
 
-export interface ResumeData {
+interface ResumeData {
   education: Education[];
   experience: Experience[];
   profile: Profile;

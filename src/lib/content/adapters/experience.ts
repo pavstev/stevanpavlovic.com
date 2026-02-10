@@ -1,9 +1,22 @@
 import dayjs from "dayjs";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, Company, ToolbarItem, ViewPageProps } from "../../types";
 
 import { type CardResult, ContentAdapter } from "../../types";
-import { resolveCompany, resolveTags } from "../helpers";
+import { resolveTags } from "../helpers";
+import { getEntry } from "astro:content";
+
+const resolveCompany = async (
+  companyRef?: string | { collection: "companies"; id: string }
+): Promise<Company | undefined> => {
+  if (!companyRef) return undefined;
+  if (typeof companyRef === "string") {
+    const entry = await getEntry("companies", companyRef);
+    return entry?.data;
+  }
+  const entry = await getEntry(companyRef);
+  return entry?.data;
+};
 
 export class ExperienceAdapter extends ContentAdapter<"experience"> {
   async getCardData(item: CollectionItem<"experience">): Promise<CardResult> {

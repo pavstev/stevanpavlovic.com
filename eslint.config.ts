@@ -4,8 +4,6 @@ import eslint from "@eslint/js";
 import eslintPluginAstro from "eslint-plugin-astro";
 import tailwind from "eslint-plugin-better-tailwindcss";
 // @ts-expect-error No types for this
-import jsxA11y from "eslint-plugin-jsx-a11y";
-// @ts-expect-error No types for this
 import markdownlintPlugin from "eslint-plugin-markdownlint";
 // @ts-expect-error No types for this
 import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
@@ -24,7 +22,6 @@ const FRONTEND_FILES = ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"];
 const CONFIG_FILES = ["**/*.config.ts", "scripts/**/*.ts"];
 
 // Fix plugins for ESLint 9/10 compatibility
-const fixedJsxA11y = fixupPluginRules(jsxA11y);
 const fixedTailwind = fixupPluginRules(tailwind);
 const fixedMarkdownlint = fixupPluginRules(markdownlintPlugin);
 
@@ -80,16 +77,6 @@ export default defineConfig(
       },
     },
   },
-
-  // JSX Accessibility
-  {
-    files: FRONTEND_FILES.filter((f) => !f.endsWith(".astro")),
-    plugins: {
-      "jsx-a11y": fixedJsxA11y,
-    },
-    rules: jsxA11y.flatConfigs.recommended.rules,
-  },
-
   // TypeScript strict type-checked rules (only for files in tsconfig)
   {
     files: TS_FILES,

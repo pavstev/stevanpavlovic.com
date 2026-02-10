@@ -22,7 +22,7 @@ export const getCollectionPageData = async (
   const sortedItems = await getCollectionData(collection);
   const totalItems = sortedItems.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-  const items = getPageItems(sortedItems, currentPage);
+  const items = getPageItems(sortedItems, currentPage) as any;
 
   const config = getCollectionConfig(collection);
   const baseUrl = `/${collection}`;

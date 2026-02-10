@@ -2,17 +2,16 @@ import type { ImageMetadata } from "astro";
 
 import { getCollection } from "astro:content";
 
-import type { CardData } from "../../components/organisms/card.astro";
-import type { CollectionItem, CollectionKey, ViewPageProps } from "../types";
-import type { ContentAdapter } from "./adapter";
+import type { CardData, CollectionItem, CollectionKey, ViewPageProps } from "../types";
 
 import { PROFILE } from "../../config";
 import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
+import { undefined } from "astro/zod";
 
 const getSortDate = (item: CollectionItem): number => {
-  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
-  return adapter ? adapter.getSortDate(item) : 0;
+  const adapter = adapters[item.collection as CollectionKey];
+  return adapter ? adapter.getSortDate(item as any) : 0;
 };
 
 export const getCollectionData = async <CN extends CollectionKey>(collection: CN): Promise<CollectionItem<CN>[]> => {
@@ -27,15 +26,15 @@ export const getCollectionData = async <CN extends CollectionKey>(collection: CN
 };
 
 export const getViewPageProps = async (item: CollectionItem): Promise<ViewPageProps> => {
-  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
+  const adapter = adapters[item.collection as CollectionKey];
 
   // console.log({adapters: Object.keys(adapters), item,} )
   if (!adapter) {
     throw new Error(`No adapter found for collection: ${item.collection}`);
   }
 
-  const props = await adapter.getViewProps(item);
-  const toolbarItems = await adapter.getToolbarItems(item);
+  const props = await (adapter as any).getViewProps(item);
+  const toolbarItems = await (adapter as any).getToolbarItems(item);
   const author = createAuthorItem(PROFILE);
 
   const data = item.data as Record<string, unknown>;
@@ -64,7 +63,7 @@ export const getItemCardProps = async (
   actionLabel: string;
   data: CardData;
 }> => {
-  const adapter = adapters[item.collection] as unknown as ContentAdapter<CollectionKey>;
+  const adapter = adapters[item.collection as CollectionKey];
 
   if (!adapter) {
     return {
@@ -76,7 +75,7 @@ export const getItemCardProps = async (
     };
   }
 
-  const result = await adapter.getCardData(item);
+  const result = await (adapter as any).getCardData(item);
 
   return {
     actionLabel: result.actionLabel || "View",

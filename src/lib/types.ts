@@ -11,9 +11,35 @@ export interface Author extends ToolbarItem {
 
 export type { CollectionEntry, CollectionKey };
 
+export interface CollectionConfig {
+  description: string;
+  headerDescription: string;
+  headerIcon: string;
+  headerTitle: string;
+  tagTitle: string;
+  title: string;
+}
+
+export interface CardData {
+  align?: "center" | "start";
+  animate?: boolean;
+  date?: Date;
+  delay?: number;
+  description?: string;
+  footerMeta?: string;
+  icon?: string;
+  image?: ImageMetadata | string;
+  logo?: ImageMetadata;
+  meta?: string;
+  subtitle?: string;
+  tags?: Tag[];
+  title?: string;
+  url?: string;
+}
+
 export interface CardResult {
   actionLabel?: string;
-  data: unknown;
+  data: CardData;
 }
 
 export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
@@ -24,14 +50,14 @@ export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
 }
 export interface CollectionPageData {
   baseUrl: string;
-  collectionItems: unknown[];
+  collectionItems: CollectionItem[];
   collectionKey: CollectionKey;
-  config: unknown;
+  config: CollectionConfig;
   containerId: string;
   currentPage: number;
   display: DisplayMode;
   displayUrls: ViewUrls;
-  getItemCardProps: (item: unknown) => unknown;
+  getItemCardProps: (item: CollectionItem) => Promise<{ actionLabel: string; data: CardData }>;
   initialPageSize: number;
   nextUrl?: string;
   prevUrl?: string;

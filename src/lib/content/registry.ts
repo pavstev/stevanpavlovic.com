@@ -1,5 +1,5 @@
-import type { ContentAdapter } from "./adapter";
 import type { CollectionKey } from "../types";
+import type { ContentAdapter } from "./adapter";
 
 import { collections as baseCollections } from "../../content.config";
 import { BlogAdapter } from "./adapters/blog";

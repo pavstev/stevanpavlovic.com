@@ -7,36 +7,36 @@ import { cn } from "../../lib/cn";
 import Button from "../atoms/button.astro";
 
 const brandVariants = cva("group flex items-center gap-2.5 no-underline transition-all duration-300", {
-  defaultVariants: {
-    variant: "author",
-  },
-  variants: {
-    variant: {
-      author: "hover:opacity-90",
-      org: "hover:opacity-90",
-      status: "cursor-default",
+    defaultVariants: {
+        variant: "author",
     },
-  },
+    variants: {
+        variant: {
+            author: "hover:opacity-90",
+            org: "hover:opacity-90",
+            status: "cursor-default",
+        },
+    },
 });
 
 const logoVariants = cva("relative shrink-0 overflow-hidden transition-all duration-300", {
-  defaultVariants: {
-    size: "md",
-    variant: "author",
-  },
-  variants: {
-    size: {
-      lg: "size-10",
-      md: "size-8",
-      sm: "size-6",
-      xs: "size-4.5",
+    defaultVariants: {
+        size: "md",
+        variant: "author",
     },
-    variant: {
-      author: "rounded-full ring-2 ring-foreground/10 group-hover:ring-primary/40",
-      org: "rounded-md border border-white/5 bg-white/5 p-1 shadow-sm ring-1 ring-white/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
-      status: "flex items-center justify-center",
+    variants: {
+        size: {
+            lg: "size-10",
+            md: "size-8",
+            sm: "size-6",
+            xs: "size-4.5",
+        },
+        variant: {
+            author: "rounded-full ring-2 ring-foreground/10 group-hover:ring-primary/40",
+            org: "rounded-md border border-white/5 bg-white/5 p-1 shadow-sm ring-1 ring-white/10 backdrop-blur-xl group-hover:border-primary/30 group-hover:bg-primary/5",
+            status: "flex items-center justify-center",
+        },
     },
-  },
 });
 
 interface Props extends VariantProps<typeof brandVariants>, VariantProps<typeof logoVariants> {
@@ -47,71 +47,71 @@ interface Props extends VariantProps<typeof brandVariants>, VariantProps<typeof 
 }
 
 const {
-  alt = SITE_CONFIG.author,
-  class: className,
-  href = "/",
-  size = "md",
-  src = PROFILE.avatar,
-  variant = "author",
+    alt = SITE_CONFIG.author,
+    class: className,
+    href = "/",
+    size = "md",
+    src = PROFILE.avatar,
+    variant = "author",
 } = Astro.props;
 
 const isStatus = variant === "status";
 ---
 
 {
-  isStatus ? (
-    <div class:list={[cn(brandVariants({ variant }), className)]} data-magnetic="true">
-      <div class:list={[cn(logoVariants({ size, variant }))]}>
-        <span class="relative flex size-2.5" transition:name="brand-status">
-          <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
-          <span class="shadow-glow-accent relative inline-flex size-2.5 rounded-full bg-accent" />
-        </span>
-      </div>
-      <slot />
-    </div>
-  ) : (
-    <Button
-      class:list={[cn(brandVariants({ variant }), className)]}
-      data-magnetic="true"
-      href={href}
-      transition:name="brand-identity"
-      variant="ghost"
-    >
-      <div class:list={[cn(logoVariants({ size, variant }))]}>
-        {src && (
-          <Image
-            alt={alt || ""}
-            class:list={[
-              "size-full transition-all duration-500",
-              {
-                "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100": variant !== "author",
-                "object-cover": variant === "author",
-              },
-            ]}
-            src={src}
-          />
-        )}
-
-        {variant === "author" && (
-          <>
-            {/* Primary Tint Overlay */}
-            <div class="absolute inset-0 bg-primary/60 mix-blend-color transition-all duration-500 group-hover:opacity-40" />
-
-            {/* Shine effect */}
-            <div class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-foreground/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-          </>
-        )}
-      </div>
-
-      {variant === "author" ? (
-        <div class="flex items-center">
-          <span class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-sm font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-base">
-            {alt}
-          </span>
+    isStatus ? (
+        <div class:list={[cn(brandVariants({ variant }), className)]} data-magnetic="true">
+            <div class:list={[cn(logoVariants({ size, variant }))]}>
+                <span class="relative flex size-2.5" transition:name="brand-status">
+                    <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
+                    <span class="shadow-glow-accent relative inline-flex size-2.5 rounded-full bg-accent" />
+                </span>
+            </div>
+            <slot />
         </div>
-      ) : (
-        <slot />
-      )}
-    </Button>
-  )
+    ) : (
+        <Button
+            class:list={[cn(brandVariants({ variant }), className)]}
+            data-magnetic="true"
+            href={href}
+            transition:name="brand-identity"
+            variant="ghost"
+        >
+            <div class:list={[cn(logoVariants({ size, variant }))]}>
+                {src && (
+                    <Image
+                        alt={alt || ""}
+                        class:list={[
+                            "size-full transition-all duration-500",
+                            {
+                                "object-contain opacity-80 group-hover:scale-105 group-hover:opacity-100": variant !== "author",
+                                "object-cover": variant === "author",
+                            },
+                        ]}
+                        src={src}
+                    />
+                )}
+
+                {variant === "author" && (
+                    <>
+                        {/* Primary Tint Overlay */}
+                        <div class="absolute inset-0 bg-primary/60 mix-blend-color transition-all duration-500 group-hover:opacity-40" />
+
+                        {/* Shine effect */}
+                        <div class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-foreground/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                    </>
+                )}
+            </div>
+
+            {variant === "author" ? (
+                <div class="flex items-center">
+                    <span class="inline-block bg-linear-to-r from-foreground via-foreground to-foreground bg-size-[200%_auto] bg-clip-text text-sm font-bold tracking-tighter text-transparent transition-all duration-700 ease-in-out group-hover:from-primary group-hover:via-primary/70 group-hover:to-primary group-hover:bg-right sm:text-base">
+                        {alt}
+                    </span>
+                </div>
+            ) : (
+                <slot />
+            )}
+        </Button>
+    )
 }

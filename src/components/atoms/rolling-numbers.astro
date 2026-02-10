@@ -12,27 +12,27 @@ interface Props extends HTMLAttributes<"span"> {
 }
 
 const {
-  class: className,
-  decimalPlaces = 0,
-  delay = 0,
-  direction = "up",
-  startValue = 0,
-  value,
-  ...props
+    class: className,
+    decimalPlaces = 0,
+    delay = 0,
+    direction = "up",
+    startValue = 0,
+    value,
+    ...props
 } = Astro.props;
 ---
 
 <span
-  class:list={cn("inline-block tabular-nums", className)}
-  data-decimal-places={decimalPlaces}
-  data-delay={delay}
-  data-direction={direction}
-  data-start-value={startValue}
-  data-ticker
-  data-value={value}
-  {...props}
+    class:list={cn("inline-block tabular-nums", className)}
+    data-decimal-places={decimalPlaces}
+    data-delay={delay}
+    data-direction={direction}
+    data-start-value={startValue}
+    data-ticker
+    data-value={value}
+    {...props}
 >
-  {startValue}
+    {startValue}
 </span>
 
 <script>

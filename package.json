@@ -48,7 +48,6 @@
     "astro-broken-links-checker": "^1.0.6",
     "astro-favicons": "^3.1.5",
     "astro-icon": "^1.1.5",
-    "astro-pagefind": "^1.8.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
@@ -64,6 +63,7 @@
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.6",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
+    "@eslint/compat": "^2.0.2",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.8.0",
     "@tailwindcss/typography": "^0.5.19",

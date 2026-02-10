@@ -25,215 +25,215 @@ const t = useTranslations(lang);
 ---
 
 <section
-  class:list={[
-    cn("relative min-h-screen w-full bg-neutral-100 px-4 py-12 print:min-h-0 print:bg-white print:p-0", className),
-  ]}
+    class:list={[
+        cn("relative min-h-screen w-full bg-neutral-100 px-4 py-12 print:min-h-0 print:bg-white print:p-0", className),
+    ]}
 >
-  {/* Floating Actions */}
-  <div
-    class="animate-in slide-in-from-bottom-6 fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 gap-4 duration-700 print:hidden"
-  >
-    <Button class="rounded-full px-8 shadow-2xl" id="print-btn" variant="primary">
-      <Icon class="mr-2" name="mdi:printer" />
-      {t("resume.export")}
-    </Button>
-    <div class="glass rounded-full border-white/20 px-6 py-3 text-sm font-medium shadow-xl">
-      <Text as="span" class="font-bold" variant="accent">{t("resume.proTip")}</Text>
-      {t("resume.liveEdit")}
+    {/* Floating Actions */}
+    <div
+        class="animate-in slide-in-from-bottom-6 fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 gap-4 duration-700 print:hidden"
+    >
+        <Button class="rounded-full px-8 shadow-2xl" id="print-btn" variant="primary">
+            <Icon class="mr-2" name="mdi:printer" />
+            {t("resume.export")}
+        </Button>
+        <div class="glass rounded-full border-white/20 px-6 py-3 text-sm font-medium shadow-xl">
+            <Text as="span" class="font-bold" variant="accent">{t("resume.proTip")}</Text>
+            {t("resume.liveEdit")}
+        </div>
     </div>
-  </div>
 
-  {/* Document Canvas */}
-  <Container
-    class="relative mx-auto min-h-[297mm] max-w-[210mm] bg-white p-12 shadow-2xl transition-all sm:p-16 print:min-h-0 print:w-full print:max-w-none print:shadow-none"
-    id="resume-paper"
-  >
-    <div class="absolute top-0 left-0 h-1.5 w-full bg-primary"></div>
+    {/* Document Canvas */}
+    <Container
+        class="relative mx-auto min-h-[297mm] max-w-[210mm] bg-white p-12 shadow-2xl transition-all sm:p-16 print:min-h-0 print:w-full print:max-w-none print:shadow-none"
+        id="resume-paper"
+    >
+        <div class="absolute top-0 left-0 h-1.5 w-full bg-primary"></div>
 
-    <Stack gap={12}>
-      {/* Header Section */}
-      <header class="flex flex-col items-start justify-between gap-6 border-b border-neutral-100 pb-8 md:flex-row">
-        <Stack gap={2}>
-          <Heading
-            class="rounded-sm p-1 uppercase outline-none focus:bg-primary/5"
-            contenteditable="true"
-            level={1}
-            size="display"
-          >
-            {profile.name}
-          </Heading>
-          <Text class="rounded-sm p-1 outline-none focus:bg-primary/5" contenteditable="true" size="lg" variant="muted">
-            {profile.role}
-          </Text>
-        </Stack>
+        <Stack gap={12}>
+            {/* Header Section */}
+            <header class="flex flex-col items-start justify-between gap-6 border-b border-neutral-100 pb-8 md:flex-row">
+                <Stack gap={2}>
+                    <Heading
+                        class="rounded-sm p-1 uppercase outline-none focus:bg-primary/5"
+                        contenteditable="true"
+                        level={1}
+                        size="display"
+                    >
+                        {profile.name}
+                    </Heading>
+                    <Text class="rounded-sm p-1 outline-none focus:bg-primary/5" contenteditable="true" size="lg" variant="muted">
+                        {profile.role}
+                    </Text>
+                </Stack>
 
-        <Stack align="end" class="text-right text-sm font-medium text-neutral-400" gap={1}>
-          {
-            profile.email && (
-              <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
-                <span class="outline-none" contenteditable="true">
-                  {profile.email}
-                </span>
-                <Icon name="mdi:email" />
-              </div>
-            )
-          }
-          {
-            profile.website && (
-              <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
-                <span class="outline-none" contenteditable="true">
-                  {profile.website}
-                </span>
-                <Icon name="mdi:web" />
-              </div>
-            )
-          }
-          {
-            profile.location && (
-              <div class="flex items-center gap-2">
-                <span class="outline-none" contenteditable="true">
-                  {profile.location}
-                </span>
-                <Icon name="mdi:map-marker" />
-              </div>
-            )
-          }
-          {
-            profile.phone && (
-              <div class="flex items-center gap-2">
-                <span class="outline-none" contenteditable="true">
-                  {profile.phone}
-                </span>
-                <Icon name="mdi:phone" />
-              </div>
-            )
-          }
-        </Stack>
-      </header>
+                <Stack align="end" class="text-right text-sm font-medium text-neutral-400" gap={1}>
+                    {
+                        profile.email && (
+                            <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
+                                <span class="outline-none" contenteditable="true">
+                                    {profile.email}
+                                </span>
+                                <Icon name="mdi:email" />
+                            </div>
+                        )
+                    }
+                    {
+                        profile.website && (
+                            <div class="group flex cursor-pointer items-center gap-2 transition-colors hover:text-primary">
+                                <span class="outline-none" contenteditable="true">
+                                    {profile.website}
+                                </span>
+                                <Icon name="mdi:web" />
+                            </div>
+                        )
+                    }
+                    {
+                        profile.location && (
+                            <div class="flex items-center gap-2">
+                                <span class="outline-none" contenteditable="true">
+                                    {profile.location}
+                                </span>
+                                <Icon name="mdi:map-marker" />
+                            </div>
+                        )
+                    }
+                    {
+                        profile.phone && (
+                            <div class="flex items-center gap-2">
+                                <span class="outline-none" contenteditable="true">
+                                    {profile.phone}
+                                </span>
+                                <Icon name="mdi:phone" />
+                            </div>
+                        )
+                    }
+                </Stack>
+            </header>
 
-      {/* Main Sections */}
-      <Grid class="print:grid-cols-12 print:gap-8" cols={{ base: 1, md: 12 }} gap={12}>
-        {/* Left Column */}
-        <div class="md:col-span-8 print:col-span-8">
-          <Stack gap={10}>
-            <section>
-              <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
-                <span class="size-1 rounded-full bg-neutral-300"></span>
-                {t("resume.summary")}
-              </Text>
-              <div
-                class="rounded-sm p-1 leading-relaxed text-neutral-700 outline-none focus:bg-primary/5"
-                contenteditable="true"
-              >
-                {profile.summary}
-              </div>
-            </section>
+            {/* Main Sections */}
+            <Grid class="print:grid-cols-12 print:gap-8" cols={{ base: 1, md: 12 }} gap={12}>
+                {/* Left Column */}
+                <div class="md:col-span-8 print:col-span-8">
+                    <Stack gap={10}>
+                        <section>
+                            <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
+                                <span class="size-1 rounded-full bg-neutral-300"></span>
+                                {t("resume.summary")}
+                            </Text>
+                            <div
+                                class="rounded-sm p-1 leading-relaxed text-neutral-700 outline-none focus:bg-primary/5"
+                                contenteditable="true"
+                            >
+                                {profile.summary}
+                            </div>
+                        </section>
 
-            <section>
-              <Text class="text-label mb-6 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
-                <span class="size-1 rounded-full bg-neutral-300"></span>
-                {t("resume.experience")}
-              </Text>
-              <Stack gap={8}>
-                {
-                  experience.map((job) => (
-                    <div class="group relative">
-                      <button class="delete-btn absolute top-1 -left-10 text-red-400 opacity-0 transition-opacity group-hover:opacity-100 print:hidden">
-                        <Icon name="mdi:trash-can" size="sm" />
-                      </button>
-                      <div class="mb-1 flex items-baseline justify-between">
-                        <Heading
-                          class="rounded-sm p-1 outline-none focus:bg-primary/5"
-                          contenteditable="true"
-                          level={3}
-                          size="sm"
-                        >
-                          {job.role}
-                        </Heading>
-                        <span
-                          class="rounded-sm p-1 font-mono text-sm text-neutral-400 outline-none focus:bg-primary/5"
-                          contenteditable="true"
-                        >
-                          {job.period ||
+                        <section>
+                            <Text class="text-label mb-6 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
+                                <span class="size-1 rounded-full bg-neutral-300"></span>
+                                {t("resume.experience")}
+                            </Text>
+                            <Stack gap={8}>
+                                {
+                                    experience.map((job) => (
+                                        <div class="group relative">
+                                            <button class="delete-btn absolute top-1 -left-10 text-red-400 opacity-0 transition-opacity group-hover:opacity-100 print:hidden">
+                                                <Icon name="mdi:trash-can" size="sm" />
+                                            </button>
+                                            <div class="mb-1 flex items-baseline justify-between">
+                                                <Heading
+                                                    class="rounded-sm p-1 outline-none focus:bg-primary/5"
+                                                    contenteditable="true"
+                                                    level={3}
+                                                    size="sm"
+                                                >
+                                                    {job.role}
+                                                </Heading>
+                                                <span
+                                                    class="rounded-sm p-1 font-mono text-sm text-neutral-400 outline-none focus:bg-primary/5"
+                                                    contenteditable="true"
+                                                >
+                                                    {job.period ||
                             `${new Date(job.startDate).getFullYear()} — ${job.endDate ? new Date(job.endDate).getFullYear() : t("resume.present")}`}
-                        </span>
-                      </div>
-                      <div
-                        class="mb-2 rounded-sm p-1 text-sm font-bold text-blue-600 outline-none focus:bg-primary/5"
-                        contenteditable="true"
-                      >
-                        {job.company}
-                      </div>
-                      <div
-                        class="rounded-sm p-1 text-sm leading-relaxed text-neutral-600 outline-none focus:bg-primary/5"
-                        contenteditable="true"
-                      >
-                        {job.description}
-                      </div>
-                    </div>
-                  ))
-                }
-              </Stack>
-            </section>
-          </Stack>
-        </div>
+                                                </span>
+                                            </div>
+                                            <div
+                                                class="mb-2 rounded-sm p-1 text-sm font-bold text-blue-600 outline-none focus:bg-primary/5"
+                                                contenteditable="true"
+                                            >
+                                                {job.company}
+                                            </div>
+                                            <div
+                                                class="rounded-sm p-1 text-sm leading-relaxed text-neutral-600 outline-none focus:bg-primary/5"
+                                                contenteditable="true"
+                                            >
+                                                {job.description}
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </Stack>
+                        </section>
+                    </Stack>
+                </div>
 
-        {/* Right Column */}
-        <div class="md:col-span-4 print:col-span-4">
-          <Stack gap={10}>
-            <section>
-              <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
-                <span class="size-1 rounded-full bg-neutral-300"></span>
-                {t("resume.skills")}
-              </Text>
-              <div class="flex flex-wrap gap-2">
-                {
-                  skills.map((skill) => (
-                    <Badge class="outline-none focus:bg-primary/5" contenteditable="true" variant="default">
-                      {skill}
-                    </Badge>
-                  ))
-                }
-              </div>
-            </section>
+                {/* Right Column */}
+                <div class="md:col-span-4 print:col-span-4">
+                    <Stack gap={10}>
+                        <section>
+                            <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
+                                <span class="size-1 rounded-full bg-neutral-300"></span>
+                                {t("resume.skills")}
+                            </Text>
+                            <div class="flex flex-wrap gap-2">
+                                {
+                                    skills.map((skill) => (
+                                        <Badge class="outline-none focus:bg-primary/5" contenteditable="true" variant="default">
+                                            {skill}
+                                        </Badge>
+                                    ))
+                                }
+                            </div>
+                        </section>
 
-            <section>
-              <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
-                <span class="size-1 rounded-full bg-neutral-300"></span>
-                {t("resume.education")}
-              </Text>
-              <Stack gap={4}>
-                {
-                  education.map((edu) => (
-                    <div>
-                      <div
-                        class="rounded-sm p-1 text-sm font-bold text-neutral-900 outline-none focus:bg-primary/5"
-                        contenteditable="true"
-                      >
-                        {edu.degree}
-                      </div>
-                      <div
-                        class="rounded-sm p-1 text-sm text-neutral-500 outline-none focus:bg-primary/5"
-                        contenteditable="true"
-                      >
-                        {edu.school}
-                      </div>
-                      <div
-                        class="rounded-sm p-1 font-mono text-xs text-neutral-400 outline-none focus:bg-primary/5"
-                        contenteditable="true"
-                      >
-                        {edu.year}
-                      </div>
-                    </div>
-                  ))
-                }
-              </Stack>
-            </section>
-          </Stack>
-        </div>
-      </Grid>
-    </Stack>
-  </Container>
+                        <section>
+                            <Text class="text-label mb-4 flex items-center gap-2 font-bold tracking-widest uppercase" variant="muted">
+                                <span class="size-1 rounded-full bg-neutral-300"></span>
+                                {t("resume.education")}
+                            </Text>
+                            <Stack gap={4}>
+                                {
+                                    education.map((edu) => (
+                                        <div>
+                                            <div
+                                                class="rounded-sm p-1 text-sm font-bold text-neutral-900 outline-none focus:bg-primary/5"
+                                                contenteditable="true"
+                                            >
+                                                {edu.degree}
+                                            </div>
+                                            <div
+                                                class="rounded-sm p-1 text-sm text-neutral-500 outline-none focus:bg-primary/5"
+                                                contenteditable="true"
+                                            >
+                                                {edu.school}
+                                            </div>
+                                            <div
+                                                class="rounded-sm p-1 font-mono text-xs text-neutral-400 outline-none focus:bg-primary/5"
+                                                contenteditable="true"
+                                            >
+                                                {edu.year}
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </Stack>
+                        </section>
+                    </Stack>
+                </div>
+            </Grid>
+        </Stack>
+    </Container>
 </section>
 
 <script>

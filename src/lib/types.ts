@@ -1,31 +1,46 @@
 import type { ImageMetadata } from "astro";
 import type { CollectionEntry, CollectionKey } from "astro:content";
 
-export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
+// --- Content / Collection ---
+export interface Author extends ToolbarItem {
+  avatar: ImageMetadata;
+  name: string;
+  role: string;
+  type: "person";
+}
 
 export type { CollectionEntry, CollectionKey };
 
 export interface CardResult {
   actionLabel?: string;
-  data: any; // Using any for CardData to avoid circular dependency with Astro component
+  data: unknown;
 }
 
+export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
+  body?: string;
+  collection: CN;
+  data: CollectionEntry<CN>["data"];
+  id: string;
+}
 export interface CollectionPageData {
   baseUrl: string;
-  collectionItems: any[]; // Decoupled from specific getPageItems return type
+  collectionItems: unknown[];
   collectionKey: CollectionKey;
-  config: any;
+  config: unknown;
   containerId: string;
   currentPage: number;
   display: DisplayMode;
   displayUrls: ViewUrls;
-  getItemCardProps: (item: any) => any;
+  getItemCardProps: (item: unknown) => unknown;
   initialPageSize: number;
   nextUrl?: string;
   prevUrl?: string;
   totalItems: number;
   totalPages: number;
 }
+
+export type Company = CollectionEntry<"companies">["data"];
+
 // --- Display & Pagination ---
 export type DisplayMode = "grid" | "list";
 
@@ -44,30 +59,9 @@ export interface Experience {
   role: string;
   startDate: string;
 }
-
-export interface PagefindInstance {
-  options: (options: { showImages: boolean }) => void;
-  preload: (term: string) => Promise<void>;
-  search: (query: string) => Promise<{
-    results: PagefindResult[];
-  }>;
-}
+export type Nullable<T> = null | T | undefined;
 
 // --- Search ---
-export interface PagefindResult {
-  data: () => Promise<{
-    content: string;
-    excerpt: string;
-    meta: {
-      category?: string;
-      image?: string;
-      title: string;
-    };
-    url: string;
-  }>;
-  id: string;
-}
-
 export interface PaginationLinksOptions {
   baseUrl: string;
   currentPage: number;
@@ -80,6 +74,7 @@ export interface PaginationLinksOptions {
 }
 
 export type PaginationType = "path" | "query";
+
 export interface PostLink {
   href: string;
   label: string;
@@ -96,14 +91,7 @@ export interface Profile {
   website?: string;
 }
 
-export interface QuickAction {
-  category: "Action" | "Navigation";
-  href?: string;
-  icon: string;
-  id: string;
-  label: string;
-  onSelect?: () => void;
-}
+export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
 
 export interface ResumeData {
   education: Education[];
@@ -138,33 +126,6 @@ export type ToolbarItemType =
   | "time"
   | "weather";
 
-export interface ViewPagePropsTags {
-  items: Tag[];
-  title: string | undefined;
-}
-
-export type ViewUrls = {
-  [k in DisplayMode]: string;
-};
-
-// --- Content / Collection ---
-export interface Author extends ToolbarItem {
-  avatar: ImageMetadata;
-  name: string;
-  role: string;
-  type: "person";
-}
-
-export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
-  body?: string;
-  collection: CN;
-  data: CollectionEntry<CN>["data"];
-  id: string;
-}
-
-export type Company = CollectionEntry<"companies">["data"];
-export type Nullable<T> = null | T | undefined;
-
 export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   author?: Author;
   backLink: PostLink;
@@ -175,3 +136,11 @@ export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   title: string;
   toolbarItems: (ToolbarItem | undefined)[];
 }
+export interface ViewPagePropsTags {
+  items: Tag[];
+  title: string | undefined;
+}
+
+export type ViewUrls = {
+  [k in DisplayMode]: string;
+};

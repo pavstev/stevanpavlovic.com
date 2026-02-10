@@ -1,7 +1,3 @@
-/**
- * Initializes the view toggle (grid vs list) for resource lists.
- * Persists user preference in sessionStorage.
- */
 export const initViewToggle = (): void => {
   const container = document.querySelector(".view-content");
   if (!container) return;

@@ -1,6 +1,3 @@
-/**
- * Global Progress Bar Logic
- */
 const startProgress = (): void => {
   const bar = document.getElementById("nav-progress");
   if (!bar) return;

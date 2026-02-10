@@ -1,7 +1,3 @@
-/**
- * Initializes Focus Mode functionality for articles.
- * Allows toggling focus mode via a button or the 'F' key.
- */
 export const initFocusMode = (): void => {
   const focusBtn = document.getElementById("toggle-focus");
   if (!focusBtn) return;

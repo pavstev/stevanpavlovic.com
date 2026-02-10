@@ -16,25 +16,25 @@ const { alt = "", class: className, image, loading = "lazy", wrapperClass, ...re
 ---
 
 <div class:list={["relative shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted", wrapperClass]} {...rest}>
-  {
-    typeof image === "string" ? (
-      <img
-        alt={alt}
-        class:list={["size-full object-cover transition-transform duration-500 group-hover:scale-[1.05]", className]}
-        loading={loading}
-        src={image}
-      />
-    ) : (
-      <Image
-        alt={alt}
-        class:list={["size-full object-cover transition-transform duration-500 group-hover:scale-[1.05]", className]}
-        format="avif"
-        loading={loading}
-        src={image}
-        widths={[400, 800]}
-      />
-    )
-  }
-  {/* Overlay for subtle depth */}
-  <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+    {
+        typeof image === "string" ? (
+            <img
+                alt={alt}
+                class:list={["size-full object-cover transition-transform duration-500 group-hover:scale-[1.05]", className]}
+                loading={loading}
+                src={image}
+            />
+        ) : (
+            <Image
+                alt={alt}
+                class:list={["size-full object-cover transition-transform duration-500 group-hover:scale-[1.05]", className]}
+                format="avif"
+                loading={loading}
+                src={image}
+                widths={[400, 800]}
+            />
+        )
+    }
+    {/* Overlay for subtle depth */}
+    <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
 </div>

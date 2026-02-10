@@ -1,8 +1,8 @@
 ---
 import type { CollectionKey } from "astro:content";
 
-import type { CollectionItem } from "../../lib/types";
 import type { DisplayMode } from "../../lib/list";
+import type { CollectionItem } from "../../lib/types";
 import type { CardData } from "../organisms/card.astro";
 
 import Container from "../atoms/container.astro";
@@ -35,101 +35,101 @@ interface Props {
 }
 
 const {
-  baseUrl,
-  collectionItems: items,
-  containerId,
-  currentPage = 1,
-  display,
-  displayUrls,
-  getItemCardProps,
-  headerDescription,
-  headerIcon,
-  headerTitle,
-  initialPageSize = 6,
-  nextUrl,
-  prevUrl,
-  totalPages = 1,
+    baseUrl,
+    collectionItems: items,
+    containerId,
+    currentPage = 1,
+    display,
+    displayUrls,
+    getItemCardProps,
+    headerDescription,
+    headerIcon,
+    headerTitle,
+    initialPageSize = 6,
+    nextUrl,
+    prevUrl,
+    totalPages = 1,
 } = Astro.props;
 ---
 
 <Container class="py-12 md:py-24">
-  <div class="flex w-full flex-col gap-12">
-    <CollectionHeader description={headerDescription} icon={headerIcon} level={1} title={headerTitle}>
-      <ListActions
-        baseUrl={baseUrl}
-        currentPage={currentPage}
-        display={display}
-        displayUrls={displayUrls}
-        getPageUrl={(p) => (p === 1 ? baseUrl : `${baseUrl}/page/${p}`)}
-        nextUrl={nextUrl}
-        paginationType="path"
-        prevUrl={prevUrl}
-        totalPages={totalPages}
-      />
-    </CollectionHeader>
+    <div class="flex w-full flex-col gap-12">
+        <CollectionHeader description={headerDescription} icon={headerIcon} level={1} title={headerTitle}>
+            <ListActions
+                baseUrl={baseUrl}
+                currentPage={currentPage}
+                display={display}
+                displayUrls={displayUrls}
+                getPageUrl={(p) => (p === 1 ? baseUrl : `${baseUrl}/page/${p}`)}
+                nextUrl={nextUrl}
+                paginationType="path"
+                prevUrl={prevUrl}
+                totalPages={totalPages}
+            />
+        </CollectionHeader>
 
-    <Stack gap={12}>
-      <div class="view-container transition-all duration-500" data-initial-page-size={initialPageSize} id={containerId}>
-        {/* Skeleton Loading State (Client-side) */}
-        <div class="hidden animate-pulse flex-col gap-4" id="skeleton-view">
-          {[1, 2, 3].map(() => <div class="h-32 w-full rounded-2xl border border-white/5 bg-white/5" />)}
-        </div>
-
-        {/* DUAL VIEW ENGINE: Both rendered for zero-latency toggling */}
-        <div class="view-content" data-current-view={display}>
-          {/* VIEW MODE: LIST */}
-          <div class="list-view-container flex flex-col gap-4">
-            {
-              items.map(async (item) => (
-                <div class="card-item group">
-                  <Card
-                    list
-                    {...await getItemCardProps(item)}
-                    class="group-hover:shadow-glow-primary transition-all duration-300"
-                  />
+        <Stack gap={12}>
+            <div class="view-container transition-all duration-500" data-initial-page-size={initialPageSize} id={containerId}>
+                {/* Skeleton Loading State (Client-side) */}
+                <div class="hidden animate-pulse flex-col gap-4" id="skeleton-view">
+                    {[1, 2, 3].map(() => <div class="h-32 w-full rounded-2xl border border-white/5 bg-white/5" />)}
                 </div>
-              ))
-            }
-          </div>
 
-          {/* VIEW MODE: GRID */}
-          <div class="grid-view-container mt-8 hidden">
-            <MasonryGrid columns={2}>
-              {
-                items.map(async (item) => (
-                  <div class="masonry-item card-item group">
-                    <Card
-                      {...await getItemCardProps(item)}
-                      class="group-hover:shadow-glow-primary transition-all duration-300"
-                    />
-                  </div>
-                ))
-              }
-            </MasonryGrid>
-          </div>
-        </div>
+                {/* DUAL VIEW ENGINE: Both rendered for zero-latency toggling */}
+                <div class="view-content" data-current-view={display}>
+                    {/* VIEW MODE: LIST */}
+                    <div class="list-view-container flex flex-col gap-4">
+                        {
+                            items.map(async (item) => (
+                                <div class="card-item group">
+                                    <Card
+                                        list
+                                        {...await getItemCardProps(item)}
+                                        class="group-hover:shadow-glow-primary transition-all duration-300"
+                                    />
+                                </div>
+                            ))
+                        }
+                    </div>
 
-        {/* No Results HUD */}
-        <div class="mt-20 hidden text-center" id="no-results">
-          <Stack align="center" gap={4}>
-            <div
-              class="flex size-20 items-center justify-center rounded-full border border-white/10 bg-white/5 text-4xl"
-            >
+                    {/* VIEW MODE: GRID */}
+                    <div class="grid-view-container mt-8 hidden">
+                        <MasonryGrid columns={2}>
+                            {
+                                items.map(async (item) => (
+                                    <div class="masonry-item card-item group">
+                                        <Card
+                                            {...await getItemCardProps(item)}
+                                            class="group-hover:shadow-glow-primary transition-all duration-300"
+                                        />
+                                    </div>
+                                ))
+                            }
+                        </MasonryGrid>
+                    </div>
+                </div>
+
+                {/* No Results HUD */}
+                <div class="mt-20 hidden text-center" id="no-results">
+                    <Stack align="center" gap={4}>
+                        <div
+                            class="flex size-20 items-center justify-center rounded-full border border-white/10 bg-white/5 text-4xl"
+                        >
               🔍
-            </div>
-            <Text class="text-2xl font-bold">No results found</Text>
-            <Text variant="muted">Try adjusting your filters or search terms.</Text>
-            <a
-              class="hover:shadow-glow-primary mt-4 rounded-full bg-primary px-8 py-3 font-bold text-white transition-all"
-              href={baseUrl}
-            >
+                        </div>
+                        <Text class="text-2xl font-bold">No results found</Text>
+                        <Text variant="muted">Try adjusting your filters or search terms.</Text>
+                        <a
+                            class="hover:shadow-glow-primary mt-4 rounded-full bg-primary px-8 py-3 font-bold text-white transition-all"
+                            href={baseUrl}
+                        >
               Clear All Filters
-            </a>
-          </Stack>
-        </div>
-      </div>
-    </Stack>
-  </div>
+                        </a>
+                    </Stack>
+                </div>
+            </div>
+        </Stack>
+    </div>
 </Container>
 
 <script>

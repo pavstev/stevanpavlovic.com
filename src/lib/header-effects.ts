@@ -1,6 +1,3 @@
-/**
- * Initializes header scroll effects and progress tracking.
- */
 export const initHeaderEffects = (): void => {
   const island = document.getElementById("nav-island");
   const progressBg = document.getElementById("nav-progress-bg");

@@ -7,26 +7,26 @@ import { cn } from "../../lib/cn";
 import Icon from "../atoms/icon.astro";
 
 const variants = cva("flex shrink-0 items-center justify-center transition-all duration-300", {
-  defaultVariants: {
-    size: "md",
-    variant: "default",
-  },
-  variants: {
-    size: {
-      lg: "size-10 rounded-xl",
-      md: "size-9 rounded-lg",
-      sm: "size-7 rounded-md",
-      xl: "size-14 rounded-2xl",
+    defaultVariants: {
+        size: "md",
+        variant: "default",
     },
-    variant: {
-      accent:
+    variants: {
+        size: {
+            lg: "size-10 rounded-xl",
+            md: "size-9 rounded-lg",
+            sm: "size-7 rounded-md",
+            xl: "size-14 rounded-2xl",
+        },
+        variant: {
+            accent:
         "shadow-glow-accent hover:shadow-glow-accent/80 border border-accent/20 bg-accent/10 text-accent hover:border-accent/40 hover:bg-accent/20",
-      default: "border border-border/50 bg-muted/20 text-muted-foreground hover:bg-muted/40",
-      glass: "glass hover:shadow-glow border-white/10 text-foreground hover:border-white/20 hover:bg-white/10",
-      primary:
+            default: "border border-border/50 bg-muted/20 text-muted-foreground hover:bg-muted/40",
+            glass: "glass hover:shadow-glow border-white/10 text-foreground hover:border-white/20 hover:bg-white/10",
+            primary:
         "shadow-glow-primary hover:shadow-glow-primary/80 border border-primary/20 bg-primary/10 text-primary hover:border-primary/40 hover:bg-primary/20",
+        },
     },
-  },
 });
 
 interface Props extends HTMLAttributes<"div">, VariantProps<typeof variants> {
@@ -40,15 +40,15 @@ const { as: Tag = "div", class: className, icon, iconClass, iconSize, size, vari
 ---
 
 <Tag class:list={[cn(variants({ size, variant }), className)]} {...props}>
-  {
-    icon ? (
-      <Icon
-        class:list={iconClass}
-        name={icon}
-        size={iconSize || (size === "xl" ? "lg" : size === "sm" ? "sm" : "md")}
-      />
-    ) : (
-      <slot />
-    )
-  }
+    {
+        icon ? (
+            <Icon
+                class:list={iconClass}
+                name={icon}
+                size={iconSize || (size === "xl" ? "lg" : size === "sm" ? "sm" : "md")}
+            />
+        ) : (
+            <slot />
+        )
+    }
 </Tag>

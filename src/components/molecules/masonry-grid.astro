@@ -10,7 +10,7 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 ---
 
 <div class:list={["masonry-grid", className]} data-masonry-columns={columns} {...rest}>
-  <slot />
+    <slot />
 </div>
 
 <script>

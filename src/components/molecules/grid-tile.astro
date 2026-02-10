@@ -4,8 +4,8 @@ import SpotlightEffect from "../atoms/spotlight-effect.astro";
 
 interface Props {
   class?: string;
-  cols?: string; // Tailwind col-span classes like 'col-span-1'
-  rows?: string; // Tailwind row-span classes like 'row-span-1'
+  cols?: string;
+  rows?: string;
 }
 
 const { class: className, cols = "col-span-1", rows = "row-span-1" } = Astro.props;

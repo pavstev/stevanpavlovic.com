@@ -45,9 +45,6 @@ const initMasonry = (): void => {
   }
 };
 
-/**
- * Sets up the masonry grid with resize listener.
- */
 export const setupMasonry = (): void => {
   initMasonry();
 

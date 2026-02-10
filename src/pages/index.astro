@@ -14,11 +14,11 @@ const featuredProjects = (await getCollection("projects")).filter((p) => p.data.
 ---
 
 <LayoutRoot description={PROFILE.bio} slug="/" title={`${PROFILE.name} | Software Architect`}>
-  <Container class="relative z-10 py-12 md:py-24">
-    <Grid class="items-start" cols={{ base: 1, lg: 12 }} gap={8}>
-      <HeroSection />
-      <FeaturedHighlights projects={featuredProjects} />
-      <CTASection />
-    </Grid>
-  </Container>
+    <Container class="relative z-10 py-12 md:py-24">
+        <Grid class="items-start" cols={{ base: 1, lg: 12 }} gap={8}>
+            <HeroSection />
+            <FeaturedHighlights projects={featuredProjects} />
+            <CTASection />
+        </Grid>
+    </Container>
 </LayoutRoot>

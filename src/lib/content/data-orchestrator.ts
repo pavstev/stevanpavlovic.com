@@ -3,8 +3,8 @@ import type { ImageMetadata } from "astro";
 import { getCollection } from "astro:content";
 
 import type { CardData } from "../../components/organisms/card.astro";
-import type { ContentAdapter } from "./adapter";
 import type { CollectionItem, CollectionKey, ViewPageProps } from "../types";
+import type { ContentAdapter } from "./adapter";
 
 import { PROFILE } from "../../config";
 import { createAuthorItem } from "./helpers";

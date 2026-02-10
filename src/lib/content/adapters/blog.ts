@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps, CardResult } from "../../types";
+import type { CardResult, CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
 import { ContentAdapter } from "../adapter";
 import { resolveTags } from "../helpers";

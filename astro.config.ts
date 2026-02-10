@@ -7,13 +7,13 @@ import tailwindcss from "@tailwindcss/vite";
 import brokenLinksChecker from "astro-broken-links-checker";
 import favicons from "astro-favicons";
 import icon from "astro-icon";
-import pagefind from "astro-pagefind";
 import { defineConfig } from "astro/config";
 import { readFile } from "node:fs/promises";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
+
 import { PROFILE } from "./src/config";
 
 export default defineConfig({
@@ -65,9 +65,6 @@ export default defineConfig({
       project: "stevanpavlovic",
       telemetry: false,
     }),
-    pagefind({
-      indexConfig: {},
-    }),
   ],
 
   markdown: {
@@ -89,9 +86,7 @@ export default defineConfig({
 
   vite: {
     build: {
-      rollupOptions: {
-        // external: ["/pagefind/pagefind.js"],
-      },
+      rollupOptions: {},
     },
     // 1. This defines __dirname as an empty string during the build,
     // preventing the "ReferenceError: __dirname is not defined" crash.

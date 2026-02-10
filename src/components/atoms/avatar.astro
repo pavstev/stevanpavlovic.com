@@ -7,24 +7,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/cn";
 
 const avatarVariants = cva("relative flex shrink-0 overflow-hidden rounded-full transition-all duration-300", {
-  defaultVariants: {
-    size: "md",
-    variant: "default",
-  },
-  variants: {
-    size: {
-      lg: "size-12",
-      md: "size-10",
-      sm: "size-8",
-      xl: "size-16",
-      xs: "size-6",
+    defaultVariants: {
+        size: "md",
+        variant: "default",
     },
-    variant: {
-      default: "border border-border/50 bg-muted/20",
-      glass: "glass border-white/10 bg-white/5",
-      primary: "shadow-glow-primary border border-primary/30 bg-primary/10",
+    variants: {
+        size: {
+            lg: "size-12",
+            md: "size-10",
+            sm: "size-8",
+            xl: "size-16",
+            xs: "size-6",
+        },
+        variant: {
+            default: "border border-border/50 bg-muted/20",
+            glass: "glass border-white/10 bg-white/5",
+            primary: "shadow-glow-primary border border-primary/30 bg-primary/10",
+        },
     },
-  },
 });
 
 interface Props extends HTMLAttributes<"div">, VariantProps<typeof avatarVariants> {
@@ -37,30 +37,30 @@ const { alt, class: className, fallback, size, src, variant, ...props } = Astro.
 ---
 
 <div class:list={cn(avatarVariants({ size, variant }), className)} {...props}>
-  {
-    src ? (
-      <Image
-        alt={alt || fallback || "Avatar"}
-        class="aspect-square size-full object-cover"
-        format="avif"
-        src={src}
-        widths={[128, 256]}
-      />
-    ) : (
-      <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
-        <span
-          class:list={cn(
-            "select-none",
-            size === "xs" && "text-label",
-            size === "sm" && "text-xs",
-            size === "md" && "text-sm",
-            size === "lg" && "text-base",
-            size === "xl" && "text-xl",
-          )}
-        >
-          {fallback || "?"}
-        </span>
-      </div>
-    )
-  }
+    {
+        src ? (
+            <Image
+                alt={alt || fallback || "Avatar"}
+                class="aspect-square size-full object-cover"
+                format="avif"
+                src={src}
+                widths={[128, 256]}
+            />
+        ) : (
+            <div class="flex size-full items-center justify-center bg-muted font-medium text-muted-foreground uppercase">
+                <span
+                    class:list={cn(
+                        "select-none",
+                        size === "xs" && "text-label",
+                        size === "sm" && "text-xs",
+                        size === "md" && "text-sm",
+                        size === "lg" && "text-base",
+                        size === "xl" && "text-xl",
+                    )}
+                >
+                    {fallback || "?"}
+                </span>
+            </div>
+        )
+    }
 </div>

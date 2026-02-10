@@ -18,59 +18,59 @@ interface Props {
 }
 
 const {
-  baseUrl,
-  currentPage,
-  getPageUrl: customGetPageUrl,
-  nextUrl,
-  paginationType = "path",
-  prevUrl,
-  totalPages,
+    baseUrl,
+    currentPage,
+    getPageUrl: customGetPageUrl,
+    nextUrl,
+    paginationType = "path",
+    prevUrl,
+    totalPages,
 } = Astro.props as Props;
 
 const { nextLink, prevLink } = getPaginationLinks({
-  baseUrl,
-  currentPage,
-  currentUrl: Astro.url,
-  customGetPageUrl,
-  nextUrl,
-  paginationType,
-  prevUrl,
-  totalPages,
+    baseUrl,
+    currentPage,
+    currentUrl: Astro.url,
+    customGetPageUrl,
+    nextUrl,
+    paginationType,
+    prevUrl,
+    totalPages,
 });
 ---
 
 {
-  totalPages > 1 && (
-    <nav aria-label="Pagination" class="pagination">
-      <div class="glass flex items-center justify-center gap-2 rounded-2xl p-2 shadow-2xl">
-        <Button
-          class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
-          disabled={!prevLink}
-          href={prevLink}
-          size="icon"
-          variant="ghost"
-        >
-          <Icon name="mdi:chevron-left" size="lg" />
-          <span class="sr-only">Previous page</span>
-        </Button>
+    totalPages > 1 && (
+        <nav aria-label="Pagination" class="pagination">
+            <div class="glass flex items-center justify-center gap-2 rounded-2xl p-2 shadow-2xl">
+                <Button
+                    class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
+                    disabled={!prevLink}
+                    href={prevLink}
+                    size="icon"
+                    variant="ghost"
+                >
+                    <Icon name="mdi:chevron-left" size="lg" />
+                    <span class="sr-only">Previous page</span>
+                </Button>
 
-        <div class="text-ui-sm flex items-center px-3 font-mono font-bold tracking-wider uppercase">
-          <span class="text-primary tabular-nums">{currentPage}</span>
-          <span class="mx-2 text-muted-foreground/30">/</span>
-          <span class="text-muted-foreground tabular-nums">{totalPages}</span>
-        </div>
+                <div class="text-ui-sm flex items-center px-3 font-mono font-bold tracking-wider uppercase">
+                    <span class="text-primary tabular-nums">{currentPage}</span>
+                    <span class="mx-2 text-muted-foreground/30">/</span>
+                    <span class="text-muted-foreground tabular-nums">{totalPages}</span>
+                </div>
 
-        <Button
-          class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
-          disabled={!nextLink}
-          href={nextLink}
-          size="icon"
-          variant="ghost"
-        >
-          <Icon name="mdi:chevron-right" size="lg" />
-          <span class="sr-only">Next page</span>
-        </Button>
-      </div>
-    </nav>
-  )
+                <Button
+                    class="size-9 p-0 text-muted-foreground transition-all hover:text-foreground"
+                    disabled={!nextLink}
+                    href={nextLink}
+                    size="icon"
+                    variant="ghost"
+                >
+                    <Icon name="mdi:chevron-right" size="lg" />
+                    <span class="sr-only">Next page</span>
+                </Button>
+            </div>
+        </nav>
+    )
 }

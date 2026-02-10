@@ -17,31 +17,31 @@ export interface Params {
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: Array<{
+    const paths: Array<{
     params: {
       collection: CollectionKey;
       page: string;
     };
   }> = [];
 
-  const collectionNames = Object.keys(collections) as CollectionKey[];
-  for (const collection of collectionNames) {
-    const sortedItems = await getCollectionData(collection);
-    const totalItems = sortedItems.length;
-    const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+    const collectionNames = Object.keys(collections) as CollectionKey[];
+    for (const collection of collectionNames) {
+        const sortedItems = await getCollectionData(collection);
+        const totalItems = sortedItems.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
 
-    // Start from page 2 since page 1 is handled by index.astro
-    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-      paths.push({
-        params: {
-          collection,
-          page: String(pageNum),
-        },
-      });
+        // Start from page 2 since page 1 is handled by index.astro
+        for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+            paths.push({
+                params: {
+                    collection,
+                    page: String(pageNum),
+                },
+            });
+        }
     }
-  }
 
-  return paths;
+    return paths;
 };
 
 const { collection, page } = Astro.params as unknown as Params;
@@ -49,40 +49,40 @@ const display = (Astro.url.searchParams.get("display") as DisplayMode) || "list"
 const pageData = await getCollectionPageData(collection, page, display);
 
 const {
-  baseUrl,
-  collectionItems,
-  config,
-  containerId,
-  currentPage,
-  displayUrls,
-  getItemCardProps,
-  initialPageSize,
-  nextUrl,
-  prevUrl,
-  totalItems,
-  totalPages,
+    baseUrl,
+    collectionItems,
+    config,
+    containerId,
+    currentPage,
+    displayUrls,
+    getItemCardProps,
+    initialPageSize,
+    nextUrl,
+    prevUrl,
+    totalItems,
+    totalPages,
 } = pageData;
 ---
 
 <LayoutRoot
-  description={config.description}
-  slug={`/${collection}/page/${page}`}
-  title={`${config.title} - Page ${page}`}
+    description={config.description}
+    slug={`/${collection}/page/${page}`}
+    title={`${config.title} - Page ${page}`}
 >
-  <ResourceDiscovery
-    {...config}
-    baseUrl={baseUrl}
-    collectionItems={collectionItems}
-    collectionKey={collection}
-    containerId={containerId}
-    currentPage={currentPage}
-    display={display}
-    displayUrls={displayUrls}
-    getItemCardProps={getItemCardProps}
-    initialPageSize={initialPageSize}
-    nextUrl={nextUrl}
-    prevUrl={prevUrl}
-    totalItems={totalItems}
-    totalPages={totalPages}
-  />
+    <ResourceDiscovery
+        {...config}
+        baseUrl={baseUrl}
+        collectionItems={collectionItems}
+        collectionKey={collection}
+        containerId={containerId}
+        currentPage={currentPage}
+        display={display}
+        displayUrls={displayUrls}
+        getItemCardProps={getItemCardProps}
+        initialPageSize={initialPageSize}
+        nextUrl={nextUrl}
+        prevUrl={prevUrl}
+        totalItems={totalItems}
+        totalPages={totalPages}
+    />
 </LayoutRoot>

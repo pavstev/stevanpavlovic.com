@@ -3,7 +3,7 @@ import type { DisplayMode } from "./lib/types";
 import profileImage from "./assets/profile.jpeg";
 
 // ============================================================================
-// Site Metadata
+
 // ============================================================================
 
 export const SITE_TITLE = "Astro Blog";
@@ -22,7 +22,7 @@ export const SITE_CONFIG = {
 } as const;
 
 // ============================================================================
-// Navigation
+
 // ============================================================================
 
 export interface NavItem {
@@ -122,7 +122,7 @@ export const NAV_ITEMS = {
 export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS).sort((a, b) => a.order - b.order);
 
 // ============================================================================
-// Personal Profile
+
 // ============================================================================
 
 export const PROFILE = {
@@ -172,7 +172,7 @@ export const STATS: readonly Stat[] = [
 ] as const;
 
 // ============================================================================
-// UI / List Settings
+
 // ============================================================================
 
 export const ITEMS_PER_PAGE = 10;

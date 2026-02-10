@@ -15,31 +15,31 @@ const { description, icon, level = 1, title } = Astro.props;
 ---
 
 <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-  <Stack align="center" class="min-w-0" direction="row" gap={3}>
-    {
-      icon && (
-        <div class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
-          <Icon name={icon} size="lg" />
+    <Stack align="center" class="min-w-0" direction="row" gap={3}>
+        {
+            icon && (
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/5">
+                    <Icon name={icon} size="lg" />
+                </div>
+            )
+        }
+
+        <div class="min-w-0">
+            <Heading level={level} size="lg" variant="muted">
+                {title}
+            </Heading>
+
+            {
+                description && (
+                    <Text size="sm" variant="muted">
+                        {description}
+                    </Text>
+                )
+            }
         </div>
-      )
-    }
+    </Stack>
 
-    <div class="min-w-0">
-      <Heading level={level} size="lg" variant="muted">
-        {title}
-      </Heading>
-
-      {
-        description && (
-          <Text size="sm" variant="muted">
-            {description}
-          </Text>
-        )
-      }
+    <div class="shrink-0">
+        <slot />
     </div>
-  </Stack>
-
-  <div class="shrink-0">
-    <slot />
-  </div>
 </div>

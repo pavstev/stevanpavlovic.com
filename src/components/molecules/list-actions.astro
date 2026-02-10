@@ -23,28 +23,28 @@ interface Props {
 }
 
 const {
-  baseUrl,
-  currentPage,
-  display = "list",
-  displayUrls,
-  getPageUrl: customGetPageUrl,
-  nextUrl,
-  paginationType = "path",
-  prevUrl,
-  showViewToggle = true,
-  totalPages,
+    baseUrl,
+    currentPage,
+    display = "list",
+    displayUrls,
+    getPageUrl: customGetPageUrl,
+    nextUrl,
+    paginationType = "path",
+    prevUrl,
+    showViewToggle = true,
+    totalPages,
 } = Astro.props;
 ---
 
 <div class="flex flex-wrap items-center gap-2">
-  {showViewToggle && <DisplayMenu display={display} displayUrls={displayUrls} showLabels />}
-  <Pagination
-    baseUrl={baseUrl}
-    currentPage={currentPage}
-    getPageUrl={customGetPageUrl}
-    nextUrl={nextUrl}
-    paginationType={paginationType}
-    prevUrl={prevUrl}
-    totalPages={totalPages}
-  />
+    {showViewToggle && <DisplayMenu display={display} displayUrls={displayUrls} showLabels />}
+    <Pagination
+        baseUrl={baseUrl}
+        currentPage={currentPage}
+        getPageUrl={customGetPageUrl}
+        nextUrl={nextUrl}
+        paginationType={paginationType}
+        prevUrl={prevUrl}
+        totalPages={totalPages}
+    />
 </div>

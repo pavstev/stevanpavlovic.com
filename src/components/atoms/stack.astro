@@ -1,11 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "../../lib/cn";
 import type { ResponsiveValue } from "../../lib/types";
 
+import { cn } from "../../lib/cn";
+
 const stackVariants = cva("flex", {
+  defaultVariants: {
+    direction: "col",
+  },
   variants: {
     align: {
       baseline: "items-baseline",
@@ -33,9 +38,6 @@ const stackVariants = cva("flex", {
       wrap: "flex-wrap",
       "wrap-reverse": "flex-wrap-reverse",
     },
-  },
-  defaultVariants: {
-    direction: "col",
   },
 });
 
@@ -69,7 +71,7 @@ const buildResponsive = (value: ResponsiveValue<any>, prefix: string): string =>
 
 const directionClass = buildResponsive(direction, "flex")
   .replace(/flex-col/g, "flex-col")
-  .replace(/flex-row/g, "flex-row"); // Just to be safe with prefixes
+  .replace(/flex-row/g, "flex-row");
 const gapClass = buildResponsive(gap, "gap");
 const alignClass = buildResponsive(align, "items");
 const justifyClass = buildResponsive(justify, "justify");

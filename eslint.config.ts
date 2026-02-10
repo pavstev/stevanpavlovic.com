@@ -1,4 +1,5 @@
 import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
+import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -33,7 +34,7 @@ const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "src/content");
 const ASTRO_COLLECTIONS_DIR = path.join(ROOT, ".astro/collections");
 
-// Virtual files created by MDX processor (e.g. filename.mdx/0.ts)
+
 const MDX_CODE_BLOCKS = ["**/*.md/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.ts", "**/*.mdx/*.tsx"];
 
 const CODE_FILES = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"];
@@ -92,6 +93,83 @@ try {
   console.warn("⚠️ ESLint: Could not generate dynamic content schemas:", error);
 }
 
+const fixupPlugin = (plugin: any): any => {
+  if (!plugin) {
+    return plugin;
+  }
+
+  // Use the official fixup if possible
+  const fixed = fixupPluginRules(plugin);
+
+  if (!fixed.rules) {
+    return fixed;
+  }
+
+  const newPlugin = { ...fixed };
+  newPlugin.rules = { ...fixed.rules };
+
+  for (const ruleName in newPlugin.rules) {
+    const originalRule = newPlugin.rules[ruleName];
+    if (!originalRule || typeof originalRule.create !== "function") {
+      continue;
+    }
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    const originalCreate = originalRule.create;
+    newPlugin.rules[ruleName] = {
+      ...originalRule,
+      create(context: any): any {
+        const proxyContext = new Proxy(context, {
+          get(target, prop, receiver): any {
+            // ESLint 10 removed many properties from context
+            if (prop === "getFilename") {
+              return (): string => target.filename;
+            }
+            if (prop === "getPhysicalFilename") {
+              return (): string => target.physicalFilename;
+            }
+            if (prop === "getSourceCode") {
+              return (): any => target.sourceCode;
+            }
+            if (prop === "getCwd") {
+              return (): string => target.cwd;
+            }
+            if (prop === "getScope") {
+              return (): any => target.scope;
+            }
+            if (prop === "getAncestors") {
+              return (): any[] => target.ancestors;
+            }
+            if (prop === "parserOptions") {
+              return target.languageOptions?.parserOptions || {};
+            }
+            if (prop === "getDeclaredVariables") {
+              return (node: any): any[] => target.sourceCode.getDeclaredVariables(node);
+            }
+            return Reflect.get(target, prop, receiver);
+          },
+        });
+        return originalCreate.call(undefined, proxyContext);
+      },
+    };
+  }
+  return newPlugin;
+};
+
+
+if (mdx.flat.plugins?.mdx) {
+  mdx.flat.plugins.mdx = fixupPlugin(mdx.flat.plugins.mdx);
+}
+
+const fixedMarkdownlintPlugin = fixupPlugin(markdownlintPlugin);
+const fixedEditorconfig = fixupPlugin(editorconfig);
+const fixedTailwind = fixupPlugin(tailwind);
+const fixedCheckFile = fixupPlugin(checkFile);
+const fixedJsxA11y = fixupPlugin(jsxA11y);
+const fixedEslintPluginJsonSchemaValidator = fixupPlugin(eslintPluginJsonSchemaValidator);
+const fixedAstro = fixupPlugin(eslintPluginAstro);
+const fixedPerfectionist = fixupPlugin(perfectionist);
+const fixedTseslint = fixupPlugin(tseslint.plugin);
+
 export default defineConfig(
   globalIgnores(GLOBAL_IGNORES),
 
@@ -103,19 +181,22 @@ export default defineConfig(
   },
 
   {
-    ...perfectionist.configs["recommended-natural"],
+    ...fixedPerfectionist.configs["recommended-natural"],
     ignores: [...MARKDOWN_FILES, ...MDX_FILES],
     name: "perfectionist",
   },
 
-  // TypeScript configs: Ignore MDX virtual code blocks to prevent "project" parser errors
-  ...tseslint.configs.strictTypeChecked.map((config) => ({
+  ...tseslint.configs.strictTypeChecked.map((config: any) => ({
     ...config,
     files: TS_FILES,
     ignores: MDX_CODE_BLOCKS,
+    plugins: {
+      ...config.plugins,
+      "@typescript-eslint": fixedTseslint,
+    },
   })),
 
-  ...eslintPluginAstro.configs.recommended.map((config) => ({
+  ...fixedAstro.configs.recommended.map((config: any) => ({
     ...config,
     ignores: ["**/*.ts", "**/*.tsx", ...MARKDOWN_FILES, ...JSON_FILES],
   })),
@@ -124,7 +205,7 @@ export default defineConfig(
     files: FRONTEND_FILES,
     name: "tailwindcss",
     plugins: {
-      "better-tailwindcss": tailwind,
+      "better-tailwindcss": fixedTailwind,
     },
     rules: {
       "better-tailwindcss/enforce-consistent-class-order": "error",
@@ -147,7 +228,7 @@ export default defineConfig(
     files: FRONTEND_FILES.filter((f) => !f.endsWith(".astro")),
     name: "jsx-a11y",
     plugins: {
-      "jsx-a11y": jsxA11y,
+      "jsx-a11y": fixedJsxA11y,
     },
     rules: jsxA11y.flatConfigs.recommended.rules,
   },
@@ -156,7 +237,7 @@ export default defineConfig(
     files: CODE_FILES,
     name: "editorconfig",
     plugins: {
-      editorconfig,
+      editorconfig: fixedEditorconfig,
     },
     rules: {
       "editorconfig/charset": "error",
@@ -255,7 +336,7 @@ export default defineConfig(
     files: ["src/components/**/*.astro"],
     name: "components/naming",
     plugins: {
-      "check-file": checkFile,
+      "check-file": fixedCheckFile,
     },
     rules: {
       "check-file/filename-naming-convention": [
@@ -289,7 +370,7 @@ export default defineConfig(
       parser: markdownlintParser,
     },
     plugins: {
-      markdownlint: markdownlintPlugin,
+      markdownlint: fixedMarkdownlintPlugin,
     },
     rules: {
       ...markdownlintPlugin.configs.recommended.rules,
@@ -318,7 +399,7 @@ export default defineConfig(
     },
   },
 
-  ...eslintPluginJsonSchemaValidator.configs.recommended.map((config) => ({
+  ...fixedEslintPluginJsonSchemaValidator.configs.recommended.map((config: any) => ({
     ...config,
     files: JSON_FILES,
     ignores: [".vscode/**/*"],

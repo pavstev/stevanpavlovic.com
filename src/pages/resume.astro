@@ -15,36 +15,36 @@ if (!stevan) throw new Error("Stevan profile not found");
 const sortedExperiences = experiences.sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
 
 const data: ResumeData = {
-  education: stevan.data.education || [],
-  experience: sortedExperiences.map((job) => {
-    const company = companies.find(c => c.id === job.data.company.id);
-    return {
-      company: company?.data.name || job.data.company.id,
-      description: job.data.description,
-      endDate: job.data.endDate?.toISOString(),
-      role: job.data.role,
-      startDate: job.data.startDate.toISOString(),
-    };
-  }),
-  profile: {
-    avatar: stevan.data.avatar,
-    email: stevan.data.email || "",
-    location: "Belgrade, Serbia",
-    name: `${stevan.data.firstName} ${stevan.data.lastName}`,
-    phone: "+381 60 123 4567",
-    role: stevan.data.title,
-    summary: stevan.data.description || "Senior Software Engineer specialized in distributed systems.",
-    website: "stevan.dev",
-  },
-  skills: stevan.data.skills || [],
+    education: stevan.data.education || [],
+    experience: sortedExperiences.map((job) => {
+        const company = companies.find(c => c.id === job.data.company.id);
+        return {
+            company: company?.data.name || job.data.company.id,
+            description: job.data.description,
+            endDate: job.data.endDate?.toISOString(),
+            role: job.data.role,
+            startDate: job.data.startDate.toISOString(),
+        };
+    }),
+    profile: {
+        avatar: stevan.data.avatar,
+        email: stevan.data.email || "",
+        location: "Belgrade, Serbia",
+        name: `${stevan.data.firstName} ${stevan.data.lastName}`,
+        phone: "+381 60 123 4567",
+        role: stevan.data.title,
+        summary: stevan.data.description || "Senior Software Engineer specialized in distributed systems.",
+        website: "stevan.dev",
+    },
+    skills: stevan.data.skills || [],
 };
 ---
 
 <LayoutRoot
-  class="bg-neutral-100"
-  description="Interactive Resume"
-  slug="/resume"
-  title={`${data.profile.name} | Resume`}
+    class="bg-neutral-100"
+    description="Interactive Resume"
+    slug="/resume"
+    title={`${data.profile.name} | Resume`}
 >
-  <ResumeEngine data={data} />
+    <ResumeEngine data={data} />
 </LayoutRoot>

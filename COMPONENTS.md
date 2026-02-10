@@ -47,7 +47,6 @@
 - **ArticleRenderer.astro**: 12-column layout engine for content detail.
 - **CompositionGrid.astro**: Unified page layout wrapper.
 - **EnvironmentalBackground.astro**: Immersive animated backdrop.
-- **OmniSearch.astro**: High-blur Command Palette (Spotlight-style).
 - **ProgressNavigation.astro**: Auto-generated TOC with scroll tracking.
 - **ResourceDiscovery.astro**: Collection engine for lists/grids.
 - **ResumeEngine.astro**: Interactive and print-optimized professional profile.

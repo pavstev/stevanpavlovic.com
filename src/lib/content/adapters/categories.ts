@@ -1,10 +1,10 @@
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 
 export class CategoriesAdapter extends ContentAdapter<"categories"> {
-  getCardData(item: CollectionItem<"categories">): CardResult {
-    return {
+  getCardData(item: CollectionItem<"categories">): Promise<CardResult> {
+    return Promise.resolve({
       actionLabel: "View Category",
       data: {
         description: item.data.description,
@@ -13,7 +13,11 @@ export class CategoriesAdapter extends ContentAdapter<"categories"> {
         title: item.data.label,
         url: `/categories/${item.id}`,
       },
-    };
+    });
+  }
+
+  getSortDate(_item: CollectionItem<"categories">): number {
+    return 0;
   }
 
   getToolbarItems(item: CollectionItem<"categories">): ToolbarItem[] {

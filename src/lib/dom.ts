@@ -1,3 +1,320 @@
+import Lenis from "lenis";
+import tocbot from "tocbot";
+
+/**
+ * Focus Mode
+ */
+export const initFocusMode = (): void => {
+  const focusBtn = document.getElementById("toggle-focus");
+  if (!focusBtn) return;
+
+  const toggleFocus = (): void => {
+    document.documentElement.classList.toggle("focus-mode");
+  };
+
+  focusBtn.addEventListener("click", toggleFocus);
+
+  // Shortcut F for focus
+  const handleKeydown = (e: KeyboardEvent): void => {
+    if (e.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
+      toggleFocus();
+    }
+  };
+
+  window.addEventListener("keydown", handleKeydown);
+};
+
+/**
+ * Mobile Menu
+ */
+export const initMobileMenu = (): void => {
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  if (!toggle || !menu) {
+    return;
+  }
+
+  // Remove old listeners by cloning
+  const newToggle = toggle.cloneNode(true) as HTMLElement;
+  toggle.parentNode?.replaceChild(newToggle, toggle);
+
+  newToggle.addEventListener("click", () => {
+    const isOpen = newToggle.classList.contains("open");
+
+    if (!isOpen) {
+      newToggle.classList.add("open");
+      menu.setAttribute("data-open", "true");
+      document.body.style.overflow = "hidden";
+      return;
+    }
+
+    newToggle.classList.remove("open");
+    menu.setAttribute("data-open", "false");
+    document.body.style.overflow = "";
+  });
+
+  // Close on link click
+  const links = menu.querySelectorAll("a");
+  for (const link of links) {
+    link.addEventListener("click", () => {
+      newToggle.classList.remove("open");
+      menu.setAttribute("data-open", "false");
+      document.body.style.overflow = "";
+    });
+  }
+};
+
+export const updateActiveLinks = (): void => {
+  const links = document.querySelectorAll("[data-nav-link]");
+  const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+
+  // Standardized classes to match server rendering
+  const activeClasses = ["bg-foreground/10", "text-foreground", "ring-2", "ring-offset-foreground/20"];
+  const inactiveClasses = ["text-muted-foreground", "hover:bg-foreground/5", "hover:text-foreground"];
+
+  for (const link of links) {
+    const href = link.getAttribute("href");
+    const cleanHref = href?.replace(/\/$/, "") || "/";
+
+    const isActive =
+      cleanHref === "/" ? currentPath === "/" : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
+
+    const dot = link.querySelector(".rounded-full.bg-primary");
+
+    if (isActive) {
+      link.classList.add(...activeClasses);
+      link.classList.remove(...inactiveClasses);
+      link.setAttribute("aria-current", "page");
+
+      if (dot) {
+        dot.classList.remove("scale-0", "opacity-0");
+      }
+
+      continue;
+    }
+
+    link.classList.remove(...activeClasses);
+    link.classList.add(...inactiveClasses);
+    link.removeAttribute("aria-current");
+
+    if (dot) {
+      dot.classList.add("scale-0", "opacity-0");
+    }
+  }
+};
+
+/**
+ * View Toggle
+ */
+export const initViewToggle = (): void => {
+  const container = document.querySelector(".view-content");
+  if (!container) return;
+
+  const listView = container.querySelector(".list-view-container");
+  const gridView = container.querySelector(".grid-view-container");
+
+  const toggleView = (view: string): void => {
+    if (view === "grid") {
+      listView?.classList.add("hidden");
+      gridView?.classList.remove("hidden");
+      return;
+    }
+
+    listView?.classList.remove("hidden");
+    gridView?.classList.add("hidden");
+  };
+
+  // Check URL params for display mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const displayParam = urlParams.get("display");
+
+  if (displayParam === "grid" || displayParam === "list") {
+    sessionStorage.setItem("preferred-view", displayParam);
+  }
+
+  const preferredView = sessionStorage.getItem("preferred-view") || "list";
+  toggleView(preferredView);
+
+  // Listen for custom toggle events from DisplayMenu or URL changes
+  const handlePopState = (): void => {
+    const newParams = new URLSearchParams(window.location.search);
+    const newView = newParams.get("display") || sessionStorage.getItem("preferred-view") || "list";
+    toggleView(newView);
+  };
+
+  window.addEventListener("popstate", handlePopState);
+};
+
+/**
+ * Header Effects
+ */
+export const initHeaderEffects = (): void => {
+  const island = document.getElementById("nav-island");
+  const progressBg = document.getElementById("nav-progress-bg");
+  const brandWrapper = document.getElementById("brand-wrapper");
+  const desktopNav = document.getElementById("desktop-nav");
+  const actionsWrapper = document.getElementById("actions-wrapper");
+
+  if (!island) return;
+
+  const handleScroll = (): void => {
+    const scroll = window.scrollY;
+    const isScrolled = scroll > 50;
+
+    if (isScrolled) {
+      // Compact Island
+      island.classList.add("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
+      island.classList.remove("h-14", "px-2");
+
+      if (brandWrapper) brandWrapper.style.opacity = "0.7";
+      if (desktopNav) desktopNav.style.gap = "0.25rem";
+      if (actionsWrapper) actionsWrapper.style.opacity = "0.8";
+    }
+
+    if (!isScrolled) {
+      // Default Island
+      island.classList.remove("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-black/60");
+      island.classList.add("h-14", "px-2");
+
+      if (brandWrapper) brandWrapper.style.opacity = "1";
+      if (desktopNav) desktopNav.style.gap = "0.5rem";
+      if (actionsWrapper) actionsWrapper.style.opacity = "1";
+    }
+
+    // Progress bar logic
+    if (progressBg) {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      progressBg.style.width = `${scrolled}%`;
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
+};
+
+/**
+ * Masonry Grid
+ */
+const initMasonry = (): void => {
+  const grids = document.querySelectorAll<HTMLElement>(".masonry-grid");
+
+  for (const grid of grids) {
+    const columnsCount = parseInt(grid.dataset.masonryColumns || "2", 10);
+
+    // Only apply masonry on desktop
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (isMobile) {
+      // On mobile, just ensure items are direct children
+      const items = Array.from(grid.querySelectorAll(".masonry-item"));
+      for (const item of items) {
+        if (item.parentElement === grid) continue;
+        grid.appendChild(item);
+      }
+      grid.style.setProperty("--masonry-cols", "1");
+      continue;
+    }
+
+    // Get all items
+    const items = Array.from(grid.querySelectorAll(".masonry-item"));
+
+    // Remove existing columns if any
+    const existingColumns = grid.querySelectorAll(".masonry-column");
+    for (const col of existingColumns) {
+      col.remove();
+    }
+
+    // Create columns
+    const columns: HTMLDivElement[] = [];
+    for (let i = 0; i < columnsCount; i++) {
+      const column = document.createElement("div");
+      column.className = "masonry-column";
+      columns.push(column);
+      grid.appendChild(column);
+    }
+
+    // Distribute items across columns in order (left-to-right)
+    for (let i = 0; i < items.length; i++) {
+      const columnIndex = i % columnsCount;
+      columns[columnIndex].appendChild(items[i]);
+    }
+
+    grid.style.setProperty("--masonry-cols", String(columnsCount));
+  }
+};
+
+export const setupMasonry = (): void => {
+  initMasonry();
+
+  // Re-initialize on resize with debouncing
+  let resizeTimeout: ReturnType<typeof setTimeout>;
+  window.addEventListener("resize", (): void => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(initMasonry, 150);
+  });
+};
+
+/**
+ * Table of Contents & Smooth Scroll
+ */
+let lenis: Lenis | null = null;
+
+const initLenis = (): void => {
+  if (lenis) lenis.destroy();
+
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: (t: number): number => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  });
+
+  const raf = (time: number): void => {
+    lenis?.raf(time);
+    requestAnimationFrame(raf);
+  };
+
+  requestAnimationFrame(raf);
+
+  const anchors = document.querySelectorAll('a[href^="#"]');
+  for (const anchor of anchors) {
+    anchor.addEventListener("click", (e) => {
+      const targetId = anchor.getAttribute("href");
+      if (targetId && targetId.startsWith("#")) {
+        e.preventDefault();
+        lenis?.scrollTo(targetId, {
+          offset: -100,
+        });
+      }
+    });
+  }
+};
+
+const initTocbot = (): void => {
+  tocbot.destroy();
+  tocbot.init({
+    activeLinkClass: "is-active-link",
+    activeListItemClass: "is-active-li",
+    contentSelector: "article",
+    hasInnerContainers: true,
+    headingSelector: "h2, h3",
+    headingsOffset: 100,
+    linkClass: "toc-link",
+    listClass: "space-y-2 border-l border-border text-sm",
+    listItemClass: "relative",
+    scrollSmooth: false,
+    tocSelector: ".js-toc",
+  });
+};
+
+export const setupTOC = (): void => {
+  initLenis();
+  initTocbot();
+};
+
+/**
+ * Interactive Cards
+ */
 export const initInteractiveCards = (): void => {
   const cards = document.querySelectorAll(".group\\/card");
 

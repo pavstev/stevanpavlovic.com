@@ -2,11 +2,11 @@ import { getEntry } from "astro:content";
 
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 
 export class PeopleAdapter extends ContentAdapter<"people"> {
-  public getCardData(item: CollectionItem<"people">): CardResult {
-    return {
+  getCardData(item: CollectionItem<"people">): Promise<CardResult> {
+    return Promise.resolve({
       actionLabel: "View Profile",
       data: {
         description: item.data.description,
@@ -15,7 +15,11 @@ export class PeopleAdapter extends ContentAdapter<"people"> {
         title: `${item.data.firstName} ${item.data.lastName}`,
         url: `/people/${item.id}`,
       },
-    };
+    });
+  }
+
+  getSortDate(_item: CollectionItem<"people">): number {
+    return 0;
   }
 
   public async getToolbarItems(item: CollectionItem<"people">): Promise<ToolbarItem[]> {

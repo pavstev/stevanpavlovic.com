@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 
 import type { CardResult, CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { ContentAdapter } from "../adapter";
+import { ContentAdapter } from "../../types";
 import { resolveTags } from "../helpers";
 
 export class BlogAdapter extends ContentAdapter<"blog"> {

@@ -12,8 +12,8 @@ import AuthorBio from "../../components/molecules/author-bio.astro";
 import MetaBar from "../../components/molecules/meta-bar.astro";
 import ArticleRenderer from "../../components/organisms/article-renderer.astro";
 import TableOfContents from "../../components/organisms/table-of-contents.astro";
-import { collections } from "../../lib";
-import { getViewPageProps } from "../../lib/content/data-orchestrator";
+import { getViewPageProps } from "../../lib/content/api";
+import { collections } from "../../lib/types";
 
 export const prerender = true;
 
@@ -84,11 +84,9 @@ const viewProps = await getViewPageProps(entry as any);
 </LayoutRoot>
 
 <script>
-  import { initCodeBlocks } from "../../lib/code-blocks";
-  import { initFocusMode } from "../../lib/focus-mode";
+  import { initFocusMode } from "../../lib/dom";
 
   const init = () => {
-    initCodeBlocks();
     initFocusMode();
   };
 

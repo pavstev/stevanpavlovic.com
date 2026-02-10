@@ -2,7 +2,7 @@ import { getEntry } from "astro:content";
 
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 
 export class TagsAdapter extends ContentAdapter<"tags"> {
   async getCardData(item: CollectionItem<"tags">): Promise<CardResult> {
@@ -18,6 +18,10 @@ export class TagsAdapter extends ContentAdapter<"tags"> {
         url: `/tags/${item.id}`,
       },
     };
+  }
+
+  getSortDate(_item: CollectionItem<"tags">): number {
+    return 0;
   }
 
   async getToolbarItems(item: CollectionItem<"tags">): Promise<ToolbarItem[]> {

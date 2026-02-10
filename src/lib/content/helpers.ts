@@ -4,6 +4,9 @@ import { getEntries, getEntry } from "astro:content";
 
 import type { Author, Company, Tag } from "../types";
 
+/**
+ * Formats a number into a compact string (e.g. 1.2k).
+ */
 export const formatCompactNumber = (number: number): string => {
   const formatter = new Intl.NumberFormat("en-US", {
     compactDisplay: "short",
@@ -13,6 +16,9 @@ export const formatCompactNumber = (number: number): string => {
   return formatter.format(number);
 };
 
+/**
+ * Creates an Author object from profile data.
+ */
 export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; role: string }): Author => ({
   avatar: author.avatar,
   href: undefined,
@@ -24,12 +30,18 @@ export const createAuthorItem = (author: { avatar: ImageMetadata; name: string; 
   value: author.name,
 });
 
+/**
+ * Resolves tag entries.
+ */
 export const resolveTags = async (tagsRef?: { collection: "tags"; id: string }[]): Promise<Tag[]> => {
   if (!tagsRef || tagsRef.length === 0) return [];
   const resolved = await getEntries(tagsRef);
   return resolved.filter((r) => !!r).map((r) => r.data);
 };
 
+/**
+ * Resolves a company entry.
+ */
 export const resolveCompany = async (
   companyRef?: string | { collection: "companies"; id: string },
 ): Promise<Company | undefined> => {
@@ -40,4 +52,46 @@ export const resolveCompany = async (
   }
   const entry = await getEntry(companyRef);
   return entry?.data;
+};
+
+/**
+ * Client-side description toggles
+ */
+export const setupDescriptionToggles = (): void => {
+  // Escape the slash in group/description for the selector
+  const descriptions = document.querySelectorAll("details.group\\/description");
+
+  for (const details of descriptions) {
+    const text = details.querySelector(".description-text") as HTMLElement;
+    const toggleWrapper = details.querySelector(".toggle-buttons") as HTMLElement;
+
+    if (!text || !toggleWrapper) continue;
+
+    // Reset state to measure correctly
+    const isCurrentlyOpen = (details as HTMLDetailsElement).open;
+    if (isCurrentlyOpen) {
+      (details as HTMLDetailsElement).open = false;
+    }
+
+    // Check if text is truncated
+    const isTruncated = text.scrollHeight > text.offsetHeight;
+
+    if (!isTruncated) {
+      toggleWrapper.classList.add("hidden");
+      toggleWrapper.classList.remove("flex");
+      (details.querySelector("summary") as HTMLElement).style.cursor = "default";
+      if (isCurrentlyOpen) {
+        (details as HTMLDetailsElement).open = true;
+      }
+      continue;
+    }
+
+    toggleWrapper.classList.remove("hidden");
+    toggleWrapper.classList.add("flex");
+
+    // Restore state
+    if (isCurrentlyOpen) {
+      (details as HTMLDetailsElement).open = true;
+    }
+  }
 };

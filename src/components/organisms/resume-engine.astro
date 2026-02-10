@@ -2,7 +2,7 @@
 import type { ResumeData } from "../../lib/types";
 
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 import Badge from "../atoms/badge.astro";
 import Button from "../atoms/button.astro";
 import Container from "../atoms/container.astro";
@@ -235,14 +235,3 @@ const t = useTranslations(lang);
         </Stack>
     </Container>
 </section>
-
-<script>
-  import { initResumeGenerator } from "../../lib/resume-generator";
-
-  function setup() {
-    initResumeGenerator();
-  }
-
-  document.addEventListener("astro:page-load", setup);
-  setup();
-</script>

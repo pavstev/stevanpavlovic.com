@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 
 export class RecommendationsAdapter extends ContentAdapter<"recommendations"> {
   async getCardData(item: CollectionItem<"recommendations">): Promise<CardResult> {

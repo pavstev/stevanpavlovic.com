@@ -1,6 +1,6 @@
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 import { resolveTags } from "../helpers";
 
 export class ProjectsAdapter extends ContentAdapter<"projects"> {
@@ -17,6 +17,10 @@ export class ProjectsAdapter extends ContentAdapter<"projects"> {
         url: `/projects/${item.id}`,
       },
     };
+  }
+
+  getSortDate(_item: CollectionItem<"projects">): number {
+    return 0;
   }
 
   getToolbarItems(item: CollectionItem<"projects">): ToolbarItem[] {

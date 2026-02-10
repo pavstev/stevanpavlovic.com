@@ -1,7 +1,5 @@
-import type { CollectionKey } from "../types";
-import type { ContentAdapter } from "./adapter";
+import type { CollectionKey, ContentAdapter } from "../types";
 
-import { collections as baseCollections } from "../../content.config";
 import { BlogAdapter } from "./adapters/blog";
 import { CategoriesAdapter } from "./adapters/categories";
 import { CompaniesAdapter } from "./adapters/companies";
@@ -11,12 +9,6 @@ import { PeopleAdapter } from "./adapters/people";
 import { ProjectsAdapter } from "./adapters/projects";
 import { RecommendationsAdapter } from "./adapters/recommendations";
 import { TagsAdapter } from "./adapters/tags";
-
-const DISALLOWED_COLLECTIONS = [] as const;
-
-export const collections: CollectionKey[] = Object.keys(baseCollections).filter(
-  (c) => !DISALLOWED_COLLECTIONS.includes(c as never),
-) as CollectionKey[];
 
 export const adapters: { [K in CollectionKey]: ContentAdapter<K> } = {
   blog: new BlogAdapter(),

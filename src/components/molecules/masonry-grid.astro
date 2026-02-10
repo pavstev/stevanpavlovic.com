@@ -14,7 +14,7 @@ const { class: className, columns = 2, ...rest } = Astro.props;
 </div>
 
 <script>
-  import { setupMasonry } from "../../lib/masonry";
+  import { setupMasonry } from "../../lib/dom";
 
   setupMasonry();
   document.addEventListener("astro:page-load", setupMasonry);

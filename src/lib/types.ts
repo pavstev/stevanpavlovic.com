@@ -9,16 +9,25 @@ export interface Author extends ToolbarItem {
   type: "person";
 }
 
+/**
+ * --- Content Adapters ---
+ */
+export abstract class ContentAdapter<CN extends CollectionKey> {
+  abstract getCardData(item: CollectionItem<CN>): Promise<CardResult>;
+  abstract getSortDate(item: CollectionItem<CN>): number;
+  abstract getToolbarItems(item: CollectionItem<CN>): Promise<ToolbarItem[]> | ToolbarItem[];
+  abstract getViewProps(item: CollectionItem<CN>): Partial<ViewPageProps<CN>> | Promise<Partial<ViewPageProps<CN>>>;
+}
+
 export type { CollectionEntry, CollectionKey };
 
-export interface CollectionConfig {
-  description: string;
-  headerDescription: string;
-  headerIcon: string;
-  headerTitle: string;
-  tagTitle: string;
-  title: string;
-}
+import { collections as baseCollections } from "../content.config";
+
+const DISALLOWED_COLLECTIONS = [] as const;
+
+export const collections: CollectionKey[] = Object.keys(baseCollections).filter(
+  (c) => !DISALLOWED_COLLECTIONS.includes(c as never),
+) as CollectionKey[];
 
 export interface CardData {
   align?: "center" | "start";
@@ -40,6 +49,15 @@ export interface CardData {
 export interface CardResult {
   actionLabel?: string;
   data: CardData;
+}
+
+export interface CollectionConfig {
+  description: string;
+  headerDescription: string;
+  headerIcon: string;
+  headerTitle: string;
+  tagTitle: string;
+  title: string;
 }
 
 export interface CollectionItem<CN extends CollectionKey = CollectionKey> {

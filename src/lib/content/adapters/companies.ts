@@ -2,11 +2,11 @@ import dayjs from "dayjs";
 
 import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
-import { type CardResult, ContentAdapter } from "../adapter";
+import { type CardResult, ContentAdapter } from "../../types";
 
 export class CompaniesAdapter extends ContentAdapter<"companies"> {
-  getCardData(item: CollectionItem<"companies">): CardResult {
-    return {
+  getCardData(item: CollectionItem<"companies">): Promise<CardResult> {
+    return Promise.resolve({
       actionLabel: "View Entity",
       data: {
         description: item.data.description,
@@ -17,7 +17,7 @@ export class CompaniesAdapter extends ContentAdapter<"companies"> {
         title: item.data.name,
         url: `/companies/${item.id}`,
       },
-    };
+    });
   }
 
   getSortDate(item: CollectionItem<"companies">): number {

@@ -45,7 +45,7 @@ const { class: className, label = "Description", text } = Astro.props;
 }
 
 <script>
-  import { setupDescriptionToggles } from "../../lib/post-description";
+  import { setupDescriptionToggles } from "../../lib/content/helpers";
 
   document.addEventListener("astro:page-load", setupDescriptionToggles);
   setupDescriptionToggles();

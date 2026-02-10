@@ -1,5 +1,5 @@
-import type { DisplayMode } from "../types";
-import type { CollectionItem, CollectionKey, Nullable } from "../types";
+import type { DisplayMode } from "./types";
+import type { CollectionItem, CollectionKey, Nullable } from "./types";
 
 import {
   ITEMS_PER_PAGE,
@@ -8,7 +8,7 @@ import {
   PROFILE,
   SITE_DESCRIPTION,
   SITE_TITLE,
-} from "../../config";
+} from "../config";
 
 export const buildPaginationUrls = (
   collection: CollectionKey,

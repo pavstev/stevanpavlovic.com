@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../../types";
+import { type CardResult, ContentAdapter } from "../types";
 
 export class CompaniesAdapter extends ContentAdapter<"companies"> {
   getCardData(item: CollectionItem<"companies">): Promise<CardResult> {

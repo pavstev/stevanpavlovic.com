@@ -13,14 +13,12 @@ const { class: className, cols = "col-span-1", rows = "row-span-1" } = Astro.pro
 ---
 
 <div
-  class:list={[
-    cn(
-      "group/card relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:border-primary/20 hover:bg-white/10",
-      cols,
-      rows,
-      className
-    ),
-  ]}
+  class={cn(
+    "group/card relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:border-primary/20 hover:bg-white/10",
+    cols,
+    rows,
+    className
+  )}
 >
   <SpotlightEffect class="opacity-0 group-hover/card:opacity-10" />
   <slot />

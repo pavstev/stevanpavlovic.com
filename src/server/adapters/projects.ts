@@ -1,6 +1,6 @@
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../../types";
+import { type CardResult, ContentAdapter } from "../types";
 import { resolveTags } from "../helpers";
 
 export class ProjectsAdapter extends ContentAdapter<"projects"> {

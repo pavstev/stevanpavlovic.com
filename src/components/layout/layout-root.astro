@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
+import { cn } from "@client/utils";
 import "../../styles/global.css";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/inter";
@@ -50,14 +51,14 @@ const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
     <slot name="head" />
   </head>
   <body
-    class:list={[
+    class={cn(
       "bg-background",
       "text-foreground",
       "antialiased",
       "selection:bg-primary/20",
       "selection:text-foreground",
-      className,
-    ]}
+      className
+    )}
   >
     <EnvironmentalBackground {intensity} />
 

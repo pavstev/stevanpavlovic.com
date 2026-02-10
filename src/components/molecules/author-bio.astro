@@ -1,4 +1,6 @@
 ---
+import { cn } from "@client/utils";
+
 import { PROFILE, SOCIALS } from "../../config";
 import Avatar from "../atoms/avatar.astro";
 import Heading from "../atoms/heading.astro";
@@ -14,7 +16,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<Stack class:list={["glass rounded-2xl border-white/5 p-6", className]} gap={6}>
+<Stack class={cn("glass rounded-2xl border-white/5 p-6", className)} gap={6}>
   <Stack align="center" direction="row" gap={4}>
     <Avatar alt={PROFILE.name} size="lg" src={PROFILE.avatar} />
     <Stack gap={0.5}>

@@ -1,8 +1,8 @@
 import { getEntry } from "astro:content";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../../types";
+import { type CardResult, ContentAdapter } from "../types";
 
 export class PeopleAdapter extends ContentAdapter<"people"> {
   getCardData(item: CollectionItem<"people">): Promise<CardResult> {

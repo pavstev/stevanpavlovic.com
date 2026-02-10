@@ -37,6 +37,6 @@ const { class: className, level = 1, size, variant, ...props } = Astro.props;
 const Tag = `h${level}` as any;
 ---
 
-<Tag class:list={[cn(headingVariants({ size, variant }), className)]} {...props}>
+<Tag class={cn(headingVariants({ size, variant }), className)} {...props}>
   <slot />
 </Tag>

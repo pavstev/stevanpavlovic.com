@@ -1,5 +1,6 @@
 ---
-import { formatCompactNumber } from "@server/content/helpers";
+import { cn } from "@client/utils";
+import { formatCompactNumber } from "@server/helpers";
 
 import Icon from "../atoms/icon.astro";
 import RollingNumbers from "../atoms/rolling-numbers.astro";
@@ -20,7 +21,7 @@ const { class: className, format = "plain", icon, label, unit, value } = Astro.p
 const displayValue = format === "compact" ? formatCompactNumber(value) : value;
 ---
 
-<Stack align="center" class:list={["group", className]} direction="row" gap={3}>
+<Stack align="center" class={cn("group", className)} direction="row" gap={3}>
   {/* Icon Container */}
   <div
     class="relative flex size-10 items-center justify-center rounded-xl bg-foreground/5 text-accent/80 ring-1 ring-foreground/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:text-accent group-hover:ring-primary/50"

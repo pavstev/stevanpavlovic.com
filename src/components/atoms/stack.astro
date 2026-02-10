@@ -89,18 +89,16 @@ const wrapClass = buildResponsive(wrap, "flex").replace(/flex-nowrap/g, "flex-no
 ---
 
 <Tag
-  class:list={[
-    cn(
-      stackVariants(),
-      directionClass,
-      alignClass,
-      justifyClass,
-      gapClass,
-      wrapClass,
-      PUBLIC_STACK_DEBUG && "outline-primary-500/50 outline outline-2 outline-dashed",
-      className
-    ),
-  ]}
+  class={cn(
+    stackVariants(),
+    directionClass,
+    alignClass,
+    justifyClass,
+    gapClass,
+    wrapClass,
+    PUBLIC_STACK_DEBUG && "outline-primary-500/50 outline-2 outline-dashed",
+    className
+  )}
   {...rest}
 >
   <slot />

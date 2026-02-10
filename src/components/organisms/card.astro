@@ -2,6 +2,7 @@
 import type { CardData } from "@server/types";
 import type { HTMLAttributes } from "astro/types";
 
+import { cn } from "@client/utils";
 import { Image } from "astro:assets";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -94,17 +95,17 @@ const cardClasses = variants({ className, interactive: !!url || interactive, var
 const isRowLayout = list && !icon;
 ---
 
-<Wrapper class:list={["group block", !isRowLayout && "h-full"]} href={url} {...rest}>
+<Wrapper class={cn("group block", !isRowLayout && "h-full")} href={url} {...rest}>
   <div
-    class:list={[
+    class={cn(
       cardClasses,
       { "flex-row gap-4 p-4": isRowLayout, "h-full flex-col gap-4 p-5 sm:p-6": !isRowLayout },
       {
         "items-center text-center": align === "center" && !isRowLayout,
         "items-start": !(align === "center" && !isRowLayout),
       },
-      animate && "animate-in fade-in slide-in-from-bottom-4 duration-700",
-    ]}
+      animate && "animate-in fade-in slide-in-from-bottom-4 duration-700"
+    )}
     style={{ "--glow-color": glowColor, animationDelay: `${delay}ms` }}
   >
     <CardSpotlight glowColor={glowColor} />
@@ -155,18 +156,18 @@ const isRowLayout = list && !icon;
     }
 
     <div
-      class:list={[
-        "flex w-full min-w-0 flex-1 flex-col",
-        { "gap-1": isRowLayout, "gap-3": !isRowLayout },
-      ]}
+      class={cn("flex w-full min-w-0 flex-1 flex-col", {
+        "gap-1": isRowLayout,
+        "gap-3": !isRowLayout,
+      })}
     >
       <div
-        class:list={[
-          "flex w-full justify-between gap-2",
-          { "flex-col sm:flex-row": !isRowLayout, "flex-row": isRowLayout },
-        ]}
+        class={cn("flex w-full justify-between gap-2", {
+          "flex-col sm:flex-row": !isRowLayout,
+          "flex-row": isRowLayout,
+        })}
       >
-        <div class:list={["flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout }]}>
+        <div class={cn("flex flex-col", { "gap-0": isRowLayout, "gap-1": !isRowLayout })}>
           {
             date && (
               <Text class="font-mono tracking-wider uppercase opacity-70" size="xs" variant="muted">
@@ -176,10 +177,10 @@ const isRowLayout = list && !icon;
           }
 
           <Heading
-            class:list={[
-              "transition-colors group-hover:text-primary",
-              { "line-clamp-2": !isRowLayout, "mt-1 line-clamp-1": isRowLayout },
-            ]}
+            class={cn("transition-colors group-hover:text-primary", {
+              "line-clamp-2": !isRowLayout,
+              "mt-1 line-clamp-1": isRowLayout,
+            })}
             level={headingLevel as 1 | 2 | 3 | 4 | 5 | 6}
             size={isRowLayout ? "sm" : "md"}
           >
@@ -196,10 +197,10 @@ const isRowLayout = list && !icon;
         </div>
 
         <div
-          class:list={[
+          class={cn(
             "flex items-center gap-2 self-start",
-            align === "center" && !isRowLayout && "hidden",
-          ]}
+            align === "center" && !isRowLayout && "hidden"
+          )}
         >
           {meta && <Badge variant="default">{meta}</Badge>}
 
@@ -207,14 +208,14 @@ const isRowLayout = list && !icon;
             url && (
               <div class="relative flex min-h-6 min-w-6 items-center justify-end font-mono">
                 <div
-                  class:list={[
+                  class={cn(
                     "absolute right-0 flex items-center text-muted-foreground transition-all duration-300",
                     {
                       "group-hover:-translate-x-2 group-hover:opacity-0": actionLabel,
                       "group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary":
                         !actionLabel,
-                    },
-                  ]}
+                    }
+                  )}
                 >
                   <Icon name="mdi:arrow-top-right" size="sm" />
                 </div>
@@ -233,10 +234,10 @@ const isRowLayout = list && !icon;
       {
         description && (
           <Text
-            class:list={[
-              "text-muted-foreground",
-              { "mt-1.5 line-clamp-3 flex-1": !isRowLayout, "mt-2 line-clamp-1": isRowLayout },
-            ]}
+            class={cn("text-muted-foreground", {
+              "mt-1.5 line-clamp-3 flex-1": !isRowLayout,
+              "mt-2 line-clamp-1": isRowLayout,
+            })}
             size="sm"
           >
             {description}

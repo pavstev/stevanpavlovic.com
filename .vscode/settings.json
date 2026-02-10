@@ -74,11 +74,11 @@
     ["clsx\\(([^)]*)\\)", "`([^`]*)`"]
   ],
   "eslint.validate": [
-    // "javascript",
-    // "javascriptreact",
-    // "astro",
-    // "typescript",
-    // "typescriptreact"
+    "javascript",
+    "javascriptreact",
+    "astro",
+    "typescript",
+    "typescriptreact"
   ],
   "emmet.includeLanguages": {
     "typescript": "html",

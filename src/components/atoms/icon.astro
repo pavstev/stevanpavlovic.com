@@ -33,4 +33,4 @@ interface Props extends VariantProps<typeof iconVariants> {
 const { class: className, name, size, variant, ...props } = Astro.props;
 ---
 
-<AstroIcon class:list={[cn(iconVariants({ size, variant }), className)]} name={name} {...props} />
+<AstroIcon class={cn(iconVariants({ size, variant }), className)} name={name} {...props} />

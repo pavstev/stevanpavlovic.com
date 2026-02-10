@@ -1,4 +1,6 @@
 ---
+import { cn } from "@client/utils";
+
 interface Props {
   navItems: readonly { href: string; label: string }[];
 }
@@ -22,13 +24,13 @@ const isActive = (href: string) => isActivePath(pathname, href);
     {
       navItems.map((item) => (
         <a
-          class:list={[
-            "text-xl font-medium transition-all duration-300",
-            {
-              "scale-105 text-foreground": isActive(item.href),
-              "text-muted-foreground hover:text-foreground": !isActive(item.href),
-            },
-          ]}
+        class={cn(
+          "text-xl font-medium transition-all duration-300",
+          {
+            "scale-105 text-foreground": isActive(item.href),
+            "text-muted-foreground hover:text-foreground": !isActive(item.href),
+          }
+        )}
           href={item.href}
         >
           {item.label}

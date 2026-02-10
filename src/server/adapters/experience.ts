@@ -1,9 +1,9 @@
 import { getEntry } from "astro:content";
 import dayjs from "dayjs";
 
-import type { CollectionItem, Company, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, Company, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../../types";
+import { type CardResult, ContentAdapter } from "../types";
 import { resolveTags } from "../helpers";
 
 const resolveCompany = async (

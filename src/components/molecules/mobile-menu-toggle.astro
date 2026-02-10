@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
+import { cn } from "@client/utils";
 import Button from "../atoms/button.astro";
 import Icon from "../atoms/icon.astro";
 
@@ -19,15 +20,15 @@ const sizeClasses = {
 
 <Button
   aria-label="Toggle menu"
-  class:list={[
+  class={cn(
     "group/toggle relative text-muted-foreground transition-colors",
     "hover:bg-foreground/5 hover:text-foreground",
     // Hidden on desktop
     "md:hidden",
     // Size
     sizeClasses[size],
-    className,
-  ]}
+    className
+  )}
   id="mobile-menu-toggle"
   size="icon"
   variant="ghost"

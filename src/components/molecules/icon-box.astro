@@ -49,7 +49,7 @@ const {
 } = Astro.props;
 ---
 
-<Tag class:list={[cn(variants({ size, variant }), className)]} {...props}>
+<Tag class={cn(variants({ size, variant }), className)} {...props}>
   {
     icon ? (
       <Icon

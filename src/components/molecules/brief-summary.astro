@@ -1,4 +1,6 @@
 ---
+import { cn } from "@client/utils";
+
 import Icon from "../atoms/icon.astro";
 import PropertyField from "./property-field.astro";
 
@@ -13,7 +15,7 @@ const { class: className, label = "Description", text } = Astro.props;
 
 {
   text && (
-    <div class:list={["min-w-0", className]}>
+    <div class={cn("min-w-0", className)}>
       <PropertyField label={label}>
         <div class="relative w-full">
           <details class="group/details text-sm font-medium text-muted-foreground">

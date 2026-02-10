@@ -1,6 +1,6 @@
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
-import { type CardResult, ContentAdapter } from "../../types";
+import { type CardResult, ContentAdapter } from "../types";
 
 export class LocationsAdapter extends ContentAdapter<"locations"> {
   getCardData(item: CollectionItem<"locations">): Promise<CardResult> {

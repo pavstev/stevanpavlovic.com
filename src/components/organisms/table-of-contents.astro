@@ -13,7 +13,7 @@ interface Props {
 const { class: className, title = "Table of Contents" } = Astro.props;
 ---
 
-<nav class:list={[cn("js-toc-container flex flex-col gap-6", className)]}>
+<nav class={cn("js-toc-container flex flex-col gap-6", className)}>
   <Stack class="border-b border-white/5 pb-4" gap={2}>
     <div class="flex items-center gap-2 text-primary">
       <Icon name="mdi:format-list-bulleted" size="sm" />

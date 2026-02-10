@@ -27,6 +27,6 @@ interface Props extends HTMLAttributes<"div">, VariantProps<typeof badgeVariants
 const { class: className, variant, ...props } = Astro.props;
 ---
 
-<div class:list={[cn(badgeVariants({ variant }), className)]} {...props}>
+<div class={cn(badgeVariants({ variant }), className)} {...props}>
   <slot />
 </div>

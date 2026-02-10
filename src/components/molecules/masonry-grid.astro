@@ -1,6 +1,8 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
+import { cn } from "@client/utils";
+
 interface Props extends HTMLAttributes<"div"> {
   class?: string;
   columns?: number;
@@ -9,7 +11,7 @@ interface Props extends HTMLAttributes<"div"> {
 const { class: className, columns = 2, ...rest } = Astro.props;
 ---
 
-<div class:list={["masonry-grid", className]} data-masonry-columns={columns} {...rest}>
+<div class={cn("masonry-grid", className)} data-masonry-columns={columns} {...rest}>
   <slot />
 </div>
 

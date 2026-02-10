@@ -34,7 +34,7 @@ const remainingCount = items.length - displayItems.length;
 
 {
   items.length > 0 && (
-    <Stack class:list={[className, "min-w-0"]} gap={2}>
+    <Stack class={cn(className, "min-w-0")} gap={2}>
       {title && (
         <Text
           class="text-label font-bold tracking-widest text-muted-foreground/60 uppercase"

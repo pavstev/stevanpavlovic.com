@@ -14,7 +14,7 @@ const hasSidebar = Astro.slots.has("sidebar");
 const hasToc = Astro.slots.has("toc");
 ---
 
-<Container as={Tag} class:list={[cn("relative z-10", className)]}>
+<Container as={Tag} class={cn("relative z-10", className)}>
   <Stack gap={12}>
     {/* Named Slot: Header (Hero, Meta) */}
     {
@@ -27,10 +27,10 @@ const hasToc = Astro.slots.has("toc");
 
     {/* Primary Layout Engine (12-Col) */}
     <div
-      class:list={[
+      class={cn(
         "grid gap-12",
-        { "lg:grid-cols-12": hasSidebar || hasToc, "w-full": !(hasSidebar || hasToc) },
-      ]}
+        { "lg:grid-cols-12": hasSidebar || hasToc, "w-full": !(hasSidebar || hasToc) }
+      )}
     >
       {/* Position: Left Sidebar (Author/Related) */}
       {
@@ -45,16 +45,14 @@ const hasToc = Astro.slots.has("toc");
 
       {/* Position: Main Content (6, 9, or 12 Cols) */}
       <div
-        class:list={[
-          cn(
-            "min-w-0 transition-all",
-            hasSidebar && hasToc
-              ? "lg:col-span-6"
-              : hasSidebar || hasToc
-                ? "lg:col-span-9"
-                : "w-full"
-          ),
-        ]}
+        class={cn(
+          "min-w-0 transition-all",
+          hasSidebar && hasToc
+            ? "lg:col-span-6"
+            : hasSidebar || hasToc
+              ? "lg:col-span-9"
+              : "w-full"
+        )}
       >
         <slot />
 

@@ -68,7 +68,7 @@ const gapClass = buildResponsive(gap, "gap");
 ---
 
 <Tag
-  class:list={[cn(gridVariants({ align, justify }), colsClass, rowsClass, gapClass, className)]}
+  class={cn(gridVariants({ align, justify }), colsClass, rowsClass, gapClass, className)}
   {...props}
 >
   <slot />

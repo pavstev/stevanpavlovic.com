@@ -2,7 +2,7 @@ import type { ImageMetadata } from "astro";
 
 import { getEntries } from "astro:content";
 
-import type { Author, Tag } from "../types";
+import type { Author, Tag } from "./types";
 
 export const formatCompactNumber = (number: number): string => {
   const formatter = new Intl.NumberFormat("en-US", {

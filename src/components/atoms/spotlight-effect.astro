@@ -1,12 +1,14 @@
 ---
+import { cn } from "@client/utils";
+
 const { class: className } = Astro.props;
 ---
 
 <div
-  class:list={[
+  class={cn(
     "spotlight pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-30",
-    className,
-  ]}
+    className
+  )}
   style={{
     background: `radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), var(--color-primary) 0%, var(--color-secondary) 40%, var(--color-accent) 80%, transparent 100%)`,
   }}

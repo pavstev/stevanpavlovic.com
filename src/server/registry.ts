@@ -1,4 +1,4 @@
-import type { CollectionKey, ContentAdapter } from "../types";
+import type { CollectionKey, ContentAdapter } from "./types";
 
 import { BlogAdapter } from "./adapters/blog";
 import { CategoriesAdapter } from "./adapters/categories";

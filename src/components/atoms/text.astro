@@ -32,6 +32,6 @@ interface Props extends HTMLAttributes<"p">, VariantProps<typeof textVariants> {
 const { as: Tag = "p", class: className, size, variant, ...props } = Astro.props;
 ---
 
-<Tag class:list={[cn(textVariants({ size, variant }), className)]} {...props}>
+<Tag class={cn(textVariants({ size, variant }), className)} {...props}>
   <slot />
 </Tag>

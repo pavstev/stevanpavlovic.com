@@ -21,60 +21,35 @@ const meteorConfig = {
 ---
 
 <div
-  class:list={[
-    cn("pointer-events-none", "fixed", "inset-0", "-z-50", "overflow-hidden", className),
-  ]}
+  class={cn("pointer-events-none", "fixed", "inset-0", "-z-50", "overflow-hidden", className)}
   {...rest}
 >
   <!-- Layer 1: Base Deep Space Gradient -->
-  <div aria-hidden="true" class:list={["absolute", "inset-0", "bg-black/98"]}></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-black/98"></div>
 
   <!-- Layer 2: Ambient Gradient Flow -->
   <div
     aria-hidden="true"
-    class:list={[
-      "absolute",
-      "inset-0",
-      "bg-linear-to-b",
-      "from-transparent",
-      "via-(--color-primary/5)",
-      "to-(--color-accent/5)",
-    ]}
+    class="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-(--color-primary/5) to-(--color-accent/5)"
   >
   </div>
 
   <!-- Layer 3: Distant Nebulae (Animated Glow Spheres) -->
   <div
     aria-hidden="true"
-    class:list={[
-      "pointer-events-none",
-      "absolute",
-      "top-[-20%]",
-      "left-[-10%]",
-      "size-[80%]",
-      "animate-pulse",
-      "rounded-full",
-      "bg-(--color-primary/10)",
-      "opacity-30",
-      "blur-ambient",
-    ]}
+    class="pointer-events-none absolute top-[-20%] left-[-10%] size-[80%] animate-pulse rounded-full bg-(--color-primary/10) opacity-30 blur-ambient"
   >
   </div>
 
   <div
-    class:list={[
-      "absolute size-96 rounded-full bg-accent/5",
-      "bottom-[-20%]",
-      "right-[-10%]",
-      "blur-ambient-subtle",
-    ]}
+    class="absolute bottom-[-20%] right-[-10%] size-96 rounded-full bg-accent/5 blur-ambient-subtle"
   >
   </div>
 
   <!-- Layer 4: Visual DNA: Structural Grid Pattern -->
   <div
     aria-hidden="true"
-    class:list={["pointer-events-none", "absolute", "inset-0", "opacity-[0.03]"]}
+    class="pointer-events-none absolute inset-0 opacity-[0.03]"
     style="background-image: radial-gradient(var(--color-primary) 1px, transparent 1px); background-size: 64px 64px;"
   >
   </div>
@@ -83,7 +58,7 @@ const meteorConfig = {
   <MeteorEffect number={meteorConfig} />
 
   <!-- Layer 6: Spotlight Effect Integration -->
-  <SpotlightEffect class:list={["opacity-20", "pointer-events-none"]} />
+  <SpotlightEffect class="opacity-20 pointer-events-none" />
 
   <slot />
 </div>

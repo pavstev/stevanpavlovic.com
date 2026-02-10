@@ -1,4 +1,5 @@
 ---
+import { cn } from "@client/utils";
 import { isActivePath } from "@client/navigation";
 
 import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../config";
@@ -23,11 +24,11 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
     <Stack align="center" class="justify-center" direction="row">
       {/* Dynamic Island Container */}
       <div
-        class:list={[
+        class={cn(
           "glass-strong relative flex items-center gap-2 overflow-hidden px-2 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
           "h-14 min-w-80 rounded-full border-white/5",
-          "hover:border-primary/20",
-        ]}
+          "hover:border-primary/20"
+        )}
         id="nav-island"
       >
         {/* Progress Background (for posts) */}

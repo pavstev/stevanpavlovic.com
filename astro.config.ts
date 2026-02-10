@@ -50,7 +50,6 @@ export default defineConfig({
       name: PROFILE.name,
       short_name: PROFILE.name,
     }),
-    (await import("@playform/compress")).default(),
     icon(),
     partytown({
       config: {

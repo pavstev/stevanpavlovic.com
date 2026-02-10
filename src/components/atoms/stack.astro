@@ -2,9 +2,9 @@
 import type { ResponsiveValue } from "@server/types";
 import type { HTMLAttributes } from "astro/types";
 
-import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@client/utils";
+import { PUBLIC_STACK_DEBUG, PUBLIC_STACK_DEFAULT_GAP } from "astro:env/client";
+import { cva, type VariantProps } from "class-variance-authority";
 
 const stackVariants = cva("flex", {
   defaultVariants: {
@@ -57,7 +57,7 @@ const {
   as: Tag = "div",
   class: className,
   direction = "col",
-  gap = 3,
+  gap = PUBLIC_STACK_DEFAULT_GAP,
   justify,
   wrap,
   ...rest
@@ -90,7 +90,16 @@ const wrapClass = buildResponsive(wrap, "flex").replace(/flex-nowrap/g, "flex-no
 
 <Tag
   class:list={[
-    cn(stackVariants(), directionClass, alignClass, justifyClass, gapClass, wrapClass, className),
+    cn(
+      stackVariants(),
+      directionClass,
+      alignClass,
+      justifyClass,
+      gapClass,
+      wrapClass,
+      PUBLIC_STACK_DEBUG && "outline-primary-500/50 outline outline-2 outline-dashed",
+      className
+    ),
   ]}
   {...rest}
 >

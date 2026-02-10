@@ -23,11 +23,23 @@ export default defineConfig({
       enabled: true,
     },
   }),
-
+  env: {
+    schema: {
+      PUBLIC_STACK_DEBUG: envField.boolean({
+        access: "public",
+        context: "client",
+        default: false,
+      }),
+      PUBLIC_STACK_DEFAULT_GAP: envField.number({
+        access: "public",
+        context: "client",
+        default: 3,
+      }),
+    },
+  },
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
-
   integrations: [
     mdx(),
     sitemap(),
@@ -51,24 +63,19 @@ export default defineConfig({
       throwError: false,
     }),
   ],
-
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
     remarkPlugins: [readingTimeRemarkPlugin as any, [remarkToc, { heading: "toc", maxDepth: 3 }]],
     shikiConfig: { theme: "github-dark-dimmed" },
     syntaxHighlight: "shiki",
   },
-
   output: "static",
-
   prefetch: {
     defaultStrategy: "hover",
     prefetchAll: true,
   },
-
   site: "https://localhost:4321",
   trailingSlash: "never",
-
   vite: {
     build: {
       rollupOptions: {},

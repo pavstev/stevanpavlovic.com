@@ -1,9 +1,9 @@
 import type { APIContext } from "astro";
 
 import rss from "@astrojs/rss";
+import { getCollectionData } from "@server/api";
 
 import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
-import { getCollectionData } from "@server/content/api";
 
 export const GET = async (context: APIContext): Promise<Response> => {
   const posts = await getCollectionData("blog");

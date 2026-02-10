@@ -10,11 +10,11 @@ import type {
   PaginationLinksOptions,
   PaginationType,
   ViewPageProps,
-} from "../types";
+} from "./types";
 export type { DisplayMode, PaginationType };
-import { ITEMS_PER_PAGE, PROFILE } from "../../config";
-import { createAuthorItem } from "./helpers";
-import { adapters } from "./registry";
+import { ITEMS_PER_PAGE, PROFILE } from "../config";
+import { createAuthorItem } from "./content/helpers";
+import { adapters } from "./content/registry";
 import { buildDisplayUrls, buildPaginationUrls, getCollectionConfig, getPageItems } from "./utils";
 
 const getSortDate = <CN extends CollectionKey>(item: CollectionItem<CN>): number => {

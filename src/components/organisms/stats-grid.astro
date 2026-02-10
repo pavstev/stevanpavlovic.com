@@ -16,7 +16,7 @@ interface StatItem {
   value: number;
 }
 
-const { class: className, items, ...props } = Astro.props;
+const { items, ...props } = Astro.props;
 ---
 
 <Grid cols={{ base: 1, lg: 3, md: 2 }} gap={4} {...props}>

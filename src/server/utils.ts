@@ -1,4 +1,3 @@
-import type { DisplayMode } from "./types";
 import type { CollectionItem, CollectionKey, Nullable } from "./types";
 
 import {
@@ -12,36 +11,20 @@ import {
 
 export const buildPaginationUrls = (
   collection: CollectionKey,
-  display: DisplayMode,
   currentPage: number,
   totalPages: number
 ): { nextUrl: string | undefined; prevUrl: string | undefined } => {
-  const displayParam = display !== "list" ? `?display=${display}` : "";
-
   const prevUrl =
     currentPage > 1
       ? currentPage === 2
-        ? `/${collection}${displayParam}`
-        : `/${collection}/page/${(currentPage - 1).toString()}${displayParam}`
+        ? `/${collection}`
+        : `/${collection}/page/${(currentPage - 1).toString()}`
       : undefined;
 
   const nextUrl =
-    currentPage < totalPages
-      ? `/${collection}/page/${(currentPage + 1).toString()}${displayParam}`
-      : undefined;
+    currentPage < totalPages ? `/${collection}/page/${(currentPage + 1).toString()}` : undefined;
 
   return { nextUrl, prevUrl };
-};
-
-export const buildDisplayUrls = (
-  collection: CollectionKey,
-  currentPage: number
-): { grid: string; list: string } => {
-  const pagePath = currentPage > 1 ? `/page/${currentPage}` : "";
-  return {
-    grid: `/${collection}${pagePath}?display=grid`,
-    list: `/${collection}${pagePath}?display=list`,
-  };
 };
 
 export const getPageItems = <CN extends CollectionKey>(

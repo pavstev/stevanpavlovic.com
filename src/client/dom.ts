@@ -27,7 +27,7 @@ export const initMobileMenu = (): void => {
   const toggle = document.getElementById("mobile-menu-toggle");
   const menu = document.getElementById("mobile-menu");
 
-  if (!toggle ?? !menu) {
+  if (!toggle || !menu) {
     return;
   }
 
@@ -82,7 +82,7 @@ export const updateActiveLinks = (): void => {
     const isActive =
       cleanHref === "/"
         ? currentPath === "/"
-        : (currentPath === cleanHref ?? currentPath.startsWith(`${cleanHref}/`));
+        : currentPath === cleanHref || currentPath.startsWith(`${cleanHref}/`);
 
     const dot = link.querySelector(".rounded-full.bg-primary");
 
@@ -106,43 +106,6 @@ export const updateActiveLinks = (): void => {
       dot.classList.add("scale-0", "opacity-0");
     }
   }
-};
-
-export const initViewToggle = (): void => {
-  const container = document.querySelector(".view-content");
-  if (!container) return;
-
-  const listView = container.querySelector(".list-view-container");
-  const gridView = container.querySelector(".grid-view-container");
-
-  const toggleView = (view: string): void => {
-    if (view === "grid") {
-      listView?.classList.add("hidden");
-      gridView?.classList.remove("hidden");
-      return;
-    }
-
-    listView?.classList.remove("hidden");
-    gridView?.classList.add("hidden");
-  };
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const displayParam = urlParams.get("display");
-
-  if (displayParam === "grid" ?? displayParam === "list") {
-    sessionStorage.setItem("preferred-view", displayParam);
-  }
-
-  const preferredView = sessionStorage.getItem("preferred-view") ?? "list";
-  toggleView(preferredView);
-
-  const handlePopState = (): void => {
-    const newParams = new URLSearchParams(window.location.search);
-    const newView = newParams.get("display") ?? sessionStorage.getItem("preferred-view") ?? "list";
-    toggleView(newView);
-  };
-
-  window.addEventListener("popstate", handlePopState);
 };
 
 export const initHeaderEffects = (): void => {
@@ -235,7 +198,7 @@ const initMasonry = (): void => {
   }
 };
 
-export const setupMasonry = (): void => {
+const setupMasonry = (): void => {
   initMasonry();
 
   let resizeTimeout: ReturnType<typeof setTimeout>;

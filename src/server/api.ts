@@ -6,16 +6,15 @@ import type {
   CardData,
   CollectionItem,
   CollectionPageData,
-  DisplayMode,
   PaginationLinksOptions,
   PaginationType,
   ViewPageProps,
 } from "./types";
-export type { DisplayMode, PaginationType };
+export type { PaginationType };
 import { ITEMS_PER_PAGE, PROFILE } from "../config";
 import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
-import { buildDisplayUrls, buildPaginationUrls, getCollectionConfig, getPageItems } from "./utils";
+import { buildPaginationUrls, getCollectionConfig, getPageItems } from "./utils";
 
 const getSortDate = <CN extends CollectionKey>(item: CollectionItem<CN>): number => {
   const adapter = adapters[item.collection];
@@ -99,8 +98,7 @@ export const getItemCardProps = async <CN extends CollectionKey>(
 
 export const getCollectionPageData = async (
   collection: CollectionKey,
-  page: number | string,
-  displayMode: DisplayMode = "list"
+  page: number | string
 ): Promise<CollectionPageData> => {
   const currentPage = typeof page === "string" ? parseInt(page, 10) : page;
 
@@ -111,13 +109,7 @@ export const getCollectionPageData = async (
 
   const config = getCollectionConfig(collection);
   const baseUrl = `/${collection}`;
-  const displayUrls = buildDisplayUrls(collection, currentPage);
-  const { nextUrl, prevUrl } = buildPaginationUrls(
-    collection,
-    displayMode,
-    currentPage,
-    totalPages
-  );
+  const { nextUrl, prevUrl } = buildPaginationUrls(collection, currentPage, totalPages);
 
   return {
     baseUrl,
@@ -126,8 +118,6 @@ export const getCollectionPageData = async (
     config,
     containerId: `${collection}-container`,
     currentPage,
-    display: displayMode,
-    displayUrls,
     getItemCardProps,
     initialPageSize: 20,
     nextUrl,
@@ -137,7 +127,7 @@ export const getCollectionPageData = async (
   };
 };
 
-export const buildListUrl = (
+const buildListUrl = (
   currentUrl: URL,
   paginationType: PaginationType,
   path: string,

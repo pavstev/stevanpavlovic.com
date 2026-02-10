@@ -90,7 +90,7 @@ const {
 } = data;
 
 const Wrapper = (url ? "a" : "div") as any;
-const cardClasses = variants({ className, interactive: !!url ?? interactive, variant: visual });
+const cardClasses = variants({ className, interactive: !!url || interactive, variant: visual });
 
 const isRowLayout = list && !icon;
 ---

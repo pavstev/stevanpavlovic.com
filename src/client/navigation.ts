@@ -8,7 +8,7 @@ export const isActivePath = (currentPath: string, href: string): boolean => {
     return cleanPath === "/";
   }
 
-  return cleanPath === cleanHref ?? cleanPath.startsWith(`${cleanHref}/`);
+  return cleanPath === cleanHref || cleanPath.startsWith(`${cleanHref}/`);
 };
 
 export const getCopyrightText = (): string =>

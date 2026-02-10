@@ -1,5 +1,4 @@
 ---
-import type { DisplayMode } from "@server/api";
 import type { CollectionItem } from "@server/types";
 import type { CardData } from "@server/types";
 import type { CollectionKey } from "astro:content";
@@ -8,7 +7,6 @@ import Container from "../atoms/container.astro";
 import Stack from "../atoms/stack.astro";
 import Text from "../atoms/text.astro";
 import ListActions from "../molecules/list-actions.astro";
-import MasonryGrid from "../molecules/masonry-grid.astro";
 import Card from "../organisms/card.astro";
 import CollectionHeader from "../organisms/collection-header.astro";
 
@@ -19,8 +17,6 @@ interface Props {
   containerId: string;
   currentPage?: number;
   description: string;
-  display: DisplayMode;
-  displayUrls?: { grid: string; list: string };
   getItemCardProps: (
     _item: CollectionItem<CollectionKey>
   ) => Promise<{ actionLabel?: string; data: CardData }>;
@@ -40,8 +36,6 @@ const {
   collectionItems: items,
   containerId,
   currentPage = 1,
-  display,
-  displayUrls,
   getItemCardProps,
   headerDescription,
   headerIcon,
@@ -64,8 +58,6 @@ const {
       <ListActions
         baseUrl={baseUrl}
         currentPage={currentPage}
-        display={display}
-        displayUrls={displayUrls}
         getPageUrl={(p) => (p === 1 ? baseUrl : `${baseUrl}/page/${p}`)}
         nextUrl={nextUrl}
         paginationType="path"
@@ -90,7 +82,7 @@ const {
         </div>
 
         {/* DUAL VIEW ENGINE: Both rendered for zero-latency toggling */}
-        <div class="view-content" data-current-view={display}>
+        <div class="view-content">
           {/* VIEW MODE: LIST */}
           <div class="list-view-container flex flex-col gap-4">
             {
@@ -148,11 +140,9 @@ const {
 
 <script>
   import { initInteractiveCards } from "@client";
-  import { initViewToggle } from "@client";
 
   const setup = () => {
     initInteractiveCards();
-    initViewToggle();
   };
 
   setup();

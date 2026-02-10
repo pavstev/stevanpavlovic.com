@@ -1,5 +1,3 @@
-import type { DisplayMode } from "@server/types";
-
 import profileImage from "./assets/profile.jpeg";
 
 export const SITE_TITLE = "Astro Blog";
@@ -19,7 +17,6 @@ export const SITE_CONFIG = {
 
 export interface NavItem {
   color: string;
-  defaultView: DisplayMode;
   description: string;
   href: string;
   icon: `mdi:${string}`;
@@ -31,7 +28,6 @@ export interface NavItem {
 export const NAV_ITEMS = {
   blog: {
     color: "var(--color-accent)",
-    defaultView: "list",
     description: "Read insights on distributed systems and software architecture",
     href: "/blog",
     icon: "mdi:newspaper-variant-outline",
@@ -41,7 +37,6 @@ export const NAV_ITEMS = {
   },
   companies: {
     color: "var(--color-accent)",
-    defaultView: "grid",
     description: "Partners, clients, and organizations I've collaborated with",
     href: "/companies",
     icon: "mdi:domain",
@@ -51,7 +46,6 @@ export const NAV_ITEMS = {
   },
   experience: {
     color: "var(--color-primary)",
-    defaultView: "list",
     description: "Discover my career journey across fintech, betting, and logistics",
     href: "/experience",
     icon: "mdi:briefcase-outline",
@@ -61,7 +55,6 @@ export const NAV_ITEMS = {
   },
   home: {
     color: "var(--color-primary)",
-    defaultView: "list",
     description: "Start your journey through my professional portfolio and recent work",
     href: "/",
     icon: "mdi:home-variant-outline",
@@ -71,7 +64,6 @@ export const NAV_ITEMS = {
   },
   locations: {
     color: "var(--color-primary)",
-    defaultView: "list",
     description: "Places I've worked from and professional hubs",
     href: "/locations",
     icon: "mdi:map-marker-radius",
@@ -81,7 +73,6 @@ export const NAV_ITEMS = {
   },
   people: {
     color: "var(--color-primary)",
-    defaultView: "grid",
     description: "Talented individuals and colleagues in my professional network",
     href: "/people",
     icon: "mdi:account-group",
@@ -91,7 +82,6 @@ export const NAV_ITEMS = {
   },
   projects: {
     color: "var(--color-primary)",
-    defaultView: "grid",
     description: "Explore cutting-edge solutions built with modern technologies",
     href: "/projects",
     icon: "mdi:console",
@@ -101,7 +91,6 @@ export const NAV_ITEMS = {
   },
   recommendations: {
     color: "var(--color-accent)",
-    defaultView: "list",
     description: "Endorsements and testimonials from colleagues and clients",
     href: "/recommendations",
     icon: "mdi:star-face",
@@ -160,11 +149,6 @@ export const STATS: readonly Stat[] = [
 ] as const;
 
 export const ITEMS_PER_PAGE = 10;
-
-export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = [
-  { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
-  { icon: "mdi:view-column", label: "Grid", mode: "grid" },
-];
 
 export const CTA_CONTENT = {
   browseProjects: "Browse Projects",

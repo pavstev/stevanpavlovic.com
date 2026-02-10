@@ -3,7 +3,7 @@
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
-import { type DisplayMode, getCollectionData, getCollectionPageData } from "@server/api";
+import { getCollectionData, getCollectionPageData } from "@server/api";
 
 import LayoutRoot from "../../../components/layout/layout-root.astro";
 import ResourceDiscovery from "../../../components/organisms/resource-discovery.astro";
@@ -46,8 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { collection, page } = Astro.params as unknown as Params;
-const display = (Astro.url.searchParams.get("display") as DisplayMode) ?? "list";
-const pageData = await getCollectionPageData(collection, page, display);
+const pageData = await getCollectionPageData(collection, page);
 
 const {
   baseUrl,
@@ -55,7 +54,6 @@ const {
   config,
   containerId,
   currentPage,
-  displayUrls,
   getItemCardProps,
   initialPageSize,
   nextUrl,
@@ -77,8 +75,6 @@ const {
     collectionKey={collection}
     containerId={containerId}
     currentPage={currentPage}
-    display={display}
-    displayUrls={displayUrls}
     getItemCardProps={getItemCardProps}
     initialPageSize={initialPageSize}
     nextUrl={nextUrl}

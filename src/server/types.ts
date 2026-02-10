@@ -71,8 +71,6 @@ export interface CollectionPageData {
   config: CollectionConfig;
   containerId: string;
   currentPage: number;
-  display: DisplayMode;
-  displayUrls: ViewUrls;
   getItemCardProps: (item: CollectionItem) => Promise<{ actionLabel: string; data: CardData }>;
   initialPageSize: number;
   nextUrl?: string;
@@ -83,7 +81,7 @@ export interface CollectionPageData {
 
 export type Company = CollectionEntry<"companies">["data"];
 
-export type DisplayMode = "grid" | "list";
+type DisplayMode = "grid" | "list";
 
 export type Nullable<T> = null | T | undefined;
 
@@ -147,7 +145,3 @@ export interface ViewPagePropsTags {
   items: Tag[];
   title: string | undefined;
 }
-
-export type ViewUrls = {
-  [k in DisplayMode]: string;
-};

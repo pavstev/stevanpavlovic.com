@@ -5,7 +5,7 @@ import Grid from "../atoms/grid.astro";
 import MetricBlock from "../molecules/metric-block.astro";
 
 interface Props extends HTMLAttributes<"div"> {
-  items: StatItem[];
+  items: readonly StatItem[];
 }
 
 interface StatItem {

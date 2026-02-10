@@ -5,6 +5,7 @@
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
+    "target": "es2022",
     "strictNullChecks": true,
     "types": ["./worker-configuration.d.ts", "node"],
     "plugins": [

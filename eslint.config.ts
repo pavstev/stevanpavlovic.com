@@ -52,7 +52,7 @@ const GLOBAL_IGNORES = [
   ".unlighthouse/**/*",
   "worker-configuration.d.ts",
   ".vscode/**/*",
-  "api-bak/**/*",
+  "**/.agent/**/*",
   // TODO: IMPORTANT
   // "**/*.mdx", // Removed to enable MDX linting
 ];
@@ -302,7 +302,7 @@ export default defineConfig(
 
   {
     // Unified MDX / Markdown configuration
-    files: [...MARKDOWN_FILES, ...MDX_FILES],
+    files: MDX_FILES,
     ...mdx.flat,
     processor: mdx.createRemarkProcessor({
       lintCodeBlocks: false,

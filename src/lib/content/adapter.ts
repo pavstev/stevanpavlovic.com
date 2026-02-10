@@ -1,7 +1,9 @@
 import type { CollectionKey } from "astro:content";
 
 import type { CardResult } from "../types";
-import type { Author, CollectionItem, ToolbarItem, ViewPageProps } from "./types";
+
+export type { CardResult };
+import type { Author, CollectionItem, ToolbarItem, ViewPageProps } from "../types";
 
 import { PROFILE } from "../../config";
 import { createAuthorItem } from "./helpers";

@@ -1,15 +1,11 @@
 ---
 import { PROFILE, SITE_CONFIG, STATS } from "../../config";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import Badge from "../atoms/badge.astro";
 import Heading from "../atoms/heading.astro";
 import Text from "../atoms/text.astro";
 import BrandIdentity from "../molecules/brand-identity.astro";
 import GridTile from "../molecules/grid-tile.astro";
 import StatsGrid from "../organisms/stats-grid.astro";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 ---
 
 <GridTile class="overflow-hidden p-8 md:p-16 lg:col-span-12" cols="lg:col-span-12">

@@ -1,11 +1,6 @@
 import type { DisplayMode, PaginationLinksOptions, PaginationType } from "./types";
 export type { DisplayMode, PaginationType };
 
-// VIEW_MODES moved to src/config.ts
-
-/**
- * Helper to build a URL by merging a base path with current query params and overrides.
- */
 export const buildListUrl = (
   currentUrl: URL,
   paginationType: PaginationType,

@@ -61,18 +61,5 @@ const { class: className, description, image, intensity = "medium", lang = "en",
     <Footer />
 
     <OmniSearch />
-
-    <script>
-      import { initEasterEggs } from "../../lib/easter-eggs";
-      import { initMagnetic } from "../../lib/magnetic";
-
-      initEasterEggs();
-      initMagnetic();
-
-      document.addEventListener("astro:page-load", () => {
-        initEasterEggs();
-        initMagnetic();
-      });
-    </script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 import type { DisplayMode } from "../list";
-import type { CollectionItem, CollectionKey, Nullable } from "./types";
+import type { CollectionItem, CollectionKey, Nullable } from "../types";
 
 import { ITEMS_PER_PAGE, NAV_ITEMS, type NavItem, PROFILE, SITE_DESCRIPTION, SITE_TITLE } from "../../config";
 

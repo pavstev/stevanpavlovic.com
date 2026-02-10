@@ -16,7 +16,7 @@
   "scripts": {
     "clean": "find . -type d -empty -delete && git clean -Xfd -e .env.local && pnpm i",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "pnpm cf-typegen > p",
+    "postinstall": "pnpm cf-typegen",
     "build": "astro build",
     "dev": "astro dev",
     "preview": "wrangler dev",

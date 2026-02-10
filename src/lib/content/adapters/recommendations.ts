@@ -1,7 +1,7 @@
 import { getEntry } from "astro:content";
 import dayjs from "dayjs";
 
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
 import { type CardResult, ContentAdapter } from "../adapter";
 

@@ -1,4 +1,4 @@
-import type { CollectionItem, ToolbarItem, ViewPageProps } from "../types";
+import type { CollectionItem, ToolbarItem, ViewPageProps } from "../../types";
 
 import { type CardResult, ContentAdapter } from "../adapter";
 

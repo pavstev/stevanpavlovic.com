@@ -1,5 +1,8 @@
 import type { ImageMetadata } from "astro";
 import type { CollectionEntry, CollectionKey } from "astro:content";
+
+export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
+
 export type { CollectionEntry, CollectionKey };
 
 export interface CardResult {
@@ -145,26 +148,24 @@ export type ViewUrls = {
 };
 
 // --- Content / Collection ---
-interface Author extends ToolbarItem {
+export interface Author extends ToolbarItem {
   avatar: ImageMetadata;
   name: string;
   role: string;
   type: "person";
 }
 
-interface CollectionItem<CN extends CollectionKey = CollectionKey> {
+export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
   body?: string;
   collection: CN;
   data: CollectionEntry<CN>["data"];
   id: string;
 }
 
-type Company = CollectionEntry<"companies">["data"];
+export type Company = CollectionEntry<"companies">["data"];
+export type Nullable<T> = null | T | undefined;
 
-// --- General ---
-type Nullable<T> = null | T | undefined;
-
-interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
+export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
   author?: Author;
   backLink: PostLink;
   description: string | undefined;

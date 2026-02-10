@@ -81,8 +81,6 @@ export interface CollectionPageData {
 
 export type Company = CollectionEntry<"companies">["data"];
 
-type DisplayMode = "grid" | "list";
-
 export type Nullable<T> = null | T | undefined;
 
 export interface PaginationLinksOptions {
@@ -95,8 +93,8 @@ export interface PaginationLinksOptions {
   prevUrl?: string;
   totalPages: number;
 }
-export type PaginationType = "path" | "query";
 
+export type PaginationType = "path" | "query";
 export interface PostLink {
   href: string;
   label: string;

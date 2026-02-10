@@ -1,7 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import Grid from "../atoms/grid.astro";
 import MetricBlock from "../molecules/metric-block.astro";
 
 interface Props extends HTMLAttributes<"div"> {
@@ -16,10 +15,10 @@ interface StatItem {
   value: number;
 }
 
-const { items, ...props } = Astro.props;
+const { class: className, items, ...props } = Astro.props;
 ---
 
-<Grid cols={{ base: 1, lg: 3, md: 2 }} gap={4} {...props}>
+<div class={`flex flex-wrap gap-4 md:gap-8 ${className}`} {...props}>
   {
     items.map((item) => (
       <MetricBlock
@@ -32,4 +31,4 @@ const { items, ...props } = Astro.props;
       />
     ))
   }
-</Grid>
+</div>

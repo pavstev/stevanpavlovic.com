@@ -165,3 +165,15 @@ export const VIEW_MODES: { icon: string; label: string; mode: DisplayMode }[] = 
   { icon: "mdi:format-list-bulleted", label: "List", mode: "list" },
   { icon: "mdi:view-column", label: "Grid", mode: "grid" },
 ];
+
+export const CTA_CONTENT = {
+  browseProjects: "Browse Projects",
+  description: "Explore my portfolio of distributed systems, microservices, and cloud-native solutions.",
+  readBlog: "Read Blog",
+  title: "Let's Build Something Amazing Together",
+} as const;
+
+export const FEATURED_CONTENT = {
+  description: "A selection of my recent work in distributed systems, backend architecture, and cloud infrastructure.",
+  title: "Featured Projects",
+} as const;

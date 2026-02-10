@@ -24,20 +24,22 @@ const { class: className } = Astro.props;
     </Stack>
 
     <Text class="leading-relaxed" size="sm" variant="muted">
-        {PROFILE.bio.split('.').slice(0, 2).join('.')}.
+        {PROFILE.bio.split(".").slice(0, 2).join(".")}.
     </Text>
 
     <Separator class="opacity-50" />
 
     <div class="flex gap-3">
-        {SOCIALS.map(social => (
-            <a
-                aria-label={social.name}
-                class="flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
-                href={social.href}
-            >
-                <Icon name={social.icon} size="sm" />
-            </a>
-        ))}
+        {
+            SOCIALS.map((social) => (
+                <a
+                    aria-label={social.name}
+                    class="flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
+                    href={social.href}
+                >
+                    <Icon name={social.icon} size="sm" />
+                </a>
+            ))
+        }
     </div>
 </Stack>

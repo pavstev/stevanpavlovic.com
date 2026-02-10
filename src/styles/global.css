@@ -146,10 +146,18 @@
     background: var(--noise);
   }
 
-  h1 { @apply text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-display tracking-tighter uppercase; }
-  h2 { @apply text-[clamp(2rem,6vw,3.25rem)] font-black leading-none tracking-tighter uppercase; }
-  h3 { @apply text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-tight; }
-  p { @apply text-[0.9375rem] leading-[1.6] opacity-80; }
+  h1 {
+    @apply text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-display tracking-tighter uppercase;
+  }
+  h2 {
+    @apply text-[clamp(2rem,6vw,3.25rem)] font-black leading-none tracking-tighter uppercase;
+  }
+  h3 {
+    @apply text-[clamp(1.5rem,4vw,2.25rem)] font-bold tracking-tight;
+  }
+  p {
+    @apply text-[0.9375rem] leading-[1.6] opacity-80;
+  }
 }
 
 @layer utilities {
@@ -164,9 +172,13 @@
     inset: -1px;
     border: 1px solid transparent;
     background: linear-gradient(var(--color-primary), var(--color-accent)) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
-    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -176,8 +188,12 @@
     opacity: 1;
   }
 
-  .text-glow-primary { text-shadow: 0 0 10px var(--color-primary); }
-  .text-glow-accent { text-shadow: 0 0 10px var(--color-accent); }
+  .text-glow-primary {
+    text-shadow: 0 0 10px var(--color-primary);
+  }
+  .text-glow-accent {
+    text-shadow: 0 0 10px var(--color-accent);
+  }
 }
 
 @layer utilities {
@@ -410,7 +426,10 @@
     --tw-prose-td-borders: var(--color-border);
   }
 
-  .prose h1, .prose h2, .prose h3, .prose h4 {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
     @apply tracking-tight font-bold uppercase;
   }
 
@@ -431,7 +450,13 @@
 
 .cyberpunk-mode body::before {
   opacity: 0.1;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
   pointer-events: none;
 }
 
@@ -477,10 +502,9 @@ html {
   scroll-behavior: auto !important;
 }
 
-  .lenis.lenis-smooth {
+.lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-
 
 .focus-mode header#site-header,
 .focus-mode aside {

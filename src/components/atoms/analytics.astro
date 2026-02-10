@@ -1,24 +1,36 @@
 ---
-const id = import.meta.env.PUBLIC_GTM_ID;
+const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
 ---
 
-{id && (
-  <script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${id}`} type="text/partytown"></script>
+{googleAnalyticsID && (
+  <>
+    <script
+      is:inline
+      type="text/partytown"
+      src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
+    />
+    <script
+      is:inline
+      type="text/partytown"
+      define:vars={{
+        googleAnalyticsID,
+      }}
+    >
+      window.dataLayer = window.dataLayer || []
+      window.gtag = function () {
+        // eslint-disable-next-line prefer-rest-params
+        dataLayer.push(arguments)
+      }
+      window.gtag('js', new Date())
 
-  <script define:vars={{ id }} is:inline type="text/partytown">
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-      window.dataLayer.push(arguments);
-    };
-    window.gtag("js", new Date());
-    window.gtag("config", id);
-  </script>
-
-  <script>
-    import { trackPageView } from "../../lib/features";
-
-    document.addEventListener("astro:after-navigation", () => {
-      trackPageView(window.location.pathname);
-    });
-  </script>
+      if (customGoogleAnalyticsJS) {
+        window.gtag('config', googleAnalyticsID, {
+          transport_url: new URL(customGoogleAnalyticsJS).origin,
+        })
+      }
+      else {
+        window.gtag('config', googleAnalyticsID)
+      }
+    </script>
+  </>
 )}

@@ -1,4 +1,5 @@
 ---
+import { FEATURED_CONTENT } from "../../config";
 import { getItemCardProps } from "../../lib/content/api";
 import ResourceDiscovery from "../organisms/resource-discovery.astro";
 
@@ -10,19 +11,19 @@ const { projects } = Astro.props;
 ---
 
 <div class="lg:col-span-12">
-  <ResourceDiscovery
-    baseUrl="/projects"
-    collectionItems={projects as any}
-    collectionKey="projects"
-    containerId="featured-projects"
-    description={t("featured.title")}
-    display="grid"
-    getItemCardProps={getItemCardProps as any}
-    headerDescription={t("featured.description")}
-    headerIcon="mdi:star-outline"
-    headerTitle={t("featured.title")}
-    initialPageSize={3}
-    title={t("featured.title")}
-    totalItems={projects.length}
-  />
+    <ResourceDiscovery
+        baseUrl="/projects"
+        collectionItems={projects as any}
+        collectionKey="projects"
+        containerId="featured-projects"
+        description={FEATURED_CONTENT.title}
+        display="grid"
+        getItemCardProps={getItemCardProps as any}
+        headerDescription={FEATURED_CONTENT.description}
+        headerIcon="mdi:star-outline"
+        headerTitle={FEATURED_CONTENT.title}
+        initialPageSize={3}
+        title={FEATURED_CONTENT.title}
+        totalItems={projects.length}
+    />
 </div>

@@ -1,7 +1,6 @@
 import { glob } from "astro/loaders";
 import { defineCollection, reference, z } from "astro:content";
 
-
 const CompanySize = z.enum(["Startup", "Small Business", "Mid-size", "Enterprise"]);
 const CompanyType = z.enum(["Full-time", "Contract", "Freelance", "Agency"]);
 const ExperienceType = z.enum(["Full-time", "Contract", "Freelance"]);
@@ -49,7 +48,6 @@ const RelationshipType = z.enum([
   "Other",
 ]);
 
-
 const SocialLink = z.object({
   handle: z.string(),
   name: z.string(),
@@ -65,7 +63,6 @@ const PersonSocialLink = z.object({
 const PersonSocialLinks = z.array(PersonSocialLink).optional();
 
 const CompanySocialLinks = z.array(SocialLink).optional();
-
 
 const categories = defineCollection({
   loader: glob({ base: "./src/content/categories", pattern: "**/*.md" }),

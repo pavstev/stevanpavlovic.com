@@ -34,7 +34,6 @@ const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "src/content");
 const ASTRO_COLLECTIONS_DIR = path.join(ROOT, ".astro/collections");
 
-
 const MDX_CODE_BLOCKS = ["**/*.md/*.ts", "**/*.md/*.tsx", "**/*.mdx/*.ts", "**/*.mdx/*.tsx"];
 
 const CODE_FILES = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.astro"];
@@ -154,7 +153,6 @@ const fixupPlugin = (plugin: any): any => {
   }
   return newPlugin;
 };
-
 
 if (mdx.flat.plugins?.mdx) {
   mdx.flat.plugins.mdx = fixupPlugin(mdx.flat.plugins.mdx);

@@ -28,7 +28,6 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
       <div
         class="glass-strong flex flex-col items-center gap-6 rounded-2xl border border-danger/20 p-6 text-center shadow-2xl shadow-danger/10 sm:p-8"
       >
-        {/* Error Code */}
         <div class="relative">
           <Heading
             class="text-9xl font-black tracking-tighter text-danger opacity-90 sm:text-[12rem]"
@@ -39,7 +38,6 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
           <div class="shadow-glow-danger absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
         </div>
 
-        {/* Text Content */}
         <div class="flex flex-col items-center gap-4">
           <Heading class="tracking-widest text-danger capitalize" level={2} size="md">
             System Malfunction
@@ -57,7 +55,6 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
           </div>
         </div>
 
-        {/* Actions */}
         <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
           <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="primary">
             <Icon name="mdi:home-lightning-bolt-outline" size="md" />

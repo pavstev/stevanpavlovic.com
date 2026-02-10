@@ -34,12 +34,10 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
 <div
   class="group/toolbar grid w-full grid-cols-1 gap-3 rounded-2xl border border-border/40 bg-background/40 p-3 backdrop-blur-md md:grid-cols-8"
 >
-  {/* Column 1: Description */}
   <div class="min-w-0 md:col-span-3">
     <BriefSummary text={description} />
   </div>
 
-  {/* Column 2 & 3: Metadata */}
   <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:border-x md:border-border/40 md:px-6">
     {
       items.map((item) => (
@@ -84,7 +82,6 @@ const items = toolbarItems.filter((i): i is ToolbarItemType => !!i);
     }
   </div>
 
-  {/* Column 4: Tags */}
   <div class="min-w-0 md:col-span-3">
     <LabelGroup items={tags.items} title={tags.title} />
   </div>

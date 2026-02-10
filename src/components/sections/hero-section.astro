@@ -8,11 +8,9 @@ import StatsGrid from "../organisms/stats-grid.astro";
 ---
 
 <GridTile class="overflow-hidden p-6 md:p-10 lg:col-span-12">
-  {/* Animated Gradient Background */}
   <div class="bg-gradient-animated absolute inset-0 -z-10"></div>
 
   <div class="relative z-10 flex flex-col items-center gap-5 text-center">
-    {/* Brand Core */}
     <div class="flex w-full flex-col gap-6 md:flex-row md:items-center md:justify-center">
       <div class="max-w-2xl flex-1">
         <Heading class="leading-header tracking-tight" level={1} size="display" variant="primary">
@@ -23,7 +21,6 @@ import StatsGrid from "../organisms/stats-grid.astro";
         </Text>
       </div>
 
-      {/* Profile Image */}
       <div class="mt-4 shrink-0 self-center md:mt-0 md:ml-8">
         <div
           class="relative size-32 animate-fade-in overflow-hidden rounded-full bg-foreground/5 ring-4 ring-background md:size-40"
@@ -33,7 +30,6 @@ import StatsGrid from "../organisms/stats-grid.astro";
       </div>
     </div>
 
-    {/* Stats */}
     <div class="w-full pt-3">
       <StatsGrid items={STATS} />
     </div>

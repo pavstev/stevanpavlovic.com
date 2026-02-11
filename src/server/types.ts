@@ -19,11 +19,11 @@ export abstract class ContentAdapter<CN extends CollectionKey> {
 
 export type { CollectionEntry, CollectionKey };
 
-import { collections as baseCollections } from "../content.config";
+import { COLLECTION_KEYS } from "../lib/content/collection-keys";
 
 const DISALLOWED_COLLECTIONS = [] as const;
 
-export const collections: CollectionKey[] = Object.keys(baseCollections).filter(
+export const collections: CollectionKey[] = COLLECTION_KEYS.filter(
   (c) => !DISALLOWED_COLLECTIONS.includes(c as never)
 ) as CollectionKey[];
 

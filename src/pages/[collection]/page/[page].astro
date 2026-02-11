@@ -8,7 +8,7 @@ import { getCollectionData, getCollectionPageData } from "@server/api";
 import LayoutRoot from "../../../components/layout/layout-root.astro";
 import ResourceDiscovery from "../../../components/organisms/resource-discovery.astro";
 import { ITEMS_PER_PAGE } from "../../../config";
-import { collections } from "../../../content.config";
+import { COLLECTION_KEYS } from "../../../lib/content/collection-keys";
 
 export interface Params {
   collection: CollectionKey;
@@ -25,7 +25,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
   }> = [];
 
-  const collectionNames = Object.keys(collections) as CollectionKey[];
+  const collectionNames = COLLECTION_KEYS;
   for (const collection of collectionNames) {
     const sortedItems = await getCollectionData(collection);
     const totalItems = sortedItems.length;

@@ -3,12 +3,11 @@
 import type { GetStaticPaths } from "astro";
 import type { CollectionKey } from "astro:content";
 
+import LayoutRoot from "@components/layout/layout-root.astro";
+import ResourceDiscovery from "@components/organisms/resource-discovery.astro";
+import { ITEMS_PER_PAGE } from "@config";
+import { COLLECTION_KEYS } from "@lib-shared/collection-keys";
 import { getCollectionData, getCollectionPageData } from "@server/api";
-
-import LayoutRoot from "../../../components/layout/layout-root.astro";
-import ResourceDiscovery from "../../../components/organisms/resource-discovery.astro";
-import { ITEMS_PER_PAGE } from "../../../config";
-import { COLLECTION_KEYS } from "../../../lib/content/collection-keys";
 
 export interface Params {
   collection: CollectionKey;

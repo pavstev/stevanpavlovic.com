@@ -19,7 +19,7 @@ export abstract class ContentAdapter<CN extends CollectionKey> {
 
 export type { CollectionEntry, CollectionKey };
 
-import { COLLECTION_KEYS } from "../lib/content/collection-keys";
+import { COLLECTION_KEYS } from "../lib-shared/collection-keys";
 
 const DISALLOWED_COLLECTIONS = [] as const;
 

@@ -7,21 +7,49 @@
     "esModuleInterop": true,
     "target": "es2022",
     "strictNullChecks": true,
-    "types": ["./worker-configuration.d.ts", "node"],
+    "types": [
+      "./worker-configuration.d.ts",
+      "node"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@client": ["./src/client/index.ts"],
-      "@server/*": ["./src/server/*"],
-      "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@lib-shared/*": [
+        "./src/lib-shared/*"
+      ],
+      "@client": [
+        "./src/client/index.ts"
+      ],
+      "@config": [
+        "./src/config.ts"
+      ],
+      "@client/*": [
+        "./src/client/*"
+      ],
+      "@server/*": [
+        "./src/server/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ]
     },
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
       }
-    ]
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   },
-  "exclude": ["dist", "api-bak"],
+  "exclude": [
+    "dist",
+    "api-bak"
+  ],
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"]
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ]
 }

@@ -14,6 +14,8 @@ import remarkToc from "remark-toc";
 
 import { PROFILE } from "./src/config";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
@@ -39,23 +41,17 @@ export default defineConfig({
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
-  integrations: [
-    mdx(),
-    sitemap(),
-    favicons({
-      input: {
-        favicons: [await readFile("src/assets/profile.jpeg")],
-      },
-      name: PROFILE.name,
-      short_name: PROFILE.name,
-    }),
-    icon(),
-    partytown({
-      config: {
-        forward: ["dataLayer.push", "gtag"],
-      },
-    }),
-  ],
+  integrations: [mdx(), sitemap(), favicons({
+    input: {
+      favicons: [await readFile("src/assets/profile.jpeg")],
+    },
+    name: PROFILE.name,
+    short_name: PROFILE.name,
+  }), icon(), partytown({
+    config: {
+      forward: ["dataLayer.push", "gtag"],
+    },
+  }), react()],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
     remarkPlugins: [readingTimeRemarkPlugin as any, [remarkToc, { heading: "toc", maxDepth: 3 }]],

@@ -105,6 +105,14 @@ export default defineConfig(
     },
   },
 
+  // React
+  {
+    files: ["src/components/**/*.tsx"],
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off",
+    },
+  },
+
   // Astro-specific overrides
   {
     files: ASTRO_FILES,

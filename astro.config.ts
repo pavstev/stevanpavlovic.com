@@ -1,6 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import favicons from "astro-favicons";
@@ -13,8 +14,6 @@ import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
 
 import { PROFILE } from "./src/config";
-
-import react from "@astrojs/react";
 
 export default defineConfig({
   adapter: cloudflare({
@@ -41,17 +40,24 @@ export default defineConfig({
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
-  integrations: [mdx(), sitemap(), favicons({
-    input: {
-      favicons: [await readFile("src/assets/profile.jpeg")],
-    },
-    name: PROFILE.name,
-    short_name: PROFILE.name,
-  }), icon(), partytown({
-    config: {
-      forward: ["dataLayer.push", "gtag"],
-    },
-  }), react()],
+  integrations: [
+    mdx(),
+    sitemap(),
+    favicons({
+      input: {
+        favicons: [await readFile("src/assets/profile.jpeg")],
+      },
+      name: PROFILE.name,
+      short_name: PROFILE.name,
+    }),
+    icon(),
+    partytown({
+      config: {
+        forward: ["dataLayer.push", "gtag"],
+      },
+    }),
+    react(),
+  ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
     remarkPlugins: [readingTimeRemarkPlugin as any, [remarkToc, { heading: "toc", maxDepth: 3 }]],

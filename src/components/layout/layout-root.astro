@@ -9,10 +9,6 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import Analytics from "../atoms/analytics.astro";
-import Container from "../atoms/container.astro";
-import MetaHead from "../atoms/meta-head.astro";
-import EnvironmentalBackground from "../organisms/environmental-background.astro";
 import Footer from "./footer.astro";
 import Header from "./header.astro";
 
@@ -25,17 +21,7 @@ interface Props extends HTMLAttributes<"html"> {
   title: string;
 }
 
-const {
-  class: className,
-  description,
-  image,
-  intensity = "medium",
-  lang = "en",
-  title,
-  ...rest
-} = Astro.props;
-
-const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
+const { class: className, description, lang = "en", title, ...rest } = Astro.props;
 ---
 
 <!doctype html>
@@ -44,10 +30,11 @@ const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
     <meta content="nosniff" http-equiv="X-Content-Type-Options" />
     <meta content="DENY" http-equiv="X-Frame-Options" />
     <meta content="camera=(), microphone=(), geolocation=()" http-equiv="Permissions-Policy" />
-    <MetaHead description={description} image={image} title={title} />
+    <meta content={description} name="description" />
+    <title>{title}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
-    {!!googleAnalyticsID && <Analytics googleAnalyticsID={googleAnalyticsID} />}
+    <!-- Analytics removed placeholder -->
     <ClientRouter />
     <slot name="head" />
   </head>
@@ -61,13 +48,13 @@ const googleAnalyticsID = import.meta.env.PUBLIC_GTM_ID;
       className
     )}
   >
-    <EnvironmentalBackground {intensity} />
+    <!-- Visual background removed -->
 
     <Header />
     <main class="relative z-10 min-h-screen">
-      <Container>
+      <div class="container mx-auto px-4">
         <slot />
-      </Container>
+      </div>
     </main>
     <Footer />
   </body>

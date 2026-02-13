@@ -1,10 +1,7 @@
 ---
-import Container from "../components/atoms/container.astro";
-import Heading from "../components/atoms/heading.astro";
-import Icon from "../components/atoms/icon.astro";
-import Text from "../components/atoms/text.astro";
+import { Icon } from "astro-icon/components";
+
 import LayoutRoot from "../components/layout/layout-root.astro";
-import EnvironmentalBackground from "../components/organisms/environmental-background.astro";
 import { Button } from "../components/ui/button";
 
 interface Props {
@@ -19,34 +16,33 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
 ---
 
 <LayoutRoot description={description} slug="/500" title={title}>
-  <EnvironmentalBackground intensity="high" />
+  <!-- Background removed -->
 
   <div
     class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center"
   >
-    <Container class="relative z-10 flex flex-col items-center justify-center p-6 sm:p-8">
+    <div
+      class="relative z-10 container mx-auto flex flex-col items-center justify-center p-6 px-4 sm:p-8"
+    >
       <div
         class="glass-strong flex flex-col items-center gap-6 rounded-2xl border border-danger/20 p-6 text-center shadow-2xl shadow-danger/10 sm:p-8"
       >
         <div class="relative">
-          <Heading
-            class="text-9xl font-black tracking-tighter text-danger opacity-90 sm:text-[12rem]"
-            variant="accent"
-          >
+          <h1 class="text-9xl font-black tracking-tighter text-danger opacity-90 sm:text-[12rem]">
             500
-          </Heading>
+          </h1>
           <div class="shadow-glow-danger absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
         </div>
 
         <div class="flex flex-col items-center gap-4">
-          <Heading class="tracking-widest text-danger capitalize" level={2} size="md">
+          <h2 class="text-3xl font-bold tracking-tight text-danger capitalize lg:text-4xl">
             System Malfunction
-          </Heading>
+          </h2>
 
-          <Text class="text-balance" size="lg" variant="muted">
+          <p class="text-lg text-balance text-muted-foreground">
             The server successfully processed 0% of your request. An anomaly has been detected in
             the core logic.
-          </Text>
+          </p>
 
           <div
             class="mt-2 rounded-lg border border-foreground/5 bg-background/40 px-4 py-2 font-mono text-xs text-red-400"
@@ -56,16 +52,16 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
         </div>
 
         <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="primary">
-            <Icon name="mdi:home-lightning-bolt-outline" size="md" />
+          <Button as="a" className="w-full sm:w-auto" href="/" size="lg" variant="default">
+            <Icon class="mr-2 size-6" name="mdi:home-lightning-bolt-outline" />
             Return to Base
           </Button>
-          <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="outline">
-            <Icon name="mdi:restart" size="md" />
+          <Button as="a" className="w-full sm:w-auto" href="/" size="lg" variant="outline">
+            <Icon class="mr-2 size-6" name="mdi:restart" />
             Retry Sequence
           </Button>
         </div>
       </div>
-    </Container>
+    </div>
   </div>
 </LayoutRoot>

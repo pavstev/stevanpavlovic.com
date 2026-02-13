@@ -2,14 +2,8 @@
 import { isActivePath } from "@client";
 import { cn } from "@client";
 
-import { NAV_ITEMS, NAV_ITEMS_ARRAY } from "../../config";
+import { NAV_ITEMS_ARRAY } from "../../config";
 import { Button } from "../ui/button";
-import Container from "../atoms/container.astro";
-import Stack from "../atoms/stack.astro";
-import Text from "../atoms/text.astro";
-import BrandIdentity from "../molecules/brand-identity.astro";
-import MobileMenuToggle from "../molecules/mobile-menu-toggle.astro";
-import MobileMenu from "../molecules/mobile-menu.astro";
 
 const { pathname } = Astro.url;
 const isActive = (href: string) => isActivePath(pathname, href);
@@ -21,8 +15,8 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
   id="site-header"
   transition:persist
 >
-  <Container>
-    <Stack align="center" class="justify-center" direction="row">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-row items-center justify-center gap-3">
       <div
         class={cn(
           "glass-strong relative flex items-center gap-2 overflow-hidden px-2 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
@@ -41,7 +35,12 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
         }
 
         <div class="flex shrink-0 items-center pl-1 transition-all duration-500" id="brand-wrapper">
-          <BrandIdentity size="sm" variant="author" />
+          <a
+            class="text-xl font-bold tracking-tighter transition-colors hover:text-primary"
+            href="/"
+          >
+            SP
+          </a>
         </div>
 
         <nav class="hidden items-center gap-1 transition-all duration-500 md:flex" id="desktop-nav">
@@ -50,7 +49,7 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
               const active = isActive(item.href);
               return (
                 <Button data-nav-link href={item.href} isActive={active} size="xs" variant="ghost">
-                  <Text class="relative z-10">{item.label}</Text>
+                  <p class="relative z-10">{item.label}</p>
                 </Button>
               );
             })
@@ -58,24 +57,38 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
         </nav>
 
         <div
-          class="ml-auto flex items-center gap-1 pr-1 transition-all duration-500"
+          class="ml-auto flex items-center gap-1 pr-1 transition-all duration-500 md:hidden"
           id="actions-wrapper"
         >
-          <MobileMenuToggle size="sm" />
+          {/* Mobile Menu Toggle was here */}
+          <Button size="icon" variant="ghost">
+            <span class="sr-only">Menu</span>
+            <svg
+              class="size-6"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"
+              ></line><line x1="4" x2="20" y1="18" y2="18"></line></svg
+            >
+          </Button>
         </div>
       </div>
-    </Stack>
-  </Container>
+    </div>
+  </div>
 </header>
 
-<MobileMenu navItems={Object.values(NAV_ITEMS)} />
-
 <script>
-  import { initMobileMenu, updateActiveLinks } from "@client";
+  import { updateActiveLinks } from "@client";
   import { initHeaderEffects } from "@client";
 
   const init = () => {
-    initMobileMenu();
     updateActiveLinks();
     initHeaderEffects();
   };

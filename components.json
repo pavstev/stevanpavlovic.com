@@ -19,5 +19,7 @@
     "lib": "@client",
     "hooks": "@client/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@21st": "https://21st.dev/r/{name}"
+  }
 }

@@ -6,7 +6,6 @@ import type { CollectionKey } from "astro:content";
 import { getCollectionPageData } from "@server/api";
 
 import LayoutRoot from "../../components/layout/layout-root.astro";
-import ResourceDiscovery from "../../components/organisms/resource-discovery.astro";
 import { NAV_ITEMS } from "../../config";
 
 export const prerender = true;
@@ -26,34 +25,71 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const { collection } = Astro.params as unknown as Params;
 const pageData = await getCollectionPageData(collection, 1);
 
-const {
-  baseUrl,
-  collectionItems,
-  config,
-  containerId,
-  currentPage,
-  getItemCardProps,
-  initialPageSize,
-  nextUrl,
-  prevUrl,
-  totalItems,
-  totalPages,
-} = pageData;
+const { baseUrl, collectionItems, config, currentPage, nextUrl, prevUrl, totalPages } = pageData;
 ---
 
 <LayoutRoot description={config.description} slug={`/${collection}`} title={config.title}>
-  <ResourceDiscovery
-    {...config}
-    baseUrl={baseUrl}
-    collectionItems={collectionItems}
-    collectionKey={collection}
-    containerId={containerId}
-    currentPage={currentPage}
-    getItemCardProps={getItemCardProps}
-    initialPageSize={initialPageSize}
-    nextUrl={nextUrl}
-    prevUrl={prevUrl}
-    totalItems={totalItems}
-    totalPages={totalPages}
-  />
+  <div class="container mx-auto px-4 py-12 md:py-24">
+    <div class="flex flex-col gap-8">
+      <h1 class="text-4xl font-bold tracking-tight">{config.title}</h1>
+      <p class="text-xl text-muted-foreground">{config.description}</p>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          collectionItems.map((item) => (
+            <div class="flex flex-col gap-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm transition-colors hover:border-primary/50">
+              {(item.data as any).cover && (
+                <div class="mb-2 aspect-video overflow-hidden rounded-md bg-muted">
+                  <img
+                    alt={(item.data as any).title}
+                    class="size-full  object-cover"
+                    src={
+                      typeof (item.data as any).cover === "string"
+                        ? (item.data as any).cover
+                        : (item.data as any).cover.src
+                    }
+                  />
+                </div>
+              )}
+              <h2 class="text-2xl font-bold">
+                <a
+                  class="decoration-primary underline-offset-4 hover:underline"
+                  href={`${baseUrl}/${item.id}`}
+                >
+                  {(item.data as any).title ?? (item.data as any).label ?? item.id}
+                </a>
+              </h2>
+              <p class="line-clamp-3 text-muted-foreground">{(item.data as any).description}</p>
+              <div class="mt-auto flex flex-wrap gap-2 pt-4">
+                {(item.data as any).tags &&
+                  (item.data as any).tags
+                    .slice(0, 3)
+                    .map((tag: string) => (
+                      <span class="rounded-md bg-secondary px-2 py-1 font-mono text-xs">{tag}</span>
+                    ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-8 flex justify-center gap-4">
+        {
+          prevUrl && (
+            <a class="rounded-md border px-4 py-2 hover:bg-muted" href={prevUrl}>
+              Previous
+            </a>
+          )
+        }
+        <span class="px-4 py-2">Page {currentPage} of {totalPages}</span>
+        {
+          nextUrl && (
+            <a class="rounded-md border px-4 py-2 hover:bg-muted" href={nextUrl}>
+              Next
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
 </LayoutRoot>

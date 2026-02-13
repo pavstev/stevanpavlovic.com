@@ -1,64 +1,60 @@
 ---
-import { Button } from "../components/ui/button";
-import Container from "../components/atoms/container.astro";
-import Heading from "../components/atoms/heading.astro";
-import Icon from "../components/atoms/icon.astro";
-import Text from "../components/atoms/text.astro";
-import LayoutRoot from "../components/layout/layout-root.astro";
-import EnvironmentalBackground from "../components/organisms/environmental-background.astro";
+import { Icon } from "astro-icon/components";
 
+import LayoutRoot from "../components/layout/layout-root.astro";
+import { Button } from "../components/ui/button";
 const title = "404 - Lost in Space";
 const description = "The coordinates you entered do not correspond to a known sector.";
 ---
 
 <LayoutRoot description={description} slug="/404" title={title}>
-  <EnvironmentalBackground intensity="high" />
-
+  <!--
+Background removed -->
   <div
-    class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col items-center justify-center"
+    class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col
+items-center justify-center"
   >
-    <Container class="relative z-10 flex flex-col items-center justify-center p-6 sm:p-8">
+    <div
+      class="relative z-10 container mx-auto flex flex-col
+items-center justify-center p-6 px-4 sm:p-8"
+    >
       <div
-        class="glass-strong flex flex-col items-center gap-6 rounded-2xl border border-accent/20 p-6 text-center shadow-2xl shadow-accent/10 sm:p-8"
+        class="glass-strong flex flex-col items-center
+gap-6 rounded-2xl border border-accent/20 p-6 text-center shadow-2xl shadow-accent/10 sm:p-8"
       >
         <div class="relative">
-          <Heading
-            class="text-9xl font-black tracking-tighter text-accent opacity-90 sm:text-[12rem]"
-            variant="accent"
-          >
+          <h1 class="text-9xl font-black tracking-tighter text-accent opacity-90
+sm:text-[12rem]">
             404
-          </Heading>
-          <div class="shadow-glow-accent absolute inset-0 -z-10 opacity-30 blur-3xl"></div>
+          </h1>
+          <div class="shadow-glow-accent absolute inset-0 -z-10 opacity-30
+blur-3xl"></div>
         </div>
-
         <div class="flex flex-col items-center gap-4">
-          <Heading class="tracking-widest text-accent capitalize" level={2} size="md">
+          <h2 class="text-3xl font-bold tracking-widest text-accent capitalize lg:text-4xl">
             Signal Lost
-          </Heading>
-
-          <Text class="text-balance" size="lg" variant="muted">
+          </h2>
+          <p class="text-lg text-balance text-muted-foreground">
             The coordinates you provided lead to empty space. Recalibrating route to nearest
             outpost.
-          </Text>
+          </p>
         </div>
-
-        <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button as="a" class="w-full sm:w-auto" href="/" size="lg" variant="primary">
-            <Icon name="mdi:rocket-launch-outline" size="md" />
-            Warp Home
+        <div class="flex w-full flex-col gap-3
+sm:flex-row sm:justify-center">
+          <Button as="a" className="w-full sm:w-auto" href="/" size="lg" variant="default">
+            <Icon class="mr-2 size-6" name="mdi:rocket-launch-outline" /> Warp Home
           </Button>
           <Button
             as="a"
-            class="w-full sm:w-auto"
+            className="w-full sm:w-auto"
             href="javascript:history.back()"
             size="lg"
             variant="outline"
           >
-            <Icon name="mdi:arrow-u-left-bottom" size="md" />
-            Go Back
+            <Icon class="mr-2 size-6" name="mdi:arrow-u-left-bottom" /> Go Back
           </Button>
         </div>
       </div>
-    </Container>
+    </div>
   </div>
 </LayoutRoot>

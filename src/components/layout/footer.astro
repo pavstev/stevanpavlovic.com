@@ -1,20 +1,18 @@
 ---
 import { getCopyrightText } from "@client";
+import { Icon } from "astro-icon/components";
 
 import { SOCIALS } from "../../config";
-import Container from "../atoms/container.astro";
-import Icon from "../atoms/icon.astro";
-import Text from "../atoms/text.astro";
 ---
 
 <footer class="relative mt-6 mb-3 w-full" transition:persist>
-  <Container>
+  <div class="container mx-auto px-4">
     <div
       class="glass-strong hover:shadow-glow-subtle flex h-14 w-full items-center justify-between gap-3 rounded-full px-6 shadow-2xl transition-all duration-500 hover:border-foreground/20"
     >
-      <Text class="font-medium tracking-wide" size="sm" variant="muted">
+      <p class="text-sm font-medium tracking-wide text-muted-foreground">
         {getCopyrightText()}
-      </Text>
+      </p>
 
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-2 border-r border-foreground/10 pr-6">
@@ -28,9 +26,9 @@ import Text from "../atoms/text.astro";
                 target="_blank"
               >
                 <Icon
-                  class="group-hover:text-accent group-hover:drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
+                  class="size-6 group-hover:text-accent group-hover:drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]"
+                  name=""
                   name={social.icon}
-                  size="md"
                 />
               </a>
             ))
@@ -42,16 +40,16 @@ import Text from "../atoms/text.astro";
           data-tooltip="RSS Feed"
           href="/rss.xml"
         >
-          <Icon name="mdi:rss" size="md" />
+          <Icon class="size-6" name="mdi:rss" name="mdi:rss" />
         </a>
         <a
           class="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
           data-tooltip="Sitemap"
           href="/sitemap-index.xml"
         >
-          <Icon name="mdi:sitemap" size="md" />
+          <Icon class="size-6" name="mdi:sitemap" name="mdi:sitemap" />
         </a>
       </div>
     </div>
-  </Container>
+  </div>
 </footer>

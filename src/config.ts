@@ -3,7 +3,7 @@ import profileImage from "./assets/profile.jpeg";
 export const SITE_TITLE = "Astro Blog";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
-const SITE_CONFIG = {
+export const SITE_CONFIG = {
   author: "Stevan Pavlovic",
   description: "Technical Lead and Senior Software Engineer",
   email: "hi@stevanpavlovic.com",

@@ -1,4 +1,4 @@
-const MistralAI = (props: React.SVGProps<SVGSVGElement>) => (
+const MistralAI = (props: React.SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     height="1em"
     preserveAspectRatio="xMidYMid"

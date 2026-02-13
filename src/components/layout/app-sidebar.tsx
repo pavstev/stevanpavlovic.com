@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "@client/utils";
+import { ColorModeToggle } from "@components/layout/color-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import { Icon } from "@components/ui/icon";
 import { Separator } from "@components/ui/separator";
 import {
   Sidebar,
@@ -13,16 +14,17 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@components/ui/sidebar";
-import { ToggleTheme } from "@components/ui/toggle-theme";
-import { ExternalLinkIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip";
 import * as React from "react";
 
 import { NAV_ITEMS_ARRAY, PROFILE, SOCIALS } from "../../config";
 
-export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+export type AppSidebarProps = React.ComponentProps<typeof Sidebar>;
+
+export const AppSidebar: React.FC<AppSidebarProps> = ({ ...props }) => {
   const [pathname, setPathname] = React.useState("");
 
-  React.useEffect(() => {
+  React.useEffect((): void => {
     setPathname(window.location.pathname);
   }, []);
 
@@ -51,12 +53,6 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
                   <a href={item.href}>
-                    {/* Convert string icon name to simple generic icon if needed,
-                        but NAV_ITEMS likely has specific icon strings.
-                        For now we just render text or we could map icons if we had a mapping.
-                        Since we accept children, we can just put label safely.
-                        If we had lucide icons for them, we'd render them here.
-                        Checking config, they are strings 'mdi:...'. */}
                     <span className="font-medium">{item.label}</span>
                   </a>
                 </SidebarMenuButton>
@@ -69,22 +65,30 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium text-muted-foreground">Theme</span>
-            <ToggleTheme type="inline" />
+            <ColorModeToggle type="inline" />
           </div>
           <Separator />
           <div className="flex flex-col gap-2">
             <span className="text-xs font-medium text-muted-foreground">Socials</span>
             <div className="grid grid-cols-2 gap-2">
               {SOCIALS.map((social) => (
-                <a
-                  className="flex items-center gap-2 rounded-md border p-2 text-xs hover:bg-muted"
-                  href={social.href}
-                  key={social.name}
-                  target="_blank"
-                >
-                  {social.name}
-                  <ExternalLinkIcon className="ml-auto size-3 opacity-50" />
-                </a>
+                <TooltipProvider key={social.name}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <a
+                        className="flex items-center gap-2 rounded-md border p-2 text-xs hover:bg-muted"
+                        href={social.href}
+                        target="_blank"
+                      >
+                        {social.name}
+                        <Icon className="ml-auto size-3 opacity-50" name="mdi:open-in-new" />
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Open {social.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               ))}
             </div>
           </div>

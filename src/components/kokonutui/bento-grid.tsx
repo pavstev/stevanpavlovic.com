@@ -1,20 +1,12 @@
 "use client";
 
-/**
- * @author: @dorianbaffier
- * @description: Bento Grid
- * @version: 1.0.0
- * @date: 2025-06-26
- * @license: MIT
- * @website: https://kokonutui.com
- * @github: https://github.com/kokonut-labs/kokonutui
- */
-
 import { cn } from "@client/utils";
+import { Icon } from "@components/ui/icon";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip";
 import { motion, useMotionValue, useTransform, type Variants } from "framer-motion";
-import { ArrowUpRight, CheckCircle2, Clock, Mic, Plus, Sparkles, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { Illustration } from "../ui/glowing-stars";
 import Anthropic from "./anthropic";
 import AnthropicDark from "./anthropic-dark";
 import DeepSeek from "./deepseek";
@@ -144,7 +136,7 @@ const staggerContainer: Variants = {
   },
 };
 
-const SpotlightFeature = ({ items }: { items: string[] }) => (
+export const SpotlightFeature: React.FC<{ items: string[] }> = ({ items }) => (
   <ul className="mt-2 space-y-1.5">
     {items.map((item, index) => (
       <motion.li
@@ -154,21 +146,20 @@ const SpotlightFeature = ({ items }: { items: string[] }) => (
         key={`spotlight-${item.toLowerCase().replace(/\s+/g, "-")}`}
         transition={{ delay: 0.1 * index }}
       >
-        <CheckCircle2 className="size-4  shrink-0 text-emerald-500 dark:text-emerald-400" />
+        <Icon
+          className="size-4 shrink-0 text-emerald-500 dark:text-emerald-400"
+          name="mdi:check-circle"
+        />
         <span className="text-sm text-neutral-700 dark:text-neutral-300">{item}</span>
       </motion.li>
     ))}
   </ul>
 );
 
-const CounterAnimation = ({
+export const CounterAnimation: React.FC<{ end: number; start: number; suffix?: string }> = ({
   end,
   start,
   suffix = "",
-}: {
-  end: number;
-  start: number;
-  suffix?: string;
 }) => {
   const [count, setCount] = useState(start);
 
@@ -191,7 +182,9 @@ const CounterAnimation = ({
       }
     }, frameRate);
 
-    return () => clearInterval(counter);
+    return (): void => {
+      clearInterval(counter);
+    };
   }, [start, end]);
 
   return (
@@ -204,7 +197,7 @@ const CounterAnimation = ({
   );
 };
 
-const ChartAnimation = ({ value }: { value: number }) => (
+export const ChartAnimation: React.FC<{ value: number }> = ({ value }) => (
   <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
     <motion.div
       animate={{ width: `${value}%` }}
@@ -215,7 +208,7 @@ const ChartAnimation = ({ value }: { value: number }) => (
   </div>
 );
 
-const IconsFeature = () => (
+export const IconsFeature: React.FC = () => (
   <div className="mt-4 grid grid-cols-3 gap-4">
     <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
       <div className="relative flex size-8  items-center justify-center">
@@ -261,7 +254,10 @@ const IconsFeature = () => (
     </motion.div>
     <motion.div className="group flex flex-col items-center gap-2 rounded-xl border border-neutral-200/50 bg-gradient-to-b from-neutral-100/80 to-neutral-100 p-3 transition-all duration-300 hover:border-neutral-300 dark:border-neutral-700/50 dark:from-neutral-800/80 dark:to-neutral-800 dark:hover:border-neutral-600">
       <div className="relative flex size-8  items-center justify-center">
-        <Plus className="size-6  text-neutral-600 transition-transform dark:text-neutral-400" />
+        <Icon
+          className="size-6 text-neutral-600 transition-transform dark:text-neutral-400"
+          name="mdi:plus"
+        />
       </div>
       <span className="text-center text-xs font-medium text-neutral-600 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-neutral-200">
         More
@@ -270,7 +266,9 @@ const IconsFeature = () => (
   </div>
 );
 
-const TimelineFeature = ({ timeline }: { timeline: Array<{ event: string; year: string }> }) => (
+export const TimelineFeature: React.FC<{ timeline: Array<{ event: string; year: string }> }> = ({
+  timeline,
+}) => (
   <div className="relative mt-3">
     <div className="absolute top-0 bottom-0 left-[9px] w-[2px] bg-neutral-200 dark:bg-neutral-700" />
     {timeline.map((item) => (
@@ -295,12 +293,12 @@ const TimelineFeature = ({ timeline }: { timeline: Array<{ event: string; year: 
   </div>
 );
 
-const TypingCodeFeature = ({ text }: { text: string }) => {
+export const TypingCodeFeature: React.FC<{ text: string }> = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useEffect((): void => {
     if (currentIndex < text.length) {
       const timeout = setTimeout(
         () => {
@@ -312,13 +310,12 @@ const TypingCodeFeature = ({ text }: { text: string }) => {
           }
         },
         Math.random() * 30 + 10
-      ); // Random typing speed for realistic effect
+      );
 
-      return () => clearTimeout(timeout);
+      return (): void => clearTimeout(timeout);
     }
   }, [currentIndex, text]);
 
-  // Reset animation when component unmounts and remounts
   useEffect(() => {
     setDisplayedText("");
     setCurrentIndex(0);
@@ -342,17 +339,15 @@ const TypingCodeFeature = ({ text }: { text: string }) => {
   );
 };
 
-const MetricsFeature = ({
-  metrics,
-}: {
+export const MetricsFeature: React.FC<{
   metrics: Array<{
     color?: string;
     label: string;
     suffix?: string;
     value: number;
   }>;
-}) => {
-  const getColorClass = (color = "emerald") => {
+}> = ({ metrics }) => {
+  const getColorClass = (color = "emerald"): string => {
     const colors = {
       amber: "bg-amber-500 dark:bg-amber-400",
       blue: "bg-blue-500 dark:bg-blue-400",
@@ -375,9 +370,11 @@ const MetricsFeature = ({
         >
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-1.5 font-medium text-neutral-700 dark:text-neutral-300">
-              {metric.label === "Uptime" && <Clock className="size-3.5 " />}
-              {metric.label === "Response time" && <Zap className="size-3.5 " />}
-              {metric.label === "Cost reduction" && <Sparkles className="size-3.5 " />}
+              {metric.label === "Uptime" && <Icon className="size-3.5" name="mdi:clock-outline" />}
+              {metric.label === "Response time" && <Icon className="size-3.5" name="mdi:flash" />}
+              {metric.label === "Cost reduction" && (
+                <Icon className="size-3.5" name="mdi:sparkles" />
+              )}
               {metric.label}
             </div>
             <div className="font-semibold text-neutral-700 dark:text-neutral-300">
@@ -405,7 +402,7 @@ const MetricsFeature = ({
   );
 };
 
-const AIInput_Voice: React.FC = () => {
+export const AIInput_Voice: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [time, setTime] = useState(0);
   const [isClient, setIsClient] = useState(false);
@@ -415,7 +412,7 @@ const AIInput_Voice: React.FC = () => {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
+  useEffect((): VoidFunction => {
     let intervalId: NodeJS.Timeout;
 
     if (submitted) {
@@ -426,10 +423,10 @@ const AIInput_Voice: React.FC = () => {
       setTime(0);
     }
 
-    return () => clearInterval(intervalId);
+    return (): void => clearInterval(intervalId);
   }, [submitted]);
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
@@ -439,7 +436,7 @@ const AIInput_Voice: React.FC = () => {
     if (!isDemo) return;
 
     let timeoutId: NodeJS.Timeout;
-    const runAnimation = () => {
+    const runAnimation = (): void => {
       setSubmitted(true);
       timeoutId = setTimeout(() => {
         setSubmitted(false);
@@ -448,13 +445,13 @@ const AIInput_Voice: React.FC = () => {
     };
 
     const initialTimeout = setTimeout(runAnimation, 100);
-    return () => {
+    return (): void => {
       clearTimeout(timeoutId);
       clearTimeout(initialTimeout);
     };
   }, [isDemo]);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     if (isDemo) {
       setIsDemo(false);
       setSubmitted(false);
@@ -465,7 +462,7 @@ const AIInput_Voice: React.FC = () => {
 
   return (
     <div className="w-full py-4">
-      <div className="relative mx-auto flex w-full max-w-xl flex-col items-center gap-2">
+      <div className="relative mx-auto flex w-full max-w-2xl flex-col items-center gap-2">
         <button
           className={cn(
             "group flex size-16  items-center justify-center rounded-xl transition-colors",
@@ -480,7 +477,7 @@ const AIInput_Voice: React.FC = () => {
               style={{ animationDuration: "3s" }}
             />
           ) : (
-            <Mic className="size-6  text-black/70 dark:text-white/70" />
+            <Icon className="size-6 text-black/70 dark:text-white/70" name="mdi:microphone" />
           )}
         </button>
 
@@ -523,14 +520,14 @@ const AIInput_Voice: React.FC = () => {
   );
 };
 
-const BentoCard = ({ item }: { item: BentoItem }) => {
+export const BentoCard: React.FC<{ item: BentoItem }> = ({ item }) => {
   const [, setIsHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [2, -2]);
   const rotateY = useTransform(x, [-100, 100], [-2, 2]);
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
     const rect = event.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -542,7 +539,7 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
     y.set(yPct * 100);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (): void => {
     x.set(0);
     y.set(0);
     setIsHovered(false);
@@ -565,11 +562,14 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
     >
       <a
         aria-label={`${item.title} - ${item.description}`}
-        className={`group relative flex h-full flex-col gap-4 rounded-xl border border-neutral-200/60 bg-gradient-to-b from-neutral-50/60 via-neutral-50/40 to-neutral-50/30 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] backdrop-blur-[4px] transition-all duration-500 ease-out before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-b before:from-white/10 before:via-white/20 before:to-transparent before:opacity-100 before:transition-opacity before:duration-500 after:absolute after:inset-0 after:z-[-1] after:rounded-xl after:bg-neutral-50/70 hover:border-neutral-300/50 hover:bg-gradient-to-b hover:from-neutral-50/60 hover:via-neutral-50/30 hover:to-neutral-50/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:backdrop-blur-[6px] dark:border-neutral-800/60 dark:from-neutral-900/60 dark:via-neutral-900/40 dark:to-neutral-900/30 dark:shadow-[0_4px_20px_rgb(0,0,0,0.2)] dark:before:from-black/10 dark:before:via-black/20 dark:before:to-transparent dark:after:bg-neutral-900/70 dark:hover:border-neutral-700/50 dark:hover:from-neutral-800/60 dark:hover:via-neutral-800/30 dark:hover:to-neutral-800/20 dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] ${item.className}
+        className={`group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl border border-neutral-200/60 bg-gradient-to-b from-neutral-50/60 via-neutral-50/40 to-neutral-50/30 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] backdrop-blur-[4px] transition-all duration-500 ease-out before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-b before:from-white/10 before:via-white/20 before:to-transparent before:opacity-100 before:transition-opacity before:duration-500 after:absolute after:inset-0 after:z-[-1] after:rounded-xl after:bg-neutral-50/70 hover:border-neutral-300/50 hover:bg-gradient-to-b hover:from-neutral-50/60 hover:via-neutral-50/30 hover:to-neutral-50/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:backdrop-blur-[6px] dark:border-neutral-800/60 dark:from-neutral-900/60 dark:via-neutral-900/40 dark:to-neutral-900/30 dark:shadow-[0_4px_20px_rgb(0,0,0,0.2)] dark:before:from-black/10 dark:before:via-black/20 dark:before:to-transparent dark:after:bg-neutral-900/70 dark:hover:border-neutral-700/50 dark:hover:from-neutral-800/60 dark:hover:via-neutral-800/30 dark:hover:to-neutral-800/20 dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] ${item.className}
                 `}
         href={item.href || "#"}
         tabIndex={0}
       >
+        <div className="pointer-events-none absolute inset-0">
+          <Illustration className="h-full" columns={10} mouseEnter={true} stars={50} />
+        </div>
         <div
           className="relative z-10 flex h-full flex-col gap-3"
           style={{ transform: "translateZ(20px)" }}
@@ -579,16 +579,24 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
               <h3 className="text-xl font-semibold tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-neutral-700 dark:text-neutral-100 dark:group-hover:text-neutral-300">
                 {item.title}
               </h3>
-              <div className="text-neutral-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:text-neutral-500">
-                <ArrowUpRight className="size-5 " />
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-neutral-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:text-neutral-500">
+                      <Icon className="size-5" name="mdi:arrow-top-right" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>View {item.title}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <p className="text-sm tracking-tight text-neutral-600 dark:text-neutral-400">
               {item.description}
             </p>
 
-            {/* Feature specific content */}
             {item.feature === "spotlight" && item.spotlightItems && (
               <SpotlightFeature items={item.spotlightItems} />
             )}
@@ -650,13 +658,15 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
   );
 };
 
-export default function BentoGrid({ items }: { items?: BentoItem[] }) {
+export const BentoGrid: React.FC<{ items?: BentoItem[] }> = ({ items }) => {
   const currentItems = items || defaultBentoItems;
 
   return (
     <section className="relative overflow-hidden bg-transparent py-24 sm:py-32">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-neutral-950/50">
+        <Illustration className="h-full" columns={20} mouseEnter={true} stars={200} />
+      </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Bento Grid */}
         <motion.div
           className="grid gap-6"
           initial="hidden"
@@ -703,4 +713,4 @@ export default function BentoGrid({ items }: { items?: BentoItem[] }) {
       </div>
     </section>
   );
-}
+};

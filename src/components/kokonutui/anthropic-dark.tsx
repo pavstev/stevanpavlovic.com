@@ -1,5 +1,6 @@
 import type { SVGProps } from "react";
-const AnthropicDark = (props: SVGProps<SVGSVGElement>) => (
+
+export const AnthropicDark = (props: SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     fill="#ffff"
     fillRule="evenodd"

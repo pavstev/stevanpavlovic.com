@@ -1,9 +1,8 @@
 ---
-import { Icon } from "astro-icon/components";
-
-import LayoutRoot from "../components/layout/layout-root.astro";
-import { Button } from "../components/ui/button";
-import { ErrorPage } from "../components/ui/not-found";
+import { ErrorPage } from "@components/common/not-found";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Button } from "@components/ui/button";
+import Icon from "@components/ui/icon.astro";
 
 interface Props {
   error: unknown;
@@ -11,12 +10,12 @@ interface Props {
 
 const { error } = Astro.props;
 
-const title = "500 - System Critical";
-const description = "An unexpected error occurred while processing your request.";
-const errorMessage = error instanceof Error ? error.message : "Unknown System Exception";
+const title: string = "500 - System Critical";
+const description: string = "An unexpected error occurred while processing your request.";
+const errorMessage: string = error instanceof Error ? error.message : "Unknown System Exception";
 ---
 
-<LayoutRoot description={description} slug="/500" title={title}>
+<PageLayout description={description} slug="/500" title={title}>
   <ErrorPage
     className="min-h-[calc(100vh-12rem)]"
     client:only="react"
@@ -43,4 +42,4 @@ const errorMessage = error instanceof Error ? error.message : "Unknown System Ex
       </div>
     </div>
   </ErrorPage>
-</LayoutRoot>
+</PageLayout>

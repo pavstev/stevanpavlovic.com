@@ -1,12 +1,12 @@
 ---
-import Layout from "@components/layout/layout-root.astro";
-import { ContactSection } from "@components/ui/contact-section";
+import { ContactSection } from "@components/contact/contact-section";
+import PageLayout from "@components/layout/page-layout.astro";
 
-const title = "Contact | Stevan Pavlovic";
-const description =
+const title: string = "Contact | Stevan Pavlovic";
+const description: string =
   "Get in touch for collaborations, project inquiries, or professional networking.";
 ---
 
-<Layout description={description} title={title}>
+<PageLayout description={description} slug="/contact" title={title}>
   <ContactSection client:load />
-</Layout>
+</PageLayout>

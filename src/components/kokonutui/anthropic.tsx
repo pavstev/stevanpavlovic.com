@@ -1,4 +1,4 @@
-const Anthropic = (props: React.SVGProps<SVGSVGElement>) => (
+const Anthropic = (props: React.SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     fill="#000"
     fillRule="evenodd"

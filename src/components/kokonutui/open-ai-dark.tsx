@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-const OpenAIDark = (props: SVGProps<SVGSVGElement>) => (
+export const OpenAIDark = (props: SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     height="1em"
     preserveAspectRatio="xMidYMid"

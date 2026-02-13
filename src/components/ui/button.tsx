@@ -44,7 +44,7 @@ export const buttonVariants = cva(
   }
 );
 
-const Button: React.FC<
+export const Button: React.FC<
   React.AnchorHTMLAttributes<HTMLAnchorElement> &
     React.ComponentProps<"button"> &
     VariantProps<typeof buttonVariants> & {
@@ -73,5 +73,3 @@ const Button: React.FC<
     />
   );
 };
-
-export { Button };

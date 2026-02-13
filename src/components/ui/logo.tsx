@@ -2,7 +2,10 @@ import type React from "react";
 
 import { cn } from "@client/utils";
 
-export const LogoIcon = ({ className, ...props }: React.ComponentProps<"svg">) => (
+export const LogoIcon = ({
+  className,
+  ...props
+}: React.ComponentProps<"svg">): React.JSX.Element => (
   <svg
     className={className}
     fill="none"
@@ -27,7 +30,7 @@ export const LogoIcon = ({ className, ...props }: React.ComponentProps<"svg">) =
   </svg>
 );
 
-export const Logo = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const Logo = ({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn("text-md flex items-center gap-2 font-mono font-bold tracking-tight", className)}
     {...props}

@@ -1,10 +1,13 @@
 import { glob } from "astro/loaders";
 import { defineCollection, reference, z } from "astro:content";
 
-const CompanySize = z.enum(["Startup", "Small Business", "Mid-size", "Enterprise"]);
-const CompanyType = z.enum(["Full-time", "Contract", "Freelance", "Agency"]);
-const ExperienceType = z.enum(["Full-time", "Contract", "Freelance"]);
-const Region = z.enum([
+export const CompanySize = z.enum(["Startup", "Small Business", "Mid-size", "Enterprise"]);
+
+export const CompanyType = z.enum(["Full-time", "Contract", "Freelance", "Agency"]);
+
+export const ExperienceType = z.enum(["Full-time", "Contract", "Freelance"]);
+
+export const Region = z.enum([
   "North America",
   "South America",
   "Europe",
@@ -13,8 +16,10 @@ const Region = z.enum([
   "Oceania",
   "Remote",
 ]);
-const RemoteType = z.enum(["Fully Remote", "Hybrid", "Remote-First"]);
-const SocialLinkType = z.enum([
+
+export const RemoteType = z.enum(["Fully Remote", "Hybrid", "Remote-First"]);
+
+export const SocialLinkType = z.enum([
   "LinkedIn",
   "Medium",
   "YouTube",
@@ -25,7 +30,8 @@ const SocialLinkType = z.enum([
   "Website",
   "Other",
 ]);
-const Industry = z.enum([
+
+export const Industry = z.enum([
   "Technology",
   "Software",
   "Internet",
@@ -43,7 +49,8 @@ const Industry = z.enum([
   "Transportation",
   "Energy",
 ]);
-const PersonSocialLinkType = z.enum([
+
+export const PersonSocialLinkType = z.enum([
   "LinkedIn",
   "Twitter",
   "GitHub",
@@ -52,7 +59,8 @@ const PersonSocialLinkType = z.enum([
   "Email",
   "Other",
 ]);
-const RelationshipType = z.enum([
+
+export const RelationshipType = z.enum([
   "Colleague",
   "Manager",
   "Direct Report",
@@ -64,21 +72,21 @@ const RelationshipType = z.enum([
   "Other",
 ]);
 
-const SocialLink = z.object({
+export const SocialLink = z.object({
   handle: z.string(),
   name: z.string(),
   type: SocialLinkType,
 });
 
-const PersonSocialLink = z.object({
+export const PersonSocialLink = z.object({
   handle: z.string(),
   name: z.string(),
   type: PersonSocialLinkType,
 });
 
-const PersonSocialLinks = z.array(PersonSocialLink).optional();
+export const PersonSocialLinks = z.array(PersonSocialLink).optional();
 
-const CompanySocialLinks = z.array(SocialLink).optional();
+export const CompanySocialLinks = z.array(SocialLink).optional();
 
 const tags = defineCollection({
   loader: glob({ base: "./src/content/tags", pattern: "**/*.md" }),

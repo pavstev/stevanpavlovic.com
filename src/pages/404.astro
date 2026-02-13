@@ -1,14 +1,13 @@
 ---
-import { Icon } from "astro-icon/components";
-
-import LayoutRoot from "../components/layout/layout-root.astro";
-import { Button } from "../components/ui/button";
-import { ErrorPage } from "../components/ui/not-found";
-const title = "404 - Lost in Space";
-const description = "The coordinates you entered do not correspond to a known sector.";
+import { ErrorPage } from "@components/common/not-found";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Button } from "@components/ui/button";
+import Icon from "@components/ui/icon.astro";
+const title: string = "404 - Lost in Space";
+const description: string = "The coordinates you entered do not correspond to a known sector.";
 ---
 
-<LayoutRoot description={description} slug="/404" title={title}>
+<PageLayout description={description} slug="/404" title={title}>
   <!--
 Background removed -->
   <ErrorPage
@@ -33,4 +32,4 @@ Background removed -->
       </Button>
     </div>
   </ErrorPage>
-</LayoutRoot>
+</PageLayout>

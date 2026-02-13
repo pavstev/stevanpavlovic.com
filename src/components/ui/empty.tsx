@@ -1,7 +1,7 @@
 import { cn } from "@client/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const Empty = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const Empty = ({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn(
       "flex min-w-0 flex-1 flex-col items-center justify-center gap-6 rounded-lg border-dashed p-6 text-center text-balance md:p-12",
@@ -12,9 +12,12 @@ const Empty = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const EmptyHeader = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const EmptyHeader = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
-    className={cn("flex max-w-sm flex-col items-center gap-2 text-center", className)}
+    className={cn("flex max-w-2xl flex-col items-center gap-2 text-center", className)}
     data-slot="empty-header"
     {...props}
   />
@@ -35,11 +38,11 @@ const emptyMediaVariants = cva(
   }
 );
 
-const EmptyMedia = ({
+export const EmptyMedia = ({
   className,
   variant = "default",
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>) => (
+}: React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>): React.JSX.Element => (
   <div
     className={cn(emptyMediaVariants({ className, variant }))}
     data-slot="empty-icon"
@@ -48,7 +51,10 @@ const EmptyMedia = ({
   />
 );
 
-const EmptyTitle = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const EmptyTitle = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn("text-lg font-medium tracking-tight", className)}
     data-slot="empty-title"
@@ -56,7 +62,10 @@ const EmptyTitle = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const EmptyDescription = ({ className, ...props }: React.ComponentProps<"p">) => (
+export const EmptyDescription = ({
+  className,
+  ...props
+}: React.ComponentProps<"p">): React.JSX.Element => (
   <div
     className={cn(
       "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
@@ -67,15 +76,16 @@ const EmptyDescription = ({ className, ...props }: React.ComponentProps<"p">) =>
   />
 );
 
-const EmptyContent = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const EmptyContent = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn(
-      "flex w-full max-w-sm min-w-0 flex-col items-center gap-4 text-sm text-balance",
+      "flex w-full max-w-2xl min-w-0 flex-col items-center gap-4 text-sm text-balance",
       className
     )}
     data-slot="empty-content"
     {...props}
   />
 );
-
-export { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle };

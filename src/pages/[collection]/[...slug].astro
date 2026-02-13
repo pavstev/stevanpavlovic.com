@@ -2,48 +2,50 @@
 import type { GetStaticPaths } from "astro";
 import type { CollectionEntry } from "astro:content";
 
-import CollectionItemView from "@components/views/CollectionItemView.astro";
-import CollectionListView from "@components/views/CollectionListView.astro";
+import CollectionItemView from "@components/views/collection-item-view.astro";
+import CollectionListView from "@components/views/collection-list-view.astro";
 import { ITEMS_PER_PAGE } from "@config";
 import { getCollection } from "astro:content";
 
 import type { ViewableCollection } from "../../server/types";
 
-export const prerender = true;
+export const prerender: boolean = true;
 
 type Props =
   | { collection: ViewableCollection; page: number; type: "list" }
   | { entry: CollectionEntry<ViewableCollection>; type: "item" };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collections = ["blog", "projects", "experience", "companies"] as const;
+  const collections: readonly ViewableCollection[] = [
+    "blog",
+    "projects",
+    "experience",
+    "companies",
+  ] as const;
   const paths: any[] = [];
 
   for (const collection of collections) {
-    const items = await getCollection(collection);
-    const sortedItems = items.sort((a: any, b: any) => {
-      const aDate = a.data.pubDate || a.data.startDate || a.data.founded || 0;
-      const bDate = b.data.pubDate || b.data.startDate || b.data.founded || 0;
+    const items: CollectionEntry<ViewableCollection>[] = await getCollection(collection);
+    const sortedItems: CollectionEntry<ViewableCollection>[] = items.sort((a: any, b: any) => {
+      const aDate: any = a.data.pubDate || a.data.startDate || a.data.founded || 0;
+      const bDate: any = b.data.pubDate || b.data.startDate || b.data.founded || 0;
       return new Date(bDate).getTime() - new Date(aDate).getTime();
     });
 
-    const totalPages = Math.max(1, Math.ceil(sortedItems.length / ITEMS_PER_PAGE));
+    const totalPages: number = Math.max(1, Math.ceil(sortedItems.length / ITEMS_PER_PAGE));
 
-    // 1. Index path (represented by slug: undefined)
     paths.push({
       params: { collection, slug: undefined },
       props: { collection, page: 1, type: "list" },
     });
 
-    // 2. Pagination paths (page/2, page/3, ...)
-    for (let i = 2; i <= totalPages; i++) {
+    for (let i: number = 2; i <= totalPages; i++) {
       paths.push({
         params: { collection, slug: `page/${i}` },
         props: { collection, page: i, type: "list" },
       });
     }
 
-    // 3. Item paths
     for (const item of items) {
       paths.push({
         params: { collection, slug: item.id },
@@ -55,7 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const props = Astro.props as Props;
+const props: Props = Astro.props as Props;
 ---
 
 {

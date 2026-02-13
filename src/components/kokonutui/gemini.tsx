@@ -1,4 +1,4 @@
-const Gemini = (props: React.SVGProps<SVGSVGElement>) => (
+const Gemini = (props: React.SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     height="1em"
     style={{

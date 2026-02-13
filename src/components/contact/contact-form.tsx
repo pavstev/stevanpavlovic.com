@@ -1,20 +1,14 @@
 import { Button } from "@components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@components/ui/form";
-import { Input } from "@components/ui/input";
-import { Textarea } from "@components/ui/textarea";
+import { Icon } from "@components/ui/icon";
 import { type AnyFieldApi, useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
-import { AnimatePresence, motion } from "framer-motion";
-import { Send, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { Form } from "radix-ui";
 import { useState } from "react";
 import { z } from "zod";
+
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const contactFormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -25,7 +19,7 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
-export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }): React.JSX.Element => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
@@ -36,7 +30,6 @@ export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       subject: "",
     } as ContactFormValues,
     onSubmit: async ({ value }) => {
-      // Simulate API call
       console.log("Form submitted:", value);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSuccess(true);
@@ -45,7 +38,7 @@ export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         setIsSuccess(false);
       }, 2000);
     },
-    // @ts-expect-error -- validatorAdapter is required for zodValidator but not in types
+
     validatorAdapter: zodValidator(),
     validators: {
       onChange: contactFormSchema,
@@ -75,7 +68,7 @@ export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         initial={{ opacity: 0, scale: 0.9 }}
       >
         <div className="rounded-full bg-primary/10 p-4 text-primary ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
-          <Sparkles className="size-8" />
+          <Icon className="size-8" name="mdi:sparkles" />
         </div>
         <div className="space-y-2">
           <h3 className="text-xl font-semibold">Message Sent!</h3>
@@ -199,7 +192,7 @@ export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                 ) : (
                   <>
                     Send Message
-                    <Send className="ml-2 size-4" />
+                    <Icon className="ml-2 size-4" name="mdi:send" />
                   </>
                 )}
               </Button>

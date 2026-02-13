@@ -2,57 +2,56 @@
 import type { ViewableCollection } from "@server/types";
 import type { CollectionEntry } from "astro:content";
 
-import LayoutRoot from "@components/layout/layout-root.astro";
+import { ContentCard } from "@components/common/content-card";
 import NavigationProgress from "@components/layout/navigation-progress.astro";
+import PageLayout from "@components/layout/page-layout.astro";
 import { Badge } from "@components/ui/badge";
 import { buttonVariants } from "@components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { ContentCard } from "@components/ui/content-card";
+import Icon from "@components/ui/icon.astro";
 import { getViewPageProps } from "@server/api";
-import { Icon } from "astro-icon/components";
 import { render } from "astro:content";
 
 interface Props {
   entry: CollectionEntry<ViewableCollection>;
 }
 
-const { entry } = Astro.props;
+const { entry } = Astro.props as Props;
 const { Content } = await render(entry as any);
-const viewProps = await getViewPageProps({ ...entry, collection: entry.collection } as any);
+const viewProps: any = await getViewPageProps({ ...entry, collection: entry.collection } as any);
 
-const isProject = entry.collection === "projects";
-const isBlog = entry.collection === "blog";
+const isProject: boolean = entry.collection === "projects";
+const isBlog: boolean = entry.collection === "blog";
 ---
 
-<LayoutRoot
+<PageLayout
+  align="left"
   description={viewProps.description ?? ""}
   slug={`/${entry.collection}/${entry.id}`}
   title={viewProps.title}
 >
   <NavigationProgress />
 
-  <article class={`container mx-auto px-4 py-12 md:py-24 ${isBlog ? "max-w-4xl" : ""}`}>
+  <article class={`px-4 py-12 md:py-24 ${isBlog ? "mx-auto max-w-4xl" : ""}`}>
+    <div class="flex items-center gap-2 text-sm text-muted-foreground" slot="header-top">
+      <a
+        class={buttonVariants({ className: "gap-1 pl-2.5", size: "sm", variant: "ghost" })}
+        href={`/${entry.collection}`}
+      >
+        <Icon class="size-4" name="mdi:chevron-left" />
+        Back to {entry.collection.charAt(0).toUpperCase() + entry.collection.slice(1)}
+      </a>
+    </div>
+
     {
       isProject ? (
         <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <header class="flex animate-in flex-col gap-6 duration-700 fade-in slide-in-from-bottom-4 lg:col-span-12">
-            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-              <a
-                class={buttonVariants({ className: "gap-1 pl-2.5", size: "sm", variant: "ghost" })}
-                href={`/${entry.collection}`}
-              >
-                <Icon class="size-4" name="mdi:chevron-left" />
-                Back to {entry.collection.charAt(0).toUpperCase() + entry.collection.slice(1)}
-              </a>
-            </div>
-            <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">{viewProps.title}</h1>
-            <p class="max-w-3xl text-xl text-muted-foreground">{viewProps.description}</p>
-
+          <div class="lg:col-span-12">
             <div class="mt-4 flex flex-wrap gap-4">
-              {entry.data.demoUrl && (
+              {(entry.data as any).demoUrl && (
                 <a
                   class={buttonVariants({ className: "gap-2 rounded-full" })}
-                  href={entry.data.demoUrl}
+                  href={(entry.data as any).demoUrl}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -60,10 +59,10 @@ const isBlog = entry.collection === "blog";
                   <Icon class="size-4" name="mdi:open-in-new" />
                 </a>
               )}
-              {entry.data.repoUrl && (
+              {(entry.data as any).repoUrl && (
                 <a
                   class={buttonVariants({ className: "gap-2 rounded-full", variant: "outline" })}
-                  href={entry.data.repoUrl}
+                  href={(entry.data as any).repoUrl}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -72,7 +71,7 @@ const isBlog = entry.collection === "blog";
                 </a>
               )}
             </div>
-          </header>
+          </div>
 
           <div class="lg:col-span-8">
             <div class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl">
@@ -96,22 +95,22 @@ const isBlog = entry.collection === "blog";
                 <CardTitle className="text-lg">Project Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
-                {entry.data.role && (
+                {(entry.data as any).role && (
                   <div>
                     <p class="text-muted-foreground">Role</p>
-                    <p class="font-medium">{entry.data.role}</p>
+                    <p class="font-medium">{(entry.data as any).role}</p>
                   </div>
                 )}
-                {entry.data.teamSize && (
+                {(entry.data as any).teamSize && (
                   <div>
                     <p class="text-muted-foreground">Team Size</p>
-                    <p class="font-medium">{entry.data.teamSize}</p>
+                    <p class="font-medium">{(entry.data as any).teamSize}</p>
                   </div>
                 )}
-                {entry.data.duration && (
+                {(entry.data as any).duration && (
                   <div>
                     <p class="text-muted-foreground">Duration</p>
-                    <p class="font-medium">{entry.data.duration}</p>
+                    <p class="font-medium">{(entry.data as any).duration}</p>
                   </div>
                 )}
               </CardContent>
@@ -123,7 +122,7 @@ const isBlog = entry.collection === "blog";
               </CardHeader>
               <CardContent className="flex flex-wrap gap-2">
                 {viewProps.tags?.items.map((tag: any) => (
-                  <Badge className="rounded-md" variant="secondary">
+                  <Badge className="rounded-md" key={tag.id} variant="secondary">
                     {tag.id}
                   </Badge>
                 ))}
@@ -133,41 +132,20 @@ const isBlog = entry.collection === "blog";
         </div>
       ) : (
         <>
-          <header class="mb-12 flex animate-in flex-col gap-6 duration-700 fade-in slide-in-from-bottom-4">
-            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-              <a
-                class={buttonVariants({ className: "gap-1 pl-2.5", size: "sm", variant: "ghost" })}
-                href={`/${entry.collection}`}
-              >
-                <Icon class="size-4" name="mdi:chevron-left" />
-                Back to {entry.collection.charAt(0).toUpperCase() + entry.collection.slice(1)}
-              </a>
-            </div>
-
-            <h1 class="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent lg:text-6xl">
-              {viewProps.title}
-            </h1>
-
+          <div class="mb-12">
             <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               {Array.isArray(viewProps.tags?.items) && (
                 <div class="flex flex-wrap gap-2">
                   {viewProps.tags.items.map((tag: any) => (
-                    <Badge className="rounded-md" variant="secondary">
+                    <Badge className="rounded-md" key={tag.id} variant="secondary">
                       #{tag.id}
                     </Badge>
                   ))}
                 </div>
               )}
             </div>
-
-            {viewProps.description && (
-              <p class="border-l-4 border-primary/20 pl-4 text-xl leading-relaxed text-muted-foreground">
-                {viewProps.description}
-              </p>
-            )}
-
-            <div class="border-b pt-4" />
-          </header>
+            <div class="w-full border-b pt-4" />
+          </div>
 
           <div class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:underline prose-img:rounded-2xl prose-img:shadow-lg">
             <Content />
@@ -176,12 +154,12 @@ const isBlog = entry.collection === "blog";
       )
     }
   </article>
-</LayoutRoot>
+</PageLayout>
 
 <script>
   import { initFocusMode } from "@client";
 
-  const init = () => {
+  const init: () => void = () => {
     initFocusMode();
   };
 

@@ -5,7 +5,7 @@ export const useScroll = (downThreshold: number, upThreshold?: number): boolean 
   const [scrolled, setScrolled] = useState(false);
   const scrollUpThreshold = upThreshold ?? downThreshold / 2;
 
-  useEffect(() => {
+  useEffect((): void => {
     const handleScroll = (): void => {
       const y = window.scrollY;
       // Hysteresis: different thresholds for up/down to prevent flickering

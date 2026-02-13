@@ -3,19 +3,24 @@ import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import eslintPluginAstro from "eslint-plugin-astro";
 import tailwind from "eslint-plugin-better-tailwindcss";
+import importPlugin from "eslint-plugin-import";
 // @ts-expect-error No types for this
 import markdownlintPlugin from "eslint-plugin-markdownlint";
 // @ts-expect-error No types for this
 import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
 import * as mdx from "eslint-plugin-mdx";
+// @ts-expect-error No types for this
+import noComments from "eslint-plugin-no-comments";
 import perfectionist from "eslint-plugin-perfectionist";
 import preferArrowFunctions from "eslint-plugin-prefer-arrow-functions";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import reactPlugin from "eslint-plugin-react";
+import unicorn from "eslint-plugin-unicorn";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
 
-const FILES = {
+export const FILES = {
   ASTRO: ["**/*.astro"],
   CONFIG: ["**/*.config.ts", "scripts/**/*.ts"],
   FRONTEND: ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"],
@@ -29,6 +34,8 @@ const FILES = {
 // Fix plugins for ESLint 9/10 compatibility
 const fixedTailwind = fixupPluginRules(tailwind);
 const fixedMarkdownlint = fixupPluginRules(markdownlintPlugin);
+const fixedNoComments = fixupPluginRules(noComments);
+const fixedReact = fixupPluginRules(reactPlugin);
 
 if (mdx.flat?.plugins?.mdx) {
   mdx.flat.plugins.mdx = fixupPluginRules(mdx.flat.plugins.mdx);
@@ -60,6 +67,34 @@ export default defineConfig(
 
   // TypeScript recommended rules (no type checking required)
   ...tseslint.configs.recommended,
+
+  // Global rules for all files
+  {
+    files: [...FILES.FRONTEND],
+    plugins: {
+      import: importPlugin,
+      "no-comments": fixedNoComments,
+      unicorn,
+    },
+    rules: {
+      "arrow-body-style": ["error", "as-needed"],
+      "no-comments/disallowComments": "error",
+      "no-restricted-syntax": [
+        "error",
+        {
+          message: "Use inline 'export const' instead of grouped exports.",
+          selector: "ExportNamedDeclaration[specifiers.length > 0]",
+        },
+      ],
+      "perfectionist/sort-exports": ["error", { order: "asc", type: "alphabetical" }],
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "kebabCase",
+        },
+      ],
+    },
+  },
 
   // @ts-expect-error "prefer-arrow-functions" is not a valid config
   preferArrowFunctions.configs.all,
@@ -115,9 +150,24 @@ export default defineConfig(
   // React
   {
     files: FILES.REACT,
+    plugins: {
+      react: fixedReact,
+    },
     rules: {
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "arrow-function",
+          unnamedComponents: "arrow-function",
+        },
+      ],
+      // "@typescript-eslint/explicit-function-return-type": "off",
+      // "@typescript-eslint/no-unused-vars": "off",
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
 

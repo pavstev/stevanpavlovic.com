@@ -1,4 +1,4 @@
-const DeepSeek = (props: React.SVGProps<SVGSVGElement>) => (
+const DeepSeek = (props: React.SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     height="1em"
     style={{

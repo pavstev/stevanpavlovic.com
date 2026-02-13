@@ -1,4 +1,4 @@
-const OpenAI = (props: React.SVGProps<SVGSVGElement>) => (
+const OpenAI = (props: React.SVGProps<SVGSVGElement>): React.JSX.Element => (
   <svg
     height="1em"
     preserveAspectRatio="xMidYMid"

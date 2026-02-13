@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@client/utils";
+import { Icon as AstroIcon } from "astro-icon/components";
+
+interface Props extends HTMLAttributes<"svg"> {
+  class?: string;
+  name: string;
+}
+
+const { class: className, name, ...props } = Astro.props;
+---
+
+<AstroIcon class={cn("size-4 shrink-0", className)} name={name} {...props as any} />

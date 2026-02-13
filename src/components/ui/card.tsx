@@ -1,7 +1,7 @@
 import { cn } from "@client/utils";
 import * as React from "react";
 
-const Card = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const Card = ({ className, ...props }: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn(
       "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm",
@@ -12,7 +12,10 @@ const Card = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const CardAction = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardAction = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
     data-slot="card-action"
@@ -20,11 +23,17 @@ const CardAction = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const CardContent = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardContent = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div className={cn("px-6", className)} data-slot="card-content" {...props} />
 );
 
-const CardDescription = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardDescription = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn("text-sm text-muted-foreground", className)}
     data-slot="card-description"
@@ -32,7 +41,10 @@ const CardDescription = ({ className, ...props }: React.ComponentProps<"div">) =
   />
 );
 
-const CardFooter = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardFooter = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
     data-slot="card-footer"
@@ -40,7 +52,10 @@ const CardFooter = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const CardHeader = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardHeader = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div
     className={cn(
       "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
@@ -51,8 +66,9 @@ const CardHeader = ({ className, ...props }: React.ComponentProps<"div">) => (
   />
 );
 
-const CardTitle = ({ className, ...props }: React.ComponentProps<"div">) => (
+export const CardTitle = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">): React.JSX.Element => (
   <div className={cn("leading-none font-semibold", className)} data-slot="card-title" {...props} />
 );
-
-export { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

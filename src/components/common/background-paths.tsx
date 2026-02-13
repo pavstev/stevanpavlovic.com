@@ -3,7 +3,11 @@
 import { Button } from "@components/ui/button";
 import { motion } from "framer-motion";
 
-export const BackgroundPaths = ({ title = "Background Paths" }: { title?: string }) => {
+export const BackgroundPaths = ({
+  title = "Background Paths",
+}: {
+  title?: string;
+}): React.JSX.Element => {
   const words = title.split(" ");
 
   return (
@@ -75,7 +79,7 @@ export const BackgroundPaths = ({ title = "Background Paths" }: { title?: string
   );
 };
 
-const FloatingPaths = ({ position }: { position: number }) => {
+export const FloatingPaths = ({ position }: { position: number }): React.JSX.Element => {
   const paths = Array.from({ length: 36 }, (_, i) => ({
     color: `rgba(15,23,42,${0.1 + i * 0.03})`,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${

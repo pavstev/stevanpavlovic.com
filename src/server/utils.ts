@@ -18,11 +18,11 @@ export const buildPaginationUrls = (
     currentPage > 1
       ? currentPage === 2
         ? `/${collection}`
-        : `/${collection}/page/${(currentPage - 1).toString()}`
+        : `/${collection}/${(currentPage - 1).toString()}`
       : undefined;
 
   const nextUrl =
-    currentPage < totalPages ? `/${collection}/page/${(currentPage + 1).toString()}` : undefined;
+    currentPage < totalPages ? `/${collection}/${(currentPage + 1).toString()}` : undefined;
 
   return { nextUrl, prevUrl };
 };

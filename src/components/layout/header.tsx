@@ -3,8 +3,9 @@
 import { initNavigationProgress } from "@client";
 import { useScroll } from "@client/hooks/use-scroll";
 import { cn } from "@client/utils";
+import { ColorModeToggle } from "@components/layout/color-mode-toggle";
 import { MobileNav } from "@components/layout/mobile-nav";
-import { Logo } from "@components/logo";
+import { Logo } from "@components/ui/logo";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,16 +13,15 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@components/ui/navigation-menu";
-import { ToggleTheme } from "@components/ui/toggle-theme";
 import * as React from "react";
 
 import { NAV_ITEMS_ARRAY } from "../../config";
 
 export const Header: React.FC = () => {
-  const scrolled = useScroll(10);
+  const scrolled: boolean = useScroll(10);
   const [pathname, setPathname] = React.useState("");
 
-  React.useEffect(() => {
+  React.useEffect((): void => {
     setPathname(window.location.pathname);
     initNavigationProgress();
   }, []);
@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
           <NavigationMenu className="px-2" viewport={false}>
             <NavigationMenuList>
               {NAV_ITEMS_ARRAY.map((link) => {
-                const isActive =
+                const isActive: boolean =
                   pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
 
                 return (
@@ -74,7 +74,9 @@ export const Header: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <ToggleTheme />
+          <div className="hidden md:block">
+            <ColorModeToggle />
+          </div>
           <MobileNav />
         </div>
       </nav>

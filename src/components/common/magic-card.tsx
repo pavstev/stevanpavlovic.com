@@ -20,7 +20,7 @@ export const MagicCard = ({
   gradientOpacity = 0.8,
   gradientSize = 200,
   gradientTo = "#FE8BBB",
-}: MagicCardProps) => {
+}: MagicCardProps): React.JSX.Element => {
   const mouseX = useMotionValue(-gradientSize);
   const mouseY = useMotionValue(-gradientSize);
   const reset = useCallback(() => {
@@ -37,18 +37,18 @@ export const MagicCard = ({
     [mouseX, mouseY]
   );
 
-  useEffect(() => {
+  useEffect((): void => {
     reset();
   }, [reset]);
 
-  useEffect(() => {
-    const handleGlobalPointerOut = (e: PointerEvent) => {
+  useEffect((): void => {
+    const handleGlobalPointerOut = (e: PointerEvent): void => {
       if (!e.relatedTarget) {
         reset();
       }
     };
 
-    const handleVisibility = () => {
+    const handleVisibility = (): void => {
       if (document.visibilityState !== "visible") {
         reset();
       }
@@ -58,7 +58,7 @@ export const MagicCard = ({
     window.addEventListener("blur", reset);
     document.addEventListener("visibilitychange", handleVisibility);
 
-    return () => {
+    return (): void => {
       window.removeEventListener("pointerout", handleGlobalPointerOut);
       window.removeEventListener("blur", reset);
       document.removeEventListener("visibilitychange", handleVisibility);

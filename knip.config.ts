@@ -12,10 +12,11 @@ const config: KnipConfig = {
     "@typescript-eslint/parser",
     "astro-eslint-parser",
     "@iconify-json/mdi",
+    "@iconify-json/lucide",
     "remark-lint-no-multiple-toplevel-headings",
     "eslint-mdx",
-    "@tanstack/*",
     "react-hook-form",
+    "@tanstack/zod-form-adapter",
   ],
   ignoreFiles: [
     "src/components/ui/form.tsx",

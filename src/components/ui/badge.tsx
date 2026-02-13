@@ -24,12 +24,15 @@ const badgeVariants = cva(
   }
 );
 
-const Badge = ({
+export const Badge = ({
   asChild = false,
   className,
   variant = "default",
   ...props
-}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) => {
+}: React.ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants> & {
+    asChild?: boolean;
+  }): React.JSX.Element => {
   const Comp = asChild ? Slot.Root : "span";
 
   return (
@@ -41,5 +44,3 @@ const Badge = ({
     />
   );
 };
-
-export { Badge, badgeVariants };

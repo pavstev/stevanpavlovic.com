@@ -1,21 +1,24 @@
 ---
-import { getCollection } from "astro:content";
+import { BackgroundPaths } from "@components/common/background-paths";
+import { BentoGrid, type BentoItem } from "@components/kokonutui/bento-grid";
+import PageLayout from "@components/layout/page-layout.astro";
+import { Illustration } from "@components/ui/glowing-stars";
+import { type CollectionEntry, getCollection } from "astro:content";
 
-import BentoGrid, { type BentoItem } from "../components/kokonutui/bento-grid";
-import LayoutRoot from "../components/layout/layout-root.astro";
-import { BackgroundPaths } from "../components/ui/background-paths";
 import { PROFILE } from "../config";
 
-const featuredProjects = await getCollection("projects", ({ data }) => data.featured);
-const latestBlog = (await getCollection("blog")).sort(
+const featuredProjects: CollectionEntry<"projects">[] = await getCollection(
+  "projects",
+  ({ data }) => data.featured
+);
+const latestBlog: CollectionEntry<"blog">[] = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const experience = (await getCollection("experience")).sort(
+const experience: CollectionEntry<"experience">[] = (await getCollection("experience")).sort(
   (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf()
 );
 
 const bentoItems: BentoItem[] = [
-  // Item 0: Expertise & Stack (Small slot)
   {
     className: "col-span-1",
     description:
@@ -25,7 +28,7 @@ const bentoItems: BentoItem[] = [
     id: "expertise",
     title: "Expertise",
   },
-  // Item 1: Selected Works (Large slot)
+
   {
     className: "col-span-2",
     description:
@@ -36,7 +39,7 @@ const bentoItems: BentoItem[] = [
     spotlightItems: featuredProjects.slice(0, 5).map((p) => p.data.title),
     title: "Selected Works",
   },
-  // Item 2: Career Journey (Bottom row, Left)
+
   {
     className: "col-span-1",
     description: "Lead Backend Developer & System Architect with 10+ years of experience.",
@@ -49,7 +52,7 @@ const bentoItems: BentoItem[] = [
     })),
     title: "Professional Journey",
   },
-  // Item 3: Insights & Thoughts (Bottom row, Right)
+
   {
     className: "col-span-1",
     description: "Diving deep into software architecture, devops, and the future of AI.",
@@ -62,8 +65,19 @@ const bentoItems: BentoItem[] = [
 ];
 ---
 
-<LayoutRoot description={PROFILE.bio} isFullWidth={true} slug="/" title={PROFILE.name}>
+<PageLayout
+  description={PROFILE.bio}
+  hideHeader={true}
+  isFullWidth={true}
+  slug="/"
+  title={PROFILE.name}
+>
   <BackgroundPaths client:load title={PROFILE.name} />
 
-  <BentoGrid client:load items={bentoItems} />
-</LayoutRoot>
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 -z-10 bg-neutral-950">
+      <Illustration className="h-full" client:load columns={30} mouseEnter={true} stars={300} />
+    </div>
+    <BentoGrid client:load items={bentoItems} />
+  </div>
+</PageLayout>

@@ -2,16 +2,18 @@ import { cn } from "@client/utils";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
 import * as React from "react";
 
-const Tooltip = ({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) => (
+export const Tooltip = ({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root>): React.JSX.Element => (
   <TooltipPrimitive.Root data-slot="tooltip" {...props} />
 );
 
-const TooltipContent = ({
+export const TooltipContent = ({
   children,
   className,
   sideOffset = 0,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) => (
+}: React.ComponentProps<typeof TooltipPrimitive.Content>): React.JSX.Element => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content
       className={cn(
@@ -23,15 +25,15 @@ const TooltipContent = ({
       {...props}
     >
       {children}
-      <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground" />
+      <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground" />
     </TooltipPrimitive.Content>
   </TooltipPrimitive.Portal>
 );
 
-const TooltipProvider = ({
+export const TooltipProvider = ({
   delayDuration = 0,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) => (
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>): React.JSX.Element => (
   <TooltipPrimitive.Provider
     data-slot="tooltip-provider"
     delayDuration={delayDuration}
@@ -39,8 +41,8 @@ const TooltipProvider = ({
   />
 );
 
-const TooltipTrigger = ({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) => (
+export const TooltipTrigger = ({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Trigger>): React.JSX.Element => (
   <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 );
-
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

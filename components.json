@@ -26,6 +26,7 @@
     "@kokonutui": "https://kokonutui.com/r/{name}.json",
     "@efferd": "https://efferd.com/r/{name}.json",
     "@8starlabs-ui": "https://ui.8starlabs.com/r/{name}.json",
-    "@magicui": "https://magicui.design/r/{name}"
+    "@magicui": "https://magicui.design/r/{name}",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
   }
 }

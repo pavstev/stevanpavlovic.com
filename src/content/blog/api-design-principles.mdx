@@ -71,7 +71,8 @@ app.delete("/users/:id", async (req, res) => {
 
 ```typescript
 // Use appropriate status codes
-const StatusCodes = {
+
+export const StatusCodes = {
   BAD_REQUEST: 400, // Invalid request
   CONFLICT: 409, // Conflict (e.g., duplicate email)
   CREATED: 201, // Successful POST

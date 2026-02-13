@@ -123,11 +123,11 @@ function SheetTrigger({ ...props }: React.ComponentProps<typeof SheetPrimitive.T
 
 export {
   Sheet,
-  SheetClose,
+  
   SheetContent,
   SheetDescription,
-  SheetFooter,
+  
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  
 };

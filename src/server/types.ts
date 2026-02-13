@@ -83,7 +83,7 @@ export type Company = CollectionEntry<"companies">["data"];
 
 export type Nullable<T> = null | T | undefined;
 
-export interface PaginationLinksOptions {
+interface PaginationLinksOptions {
   baseUrl: string;
   currentPage: number;
   currentUrl: URL;
@@ -94,13 +94,13 @@ export interface PaginationLinksOptions {
   totalPages: number;
 }
 
-export type PaginationType = "path" | "query";
+type PaginationType = "path" | "query";
 export interface PostLink {
   href: string;
   label: string;
 }
 
-export type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
+type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
 
 export type Tag = CollectionEntry<"tags">["data"];
 

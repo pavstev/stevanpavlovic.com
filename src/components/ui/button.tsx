@@ -74,4 +74,4 @@ const Button: React.FC<
   );
 };
 
-export { Button, buttonVariants };
+export { Button,  };

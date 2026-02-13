@@ -1,7 +1,6 @@
 ---
 id: wordpress
 label: WordPress
-category: data
 description: WordPress - Technical documentation, patterns, and best practices.
 ---
 

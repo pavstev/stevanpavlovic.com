@@ -1,7 +1,6 @@
 ---
 id: acid
 label: ACID
-category: data
 description: ACID - Technical documentation, patterns, and best practices.
 ---
 

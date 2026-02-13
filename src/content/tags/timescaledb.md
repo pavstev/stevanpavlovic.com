@@ -1,7 +1,6 @@
 ---
 id: timescaledb
 label: TimescaleDB
-category: database
 description:
   An open-source time-series database optimized for fast ingest and complex
   queries, built on PostgreSQL.

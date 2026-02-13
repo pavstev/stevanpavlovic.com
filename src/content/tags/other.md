@@ -1,7 +1,6 @@
 ---
 id: other
 label: Other
-category: other
 description: other - other
 ---
 

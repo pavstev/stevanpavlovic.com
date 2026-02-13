@@ -1,7 +1,6 @@
 ---
 id: video-streaming
 label: VideoStreaming
-category: video
 description: video-streaming - video streaming
 ---
 

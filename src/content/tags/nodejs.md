@@ -1,7 +1,6 @@
 ---
 id: nodejs
 label: Node.js
-category: data
 description: Node.js - Technical documentation, patterns, and best practices.
 ---
 

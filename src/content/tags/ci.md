@@ -1,7 +1,6 @@
 ---
 id: ci
 label: CI
-category: data
 description: CI - Technical documentation, patterns, and best practices.
 ---
 

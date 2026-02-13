@@ -1,7 +1,6 @@
 ---
 id: maps
 label: Maps
-category: data
 description: Maps - Technical documentation, patterns, and best practices.
 ---
 

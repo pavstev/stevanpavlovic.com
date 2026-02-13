@@ -1,7 +1,6 @@
 ---
 id: bff
 label: BFF
-category: data
 description: BFF - Technical documentation, patterns, and best practices.
 ---
 

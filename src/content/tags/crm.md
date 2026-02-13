@@ -1,7 +1,6 @@
 ---
 id: crm
 label: CRM
-category: data
 description: CRM - Technical documentation, patterns, and best practices.
 ---
 

@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { AppSidebar } from "./app-sidebar";
 
-export function MobileNav() {
+export const MobileNav = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -14,4 +14,4 @@ export function MobileNav() {
       </div>
     </SidebarProvider>
   );
-}
+};

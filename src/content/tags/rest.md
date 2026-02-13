@@ -1,7 +1,6 @@
 ---
 id: rest
 label: REST
-category: data
 description: REST - Technical documentation, patterns, and best practices.
 ---
 

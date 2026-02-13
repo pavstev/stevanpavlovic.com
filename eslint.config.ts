@@ -9,17 +9,22 @@ import markdownlintPlugin from "eslint-plugin-markdownlint";
 import markdownlintParser from "eslint-plugin-markdownlint/parser.js";
 import * as mdx from "eslint-plugin-mdx";
 import perfectionist from "eslint-plugin-perfectionist";
+import preferArrowFunctions from "eslint-plugin-prefer-arrow-functions";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
 
-const TS_FILES = ["**/*.ts", "**/*.tsx"];
-const ASTRO_FILES = ["**/*.astro"];
-const MARKDOWN_FILES = ["**/*.md"];
-const MDX_FILES = ["**/*.mdx"];
-const FRONTEND_FILES = ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"];
-const CONFIG_FILES = ["**/*.config.ts", "scripts/**/*.ts"];
+const FILES = {
+  ASTRO: ["**/*.astro"],
+  CONFIG: ["**/*.config.ts", "scripts/**/*.ts"],
+  FRONTEND: ["**/*.astro", "**/*.tsx", "**/*.jsx", "**/*.mdx"],
+  JSON: ["**/*.json"],
+  MARKDOWN: ["**/*.md"],
+  MDX: ["**/*.mdx"],
+  REACT: ["src/components/**/*.tsx"],
+  TS: ["**/*.ts", "**/*.tsx"],
+} as const satisfies Record<string, readonly string[]>;
 
 // Fix plugins for ESLint 9/10 compatibility
 const fixedTailwind = fixupPluginRules(tailwind);
@@ -56,12 +61,14 @@ export default defineConfig(
   // TypeScript recommended rules (no type checking required)
   ...tseslint.configs.recommended,
 
+  // @ts-expect-error "prefer-arrow-functions" is not a valid config
+  preferArrowFunctions.configs.all,
   // Astro recommended rules
   ...eslintPluginAstro.configs.recommended,
 
   // Tailwind CSS rules
   {
-    files: FRONTEND_FILES,
+    files: FILES.FRONTEND,
     plugins: {
       "better-tailwindcss": fixedTailwind,
     },
@@ -79,8 +86,8 @@ export default defineConfig(
   },
   // TypeScript strict type-checked rules (only for files in tsconfig)
   {
-    files: TS_FILES,
-    ignores: CONFIG_FILES,
+    files: FILES.TS,
+    ignores: FILES.CONFIG,
     languageOptions: {
       parserOptions: {
         project: true,
@@ -107,15 +114,16 @@ export default defineConfig(
 
   // React
   {
-    files: ["src/components/**/*.tsx"],
+    files: FILES.REACT,
     rules: {
       "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 
   // Astro-specific overrides
   {
-    files: ASTRO_FILES,
+    files: FILES.ASTRO,
     rules: {
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
@@ -131,7 +139,7 @@ export default defineConfig(
 
   // Markdown linting
   {
-    files: MARKDOWN_FILES,
+    files: FILES.MARKDOWN,
     languageOptions: {
       parser: markdownlintParser,
     },
@@ -148,7 +156,7 @@ export default defineConfig(
 
   // MDX support
   {
-    files: MDX_FILES,
+    files: FILES.MDX,
     ...mdx.flat,
     processor: mdx.createRemarkProcessor({
       lintCodeBlocks: false,
@@ -161,7 +169,7 @@ export default defineConfig(
 
   // JSON validation
   {
-    files: ["**/*.json"],
+    files: FILES.JSON,
     languageOptions: {
       parser: jsoncParser,
     },
@@ -169,7 +177,7 @@ export default defineConfig(
 
   // Config files - relaxed rules (no type checking)
   {
-    files: CONFIG_FILES,
+    files: FILES.CONFIG,
     rules: {
       "@typescript-eslint/await-thenable": "off",
       "@typescript-eslint/no-explicit-any": "off",

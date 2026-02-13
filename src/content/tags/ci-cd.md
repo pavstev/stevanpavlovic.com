@@ -1,7 +1,6 @@
 ---
 id: ci-cd
 label: CiCd
-category: ci
 description: ci-cd - ci cd
 ---
 

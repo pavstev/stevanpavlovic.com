@@ -1,7 +1,6 @@
 ---
 id: workflow
 label: Workflow
-category: data
 description: Workflow - Technical documentation, patterns, and best practices.
 ---
 

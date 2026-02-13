@@ -1,7 +1,6 @@
 ---
 id: event
 label: Event
-category: data
 description: Event - Technical documentation, patterns, and best practices.
 ---
 

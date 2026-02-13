@@ -1,98 +1,67 @@
 ---
-import type { GetStaticPathsItem, GetStaticPathsResult } from "astro";
-import type { CollectionEntry, CollectionKey } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
 
-import { getViewPageProps } from "@server/api";
-import { collections } from "@server/types";
-import { getCollection, render } from "astro:content";
+import CollectionItemView from "@components/views/CollectionItemView.astro";
+import CollectionListView from "@components/views/CollectionListView.astro";
+import { ITEMS_PER_PAGE } from "@config";
+import { getCollection } from "astro:content";
 
-import LayoutRoot from "../../components/layout/layout-root.astro";
-import NavigationProgress from "../../components/layout/navigation-progress.astro";
+import type { ViewableCollection } from "../../server/types";
 
 export const prerender = true;
 
-type Props = CollectionEntry<CollectionKey>;
+type Props =
+  | { collection: ViewableCollection; page: number; type: "list" }
+  | { entry: CollectionEntry<ViewableCollection>; type: "item" };
 
-export async function getStaticPaths(): Promise<GetStaticPathsResult> {
-  const result = await Promise.all(
-    collections.map(async (collection): Promise<GetStaticPathsItem[]> => {
-      const items = await getCollection(collection);
+export const getStaticPaths: GetStaticPaths = async () => {
+  const collections = ["blog", "projects", "experience", "companies"] as const;
+  const paths: any[] = [];
 
-      return items.map((item): GetStaticPathsItem => {
-        const { collection, id: slug } = item;
-        return {
-          params: { collection, slug },
-          props: item,
-        };
+  for (const collection of collections) {
+    const items = await getCollection(collection);
+    const sortedItems = items.sort((a: any, b: any) => {
+      const aDate = a.data.pubDate || a.data.startDate || a.data.founded || 0;
+      const bDate = b.data.pubDate || b.data.startDate || b.data.founded || 0;
+      return new Date(bDate).getTime() - new Date(aDate).getTime();
+    });
+
+    const totalPages = Math.max(1, Math.ceil(sortedItems.length / ITEMS_PER_PAGE));
+
+    // 1. Index path (represented by slug: undefined)
+    paths.push({
+      params: { collection, slug: undefined },
+      props: { collection, page: 1, type: "list" },
+    });
+
+    // 2. Pagination paths (page/2, page/3, ...)
+    for (let i = 2; i <= totalPages; i++) {
+      paths.push({
+        params: { collection, slug: `page/${i}` },
+        props: { collection, page: i, type: "list" },
       });
-    })
-  );
+    }
 
-  return result.flat();
-}
+    // 3. Item paths
+    for (const item of items) {
+      paths.push({
+        params: { collection, slug: item.id },
+        props: { entry: item, type: "item" },
+      });
+    }
+  }
 
-const entry = Astro.props as Props;
-const { collection } = Astro.params;
+  return paths;
+};
 
-if (entry === undefined) {
-  return Astro.redirect("/404");
-}
-
-const { Content } = await render(entry);
-const viewProps = await getViewPageProps(entry as any);
+const props = Astro.props as Props;
 ---
 
-<LayoutRoot
-  description={viewProps.description ?? ""}
-  slug={`/${collection}/${entry.id}`}
-  title={viewProps.title}
->
-  <NavigationProgress />
-
-  <article class="container mx-auto max-w-4xl px-4 py-12 md:py-24">
-    <header
-      class="mb-12 flex animate-in flex-col gap-8 duration-700 fade-in slide-in-from-bottom-4"
-    >
-      <h1 class="text-4xl leading-tight font-bold tracking-tight lg:text-5xl">
-        {viewProps.title}
-      </h1>
-
-      <div
-        class="flex flex-wrap items-center gap-4 font-mono text-sm tracking-wider text-muted-foreground uppercase"
-      >
-        {
-          Array.isArray(viewProps.tags) &&
-            viewProps.tags.map((tag: string) => (
-              <span class="rounded-md bg-secondary px-2 py-1 text-secondary-foreground">
-                #{tag}
-              </span>
-            ))
-        }
-        {/* Date or other meta could go here if available in viewProps */}
-      </div>
-
-      {
-        viewProps.description && (
-          <p class="text-xl text-muted-foreground">{viewProps.description}</p>
-        )
-      }
-    </header>
-
-    <div
-      class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl"
-    >
-      <Content />
-    </div>
-  </article>
-</LayoutRoot>
-
-<script>
-  import { initFocusMode } from "@client";
-
-  const init = () => {
-    initFocusMode();
-  };
-
-  init();
-  document.addEventListener("astro:page-load", init);
-</script>
+{
+  props.type === "list" ? (
+    <CollectionListView collection={props.collection} page={props.page} />
+  ) : (
+    <CollectionItemView entry={props.entry} />
+  )
+}

@@ -1,7 +1,6 @@
 ---
 id: time
 label: Time
-category: data
 description: Time - Technical documentation, patterns, and best practices.
 ---
 

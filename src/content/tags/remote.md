@@ -1,7 +1,6 @@
 ---
 id: remote
 label: Remote
-category: data
 description: Remote - Technical documentation, patterns, and best practices.
 ---
 

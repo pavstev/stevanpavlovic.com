@@ -1,7 +1,6 @@
 ---
 id: typescript
 label: TypeScript
-category: data
 description: TypeScript - Technical documentation, patterns, and best practices.
 ---
 

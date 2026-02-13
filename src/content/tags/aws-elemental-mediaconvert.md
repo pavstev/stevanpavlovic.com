@@ -1,7 +1,6 @@
 ---
 id: aws-elemental-mediaconvert
 label: AwsElementalMediaconvert
-category: aws
 description: aws-elemental-mediaconvert - aws elemental mediaconvert
 ---
 

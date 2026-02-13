@@ -1,7 +1,6 @@
 ---
 id: data
 label: Data
-category: data
 description: Data - Technical documentation, patterns, and best practices.
 ---
 

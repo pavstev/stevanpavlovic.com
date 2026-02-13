@@ -1,7 +1,6 @@
 ---
 id: aws
 label: AWS
-category: data
 description: AWS - Technical documentation, patterns, and best practices.
 ---
 

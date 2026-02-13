@@ -1,7 +1,6 @@
 ---
 id: redis
 label: Redis
-category: data
 description: Redis - Technical documentation, patterns, and best practices.
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: security
 label: Security
-category: security
 description: security - security
 ---
 

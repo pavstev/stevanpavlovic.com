@@ -1,7 +1,6 @@
 ---
 id: go
 label: Go
-category: data
 description: Go - Technical documentation, patterns, and best practices.
 ---
 

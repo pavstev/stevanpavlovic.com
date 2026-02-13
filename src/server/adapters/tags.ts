@@ -1,5 +1,3 @@
-import { getEntry } from "astro:content";
-
 import {
   type CardResult,
   type CollectionItem,
@@ -10,14 +8,10 @@ import {
 
 export class TagsAdapter extends ContentAdapter<"tags"> {
   async getCardData(item: CollectionItem<"tags">): Promise<CardResult> {
-    const category = item.data.category ? await getEntry(item.data.category) : undefined;
-
     return {
       actionLabel: "View Tag",
       data: {
         description: item.data.description,
-        image: category?.data.icon,
-        subtitle: category?.data.label,
         title: item.data.label,
         url: `/tags/${item.id}`,
       },
@@ -28,30 +22,13 @@ export class TagsAdapter extends ContentAdapter<"tags"> {
     return 0;
   }
 
-  async getToolbarItems(item: CollectionItem<"tags">): Promise<ToolbarItem[]> {
-    const items: ToolbarItem[] = [];
-
-    if (item.data.category) {
-      const category = await getEntry(item.data.category);
-      if (category) {
-        items.push({
-          label: "Category",
-          type: "category",
-          value: category.data.label,
-        });
-      }
-    }
-
-    return items;
+  getToolbarItems(_item: CollectionItem<"tags">): ToolbarItem[] {
+    return [];
   }
 
   async getViewProps(item: CollectionItem<"tags">): Promise<Partial<ViewPageProps<"tags">>> {
-    const category = item.data.category ? await getEntry(item.data.category) : undefined;
-
     return {
       description: item.data.description,
-      image: category?.data.icon,
-      subtitle: category?.data.label,
       tags: { items: [], title: "" },
       title: item.data.label,
     };

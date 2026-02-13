@@ -1,7 +1,6 @@
 ---
 id: process-automation
 label: ProcessAutomation
-category: process
 description: process-automation - process automation
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: postgresql
 label: PostgreSQL
-category: data
 description: PostgreSQL - Technical documentation, patterns, and best practices.
 ---
 

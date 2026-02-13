@@ -1,7 +1,6 @@
 ---
 id: data-analytics
 label: DataAnalytics
-category: data
 description: data-analytics - data analytics
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: process
 label: Process
-category: data
 description: Process - Technical documentation, patterns, and best practices.
 ---
 

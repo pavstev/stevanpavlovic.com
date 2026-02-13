@@ -1,7 +1,6 @@
 ---
 id: real-time
 label: RealTime
-category: real
 description: real-time - real time
 ---
 

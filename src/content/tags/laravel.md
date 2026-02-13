@@ -1,7 +1,6 @@
 ---
 id: laravel
 label: Laravel
-category: data
 description: Laravel - Technical documentation, patterns, and best practices.
 ---
 

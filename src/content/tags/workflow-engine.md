@@ -1,7 +1,6 @@
 ---
 id: workflow-engine
 label: WorkflowEngine
-category: workflow
 description: workflow-engine - workflow engine
 ---
 

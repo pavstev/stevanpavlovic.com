@@ -1,7 +1,6 @@
 ---
 id: kafka
 label: Kafka
-category: data
 description: Kafka - Technical documentation, patterns, and best practices.
 ---
 

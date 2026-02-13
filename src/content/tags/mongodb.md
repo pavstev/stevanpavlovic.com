@@ -1,7 +1,6 @@
 ---
 id: mongodb
 label: MongoDB
-category: data
 description: MongoDB - Technical documentation, patterns, and best practices.
 ---
 

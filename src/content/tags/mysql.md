@@ -1,7 +1,6 @@
 ---
 id: mysql
 label: MySQL
-category: data
 description: MySQL - Technical documentation, patterns, and best practices.
 ---
 

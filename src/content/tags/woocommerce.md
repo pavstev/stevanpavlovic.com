@@ -1,7 +1,6 @@
 ---
 id: woocommerce
 label: WooCommerce
-category: data
 description:
   WooCommerce - Technical documentation, patterns, and best practices.
 ---

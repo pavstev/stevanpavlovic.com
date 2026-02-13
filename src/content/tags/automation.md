@@ -1,7 +1,6 @@
 ---
 id: automation
 label: Automation
-category: data
 description: Automation - Technical documentation, patterns, and best practices.
 ---
 

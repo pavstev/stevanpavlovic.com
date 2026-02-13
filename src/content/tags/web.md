@@ -1,7 +1,6 @@
 ---
 id: web
 label: Web
-category: data
 description: Web - Technical documentation, patterns, and best practices.
 ---
 

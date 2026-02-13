@@ -1,7 +1,6 @@
 ---
 id: javascript
 label: JavaScript
-category: data
 description: JavaScript - Technical documentation, patterns, and best practices.
 ---
 

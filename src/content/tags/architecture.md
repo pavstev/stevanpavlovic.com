@@ -1,7 +1,6 @@
 ---
 id: architecture
 label: Architecture
-category: architecture
 description: architecture - architecture
 ---
 

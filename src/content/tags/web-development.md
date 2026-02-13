@@ -1,7 +1,6 @@
 ---
 id: web-development
 label: WebDevelopment
-category: web
 description: web-development - web development
 ---
 

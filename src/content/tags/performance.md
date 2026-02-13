@@ -1,7 +1,6 @@
 ---
 id: performance
 label: Performance
-category: data
 description:
   Performance - Technical documentation, patterns, and best practices.
 ---

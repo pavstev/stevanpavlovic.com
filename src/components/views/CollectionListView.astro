@@ -1,0 +1,162 @@
+---
+import type { ViewableCollection } from "@server/types";
+
+import LayoutRoot from "@components/layout/layout-root.astro";
+import { ContentCard } from "@components/ui/content-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@components/ui/pagination";
+import { getCollectionPageData } from "@server/api";
+
+interface Props {
+  collection: ViewableCollection;
+  page?: number | string;
+}
+
+const { collection, page = 1 } = Astro.props;
+const pageData = await getCollectionPageData(collection, page);
+
+const { baseUrl, collectionItems, config, currentPage, nextUrl, prevUrl, totalPages } = pageData;
+
+// Extract logic for different layouts
+const isExperience = collection === "experience";
+const isBlog = collection === "blog";
+---
+
+<LayoutRoot
+  description={config.description}
+  slug={currentPage === 1 ? `/${collection}` : `/${collection}/page/${currentPage}`}
+  title={currentPage === 1 ? config.title : `${config.title} - Page ${currentPage}`}
+>
+  <div class="container mx-auto px-4 py-12 md:py-24">
+    <div class={`flex flex-col gap-12 ${isExperience ? "mx-auto max-w-4xl" : ""}`}>
+      <div class="space-y-4 text-center">
+        <h1
+          class={`bg-linear-to-r from-primary to-primary/50 bg-clip-text font-extrabold tracking-tight text-transparent ${
+            isBlog ? "text-5xl lg:text-7xl" : "text-4xl lg:text-6xl"
+          }`}
+        >
+          {config.title}
+          {currentPage > 1 && <span class="text-foreground/50"> — Page {currentPage}</span>}
+        </h1>
+        <p class="mx-auto max-w-2xl text-xl text-muted-foreground md:text-2xl">
+          {config.description}
+        </p>
+      </div>
+
+      {
+        isExperience ? (
+          <div class="relative ml-4 space-y-12 border-l-2 border-muted pl-8 md:ml-8">
+            {collectionItems.map((item) => (
+              <div class="relative">
+                <div class="absolute top-6 -left-[41px] size-5 rounded-full border-4 border-background bg-primary md:-left-[41px]" />
+                <ContentCard
+                  className="w-full"
+                  date={(item.data as any).pubDate ?? (item.data as any).startDate}
+                  description={(item.data as any).description}
+                  href={`${baseUrl}/${item.id}`}
+                  image={
+                    typeof (item.data as any).cover === "string"
+                      ? (item.data as any).cover
+                      : (item.data as any).cover?.src
+                  }
+                  tags={(item.data as any).tags?.map((t: any) =>
+                    typeof t === "string" ? t : t.id
+                  )}
+                  title={(item.data as any).title ?? (item.data as any).label ?? item.id}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            class={`grid grid-cols-1 gap-8 ${
+              collection === "companies"
+                ? "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "md:grid-cols-2 lg:grid-cols-3"
+            }`}
+          >
+            {collectionItems.map((item, index) => (
+              <div
+                class={`group relative flex flex-col gap-4 rounded-3xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md ${
+                  isBlog && index === 0 && currentPage === 1
+                    ? "row-span-2 md:col-span-2 lg:col-span-2"
+                    : ""
+                }`}
+              >
+                <ContentCard
+                  className="h-full"
+                  date={
+                    (item.data as any).pubDate ??
+                    (item.data as any).startDate ??
+                    (item.data as any).founded
+                  }
+                  description={(item.data as any).description}
+                  href={`${baseUrl}/${item.id}`}
+                  image={
+                    (item.data as any).cover
+                      ? typeof (item.data as any).cover === "string"
+                        ? (item.data as any).cover
+                        : (item.data as any).cover?.src
+                      : typeof (item.data as any).logo === "string"
+                        ? (item.data as any).logo
+                        : (item.data as any).logo?.src
+                  }
+                  tags={(item.data as any).tags?.map((t: any) =>
+                    typeof t === "string" ? t : t.id
+                  )}
+                  title={
+                    (item.data as any).title ??
+                    (item.data as any).label ??
+                    (item.data as any).name ??
+                    item.id
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        totalPages > 1 && (
+          <div class="mt-12 flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  {prevUrl ? (
+                    <PaginationPrevious href={prevUrl} />
+                  ) : (
+                    <PaginationPrevious className="pointer-events-none opacity-50" href="#" />
+                  )}
+                </PaginationItem>
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem>
+                    <PaginationLink
+                      href={`${baseUrl}${i === 0 ? "" : `/page/${i + 1}`}`}
+                      isActive={currentPage === i + 1}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  {nextUrl ? (
+                    <PaginationNext href={nextUrl} />
+                  ) : (
+                    <PaginationNext className="pointer-events-none opacity-50" href="#" />
+                  )}
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</LayoutRoot>

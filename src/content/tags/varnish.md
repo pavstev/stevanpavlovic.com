@@ -1,7 +1,6 @@
 ---
 id: varnish
 label: Varnish
-category: data
 description: Varnish - Technical documentation, patterns, and best practices.
 ---
 

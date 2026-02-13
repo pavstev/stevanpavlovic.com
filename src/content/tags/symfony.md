@@ -1,7 +1,6 @@
 ---
 id: symfony
 label: Symfony
-category: data
 description: Symfony - Technical documentation, patterns, and best practices.
 ---
 

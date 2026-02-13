@@ -1,7 +1,6 @@
 ---
 id: performance-tuning
 label: PerformanceTuning
-category: performance
 description: performance-tuning - performance tuning
 ---
 

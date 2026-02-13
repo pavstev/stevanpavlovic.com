@@ -1,7 +1,6 @@
 ---
 id: cloud
 label: Cloud
-category: cloud
 description: cloud - cloud
 ---
 

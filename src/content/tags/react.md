@@ -1,7 +1,6 @@
 ---
 id: react
 label: React
-category: frontend
 description: React - JavaScript library for building user interfaces
 ---
 

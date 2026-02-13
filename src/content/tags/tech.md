@@ -1,7 +1,6 @@
 ---
 id: tech
 label: Tech
-category: data
 description: Tech - Technical documentation, patterns, and best practices.
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: responsive-design
 label: Responsive Design
-category: frontend
 description:
   An approach to web design that makes web pages render well on a variety of
   devices and window or screen sizes.

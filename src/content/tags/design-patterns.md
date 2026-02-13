@@ -1,7 +1,6 @@
 ---
 id: design-patterns
 label: DesignPatterns
-category: design
 description: design-patterns - design patterns
 ---
 

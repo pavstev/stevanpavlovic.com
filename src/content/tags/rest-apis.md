@@ -1,7 +1,6 @@
 ---
 id: rest-apis
 label: REST APIs
-category: data
 description: REST APIs - Technical documentation, patterns, and best practices.
 ---
 

@@ -1,0 +1,185 @@
+---
+import type { ViewableCollection } from "@server/types";
+import type { CollectionEntry } from "astro:content";
+
+import LayoutRoot from "@components/layout/layout-root.astro";
+import NavigationProgress from "@components/layout/navigation-progress.astro";
+import { Badge } from "@components/ui/badge";
+import { buttonVariants } from "@components/ui/button";
+import { ContentCard } from "@components/ui/content-card";
+import { getViewPageProps } from "@server/api";
+import { Icon } from "astro-icon/components";
+import { render } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<ViewableCollection>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry as any);
+const viewProps = await getViewPageProps({ ...entry, collection: entry.collection } as any);
+
+const isProject = entry.collection === "projects";
+const isBlog = entry.collection === "blog";
+---
+
+<LayoutRoot
+  description={viewProps.description ?? ""}
+  slug={`/${entry.collection}/${entry.id}`}
+  title={viewProps.title}
+>
+  <NavigationProgress />
+
+  <article class={`container mx-auto px-4 py-12 md:py-24 ${isBlog ? "max-w-4xl" : ""}`}>
+    {
+      isProject ? (
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
+          <header class="flex animate-in flex-col gap-6 duration-700 fade-in slide-in-from-bottom-4 lg:col-span-12">
+            <div class="flex items-center gap-2 text-sm text-muted-foreground">
+              <a
+                class={buttonVariants({ className: "gap-1 pl-2.5", size: "sm", variant: "ghost" })}
+                href={`/${entry.collection}`}
+              >
+                <Icon class="size-4" name="mdi:chevron-left" />
+                Back to {entry.collection.charAt(0).toUpperCase() + entry.collection.slice(1)}
+              </a>
+            </div>
+            <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">{viewProps.title}</h1>
+            <p class="max-w-3xl text-xl text-muted-foreground">{viewProps.description}</p>
+
+            <div class="mt-4 flex flex-wrap gap-4">
+              {entry.data.demoUrl && (
+                <a
+                  class={buttonVariants({ className: "gap-2 rounded-full" })}
+                  href={entry.data.demoUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Live Demo
+                  <Icon class="size-4" name="mdi:open-in-new" />
+                </a>
+              )}
+              {entry.data.repoUrl && (
+                <a
+                  class={buttonVariants({ className: "gap-2 rounded-full", variant: "outline" })}
+                  href={entry.data.repoUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  View Code
+                  <Icon class="size-4" name="mdi:github" />
+                </a>
+              )}
+            </div>
+          </header>
+
+          <div class="lg:col-span-8">
+            <div class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl">
+              <ContentCard
+                className="mb-8 w-full border-0 !bg-transparent p-0 shadow-none"
+                href="#"
+                image={
+                  typeof (entry.data as any).image === "string"
+                    ? (entry.data as any).image
+                    : (entry.data as any).image?.src
+                }
+                title={""}
+              />
+              <Content />
+            </div>
+          </div>
+
+          <aside class="space-y-8 lg:col-span-4">
+            <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
+              <h3 class="mb-4 text-lg font-semibold">Project Details</h3>
+              <div class="space-y-4 text-sm">
+                {entry.data.role && (
+                  <div>
+                    <p class="text-muted-foreground">Role</p>
+                    <p class="font-medium">{entry.data.role}</p>
+                  </div>
+                )}
+                {entry.data.teamSize && (
+                  <div>
+                    <p class="text-muted-foreground">Team Size</p>
+                    <p class="font-medium">{entry.data.teamSize}</p>
+                  </div>
+                )}
+                {entry.data.duration && (
+                  <div>
+                    <p class="text-muted-foreground">Duration</p>
+                    <p class="font-medium">{entry.data.duration}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
+              <h3 class="mb-4 text-lg font-semibold">Technologies</h3>
+              <div class="flex flex-wrap gap-2">
+                {viewProps.tags?.items.map((tag: any) => (
+                  <Badge className="rounded-md" variant="secondary">
+                    {tag.id}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
+      ) : (
+        <>
+          <header class="mb-12 flex animate-in flex-col gap-6 duration-700 fade-in slide-in-from-bottom-4">
+            <div class="flex items-center gap-2 text-sm text-muted-foreground">
+              <a
+                class={buttonVariants({ className: "gap-1 pl-2.5", size: "sm", variant: "ghost" })}
+                href={`/${entry.collection}`}
+              >
+                <Icon class="size-4" name="mdi:chevron-left" />
+                Back to {entry.collection.charAt(0).toUpperCase() + entry.collection.slice(1)}
+              </a>
+            </div>
+
+            <h1 class="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent lg:text-6xl">
+              {viewProps.title}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              {Array.isArray(viewProps.tags?.items) && (
+                <div class="flex flex-wrap gap-2">
+                  {viewProps.tags.items.map((tag: any) => (
+                    <Badge className="rounded-md" variant="secondary">
+                      #{tag.id}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {viewProps.description && (
+              <p class="border-l-4 border-primary/20 pl-4 text-xl leading-relaxed text-muted-foreground">
+                {viewProps.description}
+              </p>
+            )}
+
+            <div class="border-b pt-4" />
+          </header>
+
+          <div class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:underline prose-img:rounded-2xl prose-img:shadow-lg">
+            <Content />
+          </div>
+        </>
+      )
+    }
+  </article>
+</LayoutRoot>
+
+<script>
+  import { initFocusMode } from "@client";
+
+  const init = () => {
+    initFocusMode();
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

@@ -1,7 +1,6 @@
 ---
 id: elasticsearch
 label: Elasticsearch
-category: data
 description:
   Elasticsearch - Technical documentation, patterns, and best practices.
 ---

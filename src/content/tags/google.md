@@ -1,7 +1,6 @@
 ---
 id: google
 label: Google
-category: data
 description: Google - Technical documentation, patterns, and best practices.
 ---
 

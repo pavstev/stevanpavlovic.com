@@ -1,7 +1,6 @@
 ---
 id: api-orchestration
 label: ApiOrchestration
-category: api
 description: api-orchestration - api orchestration
 ---
 

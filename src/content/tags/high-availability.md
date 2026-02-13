@@ -1,7 +1,6 @@
 ---
 id: high-availability
 label: HighAvailability
-category: high
 description: high-availability - high availability
 ---
 

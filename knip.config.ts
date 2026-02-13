@@ -14,6 +14,13 @@ const config: KnipConfig = {
     "@iconify-json/mdi",
     "remark-lint-no-multiple-toplevel-headings",
     "eslint-mdx",
+    "@tanstack/*",
+    "react-hook-form",
+  ],
+  ignoreFiles: [
+    "src/components/ui/form.tsx",
+    "src/components/ui/label.tsx",
+    "src/components/ui/magic-card.tsx",
   ],
 };
 

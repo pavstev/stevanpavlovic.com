@@ -1,7 +1,6 @@
 ---
 id: video
 label: Video
-category: data
 description: Video - Technical documentation, patterns, and best practices.
 ---
 

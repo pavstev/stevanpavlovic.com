@@ -1,5 +1,5 @@
 import type { ImageMetadata } from "astro";
-import type { CollectionEntry, CollectionKey } from "astro:content";
+import type { CollectionEntry, CollectionKey, CollectionKey as collectionMap } from "astro:content";
 
 export interface Author extends ToolbarItem {
   avatar: ImageMetadata;
@@ -8,7 +8,7 @@ export interface Author extends ToolbarItem {
   type: "person";
 }
 
-export abstract class ContentAdapter<CN extends CollectionKey> {
+export abstract class ContentAdapter<CN extends collectionMap> {
   abstract getCardData(item: CollectionItem<CN>): Promise<CardResult>;
   abstract getSortDate(item: CollectionItem<CN>): number;
   abstract getToolbarItems(item: CollectionItem<CN>): Promise<ToolbarItem[]> | ToolbarItem[];
@@ -17,15 +17,20 @@ export abstract class ContentAdapter<CN extends CollectionKey> {
   ): Partial<ViewPageProps<CN>> | Promise<Partial<ViewPageProps<CN>>>;
 }
 
-export type { CollectionEntry, CollectionKey };
+export type { CollectionEntry, collectionMap as CollectionKey };
 
-import { COLLECTION_KEYS } from "../lib-shared/collection-keys";
-
-const DISALLOWED_COLLECTIONS = [] as const;
-
-export const collections: CollectionKey[] = COLLECTION_KEYS.filter(
-  (c) => !DISALLOWED_COLLECTIONS.includes(c as never)
-) as CollectionKey[];
+const collectionMap = {
+  blog: true,
+  companies: true,
+  experience: true,
+  locations: false,
+  people: false,
+  projects: true,
+  recommendations: false,
+  tags: true,
+} as const satisfies {
+  [Key in CollectionKey]: boolean;
+};
 
 export interface CardData {
   align?: "center" | "start";
@@ -58,16 +63,17 @@ export interface CollectionConfig {
   title: string;
 }
 
-export interface CollectionItem<CN extends CollectionKey = CollectionKey> {
+export interface CollectionItem<CN extends collectionMap = collectionMap> {
   body?: string;
   collection: CN;
   data: CollectionEntry<CN>["data"];
   id: string;
 }
+
 export interface CollectionPageData {
   baseUrl: string;
   collectionItems: CollectionItem[];
-  collectionKey: CollectionKey;
+  collectionKey: collectionMap;
   config: CollectionConfig;
   containerId: string;
   currentPage: number;
@@ -78,29 +84,14 @@ export interface CollectionPageData {
   totalItems: number;
   totalPages: number;
 }
-
 export type Company = CollectionEntry<"companies">["data"];
 
 export type Nullable<T> = null | T | undefined;
 
-interface PaginationLinksOptions {
-  baseUrl: string;
-  currentPage: number;
-  currentUrl: URL;
-  customGetPageUrl?: (page: number) => string;
-  nextUrl?: string;
-  paginationType: PaginationType;
-  prevUrl?: string;
-  totalPages: number;
-}
-
-type PaginationType = "path" | "query";
 export interface PostLink {
   href: string;
   label: string;
 }
-
-type ResponsiveValue<T> = T | { base: T; lg?: T; md?: T; sm?: T; xl?: T };
 
 export type Tag = CollectionEntry<"tags">["data"];
 
@@ -113,7 +104,6 @@ export interface ToolbarItem {
   type: ToolbarItemType;
   value: string;
 }
-
 export type ToolbarItemType =
   | "award"
   | "category"
@@ -128,7 +118,11 @@ export type ToolbarItemType =
   | "time"
   | "weather";
 
-export interface ViewPageProps<_CN extends CollectionKey = CollectionKey> {
+export type ViewableCollection = {
+  [K in CollectionKey]: (typeof collectionMap)[K] extends true ? K : never;
+}[CollectionKey];
+
+export interface ViewPageProps<_CN extends collectionMap = collectionMap> {
   author?: Author;
   backLink: PostLink;
   description: string | undefined;

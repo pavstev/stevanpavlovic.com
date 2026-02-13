@@ -1,7 +1,6 @@
 ---
 id: event-sourcing
 label: EventSourcing
-category: event
 description: event-sourcing - event sourcing
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: design
 label: Design
-category: data
 description: Design - Technical documentation, patterns, and best practices.
 ---
 

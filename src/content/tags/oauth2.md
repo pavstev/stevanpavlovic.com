@@ -1,7 +1,6 @@
 ---
 id: oauth2
 label: OAuth2
-category: data
 description: OAuth2 - Technical documentation, patterns, and best practices.
 ---
 

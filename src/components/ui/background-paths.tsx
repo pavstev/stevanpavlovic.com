@@ -3,11 +3,11 @@
 import { Button } from "@components/ui/button";
 import { motion } from "framer-motion";
 
-export function BackgroundPaths({ title = "Background Paths" }: { title?: string }) {
+export const BackgroundPaths = ({ title = "Background Paths" }: { title?: string }) => {
   const words = title.split(" ");
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
@@ -73,9 +73,9 @@ export function BackgroundPaths({ title = "Background Paths" }: { title?: string
       </div>
     </div>
   );
-}
+};
 
-function FloatingPaths({ position }: { position: number }) {
+const FloatingPaths = ({ position }: { position: number }) => {
   const paths = Array.from({ length: 36 }, (_, i) => ({
     color: `rgba(15,23,42,${0.1 + i * 0.03})`,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
@@ -116,4 +116,4 @@ function FloatingPaths({ position }: { position: number }) {
       </svg>
     </div>
   );
-}
+};

@@ -78,11 +78,6 @@ type InitHeaderEffectsProps = {
 
 export const initHeaderEffects = ({ afterScrollClasses }: InitHeaderEffectsProps): void => {
   const island = document.getElementById("nav-island");
-  const progressBg = document.getElementById("nav-progress-bg");
-  const brandWrapper = document.getElementById("brand-wrapper");
-  const desktopNav = document.getElementById("desktop-nav");
-  const actionsWrapper = document.getElementById("actions-wrapper");
-
   if (!island) return;
 
   const handleScroll = (): void => {
@@ -92,26 +87,11 @@ export const initHeaderEffects = ({ afterScrollClasses }: InitHeaderEffectsProps
     if (isScrolled) {
       island.classList.add(...afterScrollClasses.add);
       island.classList.remove(...afterScrollClasses.remove);
-
-      // if (brandWrapper) brandWrapper.style.opacity = "0.7";
-      // if (desktopNav) desktopNav.style.gap = "0.25rem";
-      // if (actionsWrapper) actionsWrapper.style.opacity = "0.8";
     }
 
     if (!isScrolled) {
       island.classList.remove(...afterScrollClasses.add);
       island.classList.add(...afterScrollClasses.remove);
-
-      // if (brandWrapper) brandWrapper.style.opacity = "1";
-      // if (desktopNav) desktopNav.style.gap = "0.5rem";
-      // if (actionsWrapper) actionsWrapper.style.opacity = "1";
-    }
-
-    if (progressBg) {
-      const winScroll = document.body.scrollTop ?? document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-      progressBg.style.width = `${scrolled}%`;
     }
   };
 

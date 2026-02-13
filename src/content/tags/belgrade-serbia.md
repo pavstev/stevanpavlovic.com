@@ -1,7 +1,6 @@
 ---
 id: belgrade-serbia
 label: Belgrade, Serbia
-category: data
 description:
   Belgrade, Serbia - Technical documentation, patterns, and best practices.
 ---

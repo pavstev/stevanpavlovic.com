@@ -1,7 +1,6 @@
 ---
 id: nestjs
 label: NestJS
-category: data
 description: NestJS - Technical documentation, patterns, and best practices.
 ---
 

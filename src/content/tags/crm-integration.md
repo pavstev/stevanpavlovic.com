@@ -1,7 +1,6 @@
 ---
 id: crm-integration
 label: CrmIntegration
-category: crm
 description: crm-integration - crm integration
 ---
 

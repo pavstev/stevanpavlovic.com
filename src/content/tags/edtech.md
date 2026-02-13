@@ -1,7 +1,6 @@
 ---
 id: edtech
 label: EdTech
-category: data
 description: EdTech - Technical documentation, patterns, and best practices.
 ---
 

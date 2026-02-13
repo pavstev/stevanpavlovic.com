@@ -1,7 +1,6 @@
 ---
 id: fintech
 label: FinTech
-category: data
 description: FinTech - Technical documentation, patterns, and best practices.
 ---
 

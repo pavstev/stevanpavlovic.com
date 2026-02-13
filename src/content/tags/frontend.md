@@ -1,7 +1,6 @@
 ---
 id: frontend
 label: Frontend
-category: frontend
 description: frontend - frontend
 ---
 

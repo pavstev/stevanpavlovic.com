@@ -1,7 +1,6 @@
 ---
 id: high
 label: High
-category: data
 description: High - Technical documentation, patterns, and best practices.
 ---
 

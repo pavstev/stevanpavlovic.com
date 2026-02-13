@@ -1,7 +1,6 @@
 ---
 id: aws-lambda
 label: AwsLambda
-category: aws
 description: aws-lambda - aws lambda
 ---
 

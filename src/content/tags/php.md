@@ -1,7 +1,6 @@
 ---
 id: php
 label: PHP
-category: data
 description: PHP - Technical documentation, patterns, and best practices.
 ---
 

@@ -2,47 +2,44 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
 
 @theme {
-
-  --color-background: hsl(0 0% 3%);
+  --color-background: hsl(240 10% 3.9%);
   --color-foreground: hsl(0 0% 98%);
 
-  --color-card: hsl(0 0% 8%);
+  --color-card: hsl(240 10% 5%);
   --color-card-foreground: hsl(0 0% 98%);
 
-  --color-popover: hsl(0 0% 2%);
+  --color-popover: hsl(240 10% 3.9%);
   --color-popover-foreground: hsl(0 0% 98%);
 
-  --color-muted: hsl(0 0% 5%);
-  --color-muted-foreground: hsl(0 0% 60%);
+  --color-muted: hsl(240 3.7% 15.9%);
+  --color-muted-foreground: hsl(240 5% 64.9%);
 
-  --color-border: hsl(0 0% 16%);
-  --color-input: hsl(0 0% 8%);
-  --color-ring: hsl(210 100% 55% / 0.5);
+  --color-border: hsl(240 3.7% 15.9%);
+  --color-input: hsl(240 3.7% 15.9%);
+  --color-ring: hsl(240 4.9% 83.9%);
 
-  --color-primary: hsl(210 100% 45%);
-  --color-primary-foreground: hsl(210 100% 10%);
+  --color-primary: hsl(0 0% 98%);
+  --color-primary-foreground: hsl(240 5.9% 10%);
 
-  --color-secondary: hsl(30 100% 50%);
-  --color-secondary-foreground: hsl(30 100% 5%);
+  --color-secondary: hsl(240 3.7% 15.9%);
+  --color-secondary-foreground: hsl(0 0% 98%);
 
-  --color-accent: hsl(140 100% 50%);
-  --color-accent-foreground: hsl(140 100% 5%);
+  --color-accent: hsl(240 3.7% 15.9%);
+  --color-accent-foreground: hsl(0 0% 98%);
 
-  --color-tertiary: hsl(280 100% 60%);
-  --color-tertiary-foreground: hsl(280 100% 5%);
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-foreground: hsl(0 0% 98%);
 
-  --color-highlight: hsl(75 100% 50%);
-  --color-highlight-foreground: hsl(75 100% 5%);
-
-  --color-destructive: hsl(340 100% 55%);
-  --color-destructive-foreground: hsl(340 100% 100%);
-
-  --color-danger: hsl(340 100% 55%);
-  --color-danger-foreground: hsl(340 100% 100%);
+  --color-danger: hsl(0 62.8% 30.6%);
+  --color-danger-foreground: hsl(0 0% 98%);
 
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -222,15 +219,15 @@
 
 @layer utilities {
   .glass {
-    @apply bg-background/40 backdrop-blur-xl border border-foreground/10;
+    @apply bg-background/60 backdrop-blur-xl border border-border/50 supports-[backdrop-filter]:bg-background/60;
   }
 
   .glass-hover {
-    @apply hover:bg-foreground/5 hover:border-foreground/20 transition-all duration-300;
+    @apply hover:bg-accent/50 hover:border-accent-foreground/10 transition-all duration-300 ease-in-out;
   }
 
   .glass-strong {
-    @apply bg-background/60 backdrop-blur-2xl border border-foreground/15;
+    @apply bg-background/80 backdrop-blur-2xl border border-border/50 supports-[backdrop-filter]:bg-background/80;
   }
 
   .text-gradient {
@@ -517,20 +514,20 @@
 :root {
   view-transition-name: none;
   --radius: 0.5rem;
-  --background: oklch(0.9851 0.0007 160.9940);
+  --background: oklch(0.9851 0.0007 160.994);
   --foreground: oklch(0.2228 0.0142 159.4185);
   --card: oklch(0.9626 0.0017 160.9709);
   --card-foreground: oklch(0.2228 0.0142 159.4185);
-  --popover: oklch(0.9851 0.0007 160.9940);
+  --popover: oklch(0.9851 0.0007 160.994);
   --popover-foreground: oklch(0.2228 0.0142 159.4185);
   --primary: oklch(0.6862 0.2146 140.0627);
   --primary-foreground: oklch(0.9854 0.0013 160.9796);
   --secondary: oklch(0.9264 0.0067 160.8408);
   --secondary-foreground: oklch(0.3394 0.0334 158.4255);
-  --muted: oklch(0.9400 0.0027 160.9448);
-  --muted-foreground: oklch(0.5255 0.0306 159.5650);
+  --muted: oklch(0.94 0.0027 160.9448);
+  --muted-foreground: oklch(0.5255 0.0306 159.565);
   --accent: oklch(0.9738 0.0274 137.8113);
-  --accent-foreground: oklch(0.5562 0.1720 139.9284);
+  --accent-foreground: oklch(0.5562 0.172 139.9284);
   --destructive: oklch(0.5714 0.2121 27.2502);
   --border: oklch(0.8891 0.0102 160.7407);
   --input: oklch(0.8891 0.0102 160.7407);
@@ -548,7 +545,7 @@
   --sidebar-accent-foreground: oklch(0.6221 0.1936 140.0038);
   --sidebar-border: oklch(0.9264 0.0067 160.8408);
   --sidebar-ring: oklch(0.6862 0.2146 140.0627);
-  --destructive-foreground: oklch(1.0000 0 0);
+  --destructive-foreground: oklch(1 0 0);
   --font-sans: Inter, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: JetBrains Mono, monospace;
@@ -702,7 +699,6 @@ html {
 }
 
 @theme inline {
-
   --radius-sm: calc(var(--radius) - 4px);
 
   --radius-md: calc(var(--radius) - 2px);
@@ -779,9 +775,11 @@ html {
 
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: Geist, sans-serif;
+  --font-sans: "Inter Variable", Inter, sans-serif;
 
-  --font-mono: Fira Code, monospace;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", monospace;
+
+  --font-display: "Space Grotesk Variable", "Space Grotesk", sans-serif;
 
   --font-serif: Georgia, serif;
 
@@ -835,12 +833,11 @@ html {
 }
 
 .dark {
-
   --background: oklch(0.1477 0.0043 160.6222);
 
   --foreground: oklch(0.8868 0.0051 160.8765);
 
-  --card: oklch(0.1960 0.0063 160.2335);
+  --card: oklch(0.196 0.0063 160.2335);
 
   --card-foreground: oklch(0.9626 0.0017 160.9709);
 
@@ -852,7 +849,7 @@ html {
 
   --primary-foreground: oklch(0.1477 0.0043 160.6222);
 
-  --secondary: oklch(0.2430 0.0112 159.8844);
+  --secondary: oklch(0.243 0.0112 159.8844);
 
   --secondary-foreground: oklch(0.9264 0.0067 160.8408);
 
@@ -864,7 +861,7 @@ html {
 
   --accent-foreground: oklch(0.8952 0.2496 135.9394);
 
-  --destructive: oklch(0.6333 0.2001 24.9320);
+  --destructive: oklch(0.6333 0.2001 24.932);
 
   --border: oklch(0.2762 0.0135 159.8085);
 
@@ -890,7 +887,7 @@ html {
 
   --sidebar-primary-foreground: oklch(0.1477 0.0043 160.6222);
 
-  --sidebar-accent: oklch(0.2430 0.0112 159.8844);
+  --sidebar-accent: oklch(0.243 0.0112 159.8844);
 
   --sidebar-accent-foreground: oklch(0.8952 0.2496 135.9394);
 
@@ -898,7 +895,7 @@ html {
 
   --sidebar-ring: oklch(0.8829 0.2734 138.1167);
 
-  --destructive-foreground: oklch(1.0000 0 0);
+  --destructive-foreground: oklch(1 0 0);
 
   --radius: 0.4rem;
 
@@ -928,15 +925,15 @@ html {
 
   --shadow-xs: 0px 10px 25px -5px hsl(0 0% 0% / 0.25);
 
-  --shadow-sm: 0px 10px 25px -5px hsl(0 0% 0% / 0.50), 0px 1px 2px -6px hsl(0 0% 0% / 0.50);
+  --shadow-sm: 0px 10px 25px -5px hsl(0 0% 0% / 0.5), 0px 1px 2px -6px hsl(0 0% 0% / 0.5);
 
-  --shadow: 0px 10px 25px -5px hsl(0 0% 0% / 0.50), 0px 1px 2px -6px hsl(0 0% 0% / 0.50);
+  --shadow: 0px 10px 25px -5px hsl(0 0% 0% / 0.5), 0px 1px 2px -6px hsl(0 0% 0% / 0.5);
 
-  --shadow-md: 0px 10px 25px -5px hsl(0 0% 0% / 0.50), 0px 2px 4px -6px hsl(0 0% 0% / 0.50);
+  --shadow-md: 0px 10px 25px -5px hsl(0 0% 0% / 0.5), 0px 2px 4px -6px hsl(0 0% 0% / 0.5);
 
-  --shadow-lg: 0px 10px 25px -5px hsl(0 0% 0% / 0.50), 0px 4px 6px -6px hsl(0 0% 0% / 0.50);
+  --shadow-lg: 0px 10px 25px -5px hsl(0 0% 0% / 0.5), 0px 4px 6px -6px hsl(0 0% 0% / 0.5);
 
-  --shadow-xl: 0px 10px 25px -5px hsl(0 0% 0% / 0.50), 0px 8px 10px -6px hsl(0 0% 0% / 0.50);
+  --shadow-xl: 0px 10px 25px -5px hsl(0 0% 0% / 0.5), 0px 8px 10px -6px hsl(0 0% 0% / 0.5);
 
   --shadow-2xl: 0px 10px 25px -5px hsl(0 0% 0% / 1.25);
 }

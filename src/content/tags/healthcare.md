@@ -1,7 +1,6 @@
 ---
 id: healthcare
 label: Healthcare
-category: data
 description: Healthcare - Technical documentation, patterns, and best practices.
 ---
 

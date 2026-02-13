@@ -1,7 +1,6 @@
 ---
 id: microservices
 label: Microservices
-category: data
 description:
   Microservices - Technical documentation, patterns, and best practices.
 ---

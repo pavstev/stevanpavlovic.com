@@ -1,7 +1,6 @@
 ---
 id: backend
 label: Backend
-category: backend
 description: backend - backend
 ---
 

@@ -1,7 +1,6 @@
 import type { CollectionKey, ContentAdapter } from "./types";
 
 import { BlogAdapter } from "./adapters/blog";
-import { CategoriesAdapter } from "./adapters/categories";
 import { CompaniesAdapter } from "./adapters/companies";
 import { ExperienceAdapter } from "./adapters/experience";
 import { LocationsAdapter } from "./adapters/locations";
@@ -12,7 +11,6 @@ import { TagsAdapter } from "./adapters/tags";
 
 export const adapters: { [K in CollectionKey]: ContentAdapter<K> } = {
   blog: new BlogAdapter(),
-  categories: new CategoriesAdapter(),
   companies: new CompaniesAdapter(),
   experience: new ExperienceAdapter(),
   locations: new LocationsAdapter(),

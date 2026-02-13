@@ -1,7 +1,6 @@
 ---
 id: rabbitmq
 label: RabbitMQ
-category: data
 description: RabbitMQ - Technical documentation, patterns, and best practices.
 ---
 

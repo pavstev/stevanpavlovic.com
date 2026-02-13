@@ -1,7 +1,6 @@
 ---
 id: api
 label: API
-category: data
 description: API - Technical documentation, patterns, and best practices.
 ---
 

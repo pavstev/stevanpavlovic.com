@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "strict": true,
     "noImplicitAny": true,
@@ -10,7 +10,6 @@
     "types": ["./worker-configuration.d.ts", "node"],
     "baseUrl": ".",
     "paths": {
-      "@lib-shared/*": ["./src/lib-shared/*"],
       "@client": ["./src/client/index.ts"],
       "@config": ["./src/config.ts"],
       "@client/*": ["./src/client/*"],

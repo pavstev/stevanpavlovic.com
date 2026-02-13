@@ -10,7 +10,7 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { cn } from "@client";
+import { cn } from "@client/utils";
 import { motion, useMotionValue, useTransform, type Variants } from "framer-motion";
 import { ArrowUpRight, CheckCircle2, Clock, Mic, Plus, Sparkles, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -154,7 +154,7 @@ const SpotlightFeature = ({ items }: { items: string[] }) => (
         key={`spotlight-${item.toLowerCase().replace(/\s+/g, "-")}`}
         transition={{ delay: 0.1 * index }}
       >
-        <CheckCircle2 className="size-4  flex-shrink-0 text-emerald-500 dark:text-emerald-400" />
+        <CheckCircle2 className="size-4  shrink-0 text-emerald-500 dark:text-emerald-400" />
         <span className="text-sm text-neutral-700 dark:text-neutral-300">{item}</span>
       </motion.li>
     ))}
@@ -283,7 +283,7 @@ const TimelineFeature = ({ timeline }: { timeline: Array<{ event: string; year: 
           delay: (0.15 * Number.parseInt(item.year)) % 10,
         }}
       >
-        <div className="z-10 mt-0.5 size-5  flex-shrink-0 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800" />
+        <div className="z-10 mt-0.5 size-5  shrink-0 rounded-full border-2 border-neutral-300 bg-neutral-100 dark:border-neutral-600 dark:bg-neutral-800" />
         <div>
           <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
             {item.year}
@@ -405,7 +405,7 @@ const MetricsFeature = ({
   );
 };
 
-function AIInput_Voice() {
+const AIInput_Voice = () => {
   const [submitted, setSubmitted] = useState(false);
   const [time, setTime] = useState(0);
   const [isClient, setIsClient] = useState(false);
@@ -521,7 +521,7 @@ function AIInput_Voice() {
       </div>
     </div>
   );
-}
+};
 
 const BentoCard = ({ item }: { item: BentoItem }) => {
   const [, setIsHovered] = useState(false);
@@ -530,7 +530,7 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
   const rotateX = useTransform(y, [-100, 100], [2, -2]);
   const rotateY = useTransform(x, [-100, 100], [-2, 2]);
 
-  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -540,13 +540,13 @@ const BentoCard = ({ item }: { item: BentoItem }) => {
     const yPct = mouseY / height - 0.5;
     x.set(xPct * 100);
     y.set(yPct * 100);
-  }
+  };
 
-  function handleMouseLeave() {
+  const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
     setIsHovered(false);
-  }
+  };
 
   return (
     <motion.div

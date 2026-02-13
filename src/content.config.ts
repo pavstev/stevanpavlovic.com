@@ -80,21 +80,9 @@ const PersonSocialLinks = z.array(PersonSocialLink).optional();
 
 const CompanySocialLinks = z.array(SocialLink).optional();
 
-const categories = defineCollection({
-  loader: glob({ base: "./src/content/categories", pattern: "**/*.md" }),
-  schema: z.object({
-    color: z.string().optional(),
-    description: z.string().optional(),
-    icon: z.string().optional(),
-    id: z.string(),
-    label: z.string(),
-  }),
-});
-
 const tags = defineCollection({
   loader: glob({ base: "./src/content/tags", pattern: "**/*.md" }),
   schema: z.object({
-    category: reference("categories"),
     description: z.string().optional(),
     id: z.string(),
     label: z.string(),
@@ -227,7 +215,6 @@ const people = defineCollection({
 
 export const collections = {
   blog,
-  categories,
   companies,
   experience,
   locations,

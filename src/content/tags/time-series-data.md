@@ -1,7 +1,6 @@
 ---
 id: time-series-data
 label: TimeSeriesData
-category: time
 description: time-series-data - time series data
 ---
 

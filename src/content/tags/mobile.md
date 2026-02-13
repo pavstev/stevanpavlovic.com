@@ -1,7 +1,6 @@
 ---
 id: mobile
 label: Mobile
-category: mobile
 description: mobile - mobile
 ---
 

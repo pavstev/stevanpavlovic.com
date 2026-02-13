@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@client";
+import { cn } from "@client/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { MonitorCogIcon, MoonStarIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -24,7 +24,7 @@ const THEME_OPTIONS = [
   },
 ] as const;
 
-export function ToggleTheme() {
+export const ToggleTheme = () => {
   const { setTheme, theme } = useTheme();
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -80,4 +80,4 @@ export function ToggleTheme() {
       })}
     </div>
   );
-}
+};

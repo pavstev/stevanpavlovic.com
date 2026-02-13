@@ -1,7 +1,6 @@
 ---
 id: docker
 label: Docker
-category: devops
 description: Docker - Container platform for application deployment
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: serverless
 label: Serverless
-category: data
 description: Serverless - Technical documentation, patterns, and best practices.
 ---
 

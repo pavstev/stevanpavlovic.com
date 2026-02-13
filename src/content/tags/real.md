@@ -1,7 +1,6 @@
 ---
 id: real
 label: Real
-category: data
 description: Real - Technical documentation, patterns, and best practices.
 ---
 

@@ -1,7 +1,6 @@
 ---
 id: mediaconvert
 label: MediaConvert
-category: data
 description:
   MediaConvert - Technical documentation, patterns, and best practices.
 ---

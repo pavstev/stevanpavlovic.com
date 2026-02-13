@@ -1,7 +1,6 @@
 ---
 id: google-maps-api
 label: GoogleMapsApi
-category: google
 description: google-maps-api - google maps api
 ---
 

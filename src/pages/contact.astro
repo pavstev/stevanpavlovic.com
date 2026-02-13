@@ -1,0 +1,124 @@
+---
+import { ContactDialog } from "@components/contact/ContactDialog";
+import Layout from "@components/layout/layout-root.astro";
+import { Icon } from "astro-icon/components";
+
+import { PROFILE, SOCIALS } from "../config";
+
+const title = "Contact | Stevan Pavlovic";
+const description =
+  "Get in touch for collaborations, project inquiries, or professional networking.";
+---
+
+<Layout description={description} title={title}>
+  <div class="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-4 py-20">
+    <!-- Background Accents -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute top-1/4 -left-20 size-96 animate-pulse rounded-full bg-primary/10 blur-3xl"
+      >
+      </div>
+      <div
+        class="absolute -right-20 bottom-1/4 size-96 animate-pulse rounded-full bg-accent/10 blur-3xl delay-1000"
+      >
+      </div>
+    </div>
+
+    <div class="container mx-auto max-w-4xl space-y-12">
+      <div class="space-y-6 text-center">
+        <h1
+          class="bg-linear-to-b from-foreground to-foreground/50 bg-clip-text text-5xl font-bold tracking-tight text-transparent md:text-7xl"
+        >
+          Let's Start a <span class="text-primary italic">Conversation</span>.
+        </h1>
+        <p class="mx-auto max-w-2xl text-xl leading-relaxed text-muted-foreground">
+          {PROFILE.bio.split(". ")[0]}. Whether you have a specific project in mind or just want to
+          connect, I'm always open to new opportunities.
+        </p>
+      </div>
+
+      <div class="grid items-stretch gap-8 md:grid-cols-2">
+        <!-- Contact Cards -->
+        <div class="space-y-4">
+          <div
+            class="group rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
+              >
+                <Icon class="size-6" name="mdi:email" />
+              </div>
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">Email</p>
+                <a
+                  class="text-lg font-semibold transition-colors hover:text-primary"
+                  href={`mailto:${PROFILE.email}`}
+                >
+                  {PROFILE.email}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="group rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
+              >
+                <Icon class="size-6" name="mdi:map-marker-radius" />
+              </div>
+              <div>
+                <p class="text-sm font-medium text-muted-foreground">Location</p>
+                <p class="text-lg font-semibold">{PROFILE.location}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            {
+              SOCIALS.filter((s) => s.name !== "Email").map((social) => (
+                <a
+                  class="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card/50 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+                  href={social.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <div class="rounded-xl bg-primary/10 p-3 text-primary transition-transform group-hover:scale-110">
+                    <Icon class="size-8 " name={social.icon} />
+                  </div>
+                  <span class="font-medium">{social.name}</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Action Card -->
+        <div
+          class="group relative flex flex-col items-center justify-center gap-8 overflow-hidden rounded-3xl border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5 p-8 text-center shadow-2xl"
+        >
+          <div
+            class="absolute top-0 right-0 size-32 rounded-full bg-primary/20 blur-3xl transition-all group-hover:bg-primary/30"
+          >
+          </div>
+
+          <div class="relative space-y-4">
+            <h3 class="text-3xl font-bold">Ready to Connect?</h3>
+            <p class="text-muted-foreground">
+              Click the button below to send me a direct message via the contact form.
+            </p>
+          </div>
+
+          <ContactDialog client:load />
+
+          <p class="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+            Estimated response time: <span class="text-primary">&lt; 24 hours</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

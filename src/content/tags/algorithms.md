@@ -1,7 +1,6 @@
 ---
 id: algorithms
 label: Algorithms
-category: data
 description: Algorithms - Technical documentation, patterns, and best practices.
 ---
 

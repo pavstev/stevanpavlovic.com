@@ -1,7 +1,6 @@
 ---
 id: oauth2-oidc
 label: OAuth2 & OIDC
-category: security
 description:
   Industry-standard protocols for authorization (OAuth2) and authentication
   (OpenID Connect).

@@ -1,7 +1,6 @@
 ---
 id: database
 label: Database
-category: database
 description: database - database
 ---
 

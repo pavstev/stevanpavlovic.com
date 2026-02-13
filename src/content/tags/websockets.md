@@ -1,7 +1,6 @@
 ---
 id: websockets
 label: WebSockets
-category: data
 description: WebSockets - Technical documentation, patterns, and best practices.
 ---
 

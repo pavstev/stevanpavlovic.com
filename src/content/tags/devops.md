@@ -1,7 +1,6 @@
 ---
 id: devops
 label: Devops
-category: devops
 description: devops - devops
 ---
 

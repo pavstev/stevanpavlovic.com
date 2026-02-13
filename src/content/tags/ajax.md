@@ -1,7 +1,6 @@
 ---
 id: ajax
 label: AJAX
-category: data
 description: AJAX - Technical documentation, patterns, and best practices.
 ---
 

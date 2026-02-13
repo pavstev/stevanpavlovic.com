@@ -9,7 +9,7 @@ import {
 } from "@components/ui/dialog";
 import * as React from "react";
 
-import { ContactForm } from "./ContactForm";
+import { ContactForm } from "./contact-form";
 
 export const ContactDialog = () => {
   const [open, setOpen] = React.useState(false);

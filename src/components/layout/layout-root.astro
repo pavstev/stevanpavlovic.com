@@ -10,8 +10,8 @@ import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
 import { ThemeProvider } from "../theme-provider";
+import { Header } from "../ui/header";
 import Footer from "./footer.astro";
-import Header from "./header.astro";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;
@@ -79,7 +79,7 @@ const {
     )}
   >
     <ThemeProvider attribute="class" client:load defaultTheme="system" enableSystem>
-      <Header />
+      <Header client:load />
       <main class="relative z-10 min-h-screen">
         {
           isFullWidth ? (

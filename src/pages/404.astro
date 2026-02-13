@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 
 import LayoutRoot from "../components/layout/layout-root.astro";
 import { Button } from "../components/ui/button";
+import { ErrorPage } from "../components/ui/not-found";
 const title = "404 - Lost in Space";
 const description = "The coordinates you entered do not correspond to a known sector.";
 ---
@@ -10,51 +11,26 @@ const description = "The coordinates you entered do not correspond to a known se
 <LayoutRoot description={description} slug="/404" title={title}>
   <!--
 Background removed -->
-  <div
-    class="relative flex min-h-[calc(100vh-12rem)] min-w-full flex-col
-items-center justify-center"
+  <ErrorPage
+    className="min-h-[calc(100vh-12rem)]"
+    client:load
+    code="404"
+    description="The coordinates you provided lead to empty space. Recalibrating route to nearest outpost."
+    title="Signal Lost"
   >
-    <div
-      class="relative z-10 container mx-auto flex flex-col
-items-center justify-center p-6 px-4 sm:p-8"
-    >
-      <div
-        class="glass-strong flex flex-col items-center
-gap-6 rounded-2xl border border-accent/20 p-6 text-center shadow-2xl shadow-accent/10 sm:p-8"
+    <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+      <Button as="a" className="w-full sm:w-auto" href="/" size="lg" variant="default">
+        <Icon class="mr-2 size-6" name="mdi:rocket-launch-outline" /> Warp Home
+      </Button>
+      <Button
+        as="a"
+        className="w-full sm:w-auto"
+        href="javascript:history.back()"
+        size="lg"
+        variant="outline"
       >
-        <div class="relative">
-          <h1 class="text-9xl font-black tracking-tighter text-accent opacity-90
-sm:text-[12rem]">
-            404
-          </h1>
-          <div class="shadow-glow-accent absolute inset-0 -z-10 opacity-30
-blur-3xl"></div>
-        </div>
-        <div class="flex flex-col items-center gap-4">
-          <h2 class="text-3xl font-bold tracking-widest text-accent capitalize lg:text-4xl">
-            Signal Lost
-          </h2>
-          <p class="text-lg text-balance text-muted-foreground">
-            The coordinates you provided lead to empty space. Recalibrating route to nearest
-            outpost.
-          </p>
-        </div>
-        <div class="flex w-full flex-col gap-3
-sm:flex-row sm:justify-center">
-          <Button as="a" className="w-full sm:w-auto" href="/" size="lg" variant="default">
-            <Icon class="mr-2 size-6" name="mdi:rocket-launch-outline" /> Warp Home
-          </Button>
-          <Button
-            as="a"
-            className="w-full sm:w-auto"
-            href="javascript:history.back()"
-            size="lg"
-            variant="outline"
-          >
-            <Icon class="mr-2 size-6" name="mdi:arrow-u-left-bottom" /> Go Back
-          </Button>
-        </div>
-      </div>
+        <Icon class="mr-2 size-6" name="mdi:arrow-u-left-bottom" /> Go Back
+      </Button>
     </div>
-  </div>
+  </ErrorPage>
 </LayoutRoot>

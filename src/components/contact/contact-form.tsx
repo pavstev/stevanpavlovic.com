@@ -10,8 +10,9 @@ import { Input } from "@components/ui/input";
 import { Textarea } from "@components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
 import { zodValidator } from "@tanstack/zod-form-adapter";
-import * as React from "react";
 import { z } from "zod";
+
+import { Button } from "../ui/button";
 
 const contactFormSchema = z.object({
   email: z.string().email("Invalid email address"),

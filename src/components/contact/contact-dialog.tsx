@@ -11,27 +11,31 @@ import * as React from "react";
 
 import { ContactForm } from "./contact-form";
 
-export const ContactDialog = () => {
+export const ContactDialog: React.FC = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <Button
-          className="rounded-full px-8 text-lg font-medium shadow-lg transition-all hover:shadow-xl"
+          className="group relative overflow-hidden rounded-full transition-all hover:shadow-[0_0_40px_-10px_rgba(var(--primary-rgb),0.5)]"
           size="lg"
         >
-          Contact Me
+          <span className="relative z-10 flex items-center gap-2">Contact Me</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="border-border/50 bg-background/95 backdrop-blur-xl sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>Send Message</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-2xl font-bold tracking-tight">
+            Let's work together
+          </DialogTitle>
+          <DialogDescription className="text-base text-muted-foreground">
             Fill out the form below and I'll get back to you as soon as possible.
           </DialogDescription>
         </DialogHeader>
-        <ContactForm onSuccess={() => setOpen(false)} />
+        <div className="mt-4">
+          <ContactForm onSuccess={() => setOpen(false)} />
+        </div>
       </DialogContent>
     </Dialog>
   );

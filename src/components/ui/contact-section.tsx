@@ -1,6 +1,7 @@
 import type React from "react";
 
 import { cn } from "@client/utils";
+import { ContactDialog } from "@components/contact/contact-dialog";
 import { FullWidthDivider } from "@components/ui/full-width-divider";
 import { Github, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
 
@@ -16,27 +17,22 @@ export const ContactSection = () => (
   <div className="relative mx-auto min-h-screen max-w-5xl border-x bg-background">
     <div className="flex grow flex-col justify-center px-4 py-18 md:items-center">
       <h1 className="text-4xl font-bold md:text-5xl">Contact Us</h1>
-      <p className="mb-5 text-base text-muted-foreground">Contact {PROFILE.name}.</p>
+      <p className="mb-8 text-base text-muted-foreground">Contact {PROFILE.name}.</p>
+      <ContactDialog />
     </div>
     <FullWidthDivider />
     <div className="grid md:grid-cols-2">
       <Box description="We respond to all emails within 24 hours." icon={<Mail />} title="Email">
         <a
           className="font-mono text-sm font-medium tracking-wide hover:underline"
-          href={`mailto:${PROFILE.email}`}
+          href="mailto:hello@stevanpavlovic.com"
         >
-          {PROFILE.email}
+          hello@stevanpavlovic.com
         </a>
       </Box>
-      {/* <Box
-					description="Drop by our office for a chat."
-					icon={<MapPin />}
-					title="Location"
-				>
-					<span className="font-medium font-mono text-sm tracking-wide">
-						{PROFILE.location}
-					</span>
-				</Box> */}
+      <Box description="Drop by our office for a chat." icon={<MapPin />} title="Location">
+        <span className="font-mono text-sm font-medium tracking-wide">{PROFILE.location}</span>
+      </Box>
       <Box
         className="border-b-0 md:border-r-0"
         description="Connect on social media."

@@ -405,7 +405,7 @@ const MetricsFeature = ({
   );
 };
 
-const AIInput_Voice = () => {
+const AIInput_Voice: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [time, setTime] = useState(0);
   const [isClient, setIsClient] = useState(false);

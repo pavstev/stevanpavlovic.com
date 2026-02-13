@@ -105,8 +105,18 @@ export const ToggleTheme = ({ type = "dropdown" }: { type?: "dropdown" | "inline
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="rounded-full" size="icon" variant="outline">
-          <ActiveIcon className="size-[1.2rem]" />
+        <Button className="rounded-full" size="icon" variant="ghost">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 90, scale: 0 }}
+              initial={{ opacity: 0, rotate: -90, scale: 0 }}
+              key={theme}
+              transition={{ duration: 0.15 }}
+            >
+              <ActiveIcon className="size-[1.2rem]" />
+            </motion.div>
+          </AnimatePresence>
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

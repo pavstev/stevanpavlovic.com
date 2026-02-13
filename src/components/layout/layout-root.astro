@@ -7,10 +7,9 @@ import "../../styles/global.css";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
+import Footer from "@components/layout/footer.astro";
+import { Header } from "@components/ui/header";
 import { ClientRouter } from "astro:transitions";
-
-import { Header } from "../ui/header";
-import Footer from "./footer.astro";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;
@@ -45,24 +44,29 @@ const {
     <!-- Analytics removed placeholder -->
     <ClientRouter />
     <script is:inline>
-      const theme = (() => {
-        const localStorageTheme = localStorage?.getItem("theme") ?? "";
-        if (["dark", "light"].includes(localStorageTheme)) {
+      const getTheme = () => {
+        const localStorageTheme =
+          typeof localStorage !== "undefined" ? localStorage.getItem("theme") : null;
+        if (localStorageTheme && ["dark", "light"].includes(localStorageTheme)) {
           return localStorageTheme;
         }
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
           return "dark";
         }
         return "light";
-      })();
+      };
 
-      if (theme === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
+      const setDarkClass = () => {
+        const theme = getTheme();
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      };
 
-      window.localStorage.setItem("theme", theme);
+      setDarkClass();
+      document.addEventListener("astro:after-swap", setDarkClass);
     </script>
     <slot name="head" />
   </head>

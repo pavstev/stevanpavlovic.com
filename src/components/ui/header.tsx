@@ -1,5 +1,6 @@
 "use client";
 
+import { initNavigationProgress } from "@client";
 import { useScroll } from "@client/hooks/use-scroll";
 import { cn } from "@client/utils";
 import { MobileNav } from "@components/layout/mobile-nav";
@@ -16,12 +17,13 @@ import * as React from "react";
 
 import { NAV_ITEMS_ARRAY } from "../../config";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const scrolled = useScroll(10);
   const [pathname, setPathname] = React.useState("");
 
   React.useEffect(() => {
     setPathname(window.location.pathname);
+    initNavigationProgress();
   }, []);
 
   return (
@@ -36,38 +38,51 @@ export const Header = () => {
     >
       <nav
         className={cn(
-          "flex h-14 w-full items-center justify-between px-4 md:h-12 md:transition-all md:ease-out",
+          "relative flex h-14 w-full items-center justify-between px-4 md:h-12 md:transition-all md:ease-out",
           {
             "md:px-2": scrolled,
           }
         )}
       >
-        <a className="block rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50" href="/">
-          <Logo className="h-4" />
-        </a>
-        <NavigationMenu className="px-2" viewport={false}>
-          <NavigationMenuList>
-            {NAV_ITEMS_ARRAY.map((link) => {
-              const isActive =
-                pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+        <div className="flex items-center">
+          <a className="block rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50" href="/">
+            <Logo className="h-4" />
+          </a>
+        </div>
 
-              return (
-                <NavigationMenuItem key={link.label}>
-                  <NavigationMenuLink
-                    active={isActive}
-                    className={navigationMenuTriggerStyle()}
-                    href={link.href}
-                  >
-                    {link.label}
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              );
-            })}
-          </NavigationMenuList>
-        </NavigationMenu>
-        <ToggleTheme />
-        <MobileNav />
+        <div className="absolute top-1/2 left-1/2 hidden -translate-1/2 md:flex">
+          <NavigationMenu className="px-2" viewport={false}>
+            <NavigationMenuList>
+              {NAV_ITEMS_ARRAY.map((link) => {
+                const isActive =
+                  pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+
+                return (
+                  <NavigationMenuItem key={link.label}>
+                    <NavigationMenuLink
+                      active={isActive}
+                      className={navigationMenuTriggerStyle()}
+                      href={link.href}
+                    >
+                      {link.label}
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                );
+              })}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <ToggleTheme />
+          <MobileNav />
+        </div>
       </nav>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed top-0 left-0 z-50 h-0.5 w-0 bg-primary opacity-0 transition-all duration-300 ease-out"
+        id="nav-progress"
+      />
     </header>
   );
 };

@@ -41,6 +41,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFi
 const FormField = ({
   children,
   ...props
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any & {
   children: (field: AnyFieldApi) => React.ReactNode;
   name: string;

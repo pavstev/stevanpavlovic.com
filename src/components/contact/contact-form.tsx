@@ -1,3 +1,4 @@
+import { Button } from "@components/ui/button";
 import {
   Form,
   FormControl,
@@ -8,11 +9,12 @@ import {
 } from "@components/ui/form";
 import { Input } from "@components/ui/input";
 import { Textarea } from "@components/ui/textarea";
-import { useForm } from "@tanstack/react-form";
+import { type AnyFieldApi, useForm } from "@tanstack/react-form";
 import { zodValidator } from "@tanstack/zod-form-adapter";
+import { AnimatePresence, motion } from "framer-motion";
+import { Send, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { z } from "zod";
-
-import { Button } from "../ui/button";
 
 const contactFormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -24,6 +26,8 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -34,101 +38,179 @@ export const ContactForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     onSubmit: async ({ value }) => {
       // Simulate API call
       console.log("Form submitted:", value);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Message sent successfully!");
-      onSuccess?.();
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setIsSuccess(true);
+      setTimeout(() => {
+        onSuccess?.();
+        setIsSuccess(false);
+      }, 2000);
     },
+    // @ts-expect-error -- validatorAdapter is required for zodValidator but not in types
     validatorAdapter: zodValidator(),
     validators: {
       onChange: contactFormSchema,
     },
   });
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
+  if (isSuccess) {
+    return (
+      <motion.div
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex flex-col items-center justify-center space-y-4 py-12 text-center"
+        initial={{ opacity: 0, scale: 0.9 }}
+      >
+        <div className="rounded-full bg-primary/10 p-4 text-primary ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
+          <Sparkles className="size-8" />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold">Message Sent!</h3>
+          <p className="text-muted-foreground">
+            Thanks for reaching out. I'll get back to you soon.
+          </p>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <Form className="space-y-4" form={form}>
-      <FormField
-        children={(field) => (
-          <FormItem>
-            <FormLabel>Name</FormLabel>
-            <FormControl>
-              <Input
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="John Doe"
-                value={field.state.value}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-        name="name"
-      />
+      <motion.div
+        animate="show"
+        className="space-y-4"
+        initial="hidden"
+        variants={containerVariants}
+      >
+        <motion.div className="grid gap-4 md:grid-cols-2" variants={itemVariants}>
+          <FormField
+            children={(field: AnyFieldApi) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-background/50 backdrop-blur-sm transition-all focus:bg-background"
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="John Doe"
+                    value={field.state.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            name="name"
+          />
 
-      <FormField
-        children={(field) => (
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="john.doe@example.com"
-                type="email"
-                value={field.state.value}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-        name="email"
-      />
+          <FormField
+            children={(field: AnyFieldApi) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-background/50 backdrop-blur-sm transition-all focus:bg-background"
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="john@example.com"
+                    type="email"
+                    value={field.state.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            name="email"
+          />
+        </motion.div>
 
-      <FormField
-        children={(field) => (
-          <FormItem>
-            <FormLabel>Subject</FormLabel>
-            <FormControl>
-              <Input
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Project Inquiry"
-                value={field.state.value}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-        name="subject"
-      />
+        <motion.div variants={itemVariants}>
+          <FormField
+            children={(field: AnyFieldApi) => (
+              <FormItem>
+                <FormLabel>Subject</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-background/50 backdrop-blur-sm transition-all focus:bg-background"
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Project Inquiry"
+                    value={field.state.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            name="subject"
+          />
+        </motion.div>
 
-      <FormField
-        children={(field) => (
-          <FormItem>
-            <FormLabel>Message</FormLabel>
-            <FormControl>
-              <Textarea
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Tell me about your project..."
-                value={field.state.value}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-        name="message"
-      />
+        <motion.div variants={itemVariants}>
+          <FormField
+            children={(field: AnyFieldApi) => (
+              <FormItem>
+                <FormLabel>Message</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="min-h-[120px] bg-background/50 backdrop-blur-sm transition-all focus:bg-background"
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Tell me about your project..."
+                    value={field.state.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            name="message"
+          />
+        </motion.div>
 
-      <div className="flex justify-end pt-4">
-        <form.Subscribe
-          children={([canSubmit, isSubmitting]) => (
-            <Button disabled={!canSubmit || isSubmitting} type="submit">
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
-          )}
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-        />
-      </div>
+        <motion.div className="flex justify-end pt-2" variants={itemVariants}>
+          <form.Subscribe<{ canSubmit: boolean; isSubmitting: boolean }>
+            children={({ canSubmit, isSubmitting }) => (
+              <Button
+                className="w-full md:w-auto"
+                disabled={!canSubmit || isSubmitting}
+                size="lg"
+                type="submit"
+              >
+                {isSubmitting ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      className="mr-2 size-4 rounded-full border-2 border-current border-t-transparent"
+                      transition={{ duration: 1, ease: "linear", repeat: Number.POSITIVE_INFINITY }}
+                    />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="ml-2 size-4" />
+                  </>
+                )}
+              </Button>
+            )}
+            selector={(state) => ({
+              canSubmit: state.canSubmit,
+              isSubmitting: state.isSubmitting,
+            })}
+          />
+        </motion.div>
+      </motion.div>
     </Form>
   );
 };

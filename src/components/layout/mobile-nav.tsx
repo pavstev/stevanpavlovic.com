@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { AppSidebar } from "./app-sidebar";
 
-export const MobileNav = () => {
+export const MobileNav: React.FC = () => {
   const [open, setOpen] = React.useState(false);
 
   return (

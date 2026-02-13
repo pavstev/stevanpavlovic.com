@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export const useScroll = (downThreshold: number, upThreshold?: number) => {
+export const useScroll = (downThreshold: number, upThreshold?: number): boolean => {
   const [scrolled, setScrolled] = useState(false);
   const scrollUpThreshold = upThreshold ?? downThreshold / 2;
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const y = window.scrollY;
       // Hysteresis: different thresholds for up/down to prevent flickering
       setScrolled((prev) => {
@@ -21,7 +21,7 @@ export const useScroll = (downThreshold: number, upThreshold?: number) => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return (): void => window.removeEventListener("scroll", handleScroll);
   }, [downThreshold, scrollUpThreshold]);
 
   return scrolled;

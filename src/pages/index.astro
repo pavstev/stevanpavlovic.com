@@ -6,7 +6,9 @@ import BentoGrid, { type BentoItem } from "../components/kokonutui/bento-grid";
 import LayoutRoot from "../components/layout/layout-root.astro";
 import { BackgroundPaths } from "../components/ui/background-paths";
 import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { PROFILE, SOCIALS } from "../config";
 
@@ -73,8 +75,8 @@ const bentoItems: BentoItem[] = [
 
   <div class="container mx-auto px-4 py-12 md:py-24">
     <section class="mx-auto max-w-4xl py-24">
-      <div class="rounded-2xl border bg-card p-1 shadow-2xl">
-        <div class="grid grid-cols-1 gap-8 rounded-xl bg-background/50 p-8 md:grid-cols-2 md:p-12">
+      <Card className="overflow-hidden border-0 bg-card p-1 shadow-2xl">
+        <CardContent className="grid grid-cols-1 gap-8 bg-background/50 p-8 md:grid-cols-2 md:p-12">
           <div class="flex flex-col justify-between gap-6">
             <div class="space-y-4">
               <h2 class="text-3xl font-bold tracking-tight">Get In Touch</h2>
@@ -108,21 +110,11 @@ const bentoItems: BentoItem[] = [
           <form class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
               <div class="space-y-2">
-                <label
-                  class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  for="name"
-                >
-                  Name
-                </label>
+                <Label client:load htmlFor="name">Name</Label>
                 <Input client:load id="name" placeholder="John Doe" required />
               </div>
               <div class="space-y-2">
-                <label
-                  class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  for="email"
-                >
-                  Email
-                </label>
+                <Label client:load htmlFor="email">Email</Label>
                 <Input
                   client:load
                   id="email"
@@ -133,21 +125,11 @@ const bentoItems: BentoItem[] = [
               </div>
             </div>
             <div class="space-y-2">
-              <label
-                class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="subject"
-              >
-                Subject
-              </label>
+              <Label client:load htmlFor="subject">Subject</Label>
               <Input client:load id="subject" placeholder="Project Inquiry" required />
             </div>
             <div class="space-y-2">
-              <label
-                class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="message"
-              >
-                Message
-              </label>
+              <Label client:load htmlFor="message">Message</Label>
               <Textarea
                 className="min-h-[120px]"
                 client:load
@@ -158,8 +140,8 @@ const bentoItems: BentoItem[] = [
             </div>
             <Button className="w-full" client:load size="lg" type="submit"> Send Message </Button>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </section>
   </div>
 </LayoutRoot>

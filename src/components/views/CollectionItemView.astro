@@ -6,6 +6,7 @@ import LayoutRoot from "@components/layout/layout-root.astro";
 import NavigationProgress from "@components/layout/navigation-progress.astro";
 import { Badge } from "@components/ui/badge";
 import { buttonVariants } from "@components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { ContentCard } from "@components/ui/content-card";
 import { getViewPageProps } from "@server/api";
 import { Icon } from "astro-icon/components";
@@ -90,9 +91,11 @@ const isBlog = entry.collection === "blog";
           </div>
 
           <aside class="space-y-8 lg:col-span-4">
-            <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
-              <h3 class="mb-4 text-lg font-semibold">Project Details</h3>
-              <div class="space-y-4 text-sm">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Project Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
                 {entry.data.role && (
                   <div>
                     <p class="text-muted-foreground">Role</p>
@@ -111,19 +114,21 @@ const isBlog = entry.collection === "blog";
                     <p class="font-medium">{entry.data.duration}</p>
                   </div>
                 )}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
-              <h3 class="mb-4 text-lg font-semibold">Technologies</h3>
-              <div class="flex flex-wrap gap-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Technologies</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-2">
                 {viewProps.tags?.items.map((tag: any) => (
                   <Badge className="rounded-md" variant="secondary">
                     {tag.id}
                   </Badge>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </aside>
         </div>
       ) : (

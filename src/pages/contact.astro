@@ -1,6 +1,7 @@
 ---
 import { ContactDialog } from "@components/contact/ContactDialog";
 import Layout from "@components/layout/layout-root.astro";
+import { Card, CardContent } from "@components/ui/card";
 import { Icon } from "astro-icon/components";
 
 import { PROFILE, SOCIALS } from "../config";
@@ -40,42 +41,46 @@ const description =
       <div class="grid items-stretch gap-8 md:grid-cols-2">
         <!-- Contact Cards -->
         <div class="space-y-4">
-          <div
-            class="group rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+          <Card
+            className="group backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
           >
-            <div class="flex items-center gap-4">
-              <div
-                class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
-              >
-                <Icon class="size-6" name="mdi:email" />
-              </div>
-              <div>
-                <p class="text-sm font-medium text-muted-foreground">Email</p>
-                <a
-                  class="text-lg font-semibold transition-colors hover:text-primary"
-                  href={`mailto:${PROFILE.email}`}
+            <CardContent className="p-6">
+              <div class="flex items-center gap-4">
+                <div
+                  class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
                 >
-                  {PROFILE.email}
-                </a>
+                  <Icon class="size-6" name="mdi:email" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-muted-foreground">Email</p>
+                  <a
+                    class="text-lg font-semibold transition-colors hover:text-primary"
+                    href={`mailto:${PROFILE.email}`}
+                  >
+                    {PROFILE.email}
+                  </a>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div
-            class="group rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
+          <Card
+            className="group backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
           >
-            <div class="flex items-center gap-4">
-              <div
-                class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
-              >
-                <Icon class="size-6" name="mdi:map-marker-radius" />
+            <CardContent className="p-6">
+              <div class="flex items-center gap-4">
+                <div
+                  class="rounded-xl bg-primary/10 p-3 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground"
+                >
+                  <Icon class="size-6" name="mdi:map-marker-radius" />
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-muted-foreground">Location</p>
+                  <p class="text-lg font-semibold">{PROFILE.location}</p>
+                </div>
               </div>
-              <div>
-                <p class="text-sm font-medium text-muted-foreground">Location</p>
-                <p class="text-lg font-semibold">{PROFILE.location}</p>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           <div class="grid grid-cols-2 gap-4">
             {

@@ -2,6 +2,7 @@
 import type { ViewableCollection } from "@server/types";
 
 import LayoutRoot from "@components/layout/layout-root.astro";
+import { Card, CardContent } from "@components/ui/card";
 import { ContentCard } from "@components/ui/content-card";
 import {
   Pagination,
@@ -82,42 +83,44 @@ const isBlog = collection === "blog";
             }`}
           >
             {collectionItems.map((item, index) => (
-              <div
-                class={`group relative flex flex-col gap-4 rounded-3xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md ${
+              <Card
+                className={`group relative flex flex-col gap-4 overflow-hidden rounded-3xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md ${
                   isBlog && index === 0 && currentPage === 1
                     ? "row-span-2 md:col-span-2 lg:col-span-2"
                     : ""
                 }`}
               >
-                <ContentCard
-                  className="h-full"
-                  date={
-                    (item.data as any).pubDate ??
-                    (item.data as any).startDate ??
-                    (item.data as any).founded
-                  }
-                  description={(item.data as any).description}
-                  href={`${baseUrl}/${item.id}`}
-                  image={
-                    (item.data as any).cover
-                      ? typeof (item.data as any).cover === "string"
-                        ? (item.data as any).cover
-                        : (item.data as any).cover?.src
-                      : typeof (item.data as any).logo === "string"
-                        ? (item.data as any).logo
-                        : (item.data as any).logo?.src
-                  }
-                  tags={(item.data as any).tags?.map((t: any) =>
-                    typeof t === "string" ? t : t.id
-                  )}
-                  title={
-                    (item.data as any).title ??
-                    (item.data as any).label ??
-                    (item.data as any).name ??
-                    item.id
-                  }
-                />
-              </div>
+                <CardContent className="h-full p-0">
+                  <ContentCard
+                    className="h-full"
+                    date={
+                      (item.data as any).pubDate ??
+                      (item.data as any).startDate ??
+                      (item.data as any).founded
+                    }
+                    description={(item.data as any).description}
+                    href={`${baseUrl}/${item.id}`}
+                    image={
+                      (item.data as any).cover
+                        ? typeof (item.data as any).cover === "string"
+                          ? (item.data as any).cover
+                          : (item.data as any).cover?.src
+                        : typeof (item.data as any).logo === "string"
+                          ? (item.data as any).logo
+                          : (item.data as any).logo?.src
+                    }
+                    tags={(item.data as any).tags?.map((t: any) =>
+                      typeof t === "string" ? t : t.id
+                    )}
+                    title={
+                      (item.data as any).title ??
+                      (item.data as any).label ??
+                      (item.data as any).name ??
+                      item.id
+                    }
+                  />
+                </CardContent>
+              </Card>
             ))}
           </div>
         )

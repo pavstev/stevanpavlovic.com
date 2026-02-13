@@ -2,15 +2,8 @@ import type { CollectionKey } from "astro:content";
 
 import { getCollection } from "astro:content";
 
-import type {
-  CardData,
-  CollectionItem,
-  CollectionPageData,
-  PaginationLinksOptions,
-  PaginationType,
-  ViewPageProps,
-} from "./types";
-export type { PaginationType };
+import type { CardData, CollectionItem, CollectionPageData, ViewPageProps } from "./types";
+
 import { ITEMS_PER_PAGE, PROFILE } from "../config";
 import { createAuthorItem } from "./helpers";
 import { adapters } from "./registry";
@@ -70,7 +63,7 @@ export const getViewPageProps = async <CN extends CollectionKey>(
   };
 };
 
-export const getItemCardProps = async <CN extends CollectionKey>(
+const getItemCardProps = async <CN extends CollectionKey>(
   item: CollectionItem<CN>
 ): Promise<{
   actionLabel: string;
@@ -125,83 +118,4 @@ export const getCollectionPageData = async (
     totalItems,
     totalPages,
   };
-};
-
-const buildListUrl = (
-  currentUrl: URL,
-  paginationType: PaginationType,
-  path: string,
-  paramsToSet: Record<string, number | string | undefined> = {}
-): string => {
-  const url = new URL(path, currentUrl.origin);
-  const currentParams = currentUrl.searchParams;
-
-  for (const [key, value] of currentParams.entries()) {
-    if (paginationType === "path" && key === "page") {
-      continue;
-    }
-    url.searchParams.set(key, value);
-  }
-
-  for (const [key, value] of Object.entries(paramsToSet)) {
-    if (value === undefined || value === null) {
-      url.searchParams.delete(key);
-      continue;
-    }
-    url.searchParams.set(key, String(value));
-  }
-
-  return url.pathname + url.search;
-};
-
-export const getPaginationLinks = ({
-  baseUrl,
-  currentPage,
-  currentUrl,
-  customGetPageUrl,
-  nextUrl,
-  paginationType,
-  prevUrl,
-  totalPages,
-}: PaginationLinksOptions): {
-  nextLink: string | undefined;
-  prevLink: string | undefined;
-} => {
-  const cleanBaseUrl = baseUrl.replace(/\/$/, "");
-
-  const getPageUrl = (p: number): string => {
-    if (customGetPageUrl) {
-      return customGetPageUrl(p);
-    }
-
-    if (paginationType === "query") {
-      return buildListUrl(currentUrl, paginationType, cleanBaseUrl, {
-        page: p,
-      });
-    }
-
-    return p === 1 ? cleanBaseUrl : `${cleanBaseUrl}/${p.toString()}`;
-  };
-
-  const resolveLink = (p: number): string => {
-    const base = getPageUrl(p);
-    if (base.includes("?")) {
-      return base;
-    }
-    return buildListUrl(currentUrl, paginationType, base);
-  };
-
-  const nextLink = nextUrl
-    ? buildListUrl(currentUrl, paginationType, nextUrl)
-    : currentPage < totalPages
-      ? resolveLink(currentPage + 1)
-      : undefined;
-
-  const prevLink = prevUrl
-    ? buildListUrl(currentUrl, paginationType, prevUrl)
-    : currentPage > 1
-      ? resolveLink(currentPage - 1)
-      : undefined;
-
-  return { nextLink, prevLink };
 };

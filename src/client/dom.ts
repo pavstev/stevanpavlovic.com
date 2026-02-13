@@ -1,6 +1,3 @@
-import Lenis from "lenis";
-import tocbot from "tocbot";
-
 export const initFocusMode = (): void => {
   const focusBtn = document.getElementById("toggle-focus");
   if (!focusBtn) return;
@@ -21,42 +18,6 @@ export const initFocusMode = (): void => {
   };
 
   window.addEventListener("keydown", handleKeydown);
-};
-
-export const initMobileMenu = (): void => {
-  const toggle = document.getElementById("mobile-menu-toggle");
-  const menu = document.getElementById("mobile-menu");
-
-  if (!toggle || !menu) {
-    return;
-  }
-
-  const newToggle = toggle.cloneNode(true) as HTMLElement;
-  toggle.parentNode?.replaceChild(newToggle, toggle);
-
-  newToggle.addEventListener("click", () => {
-    const isOpen = newToggle.classList.contains("open");
-
-    if (!isOpen) {
-      newToggle.classList.add("open");
-      menu.setAttribute("data-open", "true");
-      document.body.style.overflow = "hidden";
-      return;
-    }
-
-    newToggle.classList.remove("open");
-    menu.setAttribute("data-open", "false");
-    document.body.style.overflow = "";
-  });
-
-  const links = menu.querySelectorAll("a");
-  for (const link of links) {
-    link.addEventListener("click", () => {
-      newToggle.classList.remove("open");
-      menu.setAttribute("data-open", "false");
-      document.body.style.overflow = "";
-    });
-  }
 };
 
 export const updateActiveLinks = (): void => {
@@ -155,80 +116,4 @@ export const initHeaderEffects = (): void => {
 
   window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll();
-};
-
-let lenis: Lenis | null = null;
-
-const initLenis = (): void => {
-  if (lenis) lenis.destroy();
-
-  lenis = new Lenis({
-    duration: 1.2,
-    easing: (t: number): number => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  });
-
-  const raf = (time: number): void => {
-    lenis?.raf(time);
-    requestAnimationFrame(raf);
-  };
-
-  requestAnimationFrame(raf);
-
-  const anchors = document.querySelectorAll('a[href^="#"]');
-  for (const anchor of anchors) {
-    anchor.addEventListener("click", (e) => {
-      const targetId = anchor.getAttribute("href");
-      if (targetId && targetId.startsWith("#")) {
-        e.preventDefault();
-        lenis?.scrollTo(targetId, {
-          offset: -100,
-        });
-      }
-    });
-  }
-};
-
-const initTocbot = (): void => {
-  tocbot.destroy();
-  tocbot.init({
-    activeLinkClass: "is-active-link",
-    activeListItemClass: "is-active-li",
-    contentSelector: "article",
-    hasInnerContainers: true,
-    headingSelector: "h2, h3",
-    headingsOffset: 100,
-    linkClass: "toc-link",
-    listClass: "space-y-2 border-l border-border text-sm",
-    listItemClass: "relative",
-    scrollSmooth: false,
-    tocSelector: ".js-toc",
-  });
-};
-
-export const setupTOC = (): void => {
-  initLenis();
-  initTocbot();
-};
-
-export const initInteractiveCards = (): void => {
-  const cards = document.querySelectorAll(".group\\/card");
-
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards.item(i);
-    if (!(card instanceof HTMLElement)) {
-      continue;
-    }
-
-    const handleMouseMove = (e: Event): void => {
-      const mouseEvent = e as MouseEvent;
-      const rect = card.getBoundingClientRect();
-      const x = mouseEvent.clientX - rect.left;
-      const y = mouseEvent.clientY - rect.top;
-
-      card.style.setProperty("--mouse-x", String(x) + "px");
-      card.style.setProperty("--mouse-y", String(y) + "px");
-    };
-
-    card.addEventListener("mousemove", handleMouseMove);
-  }
 };

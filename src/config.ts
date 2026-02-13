@@ -3,7 +3,7 @@ import profileImage from "./assets/profile.jpeg";
 export const SITE_TITLE = "Astro Blog";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
-export const SITE_CONFIG = {
+const SITE_CONFIG = {
   author: "Stevan Pavlovic",
   description: "Technical Lead and Senior Software Engineer",
   email: "hi@stevanpavlovic.com",
@@ -133,33 +133,4 @@ export const SOCIALS = [
   },
 ] as const;
 
-interface Stat {
-  format?: "compact" | "plain";
-  icon: `mdi:${string}`;
-  label: string;
-  unit?: string;
-  value: number;
-}
-
-export const STATS: readonly Stat[] = [
-  { icon: "mdi:clock-time-eight-outline", label: "Years Exp.", value: 12 },
-  { icon: "mdi:server-network", label: "Systems", value: 24 },
-  { format: "compact", icon: "mdi:account-group-outline", label: "Users", unit: "k", value: 120 },
-  { icon: "mdi:earth", label: "Countries", value: 15 },
-] as const;
-
 export const ITEMS_PER_PAGE = 10;
-
-export const CTA_CONTENT = {
-  browseProjects: "Browse Projects",
-  description:
-    "Explore my portfolio of distributed systems, microservices, and cloud-native solutions.",
-  readBlog: "Read Blog",
-  title: "Let's Build Something Amazing Together",
-} as const;
-
-export const FEATURED_CONTENT = {
-  description:
-    "A selection of my recent work in distributed systems, backend architecture, and cloud infrastructure.",
-  title: "Featured Projects",
-} as const;

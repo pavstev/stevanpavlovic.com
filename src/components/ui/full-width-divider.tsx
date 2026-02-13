@@ -1,4 +1,4 @@
-import { cn } from "@components/lib/utils";
+import { cn } from "@client/utils";
 
 type FullWidthDividerProps = React.ComponentProps<"div"> & {
   contained?: boolean;

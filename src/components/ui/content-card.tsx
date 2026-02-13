@@ -1,6 +1,23 @@
+import { cn } from "@client/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@components/ui/card";
 import { MagicCard } from "@components/ui/magic-card";
 
-// ... existing interfaces
+interface ContentCardProps {
+  className?: string;
+  date?: Date;
+  description?: string;
+  href: string;
+  image?: string;
+  tags?: (string | { id: string; label?: string })[];
+  title: string;
+}
 
 export const ContentCard = ({
   className,

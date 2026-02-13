@@ -38,7 +38,7 @@ export const Footer = () => (
               precision and elegance.
             </p>
             <div className="mt-6 flex gap-3">
-              {SOCIALS.map((link, index) => {
+              {SOCIALS.map((link) => {
                 const IconComp = getSocialIcon(link.name);
                 return (
                   <a

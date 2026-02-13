@@ -1,4 +1,4 @@
-import { cn } from "@components/lib/utils";
+import { cn } from "@client/utils";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
 import * as React from "react";

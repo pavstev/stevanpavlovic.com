@@ -29,7 +29,7 @@ export const LogoIcon = ({ className, ...props }: React.ComponentProps<"svg">) =
 
 export const Logo = ({ className, ...props }: React.ComponentProps<"div">) => (
   <div
-    className={cn("flex items-center gap-2 text-xl font-bold tracking-tight", className)}
+    className={cn("text-md flex items-center gap-2 font-mono font-bold tracking-tight", className)}
     {...props}
   >
     <LogoIcon className="size-6" />

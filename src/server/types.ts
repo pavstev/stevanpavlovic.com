@@ -32,6 +32,12 @@ const collectionMap = {
   [Key in CollectionKey]: boolean;
 };
 
+export const viewableCollections = new Set<ViewableCollection>(
+  Object.keys(collectionMap).filter(
+    (key): key is ViewableCollection => !!collectionMap[key as keyof typeof collectionMap]
+  )
+);
+
 export interface CardData {
   align?: "center" | "start";
   animate?: boolean;

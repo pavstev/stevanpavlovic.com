@@ -1,15 +1,28 @@
 "use client";
+
 import { useScroll } from "@client/hooks/use-scroll";
 import { cn } from "@client/utils";
 import { MobileNav } from "@components/layout/mobile-nav";
 import { Logo } from "@components/logo";
-import { Button } from "@components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@components/ui/navigation-menu";
 import { ToggleTheme } from "@components/ui/toggle-theme";
+import * as React from "react";
 
 import { NAV_ITEMS_ARRAY } from "../../config";
 
 export const Header = () => {
   const scrolled = useScroll(10);
+  const [pathname, setPathname] = React.useState("");
+
+  React.useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
 
   return (
     <header
@@ -29,19 +42,30 @@ export const Header = () => {
           }
         )}
       >
-        <a className="rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50" href="/">
+        <a className="block rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50" href="/">
           <Logo className="h-4" />
         </a>
-        <div className="hidden items-center gap-2 md:flex">
-          <div>
-            {NAV_ITEMS_ARRAY.map((link) => (
-              <Button asChild key={link.label} size="sm" variant="ghost">
-                <a href={link.href}>{link.label}</a>
-              </Button>
-            ))}
-          </div>
-          <ToggleTheme />
-        </div>
+        <NavigationMenu className="px-2" viewport={false}>
+          <NavigationMenuList>
+            {NAV_ITEMS_ARRAY.map((link) => {
+              const isActive =
+                pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+
+              return (
+                <NavigationMenuItem key={link.label}>
+                  <NavigationMenuLink
+                    active={isActive}
+                    className={navigationMenuTriggerStyle()}
+                    href={link.href}
+                  >
+                    {link.label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+        </NavigationMenu>
+        <ToggleTheme />
         <MobileNav />
       </nav>
     </header>

@@ -16,7 +16,6 @@ const SITE_CONFIG = {
 } as const;
 
 export interface NavItem {
-  color: string;
   description: string;
   href: string;
   icon: `mdi:${string}`;
@@ -27,7 +26,6 @@ export interface NavItem {
 
 export const NAV_ITEMS = {
   blog: {
-    color: "var(--color-accent)",
     description: "Read insights on distributed systems and software architecture",
     href: "/blog",
     icon: "mdi:newspaper-variant-outline",
@@ -36,7 +34,6 @@ export const NAV_ITEMS = {
     tagTitle: "Tags",
   },
   companies: {
-    color: "var(--color-accent)",
     description: "Partners, clients, and organizations I've collaborated with",
     href: "/companies",
     icon: "mdi:domain",
@@ -44,8 +41,15 @@ export const NAV_ITEMS = {
     order: 5,
     tagTitle: "Industry",
   },
+  contact: {
+    description: "Get in touch",
+    href: "/contact",
+    icon: "mdi:email",
+    label: "Contact",
+    order: 5,
+    tagTitle: "Contact",
+  },
   experience: {
-    color: "var(--color-primary)",
     description: "Discover my career journey across fintech, betting, and logistics",
     href: "/experience",
     icon: "mdi:briefcase-outline",
@@ -54,7 +58,6 @@ export const NAV_ITEMS = {
     tagTitle: "Skills",
   },
   home: {
-    color: "var(--color-primary)",
     description: "Start your journey through my professional portfolio and recent work",
     href: "/",
     icon: "mdi:home-variant-outline",
@@ -62,41 +65,13 @@ export const NAV_ITEMS = {
     order: 1,
     tagTitle: "Context",
   },
-  locations: {
-    color: "var(--color-primary)",
-    description: "Places I've worked from and professional hubs",
-    href: "/locations",
-    icon: "mdi:map-marker-radius",
-    label: "Locations",
-    order: 8,
-    tagTitle: "Region",
-  },
-  people: {
-    color: "var(--color-primary)",
-    description: "Talented individuals and colleagues in my professional network",
-    href: "/people",
-    icon: "mdi:account-group",
-    label: "People",
-    order: 6,
-    tagTitle: "Role",
-  },
   projects: {
-    color: "var(--color-primary)",
     description: "Explore cutting-edge solutions built with modern technologies",
     href: "/projects",
     icon: "mdi:console",
     label: "Projects",
     order: 2,
     tagTitle: "Technologies",
-  },
-  recommendations: {
-    color: "var(--color-accent)",
-    description: "Endorsements and testimonials from colleagues and clients",
-    href: "/recommendations",
-    icon: "mdi:star-face",
-    label: "Testimonials",
-    order: 7,
-    tagTitle: "Context",
   },
 } as const satisfies Record<string, NavItem>;
 
@@ -105,7 +80,6 @@ export const NAV_ITEMS_ARRAY = Object.values(NAV_ITEMS).sort((a, b) => a.order -
 export const PROFILE = {
   avatar: profileImage,
   bio: "Technical Lead and Senior Software Engineer with over 10 years of experience delivering high-impact solutions for fintech, betting, and logistics sectors. Expert in architecting scalable microservices using Node.js and NestJS, optimizing high-traffic distributed systems, and modernizing legacy infrastructures. Specialized in performance tuning, event-driven architectures (Kafka), and automated DevOps workflows.",
-  email: SITE_CONFIG.email,
   location: "Belgrade, Serbia",
   name: SITE_CONFIG.author,
   role: "Senior Software Engineer",

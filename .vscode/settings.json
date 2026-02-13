@@ -7,18 +7,17 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     ".env": ".env.local, .env.production, .env.development, .env.test, .env.example",
-    ".gitignore": ".gitattributes, .gitmodules",
+    ".gitignore": ".gitattributes, .gitmodules, .prettierignore",
     "*.config.ts": "${capture}.config.*.ts, ${capture}.config.mjs, ${capture}.config.cjs",
     "*.config.js": "${capture}.config.*.js",
     "*.json": "${capture}.jsonc, ${capture}.json5",
     "*.ts": "${capture}.js, ${capture}.mjs, ${capture}.cjs, ${capture}.test.ts, ${capture}.spec.ts, ${capture}.e2e.ts, ${capture}.d.ts, ${capture}.stories.ts",
     "*.tsx": "${capture}.jsx, ${capture}.test.tsx, ${capture}.spec.tsx, ${capture}.stories.tsx",
-    "knip.config.ts": "knip.config.*.ts, knip.config.mjs, knip.config.cjs",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, .nvmrc, .npmrc, pnpm-workspace.yaml",
     "README.md": "CHANGELOG.md, LICENSE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md",
     "tsconfig.json": "tsconfig.*.json, jsconfig.json",
-    "eslint.config.ts": "eslint.config.*.ts, eslint.config.mjs, eslint.config.cjs, knip.config.*",
-    "astro.config.ts": "wrangler.json*"
+    "eslint.config.ts": "eslint.config.*.ts, eslint.config.mjs, eslint.config.cjs, knip.config.*, .prettier*, .editorconfig",
+    "astro.config.ts": "wrangler.json*, unlighthouse.config.ts, tsconfig*.json"
   },
   "files.associations": {
     "*.html.template": "html",

@@ -1,9 +1,10 @@
 "use client";
 
+import { setTheme, themeStore } from "@client/store";
 import { cn } from "@client/utils";
+import { useStore } from "@nanostores/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MonitorCogIcon, MoonStarIcon, SunIcon } from "lucide-react";
-import { useTheme } from "next-themes";
 import React from "react";
 
 const THEME_OPTIONS = [
@@ -25,7 +26,7 @@ const THEME_OPTIONS = [
 ] as const;
 
 export const ToggleTheme = () => {
-  const { setTheme, theme } = useTheme();
+  const theme = useStore(themeStore);
   const [isMounted, setIsMounted] = React.useState(false);
 
   // Use useEffect to ensure we only render the interactive state on the client

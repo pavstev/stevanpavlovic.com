@@ -1,4 +1,4 @@
-import { cn } from "@client/client/utils";
+import { cn } from "@client/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 import * as React from "react";

@@ -9,7 +9,6 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import { ThemeProvider } from "../theme-provider";
 import { Header } from "../ui/header";
 import Footer from "./footer.astro";
 
@@ -46,25 +45,24 @@ const {
     <!-- Analytics removed placeholder -->
     <ClientRouter />
     <script is:inline>
-      const getThemePreference = () => {
-        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-          return localStorage.getItem("theme");
+      const theme = (() => {
+        const localStorageTheme = localStorage?.getItem("theme") ?? "";
+        if (["dark", "light"].includes(localStorageTheme)) {
+          return localStorageTheme;
         }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      };
-      const isDark = getThemePreference() === "dark";
-      document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      })();
 
-      if (typeof localStorage !== "undefined") {
-        const observer = new MutationObserver(() => {
-          const isDark = document.documentElement.classList.contains("dark");
-          localStorage.setItem("theme", isDark ? "dark" : "light");
-        });
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["class"],
-        });
+      if (theme === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
       }
+
+      window.localStorage.setItem("theme", theme);
     </script>
     <slot name="head" />
   </head>
@@ -78,20 +76,18 @@ const {
       className
     )}
   >
-    <ThemeProvider attribute="class" client:load defaultTheme="system" enableSystem>
-      <Header client:load />
-      <main class="relative z-10 min-h-screen">
-        {
-          isFullWidth ? (
+    <Header client:load />
+    <main class="relative z-10 min-h-screen">
+      {
+        isFullWidth ? (
+          <slot />
+        ) : (
+          <div class="container mx-auto px-4">
             <slot />
-          ) : (
-            <div class="container mx-auto px-4">
-              <slot />
-            </div>
-          )
-        }
-      </main>
-      <Footer />
-    </ThemeProvider>
+          </div>
+        )
+      }
+    </main>
+    <Footer />
   </body>
 </html>

@@ -1,22 +1,6 @@
-import { cn } from "@client/utils";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@components/ui/card";
+import { MagicCard } from "@components/ui/magic-card";
 
-interface ContentCardProps {
-  className?: string;
-  date?: Date;
-  description?: string;
-  href: string;
-  image?: string;
-  tags?: (string | { id: string; label?: string })[];
-  title: string;
-}
+// ... existing interfaces
 
 export const ContentCard = ({
   className,
@@ -28,12 +12,17 @@ export const ContentCard = ({
   title,
 }: ContentCardProps) => (
   <a className={cn("group block h-full outline-none", className)} href={href}>
-    <Card className="hover:shadow-glow-subtle h-full overflow-hidden transition-all duration-300 group-focus-visible:ring-2 group-focus-visible:ring-primary hover:border-primary/50">
+    <MagicCard
+      className="flex h-full flex-col gap-6 overflow-hidden border-transparent shadow-sm transition-all duration-300 group-focus-visible:ring-2 group-focus-visible:ring-primary hover:shadow-md"
+      gradientColor="#D9D9D955"
+      gradientSize={250}
+    >
       {image && (
         <div className="aspect-video w-full overflow-hidden bg-muted">
           <img
             alt={title}
-            className="size-full  object-cover transition-transform duration-500 group-hover:scale-105"
+            className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
             src={image}
           />
         </div>
@@ -56,7 +45,9 @@ export const ContentCard = ({
         <CardDescription className="line-clamp-3">{description}</CardDescription>
       </CardContent>
       {tags && tags.length > 0 && (
-        <CardFooter className="flex flex-wrap gap-2 pt-0">
+        <CardFooter className="mt-auto flex flex-wrap gap-2 pt-0 text-sm">
+          {" "}
+          {/* Added mt-auto to push footer to bottom */}
           {tags.slice(0, 3).map((tag) => {
             const label = typeof tag === "string" ? tag : (tag.label ?? tag.id);
             return (
@@ -70,6 +61,6 @@ export const ContentCard = ({
           })}
         </CardFooter>
       )}
-    </Card>
+    </MagicCard>
   </a>
 );

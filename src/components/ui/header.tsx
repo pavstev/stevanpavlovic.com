@@ -46,7 +46,7 @@ export const Header: React.FC = () => {
       >
         <div className="flex items-center">
           <a className="block rounded-md p-2 hover:bg-muted dark:hover:bg-muted/50" href="/">
-            <Logo className="h-4" />
+            <Logo />
           </a>
         </div>
 

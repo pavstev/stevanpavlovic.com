@@ -24,14 +24,14 @@ type FooterLinkGroup = {
 export const Footer = () => (
   <footer className="relative w-full overflow-hidden border-t border-white/5 bg-black pt-16 pb-8 text-neutral-200 backdrop-blur-3xl md:pt-20">
     <div className="absolute inset-0 z-0 size-full bg-[radial-gradient(circle_500px_at_50%_200px,#3e3e3e,transparent)] opacity-20" />
-    <div className="absolute inset-0 z-0 size-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:24px_24px]" />
+    <div className="absolute inset-0 z-0 size-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:24px_24px]" />
 
     <div className="relative z-10 mx-auto max-w-6xl px-4">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="flex flex-col gap-6 lg:col-span-4">
           <AnimatedContainer delay={0.1}>
             <div className="flex items-center gap-2">
-              <Logo className="h-5 text-white" />
+              <Logo className="text-white" />
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
               {PROFILE.bio.split(". ")[0]}. Architecting the future of distributed systems with

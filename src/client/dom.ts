@@ -69,7 +69,14 @@ export const updateActiveLinks = (): void => {
   }
 };
 
-export const initHeaderEffects = (): void => {
+type InitHeaderEffectsProps = {
+  afterScrollClasses: {
+    add: string[];
+    remove: string[];
+  };
+};
+
+export const initHeaderEffects = ({ afterScrollClasses }: InitHeaderEffectsProps): void => {
   const island = document.getElementById("nav-island");
   const progressBg = document.getElementById("nav-progress-bg");
   const brandWrapper = document.getElementById("brand-wrapper");
@@ -83,27 +90,21 @@ export const initHeaderEffects = (): void => {
     const isScrolled = scroll > 50;
 
     if (isScrolled) {
-      island.classList.add("h-11", "px-1.5", "scale-95", "border-primary/20", "bg-background/60");
-      island.classList.remove("h-14", "px-2");
+      island.classList.add(...afterScrollClasses.add);
+      island.classList.remove(...afterScrollClasses.remove);
 
-      if (brandWrapper) brandWrapper.style.opacity = "0.7";
-      if (desktopNav) desktopNav.style.gap = "0.25rem";
-      if (actionsWrapper) actionsWrapper.style.opacity = "0.8";
+      // if (brandWrapper) brandWrapper.style.opacity = "0.7";
+      // if (desktopNav) desktopNav.style.gap = "0.25rem";
+      // if (actionsWrapper) actionsWrapper.style.opacity = "0.8";
     }
 
     if (!isScrolled) {
-      island.classList.remove(
-        "h-11",
-        "px-1.5",
-        "scale-95",
-        "border-primary/20",
-        "bg-background/60"
-      );
-      island.classList.add("h-14", "px-2");
+      island.classList.remove(...afterScrollClasses.add);
+      island.classList.add(...afterScrollClasses.remove);
 
-      if (brandWrapper) brandWrapper.style.opacity = "1";
-      if (desktopNav) desktopNav.style.gap = "0.5rem";
-      if (actionsWrapper) actionsWrapper.style.opacity = "1";
+      // if (brandWrapper) brandWrapper.style.opacity = "1";
+      // if (desktopNav) desktopNav.style.gap = "0.5rem";
+      // if (actionsWrapper) actionsWrapper.style.opacity = "1";
     }
 
     if (progressBg) {

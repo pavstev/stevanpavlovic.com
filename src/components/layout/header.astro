@@ -18,8 +18,8 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
     <div class="flex flex-row items-center justify-center gap-3">
       <div
         class={cn(
-          "glass-strong hover:shadow-glow-subtle relative flex w-full items-center gap-2 px-6 shadow-2xl transition-all duration-500 ease-in-out",
-          "h-14 rounded-full border-foreground/5",
+          "glass-strong hover:shadow-glow-subtle relative flex w-full items-center gap-2 px-2 shadow-2xl transition-all duration-500 ease-in-out",
+          "h-14 rounded-full",
           "hover:border-foreground/20"
         )}
         id="nav-island"
@@ -35,7 +35,9 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
 
         <div class="flex shrink-0 items-center transition-all duration-500" id="brand-wrapper">
           <a
-            class="text-xl font-bold tracking-tighter transition-colors hover:text-primary"
+            class={cn(
+              "size-8 rounded-full bg-foreground/10 text-center text-lg leading-8 font-bold tracking-tighter transition-colors hover:scale-105 hover:bg-foreground hover:text-background"
+            )}
             href="/"
           >
             SP
@@ -67,7 +69,12 @@ const isPost = pathname.startsWith("/blog/") && pathname.length > 6;
 
   const init = () => {
     updateActiveLinks();
-    initHeaderEffects();
+    initHeaderEffects({
+      afterScrollClasses: {
+        add: ["h-11", "px-0", "pl-1.5", "pr-1", "border-primary/20", "bg-background/60"],
+        remove: ["h-14", "px-2"],
+      },
+    });
   };
 
   init();

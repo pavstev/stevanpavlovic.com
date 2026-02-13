@@ -9,9 +9,9 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
+import { ThemeProvider } from "../theme-provider";
 import Footer from "./footer.astro";
 import Header from "./header.astro";
-import { ThemeProvider } from "../theme-provider";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;

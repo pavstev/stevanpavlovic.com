@@ -11,17 +11,26 @@ import { ClientRouter } from "astro:transitions";
 
 import Footer from "./footer.astro";
 import Header from "./header.astro";
+import { ThemeProvider } from "../theme-provider";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;
   image?: URL;
   intensity?: "high" | "low" | "medium";
+  isFullWidth?: boolean;
   lang?: string;
   slug?: string;
   title: string;
 }
 
-const { class: className, description, lang = "en", title, ...rest } = Astro.props;
+const {
+  class: className,
+  description,
+  isFullWidth = false,
+  lang = "en",
+  title,
+  ...rest
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -36,6 +45,27 @@ const { class: className, description, lang = "en", title, ...rest } = Astro.pro
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
     <!-- Analytics removed placeholder -->
     <ClientRouter />
+    <script is:inline>
+      const getThemePreference = () => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      };
+      const isDark = getThemePreference() === "dark";
+      document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+
+      if (typeof localStorage !== "undefined") {
+        const observer = new MutationObserver(() => {
+          const isDark = document.documentElement.classList.contains("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
+      }
+    </script>
     <slot name="head" />
   </head>
   <body
@@ -48,14 +78,20 @@ const { class: className, description, lang = "en", title, ...rest } = Astro.pro
       className
     )}
   >
-    <!-- Visual background removed -->
-
-    <Header />
-    <main class="relative z-10 min-h-screen">
-      <div class="container mx-auto px-4">
-        <slot />
-      </div>
-    </main>
-    <Footer />
+    <ThemeProvider attribute="class" client:load defaultTheme="system" enableSystem>
+      <Header />
+      <main class="relative z-10 min-h-screen">
+        {
+          isFullWidth ? (
+            <slot />
+          ) : (
+            <div class="container mx-auto px-4">
+              <slot />
+            </div>
+          )
+        }
+      </main>
+      <Footer />
+    </ThemeProvider>
   </body>
 </html>

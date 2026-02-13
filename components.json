@@ -20,6 +20,7 @@
     "hooks": "@client/hooks"
   },
   "registries": {
-    "@21st": "https://21st.dev/r/{name}"
+    "@21st": "https://21st.dev/r/{name}",
+    "@kokonutui": "https://kokonutui.com/r/{name}.json"
   }
 }

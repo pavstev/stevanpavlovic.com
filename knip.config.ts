@@ -10,6 +10,7 @@ const config: KnipConfig = {
     "astro-eslint-parser",
     "@astrojs/check",
     "resumed",
+    "wrangler",
   ],
   vitest: {},
 };

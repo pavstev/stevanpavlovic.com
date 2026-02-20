@@ -93,8 +93,13 @@ func runCommand(name, command, cwd string) {
 				statusText := log.Blue.Bold(true).Render("⏳")
 				durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
 
-				nameStr := lipgloss.NewStyle().Width(35).Render(name)
-				statStr := lipgloss.NewStyle().Width(12).Render(statusText)
+				padLen := 38 - lipgloss.Width(name)
+				if padLen < 2 {
+					padLen = 2
+				}
+				dots := log.Subtle.Render(strings.Repeat(".", padLen))
+				nameStr := name + " " + dots
+				statStr := lipgloss.NewStyle().Width(4).Render(statusText)
 
 				fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 
@@ -119,19 +124,29 @@ func runCommand(name, command, cwd string) {
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
 		if !log.Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(log.Green.Bold(true).Render("✅"))
+			padLen := 38 - lipgloss.Width(name)
+			if padLen < 2 {
+				padLen = 2
+			}
+			dots := log.Subtle.Render(strings.Repeat(".", padLen))
+			nameStr := name + " " + dots
+			statStr := lipgloss.NewStyle().Width(4).Render(log.Green.Bold(true).Render("✅"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", log.Green.Render("✓"), nameStr, statStr, durStr)
+			fmt.Printf(" %s  %s %s %s\n", log.Green.Render("•"), nameStr, statStr, durStr)
 		}
 		log.Success("%s", name)
 	} else {
 		if !log.Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(log.Red.Bold(true).Render("❌"))
+			padLen := 38 - lipgloss.Width(name)
+			if padLen < 2 {
+				padLen = 2
+			}
+			dots := log.Subtle.Render(strings.Repeat(".", padLen))
+			nameStr := name + " " + dots
+			statStr := lipgloss.NewStyle().Width(4).Render(log.Red.Bold(true).Render("❌"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", log.Red.Render("✗"), nameStr, statStr, durStr)
+			fmt.Printf(" %s  %s %s %s\n", log.Red.Render("•"), nameStr, statStr, durStr)
 		}
 		log.Error("%s", name)
 		log.BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))

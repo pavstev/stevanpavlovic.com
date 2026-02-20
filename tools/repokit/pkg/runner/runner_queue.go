@@ -150,17 +150,17 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 			switch s.status {
 			case statusCompleted:
-				icon = log.Green.Render("✓")
+				icon = log.Green.Render("•")
 				statText = log.Green.Bold(true).Render("✅")
 			case statusFailed:
-				icon = log.Red.Render("✗")
+				icon = log.Red.Render("•")
 				statText = log.Red.Bold(true).Render("❌")
 			case statusActive:
 				icon = log.Blue.Render(log.Spinners[spinnerIdx])
 				statText = log.Blue.Bold(true).Render("⏳")
 				durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 			case statusCancelled:
-				icon = log.Subtle.Render("⊘")
+				icon = log.Subtle.Render("•")
 				statText = log.Subtle.Render("⛔")
 				durStr = log.Subtle.Render("  --.-s")
 			default:
@@ -169,8 +169,13 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 				durStr = log.Subtle.Render("  --.-s")
 			}
 
-			nameStr := lipgloss.NewStyle().Width(35).Render(s.name)
-			statStr := lipgloss.NewStyle().Width(12).Render(statText)
+			padLen := 38 - lipgloss.Width(s.name)
+			if padLen < 2 {
+				padLen = 2
+			}
+			dots := log.Subtle.Render(strings.Repeat(".", padLen))
+			nameStr := s.name + " " + dots
+			statStr := lipgloss.NewStyle().Width(4).Render(statText)
 
 			fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 			lineCount++

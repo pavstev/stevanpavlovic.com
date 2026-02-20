@@ -163,21 +163,9 @@ func NewProvider(llmCfg *LLMConfig) (Provider, error) {
 	case "gemini":
 		apiKey := llmCfg.APIKey
 		if apiKey == "" {
-			// Try to load from .env.local
+			// Load .env and then .env.local, which will override .env
+			godotenv.Load() // loads .env by default
 			godotenv.Load(".env.local")
-			if val := os.Getenv("GEMINI_API_KEY"); val != "" {
-				apiKey = val
-			}
-		}
-		if apiKey == "" {
-			// Try to load from .env
-			godotenv.Load(".env")
-			if val := os.Getenv("GEMINI_API_KEY"); val != "" {
-				apiKey = val
-			}
-		}
-		if apiKey == "" {
-			// Fallback to environment variable
 			apiKey = os.Getenv("GEMINI_API_KEY")
 		}
 		model := llmCfg.Model

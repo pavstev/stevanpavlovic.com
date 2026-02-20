@@ -1,7 +1,7 @@
 import type { JSX, ReactNode } from "react";
 
 import { cn } from "@client/utils.ts";
-import { Button } from "@components/ui/button.tsx";
+import { Button } from "@components/ui/button.ts";
 import {
   Empty,
   EmptyContent,

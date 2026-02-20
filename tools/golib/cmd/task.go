@@ -64,7 +64,7 @@ func listTasks() {
 		"test_go",
 		"test_py",
 		"optimize_svg",
-		"format_prettier",
+		"format",
 		"format_py",
 		"setup_install_uv",
 		"setup_install_pnpm",

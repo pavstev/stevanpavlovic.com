@@ -39,7 +39,6 @@ var (
 		"xclip-check.tmp":   true,
 	}
 	ExtensionToLang = map[string]string{
-		".py":    "python",
 		".js":    "javascript",
 		".ts":    "typescript",
 		".jsx":   "javascript",

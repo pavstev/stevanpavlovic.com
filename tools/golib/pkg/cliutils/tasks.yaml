@@ -3,12 +3,10 @@ vars:
   # Directories
   root_dir: .
   golib_dir: tools/golib
-  pylib_dir: tools/pylib
 
   # Base Commands
   pnpm_exec: pnpm exec
   go_cmd: go
-  uv_py: env -u VIRTUAL_ENV uv run --project tools/pylib
 
 tasks:
   lint_eslint:
@@ -19,10 +17,6 @@ tasks:
     name: Go linter
     command: golangci-lint run --fix ./...
     cwd: ${golib_dir}
-  lint_py:
-    name: Python Ruff
-    command: ${uv_py} ruff check --fix .
-    cwd: ${root_dir}
   check_astro:
     name: Astro Check
     command: ${pnpm_exec} astro check
@@ -31,10 +25,6 @@ tasks:
     name: Go Vet
     command: ${go_cmd} vet ./...
     cwd: ${golib_dir}
-  check_py:
-    name: Python mypy
-    command: ${uv_py} mypy --exclude cmd/generate_docs.py .
-    cwd: ${root_dir}
   build_astro:
     name: Astro Build
     command: ${pnpm_exec} astro build
@@ -43,10 +33,6 @@ tasks:
     name: Go Build
     command: ${go_cmd} build -o ../../${golib_dir}/bin/gocli ./main.go
     cwd: ${golib_dir}
-  build_py:
-    name: Python Build
-    command: echo 'Skipping Python build...'
-    cwd: ${root_dir}
   test_vitest:
     name: Vitest
     command: ${pnpm_exec} vitest run
@@ -55,23 +41,10 @@ tasks:
     name: Go Tests
     command: ${go_cmd} test ./... -coverprofile=coverage.out -v
     cwd: ${golib_dir}
-  test_py:
-    name: Python Tests
-    command: ${uv_py} pytest
-    cwd: ${root_dir}
 
-  # Format
-  optimize_svg:
-    name: SVG Optimization
-    command: ${uv_py} python -m tools.pylib.svg 'src/assets/**/*.svg'
-    cwd: ${root_dir}
-  format_prettier:
+  format:
     name: Prettier
     command: ${pnpm_exec} prettier -w --cache .
-    cwd: ${root_dir}
-  format_py:
-    name: Python Formatting
-    command: ${uv_py} ruff format ${pylib_dir}/
     cwd: ${root_dir}
 
   # Setup

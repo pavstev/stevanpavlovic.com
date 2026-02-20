@@ -9,7 +9,7 @@ func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
 			"optimize_svg",
-			"format_prettier",
+			"format",
 			"format_py",
 		},
 		PreRun: func() {

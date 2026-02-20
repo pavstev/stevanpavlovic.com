@@ -1,6 +1,7 @@
 package svg
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -88,6 +89,34 @@ func TestFormatPathData(t *testing.T) {
 	}
 }
 
+func TestToAbsolutePoints(t *testing.T) {
+	cmds := []Command{
+		{Type: 'M', Points: []Point{{10, 10}}},
+		{Type: 'L', Points: []Point{{20, 20}}},
+		{Type: 'H', Points: []Point{{30, 0}}}, // H only uses X, but tokenizer stores it in Point{X, 0}
+		{Type: 'V', Points: []Point{{0, 40}}}, // V only uses Y, but tokenizer stores it in Point{0, Y} (actually logic in tokenizer.go:45)
+		{Type: 'm', Points: []Point{{10, 10}}}, // Relative Move
+		{Type: 'l', Points: []Point{{5, 5}}},   // Relative Line
+	}
+	points := ToAbsolutePoints(cmds)
+	if len(points) == 0 {
+		t.Fatal("expected points, got 0")
+	}
+
+	// Verify some coordinates
+	if points[0].X != 10 || points[0].Y != 10 {
+		t.Errorf("Point 0 wrong: %v", points[0])
+	}
+}
+
+func TestOptimize(t *testing.T) {
+	// Test Optimize with empty or non-existent files
+	err := Optimize("non-existent-*.svg")
+	if err != nil {
+		t.Errorf("Optimize with no matches should not return error, got %v", err)
+	}
+}
+
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || (len(s) > len(substr) && (s[:len(substr)] == substr || contains(s[1:], substr))))
+	return strings.Contains(s, substr)
 }

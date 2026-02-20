@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -53,7 +54,7 @@ var (
 			Padding(1, 2).
 			Margin(1, 0)
 
-	osExit = osExitFunc
+	OSExit = osExitFunc
 	Quiet  = false
 
 	// Exported Styles for high-level runner integration.
@@ -135,7 +136,7 @@ func Error(format string, args ...any) {
 
 func Fatal(format string, args ...any) {
 	Error(format, args...)
-	osExit(1)
+	OSExit(1)
 }
 
 // ─── Advanced UI Components ──────────────────────────────────────────────────

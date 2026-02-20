@@ -32,6 +32,9 @@ linters-settings:
       - ifElseChain
       - octalLiteral
       - whyNoLint
+    custom-checks:
+      - name: commentedOutCode
+        enabled: true
   revive:
     rules:
       - name: exported

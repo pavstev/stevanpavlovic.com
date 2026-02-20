@@ -14,34 +14,52 @@ import (
 // ResolveFiles parses a glob pattern containing double asterisks for recursive matching.
 // Returns a flat list of absolute file paths matching the extension.
 func ResolveFiles(pattern string) ([]string, error) {
-	if !strings.Contains(pattern, "**") {
-		return filepath.Glob(pattern)
-	}
-
-	parts := strings.Split(pattern, "**")
-	base := parts[0]
-	if base == "" {
-		base = "."
-	}
-
-	absBase, err := filepath.Abs(base)
+	absPattern, err := filepath.Abs(pattern)
 	if err != nil {
 		return nil, err
 	}
+	pattern = filepath.ToSlash(absPattern)
 
-	// Build regex: base + .* + rest
-	// Quote the base path
-	regStr := "^" + regexp.QuoteMeta(filepath.ToSlash(absBase))
-	for i := 1; i < len(parts); i++ {
-		regStr += ".*"
-		p := parts[i]
-		// Quote the rest but keep * as glob star and . as dot
-		p = regexp.QuoteMeta(p)
-		p = strings.ReplaceAll(p, "\\*", ".*")   // * becomes .* in our simplified version
-		p = strings.ReplaceAll(p, "\\.\\*", ".*") // handle .* specifically if it was already there
-		regStr += p
+	// If the pattern doesn't contain "**", use standard glob.
+	// Note: filepath.Glob does not support "**" for recursive matching.
+	// This check should ideally be before converting to absolute path if we want to preserve relative glob behavior for simple patterns.
+	// However, the instruction implies all paths should be absolute before matching.
+	if !strings.Contains(pattern, "**") {
+		// filepath.Glob expects a system-native path separator, so convert back if needed.
+		return filepath.Glob(filepath.FromSlash(pattern))
 	}
-	regStr += "$"
+
+	// Determine the base directory for walking.
+	// The base should be the part of the pattern before the first "**" or "*".
+	// If the pattern starts with "**", the base is the current directory.
+	base := "."
+	if idx := strings.Index(pattern, "**"); idx != -1 {
+		base = pattern[:idx]
+	} else if idx := strings.Index(pattern, "*"); idx != -1 {
+		base = pattern[:idx]
+	}
+	// If base is still empty or just a drive letter, set it to root or current dir.
+	if base == "" || (len(base) == 2 && base[1] == ':') { // Handle Windows drive letters like "C:"
+		base = filepath.VolumeName(pattern) // Get drive letter if present
+		if base == "" {
+			base = "."
+		}
+	}
+	base = filepath.Dir(base) // Get the directory part of the base
+	if base == "" {
+		base = "."
+	}
+	base = filepath.FromSlash(base) // Convert base to system-native path for filepath.Walk
+
+	// Build regex:
+	// Escape the whole pattern first
+	regStr := regexp.QuoteMeta(pattern)
+	// Replace escaped /**/ with (?:/.*/)? to make it truly optional
+	regStr = strings.ReplaceAll(regStr, "/\\*\\*/", "/(?:.*/)?")
+	// Cleanup any remaining ** or *
+	regStr = strings.ReplaceAll(regStr, "\\*\\*", ".*")
+	regStr = strings.ReplaceAll(regStr, "\\*", "[^/]*")
+	regStr = "^" + regStr + "$"
 
 	re, err := regexp.Compile(regStr)
 	if err != nil {
@@ -49,14 +67,15 @@ func ResolveFiles(pattern string) ([]string, error) {
 	}
 
 	var matches []string
-	err = filepath.WalkDir(absBase, func(path string, d os.DirEntry, err error) error {
+	err = filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() {
+		if info.IsDir() {
 			return nil
 		}
-		if re.MatchString(filepath.ToSlash(path)) {
+		path = filepath.ToSlash(path)
+		if re.MatchString(path) {
 			matches = append(matches, path)
 		}
 		return nil

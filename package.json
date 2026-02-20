@@ -25,7 +25,7 @@
     "all": "pnpm -s rs all",
     "deploy": "wrangler deploy",
     "dev": "astro dev",
-    "go-build": "go build -v -ldflags='-s -w' -o tools/repokit/dist/repokit tools/repokit/main.go && ./rs pack tools",
+    "go-build": "go build -v -ldflags='-s -w' -o tools/repokit/dist/repokit tools/repokit && ./rs pack tools",
     "go-install": "cd tools/repokit && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm -s rs setup",

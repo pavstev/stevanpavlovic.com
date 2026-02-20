@@ -59,17 +59,18 @@
           "type": "array"
         },
         "tasks": {
-          "description": "Required if type is 'batch'.",
+          "description": "Required if type is 'batch' or 'sequential'.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "type": {
-          "description": "Single command or a list of child tasks.",
+          "description": "Single command, parallel batch, or sequential pipeline.",
           "enum": [
             "single",
-            "batch"
+            "batch",
+            "sequential"
           ],
           "type": "string"
         },

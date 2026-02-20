@@ -8,15 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// QueueConfig holds configuration for a queue command.
-type QueueConfig struct {
-	TaskIDs         []string
-	Workers         int
-	ContinueOnError bool
-	PreRun          func()
-	PostRun         func(success bool)
-}
-
 // CommandData holds data passed to commands for template interpolation.
 type CommandData struct {
 	Message string
@@ -25,6 +16,7 @@ type CommandData struct {
 	Extra   map[string]any
 }
 
+// NewDataCommand creates a command that accepts --message and --id flags.
 func NewDataCommand(use, short string, taskID string) *cobra.Command {
 	var message string
 	var id string
@@ -48,6 +40,7 @@ func NewDataCommand(use, short string, taskID string) *cobra.Command {
 	return cmd
 }
 
+// NewStepCommand creates a simple command that passes arguments to a task.
 func NewStepCommand(use, short string, taskID string) *cobra.Command {
 	return &cobra.Command{
 		Use:   use,
@@ -59,16 +52,18 @@ func NewStepCommand(use, short string, taskID string) *cobra.Command {
 }
 
 var (
-	rootCmd *cobra.Command
-	mu      sync.Mutex
+	rootCmd     *cobra.Command
+	mu          sync.Mutex
 )
 
+// SetRootCommand assigns the global root command for dynamic registration.
 func SetRootCommand(cmd *cobra.Command) {
 	mu.Lock()
 	defer mu.Unlock()
 	rootCmd = cmd
 }
 
+// AddToRoot registers a command to the global root command.
 func AddToRoot(cmd *cobra.Command) {
 	mu.Lock()
 	defer mu.Unlock()

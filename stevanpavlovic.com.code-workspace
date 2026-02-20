@@ -88,6 +88,19 @@
     "go.toolsEnvVars": {
       "GO111MODULE": "on",
     },
+    "go.useLanguageServer": true,
+    "gopls": {
+      "ui.semanticTokens": true,
+      "formatting.gofumpt": true, // Stricter, prettier formatting
+      "build.experimentalWorkspaceModule": true, // Helps gopls find modules in subfolders
+    },
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+    },
+    // Tells VS Code where to find your tool if it's not at the root
+    "go.alternateTools": {
+      "go": "go",
+    },
     "files.exclude": {
       "**/tools/": true,
       "**/go.sum": true,
@@ -151,7 +164,6 @@
     "[astro]": {
       "editor.defaultFormatter": "astro-build.astro-vscode",
     },
-    "frontMatter.git.enabled": true,
     "prettier.configPath": "./.prettierrc.json",
     "[yaml]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode",

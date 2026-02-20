@@ -157,27 +157,31 @@ func (p *LocalProvider) Generate(ctx context.Context, prompt string) (string, er
 
 // ─── Factory ────────────────────────────────────────────────────────────────
 
-func NewProvider(providerType, model, apiKey string) (Provider, error) {
-	switch strings.ToLower(providerType) {
+func NewProvider(llmCfg *LLMConfig) (Provider, error) {
+	switch strings.ToLower(llmCfg.Provider) {
 	case "gemini":
+		apiKey := llmCfg.APIKey
 		if apiKey == "" {
 			apiKey = os.Getenv("GEMINI_API_KEY")
 		}
+		model := llmCfg.Model
 		if model == "" {
 			model = "gemini-2.5-flash"
 		}
 		return &GeminiProvider{APIKey: apiKey, Model: model}, nil
 	case "groq":
+		apiKey := llmCfg.APIKey
 		if apiKey == "" {
 			apiKey = os.Getenv("GROQ_API_KEY")
 		}
+		model := llmCfg.Model
 		if model == "" {
 			model = "llama3-8b-8192"
 		}
 		return &GroqProvider{APIKey: apiKey, Model: model}, nil
 	case "local":
-		return &LocalProvider{ModelPath: model}, nil
+		return &LocalProvider{ModelPath: llmCfg.Model}, nil
 	default:
-		return nil, fmt.Errorf("unsupported llm provider: %s", providerType)
+		return nil, fmt.Errorf("unsupported llm provider: %s", llmCfg.Provider)
 	}
 }

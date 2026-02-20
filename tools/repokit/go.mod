@@ -47,6 +47,9 @@ require (
 	github.com/princjef/mageutil v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/rustyoz/Mtransform v0.0.0-20250628105438-00796a985d0a // indirect
+	github.com/rustyoz/genericlexer v0.0.0-20250522144106-d3cfee480384 // indirect
+	github.com/rustyoz/svg v0.0.0-20250705135709-8b1786137cb3 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/skeema/knownhosts v1.3.2 // indirect

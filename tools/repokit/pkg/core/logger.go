@@ -21,7 +21,7 @@ var (
 	// Muted Foreground.
 	mutedColor = lipgloss.AdaptiveColor{Light: "#64748b", Dark: "#94a3b8"}
 
-	blueColor = lipgloss.AdaptiveColor{Light: "#3b82f6", Dark: "#60a5fa"}
+	BlueColor = lipgloss.AdaptiveColor{Light: "#3b82f6", Dark: "#60a5fa"}
 	cyanColor = lipgloss.AdaptiveColor{Light: "#06b6d4", Dark: "#22d3ee"}
 
 	// Typography & Layout Constants.
@@ -62,7 +62,7 @@ var (
 	Yellow  = lipgloss.NewStyle().Foreground(amberColor)
 	Green   = lipgloss.NewStyle().Foreground(primaryColor)
 	Red     = lipgloss.NewStyle().Foreground(destructiveColor)
-	Blue    = lipgloss.NewStyle().Foreground(blueColor)
+	Blue    = lipgloss.NewStyle().Foreground(BlueColor)
 	Cyan    = lipgloss.NewStyle().Foreground(cyanColor)
 	Subtle  = lipgloss.NewStyle().Foreground(mutedColor)
 	Bold    = lipgloss.NewStyle().Bold(true)

@@ -25,7 +25,7 @@ type projectMetadata struct {
 }
 
 // RunGenerateReadme executes the readme generation logic.
-func RunGenerateReadme(ctx context.Context, providerName, model, apiKey, output string) {
+func RunGenerateReadme(ctx context.Context, llmCfg *LLMConfig) {
 	core.Info("Starting codebase analysis for README generation...")
 
 	meta, err := gatherContext()
@@ -33,9 +33,9 @@ func RunGenerateReadme(ctx context.Context, providerName, model, apiKey, output 
 		core.Fatal("Analysis failed: %v", err)
 	}
 
-	core.Info("Generating README using %s...", providerName)
+	core.Info("Generating README using %s...", llmCfg.Provider)
 
-	p, err := NewProvider(providerName, model, apiKey)
+	p, err := NewProvider(llmCfg)
 	if err != nil {
 		core.Fatal("Failed to initialize LLM provider: %v", err)
 	}
@@ -47,7 +47,7 @@ func RunGenerateReadme(ctx context.Context, providerName, model, apiKey, output 
 		core.Fatal("LLM generation failed: %v", err)
 	}
 
-	outFile := "README.md"
+	outFile := llmCfg.Output
 	if err := os.WriteFile(outFile, []byte(resp), 0644); err != nil {
 		core.Fatal("Failed to write to %s: %v", outFile, err)
 	}

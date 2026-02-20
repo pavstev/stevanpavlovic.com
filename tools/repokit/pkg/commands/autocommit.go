@@ -10,7 +10,7 @@ import (
 )
 
 // RunAutocommit executes the auto commit logic: gathers changes, generates a commit message using LLM, and pushes changes.
-func RunAutocommit(ctx context.Context, providerName, model, apiKey string) {
+func RunAutocommit(ctx context.Context, llmCfg *LLMConfig) {
 	core.Info("Checking for changes...")
 
 	// Check if there are any changes (staged or unstaged)
@@ -51,9 +51,9 @@ func RunAutocommit(ctx context.Context, providerName, model, apiKey string) {
 		diffStr = diffStr[:maxDiffLength] + "\n... (diff truncated due to size)"
 	}
 
-	core.Info("Generating commit message using %s...", providerName)
+	core.Info("Generating commit message using %s...", llmCfg.Provider)
 
-	p, err := NewProvider(providerName, model, apiKey)
+	p, err := NewProvider(llmCfg)
 	if err != nil {
 		core.Fatal("Failed to initialize LLM provider: %v", err)
 	}

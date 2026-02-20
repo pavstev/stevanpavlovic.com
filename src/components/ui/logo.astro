@@ -1,11 +1,12 @@
 ---
 import { cn } from "@client/utils";
+
 import { fullName } from "../../constants";
 import LogoIcon from "./logo-icon.astro";
 
 interface Props {
-  className?: string;
   [key: string]: any;
+  className?: string;
 }
 
 const { className, ...props } = Astro.props;

@@ -18,15 +18,15 @@ Whether you're an aspiring developer looking for inspiration, a recruiter evalua
 
 ## ✨ Key Features
 
-*   **Dynamic Portfolio Showcase:** Present projects, experience, and recommendations with rich, interactive content.
-*   **Engaging Technical Blog:** Share articles, tutorials, and insights using Markdown (MD/MDX), fostering knowledge exchange.
-*   **Modern UI/UX:** A sleek, responsive design powered by Tailwind CSS, complemented by smooth animations from Framer Motion for a captivating user interface.
-*   **Content-Driven Architecture:** All core content (blog posts, projects, company details, tags) is managed through structured Markdown and JSON files, ensuring flexibility and maintainability.
-*   **Lightning-Fast Performance:** Leveraging Astro for static site generation (SSG) and Cloudflare Pages for global distribution, ensuring near-instant load times.
-*   **Type-Safe Development:** End-to-end TypeScript implementation with Zod for robust data validation, enhancing code quality and reducing runtime errors.
-*   **Intuitive Navigation:** A well-structured layout with responsive menus, pagination, and a sophisticated search experience.
-*   **Bento Grid Layouts:** Custom, interactive Bento Grid components (`src/components/custom/bento`) for visually appealing and dynamic content presentation on the homepage.
-*   **Integrated Resume Generation:** Dynamic resume generation capabilities (`src/pages/resume.json.ts`, `src/integrations/resume-generator.ts`) for consistent data presentation.
+* **Dynamic Portfolio Showcase:** Present projects, experience, and recommendations with rich, interactive content.
+* **Engaging Technical Blog:** Share articles, tutorials, and insights using Markdown (MD/MDX), fostering knowledge exchange.
+* **Modern UI/UX:** A sleek, responsive design powered by Tailwind CSS, complemented by smooth animations from Framer Motion for a captivating user interface.
+* **Content-Driven Architecture:** All core content (blog posts, projects, company details, tags) is managed through structured Markdown and JSON files, ensuring flexibility and maintainability.
+* **Lightning-Fast Performance:** Leveraging Astro for static site generation (SSG) and Cloudflare Pages for global distribution, ensuring near-instant load times.
+* **Type-Safe Development:** End-to-end TypeScript implementation with Zod for robust data validation, enhancing code quality and reducing runtime errors.
+* **Intuitive Navigation:** A well-structured layout with responsive menus, pagination, and a sophisticated search experience.
+* **Bento Grid Layouts:** Custom, interactive Bento Grid components (`src/components/custom/bento`) for visually appealing and dynamic content presentation on the homepage.
+* **Integrated Resume Generation:** Dynamic resume generation capabilities (`src/pages/resume.json.ts`, `src/integrations/resume-generator.ts`) for consistent data presentation.
 
 ---
 
@@ -35,24 +35,27 @@ Whether you're an aspiring developer looking for inspiration, a recruiter evalua
 This project is built with a cutting-edge and battle-tested technology stack, chosen for performance, developer experience, and scalability:
 
 ### Frontend & Core
-*   **[Astro](https://astro.build/)**: The innovative static site builder for blazing-fast performance and seamless integration of UI frameworks.
-*   **[React](https://react.dev/)**: For interactive client-side components and a rich user experience.
-*   **[TypeScript](https://www.typescriptlang.org/)**: Ensures type safety, enhances code quality, and improves developer productivity across the entire codebase.
-*   **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapidly building custom designs with a highly optimized output.
-*   **[Framer Motion](https://www.framer.com/motion/)**: A production-ready motion library for React to create fluid and engaging animations.
-*   **[Vite](https://vitejs.dev/)**: The next-generation frontend tooling for a fast development experience.
-*   **[Zod](https://zod.dev/)**: TypeScript-first schema declaration and validation library, used for robust data integrity.
+
+* **[Astro](https://astro.build/)**: The innovative static site builder for blazing-fast performance and seamless integration of UI frameworks.
+* **[React](https://react.dev/)**: For interactive client-side components and a rich user experience.
+* **[TypeScript](https://www.typescriptlang.org/)**: Ensures type safety, enhances code quality, and improves developer productivity across the entire codebase.
+* **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapidly building custom designs with a highly optimized output.
+* **[Framer Motion](https://www.framer.com/motion/)**: A production-ready motion library for React to create fluid and engaging animations.
+* **[Vite](https://vitejs.dev/)**: The next-generation frontend tooling for a fast development experience.
+* **[Zod](https://zod.dev/)**: TypeScript-first schema declaration and validation library, used for robust data integrity.
 
 ### Deployment & Infrastructure
-*   **[Cloudflare Workers/Pages](https://developers.cloudflare.com/pages/)**: For serverless deployment, global CDN, and edge computing capabilities, ensuring high availability and performance.
+
+* **[Cloudflare Workers/Pages](https://developers.cloudflare.com/pages/)**: For serverless deployment, global CDN, and edge computing capabilities, ensuring high availability and performance.
 
 ### Development & Tooling
-*   **[ESLint](https://eslint.org/)**: Pluggable JavaScript linter to enforce code style and best practices, including custom rules (`tools/eslint`).
-*   **[Prettier](https://prettier.io/)**: An opinionated code formatter for consistent code style across the project.
-*   **[Knip](https://knip.dev/)**: Finds unused files, dependencies, and exports in your TypeScript project.
-*   **[Vitest](https://vitest.dev/)**: A blazing fast unit test framework powered by Vite.
-*   **[Repokit](tools/repokit/)**: Custom Go-based CLI tooling to automate project tasks, streamline development workflows, and maintain project health (e.g., auto-commit, cleaning, SVG optimization, schema export).
-*   **[Unlighthouse](https://unlighthouse.dev/)**: Full-site Lighthouse scans to ensure optimal performance, SEO, accessibility, and best practices.
+
+* **[ESLint](https://eslint.org/)**: Pluggable JavaScript linter to enforce code style and best practices, including custom rules (`tools/eslint`).
+* **[Prettier](https://prettier.io/)**: An opinionated code formatter for consistent code style across the project.
+* **[Knip](https://knip.dev/)**: Finds unused files, dependencies, and exports in your TypeScript project.
+* **[Vitest](https://vitest.dev/)**: A blazing fast unit test framework powered by Vite.
+* **[Repokit](tools/repokit/)**: Custom Go-based CLI tooling to automate project tasks, streamline development workflows, and maintain project health (e.g., auto-commit, cleaning, SVG optimization, schema export).
+* **[Unlighthouse](https://unlighthouse.dev/)**: Full-site Lighthouse scans to ensure optimal performance, SEO, accessibility, and best practices.
 
 ---
 
@@ -60,12 +63,12 @@ This project is built with a cutting-edge and battle-tested technology stack, ch
 
 The `spcom-final` project adopts a modern, content-first architecture rooted in the principles of:
 
-1.  **Static-First Performance:** Utilizing Astro to pre-render pages into static HTML at build time, significantly reducing load times and improving SEO. Hydration is selectively applied with React components only where interactivity is required (Partial Hydration / Islands Architecture).
-2.  **Component-Driven Development:** A clear separation of concerns with a well-organized component library (`src/components/ui`, `src/components/layout`, `src/components/custom`) promoting reusability, maintainability, and scalability.
-3.  **Modular Content Management:** All dynamic data for blog posts, projects, experience, and metadata is stored in structured Markdown (`.md`/`.mdx`) and JSON files within `src/content`, making content updates straightforward and decoupling it from the codebase.
-4.  **Type Safety & Validation:** Comprehensive TypeScript coverage combined with Zod for runtime schema validation ensures data consistency and prevents common development errors.
-5.  **Edge-Optimized Deployment:** Designed for deployment on Cloudflare Pages, taking full advantage of their global CDN for fast content delivery to users worldwide.
-6.  **Developer Experience (DX):** Integrating tools like Vite, ESLint, Prettier, and custom Repokit commands to create a smooth and efficient development workflow.
+1. **Static-First Performance:** Utilizing Astro to pre-render pages into static HTML at build time, significantly reducing load times and improving SEO. Hydration is selectively applied with React components only where interactivity is required (Partial Hydration / Islands Architecture).
+2. **Component-Driven Development:** A clear separation of concerns with a well-organized component library (`src/components/ui`, `src/components/layout`, `src/components/custom`) promoting reusability, maintainability, and scalability.
+3. **Modular Content Management:** All dynamic data for blog posts, projects, experience, and metadata is stored in structured Markdown (`.md`/`.mdx`) and JSON files within `src/content`, making content updates straightforward and decoupling it from the codebase.
+4. **Type Safety & Validation:** Comprehensive TypeScript coverage combined with Zod for runtime schema validation ensures data consistency and prevents common development errors.
+5. **Edge-Optimized Deployment:** Designed for deployment on Cloudflare Pages, taking full advantage of their global CDN for fast content delivery to users worldwide.
+6. **Developer Experience (DX):** Integrating tools like Vite, ESLint, Prettier, and custom Repokit commands to create a smooth and efficient development workflow.
 
 ---
 
@@ -123,30 +126,34 @@ To get a local copy up and running, follow these simple steps.
 
 Ensure you have the following installed on your system:
 
-*   [Node.js](https://nodejs.org/en/download/) (v18.x or later recommended)
-*   [pnpm](https://pnpm.io/installation) (v8.x or later recommended)
-*   [Go](https://go.dev/doc/install) (v1.20 or later, for `repokit` tooling)
+* [Node.js](https://nodejs.org/en/download/) (v18.x or later recommended)
+* [pnpm](https://pnpm.io/installation) (v8.x or later recommended)
+* [Go](https://go.dev/doc/install) (v1.20 or later, for `repokit` tooling)
 
 ### Installation
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
+
     ```bash
     git clone https://github.com/your-username/spcom-final.git # Replace with actual repo URL
     cd spcom-final
     ```
 
-2.  **Install dependencies:**
+2. **Install dependencies:**
+
     ```bash
     pnpm install
     ```
 
-3.  **Install Repokit (Go-based CLI tool):**
+3. **Install Repokit (Go-based CLI tool):**
     Navigate to the `tools/repokit` directory and install it. This will make the `repokit` command available globally or locally depending on your Go setup.
+
     ```bash
     cd tools/repokit
     go install .
     cd ../.. # Return to project root
     ```
+
     *Note: Ensure your Go bin directory is in your system's PATH.*
 
 ### Local Development
@@ -187,12 +194,12 @@ This project leverages `repokit`, a custom Go-based CLI tool, to automate and st
 
 The `repokit` tool includes commands for operations such as:
 
-*   **`repokit auto_commit`**: Automates commit messages based on staged changes.
-*   **`repokit clean`**: Cleans up generated files, caches, and dependency installations.
-*   **`repokit export_schema`**: Exports content schemas (e.g., from Zod definitions) for documentation or validation purposes.
-*   **`repokit generate_readme`**: (Potentially, as this README was generated for it!)
-*   **`repokit optimize_svg`**: Optimizes SVG assets to reduce file size.
-*   **`repokit pack`**: Packages project artifacts.
+* **`repokit auto_commit`**: Automates commit messages based on staged changes.
+* **`repokit clean`**: Cleans up generated files, caches, and dependency installations.
+* **`repokit export_schema`**: Exports content schemas (e.g., from Zod definitions) for documentation or validation purposes.
+* **`repokit generate_readme`**: (Potentially, as this README was generated for it!)
+* **`repokit optimize_svg`**: Optimizes SVG assets to reduce file size.
+* **`repokit pack`**: Packages project artifacts.
 
 To explore all available commands and their usage, run:
 
@@ -214,12 +221,12 @@ For advanced edge-logic, Cloudflare Workers can be integrated, as suggested by t
 
 While this is primarily a personal portfolio, contributions are welcome. If you find a bug, have a suggestion, or want to improve the codebase, please feel free to:
 
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/amazing-feature`).
-3.  Make your changes.
-4.  Commit your changes (`git commit -m 'feat: Add amazing feature'`).
-5.  Push to the branch (`git push origin feature/amazing-feature`).
-6.  Open a Pull Request.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/amazing-feature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'feat: Add amazing feature'`).
+5. Push to the branch (`git push origin feature/amazing-feature`).
+6. Open a Pull Request.
 
 ---
 

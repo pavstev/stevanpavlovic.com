@@ -7,24 +7,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	acProvider string
-	acModel    string
-	acAPIKey   string
-)
+var acLLMConfig *commands.LLMConfig
 
 var autoCommitCmd = &cobra.Command{
 	Use:   "auto_commit",
 	Short: "Automatically commits and pushes changes with an LLM-generated commit message",
 	Run: func(cmd *cobra.Command, args []string) {
 		core.LoadClosestEnv()
-		commands.RunAutocommit(cmd.Context(), acProvider, acModel, acAPIKey)
+		commands.RunAutocommit(cmd.Context(), acLLMConfig)
 	},
 }
 
 func init() {
-	autoCommitCmd.Flags().StringVar(&acProvider, "provider", "gemini", "LLM provider (gemini, groq, local)")
-	autoCommitCmd.Flags().StringVar(&acModel, "model", "", "Model name (defaults: gemini-2.5-flash, llama3-8b-8192)")
-	autoCommitCmd.Flags().StringVar(&acAPIKey, "api-key", "", "API Key (or set GEMINI_API_KEY / GROQ_API_KEY)")
+	acLLMConfig = commands.AddLLMFlags(autoCommitCmd, "") // Autocommit doesn't use the 'output' flag
 	rootCmd.AddCommand(autoCommitCmd)
 }

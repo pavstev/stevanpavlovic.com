@@ -100,7 +100,7 @@ func Run(targetDir string) {
 		}
 	}
 
-	cli.Print(fmt.Sprintf("Bundling: %s", targetDir))
+	cli.Info(fmt.Sprintf("Bundling: %s", targetDir))
 
 	// Clean up old output files
 	files, _ := filepath.Glob("pack_output_*.md")

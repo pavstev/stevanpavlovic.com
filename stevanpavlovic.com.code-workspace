@@ -122,7 +122,7 @@
     "yaml.completion": true,
     "yaml.validate": true,
     "yaml.schemas": {
-      "tools/eslint/schemas/tasks.schema.json": "tools/repokit/pkg/cli/tasks.yaml"
+      "tools/eslint/schemas/tasks.schema.json": "tools/repokit/pkg/cli/tasks.yamlt"
     },
     "cSpell.words": ["command"],
     "cSpell.ignorePaths": [

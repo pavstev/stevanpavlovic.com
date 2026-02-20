@@ -69,27 +69,6 @@ var osExitFunc = os.Exit
 
 // ─── Core Logging Interface ──────────────────────────────────────────────────
 
-// Print provides raw output that respects the Quiet flag.
-func Print(msg string) {
-	if !Quiet {
-		fmt.Print(msg)
-	}
-}
-
-// Println provides raw output with a newline that respects the Quiet flag.
-func Println(msg string) {
-	if !Quiet {
-		fmt.Println(msg)
-	}
-}
-
-// Printf provides formatted raw output that respects the Quiet flag.
-func Printf(format string, a ...any) {
-	if !Quiet {
-		fmt.Printf(format, a...)
-	}
-}
-
 // renderEntry creates the "Spine" layout for log messages
 func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveColor) {
 	badgePart := badge.Render(tag)

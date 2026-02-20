@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=../../../eslint/schemas/tasks.schema.json
 vars:
   root_dir: .
-  repo_dir: tools/repokit
-  repo_bin: tools/repokit/dist/repokit
+  rk_dir: tools/repokit
+  rk_bin: tools/repokit/dist/repokit
   pnpm: pnpm exec
   go: go
 
@@ -34,8 +34,24 @@ tasks:
     type: single
     pre_msg: Compiling Repokit orchestrator...
     on_error: Failed to build Go binary.
-    command: ${go} build -o ../../${repo_bin} ./main.go
-    cwd: ${repo_dir}
+    command: ${go} build -o ../../${rk_bin} ./main.go
+    cwd: ${rk_dir}
+
+  check_astro:
+    name: Astro Check
+    type: single
+    pre_msg: Checking Astro files...
+    on_error: Failed to perform Astro check.
+    command: ${pnpm} astro check
+    cwd: ${rk_dir}
+
+  check_go:
+    name: Astro Check
+    type: single
+    pre_msg: Checking Astro files...
+    on_error: Failed to perform Astro check.
+    command: ${go} vet ./...
+    cwd: ${rk_dir}
 
   # --- Unified Batch Pipelines ---
   lint:
@@ -67,7 +83,7 @@ tasks:
     type: batch
     pre_msg: Running all code quality checks...
     on_error: Checks failed.
-    tasks: [lint, test]
+    tasks: [check_astro]
     parallel: false
 
   build:

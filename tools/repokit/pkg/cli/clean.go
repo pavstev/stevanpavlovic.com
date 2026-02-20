@@ -29,12 +29,12 @@ func RunClean(force bool) {
 		}
 
 		Warning("The following ignored files will be PERMANENTLY deleted:")
-		Println("")
+		Info("")
 		for _, line := range strings.Split(fileList, "\n") {
-			Println("  " + subtleStyle.Render(line))
+			Info("  " + subtleStyle.Render(line))
 		}
 
-		Print(fmt.Sprintf("\n%s Proceed with project reset? [y/N]: ", Bold.Render("?")))
+		Info(fmt.Sprintf("\n%s Proceed with project reset? [y/N]: ", Bold.Render("?")))
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		if ans := strings.ToLower(strings.TrimSpace(scanner.Text())); ans != "y" && ans != "yes" {

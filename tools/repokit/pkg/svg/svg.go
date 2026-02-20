@@ -160,7 +160,7 @@ func (o *optimizer) run() error {
 	close(done)
 
 	if ctx.Err() != nil {
-		cli.Println("\n" + goldStyle.Render("Interrupted by user."))
+		cli.Info("\n" + goldStyle.Render("Interrupted by user."))
 		return ctx.Err()
 	}
 
@@ -251,7 +251,7 @@ func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 			return
 		case <-ticker.C:
 			if !first {
-				cli.Print(strings.Repeat("\033[A\033[2K", lines))
+				cli.Info(strings.Repeat("\033[A\033[2K", lines))
 			}
 			first, lines = false, o.drawFrame(start)
 		}
@@ -262,12 +262,12 @@ func (o *optimizer) drawFrame(start time.Time) int {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	p := atomic.LoadInt32(&o.processed)
-	cli.Println(fmt.Sprintf("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds()))
+	cli.Info(fmt.Sprintf("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds()))
 	for _, s := range o.workerStates {
 		if !s.active {
-			cli.Println(formatProgressLine(tailStyle.Render("•"), "idle", ""))
+			cli.Info(formatProgressLine(tailStyle.Render("•"), "idle", ""))
 		} else {
-			cli.Println(formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
+			cli.Info(formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
 		}
 	}
 	return len(o.workerStates) + 1

@@ -15,28 +15,32 @@ import (
 //go:embed tasks.yaml
 var configYAML []byte
 
+// TaskConfig defines the configuration for a single or batch task.
+// It is used by both the YAML parser and the JSON Schema generator.
 type TaskConfig struct {
-	Name            string   `yaml:"name"`
-	Type            string   `yaml:"type"` // "single" or "batch"
-	PreMsg          string   `yaml:"pre_msg"`
-	OnError         string   `yaml:"on_error"`
-	Description     string   `yaml:"description"`
-	Command         string   `yaml:"command,omitempty"`
-	Tasks           []string `yaml:"tasks,omitempty"`
-	Cwd             string   `yaml:"cwd,omitempty"`
-	PreRun          []string `yaml:"pre_run,omitempty"`
-	PostRun         []string `yaml:"post_run,omitempty"`
-	Parallel        bool     `yaml:"parallel,omitempty"`
-	Workers         int      `yaml:"workers,omitempty"`
-	ContinueOnError bool     `yaml:"continue_on_error,omitempty"`
-	Interactive     bool     `yaml:"interactive,omitempty"`
+	_               struct{} `additionalProperties:"false"`
+	Name            string   `yaml:"name" json:"name" required:"true" description:"Human-readable name of the task."`
+	Type            string   `yaml:"type" json:"type" required:"true" enum:"single,batch" description:"Single command or a list of child tasks."`
+	PreMsg          string   `yaml:"pre_msg" json:"pre_msg" required:"true" description:"Status message shown before execution starts."`
+	OnError         string   `yaml:"on_error" json:"on_error" required:"true" description:"Message shown if the task fails."`
+	Description     string   `yaml:"description,omitempty" json:"description,omitempty" description:"Optional detailed description of the task."`
+	Command         string   `yaml:"command,omitempty" json:"command,omitempty" description:"Required if type is 'single'."`
+	Tasks           []string `yaml:"tasks,omitempty" json:"tasks,omitempty" description:"Required if type is 'batch'."`
+	Cwd             string   `yaml:"cwd,omitempty" json:"cwd,omitempty" description:"Working directory for the command."`
+	PreRun          []string `yaml:"pre_run,omitempty" json:"pre_run,omitempty" description:"Tasks to run before this one."`
+	PostRun         []string `yaml:"post_run,omitempty" json:"post_run,omitempty" description:"Tasks to run after this one."`
+	Parallel        bool     `yaml:"parallel,omitempty" json:"parallel,omitempty" default:"false" description:"Run child tasks in parallel."`
+	Workers         int      `yaml:"workers,omitempty" json:"workers,omitempty" default:"3" description:"Number of parallel workers."`
+	ContinueOnError bool     `yaml:"continue_on_error,omitempty" json:"continue_on_error,omitempty" default:"false" description:"Continue execution even if child tasks fail."`
+	Interactive     bool     `yaml:"interactive,omitempty" json:"interactive,omitempty" default:"false" description:"Run in interactive mode (attaches stdin/stdout)."`
 }
 
 type BatchConfig = TaskConfig
 
 type Config struct {
-	Vars  map[string]string     `yaml:"vars"`
-	Tasks map[string]TaskConfig `yaml:"tasks"`
+	_     struct{}              `additionalProperties:"false"`
+	Vars  map[string]string     `yaml:"vars" json:"vars" description:"Global variables for command and path interpolation."`
+	Tasks map[string]TaskConfig `yaml:"tasks" json:"tasks" required:"true" description:"Task definitions (Atomic or Pipeline)."`
 }
 
 var cfg struct {

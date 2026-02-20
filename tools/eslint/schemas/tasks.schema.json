@@ -1,41 +1,116 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "additionalProperties": false,
+  "title": "Repokit Task Configuration",
   "description": "Unified Configuration schema for Repokit task runner.",
+  "type": "object",
   "properties": {
     "vars": {
-      "type": "object",
       "description": "Global variables for command and path interpolation.",
-      "additionalProperties": { "type": "string" }
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "tasks": {
-      "type": "object",
       "description": "Task definitions (Atomic or Pipeline).",
+      "type": "object",
       "patternProperties": {
         "^[a-z0-9_\\-]+$": {
-          "type": "object",
-          "required": ["name", "type", "pre_msg", "on_error"],
-          "additionalProperties": false,
-          "properties": {
-            "name": { "type": "string" },
-            "type": { "enum": ["single", "batch"], "description": "Single command or a list of child tasks." },
-            "description": { "type": "string" },
-            "pre_msg": { "type": "string", "description": "Status message shown before execution starts." },
-            "on_error": { "type": "string", "description": "Message shown if the task fails." },
-            "command": { "type": "string", "description": "Required if type is 'single'." },
-            "tasks": { "type": "array", "items": { "type": "string" }, "description": "Required if type is 'batch'." },
-            "cwd": { "type": "string" },
-            "pre_run": { "type": "array", "items": { "type": "string" } },
-            "post_run": { "type": "array", "items": { "type": "string" } },
-            "parallel": { "type": "boolean", "default": false },
-            "workers": { "type": "integer", "default": 3 },
-            "interactive": { "type": "boolean", "default": false }
-          }
+          "$ref": "#/definitions/CliTaskConfig"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
-  "required": ["tasks"],
-  "title": "Repokit Task Configuration",
-  "type": "object"
+  "additionalProperties": false,
+  "required": [
+    "tasks"
+  ],
+  "definitions": {
+    "CliTaskConfig": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Human-readable name of the task.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Single command or a list of child tasks.",
+          "type": "string",
+          "enum": [
+            "single",
+            "batch"
+          ]
+        },
+        "pre_msg": {
+          "description": "Status message shown before execution starts.",
+          "type": "string"
+        },
+        "on_error": {
+          "description": "Message shown if the task fails.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Optional detailed description of the task.",
+          "type": "string"
+        },
+        "command": {
+          "description": "Required if type is 'single'.",
+          "type": "string"
+        },
+        "tasks": {
+          "description": "Required if type is 'batch'.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cwd": {
+          "description": "Working directory for the command.",
+          "type": "string"
+        },
+        "pre_run": {
+          "description": "Tasks to run before this one.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "post_run": {
+          "description": "Tasks to run after this one.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parallel": {
+          "description": "Run child tasks in parallel.",
+          "default": false,
+          "type": "boolean"
+        },
+        "workers": {
+          "description": "Number of parallel workers.",
+          "default": 3,
+          "type": "integer"
+        },
+        "continue_on_error": {
+          "description": "Continue execution even if child tasks fail.",
+          "default": false,
+          "type": "boolean"
+        },
+        "interactive": {
+          "description": "Run in interactive mode (attaches stdin/stdout).",
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "pre_msg",
+        "on_error"
+      ]
+    }
+  }
 }

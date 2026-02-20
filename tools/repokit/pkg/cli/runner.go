@@ -156,17 +156,17 @@ func runCommand(name, command, cwd string) {
 				mu.Unlock()
 
 				if !firstRender {
-					Print(strings.Repeat("\033[A\033[2K", lineCount))
+					fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 				}
 				firstRender, lineCount = false, 1
 
 				// UI rendering with the new theme
 				statusText := Yellow.Bold(true).Render("🚀 RUNNING")
-				Println(fmt.Sprintf("  %-25s %s (%.1fs)", name, statusText, time.Since(start).Seconds()))
+				fmt.Printf("  %-25s %s (%.1fs)\n", name, statusText, time.Since(start).Seconds())
 
 				if !Quiet {
 					for _, l := range currentTail {
-						Println(formatTailLine(l))
+						fmt.Println(formatTailLine(l))
 						lineCount++
 					}
 				}
@@ -178,7 +178,7 @@ func runCommand(name, command, cwd string) {
 	close(done)
 
 	if err != nil && ctx.Err() != nil {
-		Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
+		fmt.Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
 		os.Exit(1)
 	}
 
@@ -300,7 +300,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		mu.Lock()
 		defer mu.Unlock()
 		if !firstRender {
-			Print(strings.Repeat("\033[A\033[2K", lineCount))
+			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 		}
 		firstRender, lineCount = false, 0
 		for _, s := range states {
@@ -317,7 +317,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			default:
 				status = subtleStyle.Render("⏳ QUEUED")
 			}
-			Println(fmt.Sprintf("  %-25s %s", s.name, status))
+			fmt.Printf("  %-25s %s\n", s.name, status)
 			lineCount++
 		}
 	}
@@ -340,7 +340,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	render()
 
 	if failed {
-		Println("\n" + Bold.Render("PIPELINE FAILED"))
+		fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
 		os.Exit(1)
 	}
 	Success("Pipeline finished.")

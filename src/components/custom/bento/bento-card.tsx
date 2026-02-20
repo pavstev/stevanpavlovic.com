@@ -2,20 +2,20 @@
 
 import type { FC, MouseEventHandler } from "react";
 
-import { cn } from "@client/utils.ts";
-import { Icon } from "@components/ui/icon.tsx";
+import { cn } from "@client/utils";
+import { Icon } from "@components/ui/icon";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
-import type { BentoItem } from "./bento-types.ts";
+import type { BentoItem } from "./bento-types";
 
-import { fadeInUp } from "../shared/animations.ts";
-import { ChartAnimation } from "./chart.tsx";
-import { CounterAnimation } from "./counter.tsx";
-import { IconsFeature } from "./icons.tsx";
-import { MetricsFeature } from "./metrics.tsx";
-import { SpotlightFeature } from "./spotlight.tsx";
-import { TimelineFeature } from "./timeline.tsx";
-import { TypingCodeFeature } from "./typing-code.tsx";
+import { fadeInUp } from "../shared/animations";
+import { ChartAnimation } from "./chart";
+import { CounterAnimation } from "./counter";
+import { IconsFeature } from "./icons";
+import { MetricsFeature } from "./metrics";
+import { SpotlightFeature } from "./spotlight";
+import { TimelineFeature } from "./timeline";
+import { TypingCodeFeature } from "./typing-code";
 
 export const BentoCard: FC<{ item: BentoItem }> = ({ item }) => {
   const x = useMotionValue(0);

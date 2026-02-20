@@ -1,16 +1,16 @@
 "use client";
 
-import { setTheme, themeStore } from "@client/store.ts";
-import { cn } from "@client/utils.ts";
-import { Button } from "@components/ui/button.tsx";
+import { setTheme, themeStore } from "@client/store";
+import { cn } from "@client/utils";
+import { Button } from "@components/ui/button";
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
 } from "@components/ui/context-menu";
-import { Icon } from "@components/ui/icon.tsx";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip.tsx";
+import { Icon } from "@components/ui/icon";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip";
 import { useStore } from "@nanostores/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { type FC, useEffect, useState } from "react";

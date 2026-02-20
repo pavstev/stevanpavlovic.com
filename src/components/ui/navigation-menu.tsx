@@ -1,5 +1,5 @@
-import { cn } from "@client/utils.ts";
-import { Icon } from "@components/ui/icon.tsx";
+import { cn } from "@client/utils";
+import { Icon } from "@components/ui/icon";
 import { cva } from "class-variance-authority";
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
 import { type ComponentProps, type JSX } from "react";

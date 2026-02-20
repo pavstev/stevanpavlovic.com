@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@client/utils";
-import { Icon } from "@components/ui/icon.tsx";
+import { Icon } from "@components/ui/icon";
 import { Dialog as SheetPrimitive } from "radix-ui";
 import { type ComponentProps, type FC, type JSX } from "react";
 

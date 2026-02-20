@@ -14,22 +14,22 @@
       "esbenp.prettier-vscode",
       "charliermarsh.ruff",
       "streetsidesoftware.code-spell-checker",
-      "antfu.iconify",
-    ],
+      "antfu.iconify"
+    ]
   },
   "folders": [
     {
       "path": ".",
-      "name": "stevanpavlovic.com",
+      "name": "stevanpavlovic.com"
     },
     {
       "name": "tools/repokit",
-      "path": "tools/repokit",
+      "path": "tools/repokit"
     },
     {
       "name": "tools/eslint",
-      "path": "tools/eslint",
-    },
+      "path": "tools/eslint"
+    }
   ],
   "settings": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
@@ -49,7 +49,7 @@
       ".git/{index,*refs,*HEAD}",
       ".vscode",
       ".vscode-insiders",
-      "**/*.svg",
+      "**/*.svg"
     ],
     "iconify.delimiters": [":"],
     "explorer.fileNesting.patterns": {
@@ -66,13 +66,13 @@
       "eslint.config.ts": "eslint.config.*.ts, eslint.config.mjs, eslint.config.cjs, knip.config.*, .prettier*, .editorconfig",
       "astro.config.ts": "wrangler.json*, unlighthouse.config.ts, tsconfig*.json, components.json",
       "*.py": "test_${capture}.py, ${capture}.py",
-      "*.go": "${capture}.go, ${capture}_test.go",
+      "*.go": "${capture}.go, ${capture}_test.go"
     },
     "workbench.editorAssociations": {
-      "*.svg": "vscode.markdown.preview.editor",
+      "*.svg": "vscode.markdown.preview.editor"
     },
     "yaml.schemas": {
-      "tools/eslint/schemas/tasks.schema.json": "config/my-specific-file.yml",
+      "tools/eslint/schemas/tasks.schema.json": "config/my-specific-file.yml"
     },
     "yaml.hover": true,
     "yaml.completion": true,
@@ -83,23 +83,23 @@
       "*.ts.template": "typescript",
       "*.tsx.template": "typescriptreact",
       "rs": "shellscript",
-      "wrangler.json": "jsonc",
+      "wrangler.json": "jsonc"
     },
     "go.toolsEnvVars": {
-      "GO111MODULE": "on",
+      "GO111MODULE": "on"
     },
     "go.useLanguageServer": true,
     "gopls": {
       "ui.semanticTokens": true,
       "formatting.gofumpt": true, // Stricter, prettier formatting
-      "build.experimentalWorkspaceModule": true, // Helps gopls find modules in subfolders
+      "build.experimentalWorkspaceModule": true // Helps gopls find modules in subfolders
     },
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "always",
+      "source.organizeImports": "always"
     },
     // Tells VS Code where to find your tool if it's not at the root
     "go.alternateTools": {
-      "go": "go",
+      "go": "go"
     },
     "files.exclude": {
       "**/tools/": true,
@@ -122,7 +122,7 @@
       "test-results/": true,
       "src/routeTree.gen.ts": true,
       ".tanstack/": true,
-      "src/content": true,
+      "src/content": true
     },
     "search.exclude": {
       "resume.json": true,
@@ -142,32 +142,38 @@
       "pnpm-lock.yaml": true,
       "src/routeTree.gen.ts": true,
       ".tanstack/": true,
-      "src/content": true,
+      "src/content": true
     },
     "tailwindCSS.includeLanguages": {
       "typescript": "javascript",
-      "typescriptreact": "html",
+      "typescriptreact": "html"
     },
     "tailwindCSS.experimental.classRegex": [
       ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
       ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
       ["clsx\\(([^)]*)\\)", "'([^']*)'"],
       ["clsx\\(([^)]*)\\)", "\"([^\"]*)\""],
-      ["clsx\\(([^)]*)\\)", "`([^`]*)`"],
+      ["clsx\\(([^)]*)\\)", "`([^`]*)`"]
     ],
-    "eslint.validate": ["javascript", "javascriptreact", "astro", "typescript", "typescriptreact"],
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "astro",
+      "typescript",
+      "typescriptreact"
+    ],
     "emmet.includeLanguages": {
       "typescript": "html",
-      "typescriptreact": "html",
+      "typescriptreact": "html"
     },
     "typescript.tsdk": "node_modules/typescript/lib",
     "[astro]": {
-      "editor.defaultFormatter": "astro-build.astro-vscode",
+      "editor.defaultFormatter": "astro-build.astro-vscode"
     },
     "prettier.configPath": "./.prettierrc.json",
     "[yaml]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "iconify.annotations": true,
-  },
+    "iconify.annotations": true
+  }
 }

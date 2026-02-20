@@ -40,6 +40,13 @@
       }
     },
     {
+      "files": "*.code-workspace",
+      "options": {
+        "printWidth": 80,
+        "parser": "json"
+      }
+    },
+    {
       "files": "*.toml",
       "options": {
         "printWidth": 100

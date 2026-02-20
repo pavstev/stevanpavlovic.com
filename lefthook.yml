@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://json.schemastore.org/lefthook.json
+$schema: https://json.schemastore.org/lefthook.json
+min_version: 1.12.3
+assert_lefthook_installed: true
+rc: ./.lefthookrc
+
+output:
+  - failure
+
+templates:
+  just: pnpm just
+  nx: pnpm nx run
+  nx_many: pnpm nx run-many
+
+pre-commit:
+  only:
+    - { ref: release }
+  parallel: true
+  commands:
+    format:
+      run: |
+        echo "🎨 Auto-formatting staged files..."
+        git diff --cached --name-only --diff-filter=ACMR | \
+        grep -E '\.(ts|json|css|scss|md|html|yml|yaml)$' | \
+        xargs -r prettier --write --config=.prettierrc.json --ignore-path=.prettierignore
+        git add .
+      stage_fixed: true
+      files: git diff --cached --name-only --diff-filter=ACMR
+      glob: "*.{ts,json,css,scss,md,html,yml,yaml}"
+    format-check:
+      run: |
+        echo "🔍 Checking formatting..."
+        prettier --check . --config=.prettierrc.json --ignore-path=.prettierignore --cache --cache-location node_modules/.cache/prettier
+      files: '^(src|e2e|drizzle|messages|static)/.*\.(ts|css|json|yml|yaml|md)$'
+    lint:
+      run: pnpm lint
+      files: '^(src|e2e)/.*\.(ts)$'
+    typecheck:
+      run: pnpm typecheck
+      files: '^(src)/.*\.(ts)$'
+    build:
+      run: pnpm build
+      files: '^(src)/.*\.(ts)$'
+
+pre-push:
+  only:
+    - { ref: release }
+  commands:
+    test:
+      run: pnpm test
+    build:
+      run: pnpm build
+    knip:
+      run: pnpm knip
+
+prepare-commit-msg:
+  only:
+    - { ref: release }
+  commands:
+    commitzen:
+      interactive: true
+      run: pnpm cz --hook
+      env:
+        LEFTHOOK: "0"
+
+commit-msg:
+  only:
+    - { ref: release }
+  commands:
+    lint-commit-message:
+      run: pnpm commitlint --edit {1}
+    uncomment:
+      run: pnpm uncomment
+    build:
+      run: pnpm build
+      files: '^(src)/.*\.(ts)$'

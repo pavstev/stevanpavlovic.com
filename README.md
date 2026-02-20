@@ -74,9 +74,7 @@ The `spcom-final` project adopts a modern, content-first architecture rooted in 
 
 ## 📁 Directory Structure Highlights
 
-The project's directory structure is designed for clarity, modularity, and easy navigation:
-
-```
+```bash
 spcom-final/
 ├── public/                 # Static assets directly served (e.g., profile.jpeg)
 ├── src/

@@ -371,10 +371,6 @@ func extractMetadata(cwd string) string {
 		}
 	}
 
-	if _, err := os.Stat(filepath.Join(cwd, "pyproject.toml")); err == nil {
-		parts = append(parts, "### 🐍 `pyproject.toml`", "- Found Python project config", "")
-	}
-
 	if data, err := os.ReadFile(filepath.Join(cwd, "go.mod")); err == nil {
 		parts = append(parts, "### 🐹 `go.mod`")
 		lines := strings.Split(string(data), "\n")

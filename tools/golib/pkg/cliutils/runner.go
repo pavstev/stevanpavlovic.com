@@ -68,9 +68,7 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 			// First attempt graceful termination
 			_ = syscall.Kill(-pgid, syscall.SIGTERM)
 
-			// Give it a tiny moment to exit gracefully before SIGKILL
-			// Note: CommandContext will eventually SIGKILL if we don't exit,
-			// but we can be explicit here if needed.
+			// Give it 2 seconds to exit gracefully before SIGKILL
 			time.AfterFunc(2*time.Second, func() {
 				_ = syscall.Kill(-pgid, syscall.SIGKILL)
 			})

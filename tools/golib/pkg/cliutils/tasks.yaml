@@ -47,6 +47,10 @@ tasks:
     name: Prettier
     command: ${pnpm_exec} prettier -w --cache .
     cwd: ${root_dir}
+
+  # Standalone task definition.
+  # Note: The 'setup' logic now calls the internal Go function
+  # directly instead of using this task to avoid recursion.
   optimize_svg:
     name: Optimize SVG
     command: ${golib_bin} optimize-svg src/assets/**/*.svg
@@ -64,14 +68,10 @@ tasks:
   setup_uv_sync:
     name: uv sync
     command: uv sync
-    cwd: ${pylib_dir}
+    cwd: ${root_dir}
   setup_wrangler_types:
     name: Wrangler Types
     command: ${pnpm_exec} wrangler types
-    cwd: ${root_dir}
-  ls_files:
-    name: List Files
-    command: git ls-files --exclude-standard -co | grep -vE "{{.ExcludePattern}}" | tree --fromfile .
     cwd: ${root_dir}
   resume_export:
     name: Export Resume

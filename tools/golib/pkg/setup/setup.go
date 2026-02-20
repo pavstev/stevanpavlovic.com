@@ -2,6 +2,7 @@ package setup
 
 import (
 	"golib/pkg/cliutils"
+	"golib/pkg/svg"
 )
 
 // Run executes the project setup process.
@@ -28,6 +29,13 @@ func Run(continueOnError bool) {
 	cliutils.RunQueue([]string{
 		"setup_uv_sync",
 	}, 2, continueOnError)
+
+	cliutils.Step("Optimizing Project Assets...")
+	// Break the recursive loop: Call the Go function directly
+	// instead of spawning the 'gocli optimize-svg' sub-process.
+	if err := svg.Optimize("src/assets/**/*.svg"); err != nil {
+		cliutils.Warning("SVG optimization encountered errors, but continuing setup...")
+	}
 
 	cliutils.Step("Finalizing setup...")
 	cliutils.RunQueue([]string{

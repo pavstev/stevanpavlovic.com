@@ -9,7 +9,7 @@ vars:
   pnpm_exec: pnpm exec
   go_cmd: go
   uv_py: env -u VIRTUAL_ENV uv run --project tools/pylib
-  run_py_main: ${uv_py} python -m tools.pylib.main
+  run_py_main: env -u VIRTUAL_ENV uv run --project tools/pylib python -m tools.pylib.main
 
 tasks:
   lint_eslint:

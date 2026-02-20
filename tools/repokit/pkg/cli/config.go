@@ -20,12 +20,12 @@ var configYAML []byte
 type TaskConfig struct {
 	_               struct{} `additionalProperties:"false"`
 	Name            string   `yaml:"name" json:"name" required:"true" description:"Human-readable name of the task."`
-	Type            string   `yaml:"type" json:"type" required:"true" enum:"single,batch" description:"Single command or a list of child tasks."`
+	Type            string   `yaml:"type" json:"type" required:"true" enum:"single,batch,sequential" description:"Single command, parallel batch, or sequential pipeline."`
 	PreMsg          string   `yaml:"pre_msg" json:"pre_msg" required:"true" description:"Status message shown before execution starts."`
 	OnError         string   `yaml:"on_error" json:"on_error" required:"true" description:"Message shown if the task fails."`
 	Description     string   `yaml:"description,omitempty" json:"description,omitempty" description:"Optional detailed description of the task."`
 	Command         string   `yaml:"command,omitempty" json:"command,omitempty" description:"Required if type is 'single'."`
-	Tasks           []string `yaml:"tasks,omitempty" json:"tasks,omitempty" description:"Required if type is 'batch'."`
+	Tasks           []string `yaml:"tasks,omitempty" json:"tasks,omitempty" description:"Required if type is 'batch' or 'sequential'."`
 	Cwd             string   `yaml:"cwd,omitempty" json:"cwd,omitempty" description:"Working directory for the command."`
 	PreRun          []string `yaml:"pre_run,omitempty" json:"pre_run,omitempty" description:"Tasks to run before this one."`
 	PostRun         []string `yaml:"post_run,omitempty" json:"post_run,omitempty" description:"Tasks to run after this one."`

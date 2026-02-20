@@ -6,7 +6,7 @@
 COMMAND=$1
 shift
 
-GOCLI_PATH="tools/golib/dist/gocli"
+GOCLI_PATH="tools/repokit/dist/repokit"
 
 if [ -z "$COMMAND" ]; then
   echo "Usage: $0 <command> [args...]"
@@ -14,7 +14,7 @@ if [ -z "$COMMAND" ]; then
 
   echo "Go Commands:"
   if [ ! -f "$GOCLI_PATH" ]; then
-    echo "Building gocli..."
+    echo "Building repokit..."
     pnpm go-build
   fi
   $GOCLI_PATH --help
@@ -24,7 +24,7 @@ fi
 
 # Assume it is a Go command
 if [ ! -f "$GOCLI_PATH" ]; then
-  echo "Building gocli..."
+  echo "Building repokit..."
   pnpm go-build
 fi
 

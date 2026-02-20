@@ -23,8 +23,8 @@
       "name": "stevanpavlovic.com",
     },
     {
-      "name": "tools/golib",
-      "path": "tools/golib",
+      "name": "tools/repokit",
+      "path": "tools/repokit",
     },
     {
       "name": "tools/eslint",

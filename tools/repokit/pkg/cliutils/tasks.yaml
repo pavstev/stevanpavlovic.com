@@ -2,8 +2,8 @@
 vars:
   # Directories
   root_dir: .
-  golib_dir: tools/repokit
-  golib_bin: tools/repokit/dist/repokit
+  golib_dir: tools/golib
+  golib_bin: tools/golib/dist/gocli
 
   # Base Commands
   pnpm_exec: pnpm exec

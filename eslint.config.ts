@@ -19,16 +19,20 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
 
-import { allRules, files, globalIgnoresList, registerPlugin } from "./tools/eslint";
+import {
+  //   allRules,
+  //  registerPlugin,
+  files, globalIgnoresList,
+} from "./tools/eslint";
 
-const localPlugin = registerPlugin({
-  name: "local",
-  project: {
-    extensions: ["astro", "tsx", "ts"],
-    sourceDirectories: ["src"],
-  },
-  rules: allRules,
-});
+// const localPlugin = registerPlugin({
+//   name: "local",
+//   project: {
+//     extensions: ["astro", "tsx", "ts"],
+//     sourceDirectories: ["src"],
+//   },
+//   rules: allRules,
+// });
 
 const fixedTailwind = fixupPluginRules(tailwind);
 const fixedMarkdownlint = fixupPluginRules(markdownlintPlugin);
@@ -48,7 +52,7 @@ export default defineConfig(
 
   ...tseslint.configs.recommended,
 
-  localPlugin.configs.recommended,
+  // localPlugin.configs.recommended,
   {
     files: files.FRONTEND,
     plugins: {
@@ -74,16 +78,16 @@ export default defineConfig(
       ],
     },
   },
-  {
-    files: files.ESLINT,
-    name: "tools-eslint",
-    plugins: {
-      import: importPlugin,
-    },
-    rules: {
-      "import/extensions": ["error", "ignorePackages"],
-    },
-  },
+  // {
+  //   files: files.ESLINT,
+  //   name: "tools-eslint",
+  //   plugins: {
+  //     import: importPlugin,
+  //   },
+  //   rules: {
+  //     "import/extensions": ["error", "ignorePackages"],
+  //   },
+  // },
 
   ...eslintPluginAstro.configs.recommended,
 

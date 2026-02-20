@@ -137,45 +137,59 @@ func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 		return
 	}
 
-	// Terminal width
 	termWidth, _, err := term.GetSize(int(os.Stdout.Fd()))
-	if err != nil {
-		termWidth = 80
-	}
+	isTTY := err == nil
 
-	// Title style
+	// Styles
+	// Outer container
+	outerBoxStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder(), true).
+		BorderForeground(color).
+		Padding(1).
+		Margin(1, 0)
+
+	// Title
 	titleStyle := lipgloss.NewStyle().
 		Background(color).
 		Foreground(lipgloss.Color("#FFFFFF")).
-		Bold(true).
 		Padding(0, 1).
-		MarginBottom(1)
+		Bold(true)
 
-	// The width of the box needs to account for its own padding and border.
-	// Box width is terminal width - (horizontal margin of a parent container, if any)
-	// Content width is box width - box's own horizontal padding & border.
-	// Assuming the box is a top-level element, we can use most of the terminal width.
-	// Let's reserve a small margin for safety.
-	boxWidth := termWidth - 2
-	
-	// Recalculate content width based on the box's final width and its own styling
-	// Horizontal padding (1+1) + border (1+1) = 4
-	contentWidth := boxWidth - 4
-	if contentWidth < 0 {
-		contentWidth = 0
+	// Content
+	contentStyle := lipgloss.NewStyle().
+		MarginTop(1)
+
+	var titleStr, contentStr string
+
+	contentWidth := lipgloss.Width(content)
+	titleText := strings.ToUpper(title)
+	titleLen := lipgloss.Width(titleText) + 2
+
+	if isTTY {
+		maxWidth := termWidth - outerBoxStyle.GetHorizontalFrameSize()
+		if contentWidth < maxWidth {
+			maxWidth = contentWidth
+		}
+		if maxWidth < titleLen {
+			maxWidth = titleLen
+		}
+		titleStr = titleStyle.Width(maxWidth).Align(lipgloss.Center).Render(titleText)
+		contentStr = contentStyle.Width(maxWidth).Render(content)
+	} else {
+		// Non-TTY: flow naturally, don't force artificial text wrap
+		boxWidth := contentWidth
+		if titleLen > boxWidth {
+			boxWidth = titleLen
+		}
+		titleStr = titleStyle.Width(boxWidth).Align(lipgloss.Center).Render(titleText)
+		contentStr = contentStyle.Render(content)
 	}
 
-	box := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder(), true).
-		BorderForeground(color).
-		Padding(0, 1). // Padding inside the border
-		Width(contentWidth)
+	// Join the parts vertically
+	ui := lipgloss.JoinVertical(lipgloss.Left, titleStr, contentStr)
 
-	// Render title and content
-	titleStr := titleStyle.Render(strings.ToUpper(title))
-	contentStr := box.Render(content)
-
-	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleStr, contentStr))
+	// Render the final output
+	fmt.Println(outerBoxStyle.Render(ui))
 }
 
 // BoxOutput provides a shim for existing runner implementations.

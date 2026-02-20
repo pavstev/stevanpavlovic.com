@@ -21,7 +21,7 @@ tasks:
     type: single
     pre_msg: Analyzing frontend code quality...
     on_error: ESLint found code quality issues.
-    command: ${pnpm} eslint . --fix --cache --max-warnings=0
+    command: ${pnpm} eslint . --fix --cache --max-warnings=0 --color
     cwd: ${root_dir}
 
   knip:

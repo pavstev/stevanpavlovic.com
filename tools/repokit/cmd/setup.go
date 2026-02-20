@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"golib/pkg/setup"
+	"repokit/pkg/setup"
 
 	"github.com/spf13/cobra"
 )

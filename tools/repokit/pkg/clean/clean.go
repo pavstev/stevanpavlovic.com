@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"golib/pkg/cliutils"
+	"repokit/pkg/cliutils"
 )
 
 // Run executes the project clean process.

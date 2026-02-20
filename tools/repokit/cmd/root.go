@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"os"
 
-	"golib/pkg/cliutils"
-	"golib/pkg/cmdutil"
+	"repokit/pkg/cliutils"
+	"repokit/pkg/cmdutil"
 
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "golib",
+	Use:   "repokit",
 	Short: "A brief description of your Go library",
 	Long: `A longer description of your Go library,
 	which can span multiple lines.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
-		fmt.Println("Hello from golib!")
+		fmt.Println("Hello from repokit!")
 	},
 }
 

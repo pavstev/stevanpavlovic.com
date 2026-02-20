@@ -1,14 +1,14 @@
 package main
 
 import (
-	"golib/cmd"
 	"os"
 	"path/filepath"
+	"repokit/cmd"
 )
 
 func main() {
 	if cwd, err := os.Getwd(); err == nil {
-		if filepath.Base(cwd) == "golib" {
+		if filepath.Base(cwd) == "repokit" {
 			_ = os.Chdir("..")
 		}
 	}

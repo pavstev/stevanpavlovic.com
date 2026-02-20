@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"golib/pkg/cliutils"
-	"golib/pkg/cmdutil"
+	"repokit/pkg/cliutils"
+	"repokit/pkg/cmdutil"
 
 	"github.com/spf13/cobra"
 )
@@ -17,12 +17,12 @@ func init() {
 		Long: `Run a single task by its ID from tasks.yaml.
 
 Example:
-  golib task lint_go
-  golib task build_astro
-  golib task check_go
+  repokit task lint_go
+  repokit task build_astro
+  repokit task check_go
 
 To list all available task IDs, run:
-  golib task --list`,
+  repokit task --list`,
 		Args: cobra.MaximumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			list, _ := cmd.Flags().GetBool("list")

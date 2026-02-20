@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"golib/pkg/cliutils"
+	"repokit/pkg/cliutils"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tdewolff/minify/v2"

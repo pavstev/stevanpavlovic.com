@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"golib/pkg/cmdutil"
-	"golib/pkg/svg"
+	"repokit/pkg/cmdutil"
+	"repokit/pkg/svg"
 
 	"github.com/spf13/cobra"
 )

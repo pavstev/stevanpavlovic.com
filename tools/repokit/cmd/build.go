@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"golib/pkg/cliutils"
-	"golib/pkg/cmdutil"
+	"repokit/pkg/cliutils"
+	"repokit/pkg/cmdutil"
 )
 
 func init() {

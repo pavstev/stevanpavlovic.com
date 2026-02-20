@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"golib/pkg/cliutils"
+	"repokit/pkg/cliutils"
 
 	"github.com/spf13/cobra"
 )

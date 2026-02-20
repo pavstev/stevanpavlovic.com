@@ -2,8 +2,8 @@
 vars:
   # Directories
   root_dir: .
-  golib_dir: tools/golib
-  golib_bin: tools/golib/dist/gocli
+  repokit_dir: tools/repokit
+  repokit_bin: tools/repokit/dist/repokit
 
   # Base Commands
   pnpm_exec: pnpm exec
@@ -17,7 +17,7 @@ tasks:
   lint_go:
     name: Go linter
     command: golangci-lint run --fix ./...
-    cwd: ${golib_dir}
+    cwd: ${repokit_dir}
   check_astro:
     name: Astro Check
     command: ${pnpm_exec} astro check
@@ -25,15 +25,15 @@ tasks:
   check_go:
     name: Go Vet
     command: ${go_cmd} vet ./...
-    cwd: ${golib_dir}
+    cwd: ${repokit_dir}
   build_astro:
     name: Astro Build
     command: ${pnpm_exec} astro build
     cwd: ${root_dir}
   build_go:
     name: Go Build
-    command: ${go_cmd} build -o ../../${golib_bin} ./main.go
-    cwd: ${golib_dir}
+    command: ${go_cmd} build -o ../../${repokit_bin} ./main.go
+    cwd: ${repokit_dir}
   test_vitest:
     name: Vitest
     command: ${pnpm_exec} vitest run
@@ -41,7 +41,7 @@ tasks:
   test_go:
     name: Go Tests
     command: ${go_cmd} test ./... -coverprofile=coverage.out -v
-    cwd: ${golib_dir}
+    cwd: ${repokit_dir}
 
   prettier_write:
     name: Prettier
@@ -53,7 +53,7 @@ tasks:
   # directly instead of using this task to avoid recursion.
   optimize_svg:
     name: Optimize SVG
-    command: ${golib_bin} optimize-svg src/assets/**/*.svg
+    command: ${repokit_bin} optimize-svg src/assets/**/*.svg
     cwd: ${root_dir}
 
   # Setup

@@ -23,7 +23,7 @@
             },
             "command": {
               "type": "string",
-              "description": "The command to execute. Supports variable interpolation (e.g., ${golib_bin})."
+              "description": "The command to execute. Supports variable interpolation (e.g., ${repokit_bin})."
             },
             "cwd": {
               "type": "string",

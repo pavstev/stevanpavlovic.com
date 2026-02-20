@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"golib/pkg/cliutils"
+	"repokit/pkg/cliutils"
 
 	"github.com/atotto/clipboard"
 	"github.com/go-git/go-git/v5"
@@ -126,7 +126,7 @@ func Run(targetDir string) {
 	if targetDir == cwd {
 		outputFilename = "pack_output_current-directory.md"
 	}
-	outputPath := filepath.Join(cwd, "tools/golib/dist", outputFilename)
+	outputPath := filepath.Join(cwd, "tools/repokit/dist", outputFilename)
 
 	err := os.WriteFile(outputPath, []byte(md.String()), 0644)
 	if err != nil {

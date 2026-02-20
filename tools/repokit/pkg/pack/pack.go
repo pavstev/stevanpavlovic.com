@@ -2,9 +2,7 @@ package pack
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -12,11 +10,11 @@ import (
 	"strings"
 
 	"repokit/pkg/cli"
+	"repokit/pkg/utils"
 
 	"github.com/atotto/clipboard"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
-	"github.com/h2non/filetype"
 )
 
 var (
@@ -126,7 +124,7 @@ func Run(targetDir string) {
 	if targetDir == cwd {
 		outputFilename = "pack_output_current-directory.md"
 	}
-	outputPath := filepath.Join(cwd, "tools/repokit/dist", outputFilename)
+	outputPath := filepath.Join(cwd, "tools", "repokit", "dist", outputFilename)
 
 	err := os.WriteFile(outputPath, []byte(md.String()), 0644)
 	if err != nil {
@@ -182,34 +180,6 @@ func slugifyStr(s string) string {
 	s = strings.ToLower(s)
 	s = slugifyRegexp.ReplaceAllString(s, "-")
 	return strings.Trim(s, "-")
-}
-
-func isBinary(path string) bool {
-	f, err := os.Open(path)
-	if err != nil {
-		return true
-	}
-	defer func() { _ = f.Close() }()
-
-	head := make([]byte, 1024)
-	n, err := f.Read(head)
-	if err != nil && !errors.Is(err, io.EOF) {
-		return true
-	}
-	head = head[:n]
-
-	for _, b := range head {
-		if b == 0 {
-			return true
-		}
-	}
-
-	kind, _ := filetype.Match(head)
-	if kind != filetype.Unknown && strings.HasPrefix(kind.MIME.Value, "application/") {
-		return true
-	}
-
-	return false
 }
 
 func (ctx *Context) shouldExclude(path string, isDir bool) bool {
@@ -300,7 +270,7 @@ func buildTree(currentPath string, ctx *Context, indent string, isLast bool) {
 			return
 		}
 
-		if isBinary(currentPath) {
+		if utils.IsBinary(currentPath) {
 			ctx.TreeLines = append(ctx.TreeLines, fmt.Sprintf("%s%s📄 %s (binary, skipped)", indent, connector, name))
 			return
 		}

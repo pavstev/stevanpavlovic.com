@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"repokit/pkg/cli"
+	"repokit/pkg/utils"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tdewolff/minify/v2"
@@ -32,7 +33,6 @@ const (
 )
 
 var (
-	ansiRegex = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 	tailStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 	blueStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
 	goldStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
@@ -73,10 +73,10 @@ type optimizer struct {
 
 // ─── Pipeline: The "Mind-Blowing" Implementation ────────────────────────────
 
-func processPathData(d string) (string, int, int) {
+func processPathData(d string) (optimizedDS string, nodesBefore int, nodesAfter int) {
 	// 1. Lexing: Tokenize the 'd' attribute into high-level commands
 	commands := ParsePath(d)
-	nodesBefore := len(commands)
+	nodesBefore = len(commands)
 
 	// 2. Geometric Extraction: Convert to world-space vectors
 	// We handle curves by sampling points along the spline
@@ -102,7 +102,7 @@ func processPathData(d string) (string, int, int) {
 // ─── Parallel Pipeline Execution ────────────────────────────────────────────
 
 func Optimize(pattern string) error {
-	files, err := resolveFiles(pattern)
+	files, err := utils.ResolveFiles(pattern)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 	}
 }
 
-func (o *optimizer) processFile(path string) (int, int, error) {
+func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, err error) {
 	input, err := os.ReadFile(path)
 	if err != nil {
 		return 0, 0, err
@@ -217,7 +217,7 @@ func (o *optimizer) processFile(path string) (int, int, error) {
 		d, nb, na := processPathData(match[1])
 		tBefore += nb
 		tAfter += na
-		return fmt.Sprintf(`d="%s"`, d)
+		return fmt.Sprintf("d=%q", d)
 	})
 
 	minified, err := o.minifier.Bytes("image/svg+xml", []byte(processed))
@@ -292,28 +292,9 @@ func (o *optimizer) report() error {
 }
 
 func formatProgressLine(icon, path, suffix string) string {
-	clean := ansiRegex.ReplaceAllString(path, "")
+	clean := utils.CleanANSI(path)
 	if len([]rune(clean)) > pathMaxLen {
 		path = "..." + string([]rune(clean)[len([]rune(clean))-(pathMaxLen-3):])
 	}
 	return fmt.Sprintf("  %s %-60s %s", icon, path, tailStyle.Render(suffix))
-}
-
-func resolveFiles(pattern string) ([]string, error) {
-	if !strings.Contains(pattern, "**") {
-		return filepath.Glob(pattern)
-	}
-	parts := strings.SplitN(pattern, "**", 2)
-	root, suffix := filepath.Clean(parts[0]), parts[1]
-	var matches []string
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			return err
-		}
-		if strings.HasSuffix(path, suffix) {
-			matches = append(matches, path)
-		}
-		return nil
-	})
-	return matches, err
 }

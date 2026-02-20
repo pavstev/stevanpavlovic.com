@@ -15,6 +15,8 @@ import (
 	"syscall"
 	"time"
 
+	"repokit/pkg/utils"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -59,7 +61,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 
 	// 2. Main Execution: Route pipelines vs single commands properly
 	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
-		RunPipeline(id, task, visited)
+		RunPipeline(id, &task, visited)
 	} else {
 		cmdStr, err := EvaluateCommand(task.Command, data)
 		if err != nil {
@@ -80,7 +82,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 }
 
 // RunPipeline executes a set of tasks based on the TaskConfig type.
-func RunPipeline(id string, config TaskConfig, visited map[string]bool) {
+func RunPipeline(id string, config *TaskConfig, visited map[string]bool) {
 	Info(fmt.Sprintf("Pipeline: %s", config.Name))
 
 	if config.Type == "batch" || config.Parallel {
@@ -300,6 +302,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 				}
 
 				cmd := createCmd(ctx, cmdStr, task.Cwd)
+				cmd.Env = os.Environ()
 				if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
 					cmd.Env = append(cmd.Env, "REPOKIT_NESTED=1")
 				}
@@ -445,7 +448,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 }
 
 func formatTailLine(line string) string {
-	clean := ansiRegex.ReplaceAllString(line, "")
+	clean := utils.CleanANSI(line)
 	if len(clean) > 85 {
 		clean = clean[:82] + "..."
 	}

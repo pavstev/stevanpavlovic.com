@@ -46,11 +46,19 @@ tasks:
     cwd: ${rk_dir}
 
   check_go:
-    name: Astro Check
+    name: Go Check
     type: single
-    pre_msg: Checking Astro files...
-    on_error: Failed to perform Astro check.
+    pre_msg: Checking Go files...
+    on_error: Failed to perform Go check.
     command: ${go} vet ./...
+    cwd: ${rk_dir}
+
+  test_go:
+    name: Go Tests
+    type: single
+    pre_msg: Running Go unit tests...
+    on_error: Go tests failed.
+    command: ${go} test ./... -v
     cwd: ${rk_dir}
 
   # --- Schema ---
@@ -83,7 +91,7 @@ tasks:
     type: batch
     pre_msg: Running project tests...
     on_error: One or more tests failed.
-    tasks: []
+    tasks: [test_go]
     parallel: true
 
   format:

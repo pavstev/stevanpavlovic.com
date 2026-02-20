@@ -26,6 +26,7 @@
     "deploy": "wrangler deploy",
     "dev": "astro dev",
     "go-build": "cd tools/golib && go build -o dist/gocli main.go && cd -",
+    "go-install": "cd tools/golib && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm -s rs setup",
     "preview": "wrangler dev",

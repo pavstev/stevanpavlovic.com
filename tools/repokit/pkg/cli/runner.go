@@ -74,7 +74,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 	}
 }
 
-// RunBatch executes a set of tasks based on BatchConfig
+// RunBatch executes a set of tasks based on BatchConfig.
 func RunBatch(id string, config BatchConfig) {
 	Step(fmt.Sprintf("Batch: %s", config.Name))
 
@@ -265,7 +265,9 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 						line := scanner.Text()
 						mu.Lock()
 						states[idx].tail = append(states[idx].tail, line)
-						if len(states[idx].tail) > 5 { states[idx].tail = states[idx].tail[1:] }
+						if len(states[idx].tail) > 5 {
+							states[idx].tail = states[idx].tail[1:]
+						}
 						mu.Unlock()
 					}
 				}()
@@ -345,6 +347,8 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 func formatTailLine(line string) string {
 	clean := ansiRegex.ReplaceAllString(line, "")
-	if len(clean) > 85 { clean = clean[:82] + "..." }
+	if len(clean) > 85 {
+		clean = clean[:82] + "..."
+	}
 	return tailStyle.Render("  │ " + clean)
 }

@@ -5,19 +5,19 @@ import (
 	"strconv"
 )
 
-// CommandType defines the SVG path instruction
+// CommandType defines the SVG path instruction.
 type CommandType rune
 
-// Command represents a single path instruction and its points
+// Command represents a single path instruction and its points.
 type Command struct {
 	Type   CommandType
 	Points []Point
 }
 
-// Robust regex for tokenizing SVG paths (handles scientific notation and tight spacing)
+// Robust regex for tokenizing SVG paths (handles scientific notation and tight spacing).
 var cmdRegex = regexp.MustCompile(`([a-df-z])|([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)`)
 
-// ParsePath tokenizes a 'd' attribute into a slice of Commands
+// ParsePath tokenizes a 'd' attribute into a slice of Commands.
 func ParsePath(d string) []Command {
 	tokens := cmdRegex.FindAllStringSubmatch(d, -1)
 	var commands []Command
@@ -31,7 +31,9 @@ func ParsePath(d string) []Command {
 			currentCmd = &Command{Type: CommandType(t[1][0]), Points: []Point{}}
 		} else if t[2] != "" { // Found Numeric Token
 			num, _ := strconv.ParseFloat(t[2], 64)
-			if currentCmd == nil { continue }
+			if currentCmd == nil {
+				continue
+			}
 
 			// Group coordinates into Points
 			// Note: High-level logic here assumes line/move commands.
@@ -43,11 +45,13 @@ func ParsePath(d string) []Command {
 			}
 		}
 	}
-	if currentCmd != nil { commands = append(commands, *currentCmd) }
+	if currentCmd != nil {
+		commands = append(commands, *currentCmd)
+	}
 	return commands
 }
 
-// IsPointFull determines if we need a new coordinate pair based on command type
+// IsPointFull determines if we need a new coordinate pair based on command type.
 func IsPointFull(t CommandType, pts []Point) bool {
 	r := rune(t)
 	// H, V, h, v only take single values, not coordinate pairs
@@ -58,7 +62,7 @@ func IsPointFull(t CommandType, pts []Point) bool {
 	return false
 }
 
-// ToAbsolutePoints flattens a command list into a sequence of absolute world-space points
+// ToAbsolutePoints flattens a command list into a sequence of absolute world-space points.
 func ToAbsolutePoints(commands []Command) []Point {
 	var points []Point
 	cursor := Point{0, 0}

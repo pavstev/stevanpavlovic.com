@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-// Point represents a 2D coordinate vector [x, y]
+// Point represents a 2D coordinate vector [x, y].
 type Point struct {
 	X, Y float64
 }
 
-// DistanceToLine calculates perpendicular distance from P to the line segment (A, B)
+// DistanceToLine calculates perpendicular distance from P to the line segment (A, B).
 func DistanceToLine(p, a, b Point) float64 {
 	dx, dy := b.X-a.X, b.Y-a.Y
 	if dx == 0 && dy == 0 {
@@ -49,15 +49,17 @@ func SimplifyPoints(points []Point, eps float64) []Point {
 	return []Point{points[0], points[end]}
 }
 
-// SmartRound truncates floats to avoid coordinate drift
+// SmartRound truncates floats to avoid coordinate drift.
 func SmartRound(val float64, precision int) float64 {
 	p := math.Pow(10, float64(precision))
 	return math.Round(val*p) / p
 }
 
-// RegularizePoints fixes micro-jitters in alignment by snapping to axes
+// RegularizePoints fixes micro-jitters in alignment by snapping to axes.
 func RegularizePoints(points []Point, snapAngle float64) []Point {
-	if len(points) < 2 { return points }
+	if len(points) < 2 {
+		return points
+	}
 
 	result := make([]Point, len(points))
 	copy(result, points)
@@ -77,9 +79,11 @@ func RegularizePoints(points []Point, snapAngle float64) []Point {
 	return result
 }
 
-// SerializePoints converts points back into an optimized SVG string with Entropy Detection
+// SerializePoints converts points back into an optimized SVG string with Entropy Detection.
 func SerializePoints(points []Point, precision int) string {
-	if len(points) == 0 { return "" }
+	if len(points) == 0 {
+		return ""
+	}
 
 	var sb strings.Builder
 	cursor := Point{SmartRound(points[0].X, precision), SmartRound(points[0].Y, precision)}

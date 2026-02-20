@@ -1,15 +1,15 @@
-import { Button } from "@components/ui/button.tsx";
+import { Button } from "@components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@components/ui/form";
-import { Icon } from "@components/ui/icon.tsx";
-import { Input } from "@components/ui/input.tsx";
-import { Textarea } from "@components/ui/textarea.tsx";
+import { Icon } from "@components/ui/icon";
+import { Input } from "@components/ui/input";
+import { Textarea } from "@components/ui/textarea";
 import { type AnyFieldApi, useForm } from "@tanstack/react-form";
 import { motion } from "framer-motion";
 import { type FC, useState } from "react";

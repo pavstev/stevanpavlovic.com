@@ -3,7 +3,7 @@ import { BentoGrid } from "@components/custom/bento/bento-grid.tsx";
 import PageLayout from "@components/layout/page-layout.astro";
 import { HyperText } from "@components/ui/hyper-text.tsx";
 import { Ripple } from "@components/ui/ripple.tsx";
-import { getIndexLoaderData } from "@server/index-loader.ts";
+import { getIndexLoaderData } from "@server/index-loader";
 import { SITE_CONFIG } from "src/constants";
 
 const bentoItems = await getIndexLoaderData();

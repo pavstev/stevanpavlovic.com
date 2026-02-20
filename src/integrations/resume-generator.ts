@@ -5,7 +5,7 @@ import addFormats from "ajv-formats";
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 
-import { SITE_CONFIG } from "../constants.ts";
+import { SITE_CONFIG } from "../constants";
 
 export const SKILL_GROUPS: Record<string, string> = {
   ACID: "Architecture & Concepts",

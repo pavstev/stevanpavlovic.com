@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-import { getResumeData } from "../server/resume-loader.ts";
+import { getResumeData } from "../server/resume-loader";
 
 export const GET: APIRoute = async (context) => {
   const resume = await getResumeData(context.site);

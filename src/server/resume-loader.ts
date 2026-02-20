@@ -1,7 +1,7 @@
 import { type CollectionEntry, getCollection, getEntries } from "astro:content";
 
-import { SITE_CONFIG, SOCIALS } from "../constants.ts";
-import { RESUME_AVATAR_URL, SKILL_GROUPS } from "../integrations/resume-generator.ts";
+import { SITE_CONFIG, SOCIALS } from "../constants";
+import { RESUME_AVATAR_URL, SKILL_GROUPS } from "../integrations/resume-generator";
 
 interface ResumeData {
   $schema?: string;

@@ -1,6 +1,6 @@
 import { type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 
-import { createRule, findBestMatch, getIconSet, type MessageIds, type Options } from "./utils.ts";
+import { createRule, findBestMatch, getIconSet, type MessageIds, type Options } from "./utils";
 
 export const rule = createRule<Options, MessageIds>({
   create: (context: Readonly<TSESLint.RuleContext<MessageIds, Options>>) => {

@@ -1,8 +1,8 @@
 import type { FC } from "react";
 
-import { Badge } from "@components/ui/badge.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card.tsx";
-import { Icon } from "@components/ui/icon.tsx";
+import { Badge } from "@components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
+import { Icon } from "@components/ui/icon";
 
 interface InfoCardItem {
   icon?: string;

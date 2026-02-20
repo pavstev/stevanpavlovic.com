@@ -1,5 +1,5 @@
-import { rule as validateIconNameRule } from "./rules/validate-icon-name.ts";
-export { registerPlugin } from "./rules/utils.ts";
+import { rule as validateIconNameRule } from "./rules/validate-icon-name";
+export { registerPlugin } from "./rules/utils";
 
 export const allRules = [validateIconNameRule];
 

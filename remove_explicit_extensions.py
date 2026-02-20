@@ -1,4 +1,3 @@
-
 import os
 import re
 import glob
@@ -13,7 +12,9 @@ SRC_DIR = os.path.join(PROJECT_ROOT, 'src')
 # Group 3: The module path itself (e.g., "@components/ui/button").
 # Group 4: The extension to remove (e.g., ".tsx" or ".ts").
 # Group 5: The closing quote and optional semicolon.
-REMOVE_EXT_REGEX = re.compile(r"^(.*from\s*)(['\"])([^'\"]+?)(\.tsx|\.ts|\.astro)(['\"];?)$")
+# This regex now allows for whitespace and comments after the import path,
+# and it uses non-greedy matching for the module path.
+REMOVE_EXT_REGEX = re.compile(r"(import(?:[\s\w,{}\*]*from\s*)?)(['\"])([^'\"]+?)(\.tsx|\.ts|\.astro)(\2)(;?)(?=\s*//|\s*$|\s*\))")
 
 
 def remove_explicit_extension_in_file(file_path: str):
@@ -25,15 +26,15 @@ def remove_explicit_extension_in_file(file_path: str):
     changes_made = False
 
     for line in content.splitlines():
-        match = REMOVE_EXT_REGEX.match(line)
+        match = REMOVE_EXT_REGEX.search(line) # Use search instead of match to find anywhere in line
         if match:
-            pre_import_str = match.group(1) # This includes 'from ' and the preceding part
+            pre_import_str = match.group(1)
             quote_char = match.group(2)
             module_path_without_ext = match.group(3) 
             extension_to_remove = match.group(4) 
-            post_import_str_suffix = match.group(5) 
-
-            new_line = f"{pre_import_str}{quote_char}{module_path_without_ext}{post_import_str_suffix}"
+            # Reconstruct the line without the explicit extension
+            # The closing quote and optional semicolon are handled by rejoining the parts
+            new_line = line[:match.start(4)] + line[match.end(4):]
             new_content_lines.append(new_line)
             if new_line != line:
                 changes_made = True

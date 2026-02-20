@@ -15,7 +15,6 @@ import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
 import Sonda from 'sonda/astro';
-import viteTsconfigPaths from "vite-tsconfig-paths";
 
 import { SITE_CONFIG } from "./src/constants";
 import { resumeGenerator } from "./src/integrations/resume-generator";
@@ -90,17 +89,7 @@ export default defineConfig({
     define: {
       __dirname: JSON.stringify(""),
     },
-    plugins: [tailwindcss(), viteTsconfigPaths()],
-    resolve: {
-      alias: {
-        "@assets/": "./src/assets/",
-        "@client/": "./src/client/",
-        "@components/": "./src/components/",
-        "@constants": "./src/constants.ts",
-        "@server/": "./src/server/",
-      },
-      extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
-    },
+    plugins: [tailwindcss()],
 
     ssr: {
       noExternal: ["canvaskit-wasm"],

@@ -1,25 +1,25 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar.tsx";
-import { Icon } from "@components/ui/icon.tsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import { Icon } from "@components/ui/icon";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarRail,
 } from "@components/ui/sidebar";
 import { type ComponentProps, type FC } from "react";
 
-import { NAV_ITEMS_ARRAY, SITE_CONFIG, SOCIALS } from "../../constants.ts";
-import { ColorModeToggle } from "../custom/navigation/color-mode-toggle.tsx";
-import { useCurrentPath, useIsActive } from "../custom/shared/hooks.ts";
+import { NAV_ITEMS_ARRAY, SITE_CONFIG, SOCIALS } from "../../constants";
+import { ColorModeToggle } from "../custom/navigation/color-mode-toggle";
+import { useCurrentPath, useIsActive } from "../custom/shared/hooks";
 
 export const AppSidebar: FC<ComponentProps<typeof Sidebar>> = ({ ...props }) => {
   const pathname = useCurrentPath();

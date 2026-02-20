@@ -2,10 +2,10 @@
 
 import type { FC } from "react";
 
-import { Icon } from "@components/ui/icon.tsx";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip.tsx";
+import { Icon } from "@components/ui/icon";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip";
 
-import { SOCIALS } from "../../constants.ts";
+import { SOCIALS } from "../../constants";
 
 export const FooterSocials: FC = () => (
   <TooltipProvider delayDuration={0}>

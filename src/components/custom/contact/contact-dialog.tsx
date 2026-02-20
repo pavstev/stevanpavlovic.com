@@ -1,15 +1,15 @@
-import { Button } from "@components/ui/button.tsx";
+import { Button } from "@components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@components/ui/dialog";
 import { type FC, useState } from "react";
 
-import { ContactForm } from "./contact-form.tsx";
+import { ContactForm } from "./contact-form";
 
 export const ContactDialog: FC = () => {
   const [open, setOpen] = useState(false);

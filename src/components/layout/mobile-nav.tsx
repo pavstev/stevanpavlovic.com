@@ -1,4 +1,4 @@
-import { SidebarTrigger } from "@components/ui/sidebar.tsx";
+import { SidebarTrigger } from "@components/ui/sidebar";
 import { type FC } from "react";
 
 export const MobileNav: FC = () => (

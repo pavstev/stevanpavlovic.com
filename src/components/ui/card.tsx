@@ -1,4 +1,4 @@
-import { cn } from "@client/utils.ts";
+import { cn } from "@client/utils";
 import { type ComponentProps, type FC } from "react";
 
 export const Card: FC<ComponentProps<"div">> = ({ className, ...props }) => (

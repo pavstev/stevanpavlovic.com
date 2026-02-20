@@ -19,7 +19,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import * as jsoncParser from "jsonc-eslint-parser";
 import tseslint from "typescript-eslint";
 
-import { allRules, files, globalIgnoresList, registerPlugin } from "./tools/eslint/index.ts";
+import { allRules, files, globalIgnoresList, registerPlugin } from "./tools/eslint";
 
 const localPlugin = registerPlugin({
   name: "local",

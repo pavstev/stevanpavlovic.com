@@ -1,15 +1,15 @@
-import { cn } from "@client/utils.ts";
-import { Label } from "@components/ui/label.tsx";
+import { cn } from "@client/utils";
+import { Label } from "@components/ui/label";
 import { type AnyFieldApi } from "@tanstack/react-form";
 import { Slot } from "radix-ui";
 import {
-  type ComponentProps,
-  createContext,
-  type FC,
-  type JSX,
-  type ReactNode,
-  useContext,
-  useId,
+    type ComponentProps,
+    createContext,
+    type FC,
+    type JSX,
+    type ReactNode,
+    useContext,
+    useId,
 } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

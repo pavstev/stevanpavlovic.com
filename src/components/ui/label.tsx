@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@client/utils.ts";
+import { cn } from "@client/utils";
 import { Label as LabelPrimitive } from "radix-ui";
 import { type ComponentProps, type JSX } from "react";
 

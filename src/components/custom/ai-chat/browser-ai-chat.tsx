@@ -1,5 +1,5 @@
 import { BrowserAI } from "@browserai/browserai";
-import { cn } from "@client/utils.ts";
+import { cn } from "@client/utils";
 import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
@@ -87,7 +86,7 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
       try {
         const promptArray = [
           {
-            content: `You are the personal portfolio assistant for Stevan. Be concise, professional, and confident. Use the following context to answer questions: 
+            content: `You are the personal portfolio assistant for Stevan. Be concise, professional, and confident. Use the following context to answer questions:
 
 ${systemContext}`,
             role: "system",

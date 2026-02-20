@@ -112,3 +112,20 @@ func FormatPathData(points []Point, precision int) string {
 	}
 	return sb.String()
 }
+
+// FormatPointsData converts points back into a space-separated string of x,y pairs.
+// This is used for polygon and polyline elements.
+func FormatPointsData(points []Point, precision int) string {
+	if len(points) == 0 {
+		return ""
+	}
+
+	var sb strings.Builder
+	for i, p := range points {
+		if i > 0 {
+			sb.WriteString(" ")
+		}
+		sb.WriteString(fmt.Sprintf("%g,%g", SmartRound(p.X, precision), SmartRound(p.Y, precision)))
+	}
+	return sb.String()
+}

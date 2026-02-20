@@ -1,0 +1,98 @@
+---
+import { cn } from "@client/utils";
+import { ColorModeToggle } from "@components/custom/navigation/color-mode-toggle";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@components/ui/navigation-menu";
+
+import { NAV_ITEMS_ARRAY } from "../../constants";
+import Logo from "../ui/logo.astro";
+import { MobileNav } from "./mobile-nav";
+---
+
+<header
+  class="sticky top-0 z-50 mx-auto w-full max-w-6xl border-b border-transparent md:rounded-md md:border md:transition-all md:ease-out"
+  id="main-header"
+>
+  <nav
+    class="relative flex h-14 w-full items-center justify-between px-4 md:h-12 md:transition-all md:ease-out"
+    id="main-nav"
+  >
+    <div class="flex items-center">
+      <a class="hover:bg-muted dark:hover:bg-muted/50 block rounded-md p-2" href="/">
+        <Logo />
+      </a>
+    </div>
+
+    <div class="absolute top-1/2 left-1/2 hidden -translate-1/2 md:flex">
+      <NavigationMenu className="px-2" client:load viewport={false}>
+        <NavigationMenuList>
+          {
+            NAV_ITEMS_ARRAY.map((link) => (
+              <NavigationMenuItem>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()} href={link.href}>
+                  {link.label}
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))
+          }
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <div class="hidden md:block">
+        <ColorModeToggle client:load />
+      </div>
+      <MobileNav client:load />
+    </div>
+  </nav>
+  <div
+    aria-hidden="true"
+    class="bg-primary pointer-events-none fixed top-0 left-0 z-50 h-0.5 w-0 opacity-0 transition-all duration-300 ease-out"
+    id="nav-progress"
+  >
+  </div>
+</header>
+
+<script>
+  import { initNavigationProgress } from "@client/navigation-progress";
+
+  const header = document.getElementById("main-header");
+  const nav = document.getElementById("main-nav");
+
+  const handleScroll = () => {
+    const scrolled = window.scrollY > 10;
+    if (scrolled) {
+      header?.classList.add(
+        "border-border",
+        "bg-background/95",
+        "backdrop-blur-sm",
+        "md:top-2",
+        "md:shadow"
+      );
+      header?.classList.remove("border-transparent");
+      nav?.classList.add("md:px-2");
+    } else {
+      header?.classList.remove(
+        "border-border",
+        "bg-background/95",
+        "backdrop-blur-sm",
+        "md:top-2",
+        "md:shadow"
+      );
+      header?.classList.add("border-transparent");
+      nav?.classList.remove("md:px-2");
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  handleScroll(); // Initial check
+
+  // Initialize progress bar
+  initNavigationProgress();
+</script>

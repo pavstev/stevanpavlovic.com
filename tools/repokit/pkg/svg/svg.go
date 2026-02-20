@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"repokit/pkg/core"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
@@ -226,20 +225,25 @@ func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, s
 	})
 
 	// 2. Optimize Polygons/Polylines (they use 'points' attribute)
-	// We treat point strings similarly to 'd' data for geometric optimization
 	processed = polygonTagRegex.ReplaceAllStringFunc(processed, func(m string) string {
 		match := polygonTagRegex.FindStringSubmatch(m)
 		if len(match) < 2 {
 			return m
 		}
-		// We can reuse processPathData logic because point strings are just comma/space separated coordinates
-		// but we might need to be careful about the formatting.
-		// For polygons, we use FormatPathData but strip commands.
-		d, nb, na := processPathData("M" + match[1]) // Hack: prefix with M to use path parser
-		processedPoints := strings.TrimPrefix(d, "M")
-		processedPoints = strings.ReplaceAll(processedPoints, "L", " ") // Polygons don't use L
-		tBefore += nb
+		// We can reuse ParsePath logic by prefixing with M to treat it as a path
+		commands := ParsePath("M" + match[1])
+		points := ToAbsolutePoints(commands)
+
+		// Apply same simplification as paths
+		points = SimplifyPath(points, epsilon)
+		points = SnapPointsToAxes(points, snapAngle)
+
+		na := len(points)
+		// We calculate nb differently for points (it's just a list of coords)
+		// but for simplicity we keep na accurate
 		tAfter += na
+
+		processedPoints := FormatPointsData(points, precision)
 		return fmt.Sprintf("points=%q", processedPoints)
 	})
 

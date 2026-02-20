@@ -1,0 +1,22 @@
+---
+import { cn } from "@client/utils";
+import { fullName } from "../../constants";
+import LogoIcon from "./logo-icon.astro";
+
+interface Props {
+  className?: string;
+  [key: string]: any;
+}
+
+const { className, ...props } = Astro.props;
+---
+
+<div
+  class={cn("text-md flex items-center gap-2 font-mono font-bold tracking-tight", className)}
+  {...props}
+>
+  <div aria-hidden="true" class="size-6 shrink-0 [&_svg]:size-full">
+    <LogoIcon />
+  </div>
+  <span class="truncate">{fullName}</span>
+</div>

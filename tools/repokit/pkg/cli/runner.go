@@ -294,12 +294,15 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 					if executable == "" {
 						executable = os.Args[0] // Fallback
 					}
-					cmdStr = fmt.Sprintf("%q task %q", executable, id)
+					cmdStr = fmt.Sprintf("%q %q", executable, id)
 				} else {
 					cmdStr, _ = EvaluateCommand(task.Command, nil)
 				}
 
 				cmd := createCmd(ctx, cmdStr, task.Cwd)
+				if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
+					cmd.Env = append(cmd.Env, "REPOKIT_NESTED=1")
+				}
 
 				pr, pw, _ := os.Pipe()
 				cmd.Stdout, cmd.Stderr = pw, pw
@@ -325,6 +328,12 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 				if err != nil {
 					states[idx].status = statusFailed
 					failed = true
+					if os.Getenv("REPOKIT_NESTED") == "1" {
+						fmt.Printf("Error in %s:\n", states[idx].name)
+						for _, t := range states[idx].tail {
+							fmt.Println(t)
+						}
+					}
 				} else {
 					states[idx].status = statusCompleted
 				}
@@ -339,6 +348,9 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	startPipeline := time.Now()
 
 	render := func() {
+		if os.Getenv("REPOKIT_NESTED") == "1" {
+			return
+		}
 		mu.Lock()
 		defer mu.Unlock()
 		if !firstRender {
@@ -415,15 +427,19 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		}
 	}
 
-	fmt.Println()
-	fmt.Printf("  %s %d completed", Green.Render("●"), completed)
-	if failedTasks > 0 {
-		fmt.Printf(" | %s %d failed", Red.Render("●"), failedTasks)
+	if os.Getenv("REPOKIT_NESTED") != "1" {
+		fmt.Println()
+		fmt.Printf("  %s %d completed", Green.Render("●"), completed)
+		if failedTasks > 0 {
+			fmt.Printf(" | %s %d failed", Red.Render("●"), failedTasks)
+		}
+		fmt.Printf(" | %s %d total | %s %.1fs\n\n", Blue.Render("●"), len(states), Subtle.Render("⏱"), totalDur)
 	}
-	fmt.Printf(" | %s %d total | %s %.1fs\n\n", Blue.Render("●"), len(states), Subtle.Render("⏱"), totalDur)
 
 	if failed {
-		fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
+		if os.Getenv("REPOKIT_NESTED") != "1" {
+			fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
+		}
 		os.Exit(1)
 	}
 }

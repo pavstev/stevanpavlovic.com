@@ -473,7 +473,9 @@ func (m Model) View() string {
 		switch m.currentState {
 		case stateMenu:
 			logo := lipgloss.NewStyle().Foreground(lipgloss.Color("#7D56F4")).Bold(true).Render("Repokit v1.0")
-			desc := "Select a command from the left to execute."
+			desc := "Select a command from the left to execute.\n\n" +
+				"Use Tab / Shift-Tab to switch views.\n" +
+				"Use 1, 2, 3 for direct navigation."
 			right = fmt.Sprintf("\n%s\n\n%s\n", logo, desc)
 		case stateInput:
 			right = fmt.Sprintf(
@@ -482,24 +484,24 @@ func (m Model) View() string {
 				m.textInput.View(),
 			)
 		case stateRunning, stateDone:
-			right = lipgloss.NewStyle().Foreground(core.Subtle.GetForeground()).Italic(true).Render("Task is running...\nSwitch to Output tab (2) to see details.")
+			right = lipgloss.NewStyle().Foreground(core.Subtle.GetForeground()).Italic(true).Render("Task is running...\n\nSwitch to Output tab (2) to see details.")
 		}
 		content = lipgloss.JoinHorizontal(lipgloss.Top, left, rightPaneStyle.Render(right))
 
 	case tabOutput:
 		var sb strings.Builder
 		if len(m.taskIds) == 0 {
-			sb.WriteString(fmt.Sprintf("%s Waiting to run...\n", m.spinner.View()))
+			sb.WriteString(fmt.Sprintf("\n  %s Waiting for task execution...\n", m.spinner.View()))
 		} else {
-			sb.WriteString(fmt.Sprintf("Pipeline: %s\n\n", inputStyle.Render(m.activeMenuItem)))
+			sb.WriteString(fmt.Sprintf(" Pipeline: %s\n\n", inputStyle.Render(m.activeMenuItem)))
 
 			// Show task summaries in a compact way
 			for _, id := range m.taskIds {
 				t := m.tasks[id]
 				var icon, statText string
-				durStr := fmt.Sprintf("%5.1fs", time.Since(t.start).Seconds())
+				durStr := core.Subtle.Render(fmt.Sprintf("%5.1fs", time.Since(t.start).Seconds()))
 				if t.status == "done" || t.status == "error" {
-					durStr = fmt.Sprintf("%5.1fs", t.elapsed.Seconds())
+					durStr = core.Subtle.Render(fmt.Sprintf("%5.1fs", t.elapsed.Seconds()))
 				}
 
 				switch t.status {
@@ -517,11 +519,11 @@ func (m Model) View() string {
 					statText = core.Subtle.Render("WAIT")
 					durStr = core.Subtle.Render("  --.-s")
 				}
-				sb.WriteString(fmt.Sprintf("%s %-20.20s %s %s\n", icon, t.name, statText, durStr))
+				sb.WriteString(fmt.Sprintf(" %s %-25.25s %s %s\n", icon, t.name, statText, durStr))
 			}
 		}
 
-		sb.WriteString("\n" + tabWindowStyle.Render(m.viewport.View()))
+		sb.WriteString("\n" + tabWindowStyle.Width(m.viewport.Width+2).Render(m.viewport.View()))
 
 		if m.currentState == stateDone {
 			sb.WriteString("\n" + core.Subtle.Render("(Press enter/esc to return to menu)"))
@@ -530,17 +532,17 @@ func (m Model) View() string {
 
 	case tabHistory:
 		var sb strings.Builder
-		sb.WriteString(lipgloss.NewStyle().Bold(true).Render("Recent Runs") + "\n\n")
+		sb.WriteString(lipgloss.NewStyle().Bold(true).PaddingLeft(1).Render("Recent Runs") + "\n\n")
 		if len(m.history) == 0 {
-			sb.WriteString(core.Subtle.Render("No history yet."))
+			sb.WriteString("  " + core.Subtle.Render("No history yet."))
 		} else {
 			for i := len(m.history) - 1; i >= 0; i-- {
 				h := m.history[i]
-				status := taskStyleSuccess.Render("SUCCESS")
+				status := taskStyleSuccess.Render("DONE")
 				if h.Status == "error" {
-					status = taskStyleError.Render("FAILED")
+					status = taskStyleError.Render("FAIL")
 				}
-				sb.WriteString(fmt.Sprintf("%-20s %s %s\n", h.ID, h.StartTime.Format("15:04:05"), status))
+				sb.WriteString(fmt.Sprintf("  %-25s %s %s\n", h.ID, core.Subtle.Render(h.StartTime.Format("15:04:05")), status))
 			}
 		}
 		content = sb.String()

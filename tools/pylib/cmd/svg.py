@@ -57,19 +57,25 @@ def _write_cache(file_path: Path, no_deep: bool, merge: bool, simplify: bool):
         json.dump(cache, f, indent=2)
 
 
-def optimize_svg(file_path: Path, no_deep: bool, merge: bool, simplify: bool):
-    """Runs SVGO via pnpm to optimize the SVG file."""
+def optimize_svg(file_path: Path, no_deep: bool, merge: bool, simplify: bool) -> bool:
+    """Runs SVGO via pnpm to optimize the SVG file. Returns True on success."""
     cmd = ["pnpm", "exec", "svgo", str(file_path)]
-
-    # Optional: You could append SVGO flags here based on the boolean inputs
-    # if not merge: cmd.append("--disable=mergePaths") etc...
 
     try:
         subprocess.run(cmd, check=True, capture_output=True, text=True)
         _write_cache(file_path, no_deep, merge, simplify)
         typer.secho(f"  ✓ Optimized: {file_path}", fg=typer.colors.GREEN)
+        return True
     except subprocess.CalledProcessError as e:
-        typer.secho(f"  ✗ Failed to optimize {file_path}: {e.stderr}", fg=typer.colors.RED)
+        # SVGO often prints errors to stdout instead of stderr
+        err_msg = (e.stderr or "").strip()
+        if not err_msg:
+            err_msg = (e.stdout or "").strip()
+        if not err_msg:
+            err_msg = f"Unknown error (exit code {e.returncode})"
+
+        typer.secho(f"  ✗ Failed to optimize {file_path}:\n    {err_msg}", fg=typer.colors.RED)
+        return False
 
 
 def glob_svgs(path_glob: str) -> list[Path]:
@@ -81,6 +87,7 @@ def glob_svgs(path_glob: str) -> list[Path]:
 def run_once(files: list[Path], no_deep: bool, merge: bool, simplify: bool):
     """Processes a list of files once, respecting the cache."""
     processed = 0
+    failed = 0
 
     for f in files:
         if not f.exists():
@@ -90,10 +97,19 @@ def run_once(files: list[Path], no_deep: bool, merge: bool, simplify: bool):
         if _read_cache(f, no_deep, merge, simplify):
             continue
 
-        optimize_svg(f, no_deep, merge, simplify)
-        processed += 1
+        success = optimize_svg(f, no_deep, merge, simplify)
+        if success:
+            processed += 1
+        else:
+            failed += 1
 
-    if processed == 0:
+    if failed > 0:
+        typer.secho(
+            f"\n❌ Finished with errors! Optimized {processed}, Failed {failed}.",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=1)
+    elif processed == 0:
         typer.secho("✨ All SVGs are already optimized (cached).", fg=typer.colors.BLUE)
     else:
         typer.secho(f"✅ Finished! Optimized {processed} SVG files.", fg=typer.colors.GREEN)

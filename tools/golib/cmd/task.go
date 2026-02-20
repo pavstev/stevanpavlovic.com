@@ -63,7 +63,7 @@ func listTasks() {
 		"test_vitest",
 		"test_go",
 		"test_py",
-		"format_svg",
+		"optimize_svg",
 		"format_prettier",
 		"format_py",
 		"setup_install_uv",

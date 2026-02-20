@@ -183,10 +183,7 @@ func RunStepByID(id string, data any) {
 		Fatal(fmt.Sprintf("Step %q not found: %v", id, err))
 	}
 	cmdStr, err := EvaluateCommand(step.Command, data)
-
-  // Info(fmt.Sprintf("Running %s", cmdStr))
-
-  if err != nil {
+	if err != nil {
 		Fatal(fmt.Sprintf("Failed to map step %q: %v", id, err))
 	}
 	runCommand(step.Name, cmdStr, step.Cwd)
@@ -198,10 +195,18 @@ func RunStep(name, command string) {
 
 func RunInteractive(name, command, cwd string) {
 	Step("Running: " + name)
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	defer stop()
 
-	cmd := createCmd(ctx, command, cwd)
+	// FIX: We do NOT use NotifyContext here. We temporarily catch SIGINT so
+	// the Go CLI doesn't crash, allowing the terminal to naturally pass
+	// the SIGINT to the interactive child process (e.g. Python).
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	defer signal.Stop(c)
+
+	cmd := exec.Command("bash", "-c", command)
+	if cwd != "" && cwd != "." {
+		cmd.Dir = cwd
+	}
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 
 	if err := cmd.Run(); err != nil {
@@ -233,7 +238,6 @@ type queueContext struct {
 	failed          bool
 	interrupted     bool
 	continueOnError bool
-	closeOnce       sync.Once
 }
 
 func RunQueue(ids []string, workerCount int, continueOnError bool) {
@@ -264,16 +268,24 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 		q.taskChan <- i
 	}
 
-	sigChan := make(chan os.Signal, 1)
+	// FIX: We MUST close the channel immediately after queuing!
+	// This tells the workers to gracefully exit once the queue is empty.
+	close(q.taskChan)
+
+	// FIX: Use a buffer of 2 so a double Ctrl+C can bypass hangs
+	sigChan := make(chan os.Signal, 2)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		sig := <-sigChan
-		Info(fmt.Sprintf("Received %v, stopping new tasks...", sig))
+		Info(fmt.Sprintf("\nReceived %v, stopping tasks... (Press Ctrl+C again to force quit)", sig))
 		q.mu.Lock()
 		q.interrupted = true
 		q.mu.Unlock()
-		q.stopNewTasks()
 		q.cancel()
+
+		// If a stuck subprocess ignores the SIGKILL, pressing Ctrl+C again forces exit immediately
+		<-sigChan
+		osExit(1)
 	}()
 
 	for i := 0; i < workerCount; i++ {
@@ -286,10 +298,10 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 	if q.interrupted {
 		fmt.Println("\n" + bold.Render("PIPELINE INTERRUPTED:"))
 		q.mu.Lock()
-		for i, res := range q.results {
+		for i := range q.results {
 			if s := q.states[i].status; s == statusActive || s == statusQueued {
 				q.states[i].status = statusCancelled
-				BoxOutput("Cancelled: "+res.Name, "Task was cancelled due to interrupt", lipgloss.Color("8"))
+				BoxOutput("Cancelled: "+q.tasks[i].Name, "Task was cancelled due to interrupt", lipgloss.Color("8"))
 			}
 		}
 		q.mu.Unlock()
@@ -313,6 +325,7 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 
 func (q *queueContext) worker() {
 	defer q.wg.Done()
+
 	for idx := range q.taskChan {
 		select {
 		case <-q.ctx.Done():
@@ -321,6 +334,14 @@ func (q *queueContext) worker() {
 		}
 
 		q.mu.Lock()
+		// If another task failed and we aren't continuing, skip this task
+		if q.failed && !q.continueOnError {
+			q.states[idx].status = statusCancelled
+			q.results[idx] = TaskResult{Name: q.tasks[idx].Name}
+			q.mu.Unlock()
+			continue
+		}
+
 		q.states[idx].status = statusActive
 		q.states[idx].startTime = time.Now()
 		q.mu.Unlock()
@@ -375,9 +396,6 @@ func (q *queueContext) finalizeTask(idx int, err error, output, errorOut string)
 			s.status = statusFailed
 			if !q.failed {
 				q.failed = true
-				if !q.continueOnError {
-					q.stopNewTasks()
-				}
 			}
 		}
 	} else {
@@ -391,10 +409,6 @@ func (q *queueContext) finalizeTask(idx int, err error, output, errorOut string)
 		ErrorOut: errorOut,
 		ExecErr:  err,
 	}
-}
-
-func (q *queueContext) stopNewTasks() {
-	q.closeOnce.Do(func() { close(q.taskChan) })
 }
 
 func (q *queueContext) renderUI() {

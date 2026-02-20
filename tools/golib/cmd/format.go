@@ -8,7 +8,7 @@ import (
 func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
-			"format_svg",
+			"optimize_svg",
 			"format_prettier",
 			"format_py",
 		},

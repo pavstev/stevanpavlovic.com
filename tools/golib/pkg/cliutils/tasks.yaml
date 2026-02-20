@@ -62,7 +62,7 @@ tasks:
     cwd: ${root_dir}
 
   # Format
-  format_svg:
+  optimize_svg:
     name: SVG Optimization
     command: ${run_py_main} svg 'src/assets/**/*.svg'
     cwd: ${root_dir}

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"repokit/pkg/command"
+	cmdutils "repokit/pkg/command"
 	"repokit/pkg/svg"
 
 	"github.com/spf13/cobra"
@@ -24,5 +24,5 @@ func init() {
 		},
 	}
 
-	command.AddToRoot(cmd)
+	cmdutils.AddToRoot(cmd)
 }

@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"repokit/pkg/cli"
+	"repokit/pkg/log"
 
 	"github.com/atotto/clipboard"
 	"github.com/princjef/gomarkdoc"
@@ -37,13 +37,13 @@ func Run(targetDir string) {
 			if info, err := os.Stat(alt); err == nil && info.IsDir() {
 				targetDir = alt
 			} else {
-				cli.Error("Directory not found: %s", targetDir)
+				log.Error("Directory not found: %s", targetDir)
 				return
 			}
 		}
 	}
 
-	cli.Info("Generating Go documentation for: %s", targetDir)
+	log.Info("Generating Go documentation for: %s", targetDir)
 
 	// Clean up old output files
 	files, _ := filepath.Glob("pack_output_*.md")
@@ -53,10 +53,10 @@ func Run(targetDir string) {
 
 	outRenderer, err := gomarkdoc.NewRenderer()
 	if err != nil {
-		cli.Fatal("Failed to create renderer: %v", err)
+		log.Fatal("Failed to create renderer: %v", err)
 	}
 
-	log := logger.New(logger.ErrorLevel)
+	mdLog := logger.New(logger.ErrorLevel)
 	var md strings.Builder
 
 	targetDirName := filepath.Base(targetDir)
@@ -85,7 +85,7 @@ func Run(targetDir string) {
 			return nil //nolint:nilerr
 		}
 
-		pkg, err := lang.NewPackageFromBuild(log, buildPkg)
+		pkg, err := lang.NewPackageFromBuild(mdLog, buildPkg)
 		if err != nil {
 			return nil //nolint:nilerr
 		}
@@ -102,7 +102,7 @@ func Run(targetDir string) {
 	})
 
 	if err != nil {
-		cli.Fatal("Failed to parse packages: %v", err)
+		log.Fatal("Failed to parse packages: %v", err)
 	}
 
 	outputFilename := fmt.Sprintf("pack_output_%s.md", slugifyStr(targetDirName))
@@ -110,15 +110,15 @@ func Run(targetDir string) {
 
 	err = os.WriteFile(outputPath, []byte(md.String()), 0644)
 	if err != nil {
-		cli.Error("Failed to write output: %v", err)
+		log.Error("Failed to write output: %v", err)
 		return
 	}
 
 	_ = clipboard.WriteAll(md.String())
 
-	cli.Success("Success! Documented %d Go packages.", pkgCount)
-	cli.Info("Output saved to: %s", outputPath)
-	cli.Info("Content copied to clipboard.")
+	log.Success("Success! Documented %d Go packages.", pkgCount)
+	log.Info("Output saved to: %s", outputPath)
+	log.Info("Content copied to clipboard.")
 }
 
 func slugifyStr(s string) string {

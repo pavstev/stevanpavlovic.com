@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"repokit/pkg/cli"
+	"repokit/pkg/config"
 
 	"github.com/swaggest/jsonschema-go"
 )
@@ -23,7 +23,7 @@ func exportTasksSchema(outPath string) error {
 	reflector := jsonschema.Reflector{}
 
 	// Intercept property reflection as a Reflect option to enforce strict patternProperties
-	schema, err := reflector.Reflect(cli.Config{}, jsonschema.InterceptProp(func(params jsonschema.InterceptPropParams) error {
+	schema, err := reflector.Reflect(config.Config{}, jsonschema.InterceptProp(func(params jsonschema.InterceptPropParams) error {
 		if params.Name == "tasks" && params.PropertySchema != nil {
 			if params.PropertySchema.AdditionalProperties != nil {
 				params.PropertySchema.PatternProperties = map[string]jsonschema.SchemaOrBool{

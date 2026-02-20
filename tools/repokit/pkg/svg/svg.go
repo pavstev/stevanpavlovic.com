@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"repokit/pkg/cli"
+	"repokit/pkg/log"
 	"repokit/pkg/utils"
 
 	"github.com/charmbracelet/lipgloss"
@@ -160,7 +160,7 @@ func (o *optimizer) run() error {
 	close(done)
 
 	if ctx.Err() != nil {
-		cli.Info("\n%s", goldStyle.Render("Interrupted by user."))
+		log.Info("\n%s", goldStyle.Render("Interrupted by user."))
 		return ctx.Err()
 	}
 
@@ -251,7 +251,7 @@ func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 			return
 		case <-ticker.C:
 			if !first {
-				cli.Info("%s", strings.Repeat("\033[A\033[2K", lines))
+				log.Info("%s", strings.Repeat("\033[A\033[2K", lines))
 			}
 			first, lines = false, o.drawFrame(start)
 		}
@@ -262,12 +262,12 @@ func (o *optimizer) drawFrame(start time.Time) int {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	p := atomic.LoadInt32(&o.processed)
-	cli.Info("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
+	log.Info("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
 	for _, s := range o.workerStates {
 		if !s.active {
-			cli.Info("%s", formatProgressLine(tailStyle.Render("•"), "idle", ""))
+			log.Info("%s", formatProgressLine(tailStyle.Render("•"), "idle", ""))
 		} else {
-			cli.Info("%s", formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
+			log.Info("%s", formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
 		}
 	}
 	return len(o.workerStates) + 1
@@ -285,7 +285,7 @@ func (o *optimizer) report() error {
 		if tBefore > 0 {
 			reduction = 100 * (1 - float64(tAfter)/float64(tBefore))
 		}
-		cli.Success("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction)
+		log.Success("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction)
 		return nil
 	}
 	return fmt.Errorf("failed to process %d files", failed)

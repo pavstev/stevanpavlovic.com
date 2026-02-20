@@ -1,5 +1,5 @@
 // Package cli provides the command-line interface, task runner, and UI logging utilities.
-package cli
+package log
 
 import (
 	"fmt"

@@ -118,12 +118,33 @@ tasks:
     tasks: [build_go]
     parallel: true
 
+  cf_deploy:
+    name: Cloudflare Deploy
+    type: single
+    pre_msg: Deploying to Cloudflare...
+    on_error: Failed to deploy.
+    command: ${pnpm} wrangler deploy
+
+  cf_dev:
+    name: Cloudflare Preview
+    type: single
+    pre_msg: Starting Cloudflare preview server...
+    on_error: Failed to start preview.
+    command: ${pnpm} wrangler dev
+
+  cf_types:
+    name: Cloudflare Types
+    type: single
+    pre_msg: Generating Cloudflare types...
+    on_error: Failed to generate types.
+    command: ${pnpm} wrangler types
+
   setup:
     name: Project Setup
     type: batch
     pre_msg: Orchestrating hybrid environment setup...
     on_error: Environment setup failed.
-    tasks: [build_go]
+    tasks: [build, generate_schema]
     parallel: false
 
   all:
@@ -131,5 +152,5 @@ tasks:
     type: batch
     pre_msg: Running complete project pipeline...
     on_error: One or more pipelines failed.
-    tasks: [generate_schema, format, lint, check, build, test, knip]
+    tasks: [build_go, generate_schema, format, lint, check, build, test, knip]
     parallel: false

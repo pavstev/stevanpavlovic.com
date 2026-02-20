@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"repokit/pkg/cli"
+	"repokit/pkg/log"
 	"repokit/pkg/schema"
 
 	"github.com/spf13/cobra"
@@ -15,9 +15,9 @@ var schemaCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		err := schema.Export("tasks", schemaOut)
 		if err != nil {
-			cli.Fatal("Failed to export schema: %v", err)
+			log.Fatal("Failed to export schema: %v", err)
 		}
-		cli.Success("Successfully generated JSON schema at %s", schemaOut)
+		log.Success("Successfully generated JSON schema at %s", schemaOut)
 	},
 }
 

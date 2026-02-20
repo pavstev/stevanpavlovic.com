@@ -49,9 +49,12 @@ func (o *optimizer) drawFrame(start time.Time, tick int) int {
 
 func (o *optimizer) report() error {
 	failed, tBefore, tAfter := atomic.LoadInt32(&o.failedCount), 0, 0
+	var totalSizeBefore, totalSizeAfter int64
 	for _, r := range o.results {
 		tBefore += r.NodesBefore
 		tAfter += r.NodesAfter
+		totalSizeBefore += r.SizeBefore
+		totalSizeAfter += r.SizeAfter
 	}
 
 	if failed == 0 {
@@ -59,10 +62,31 @@ func (o *optimizer) report() error {
 		if tBefore > 0 {
 			reduction = 100 * (1 - float64(tAfter)/float64(tBefore))
 		}
-		core.Success("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction)
+
+		sizeReduction := 0.0
+		if totalSizeBefore > 0 {
+			sizeReduction = 100 * (1 - float64(totalSizeAfter)/float64(totalSizeBefore))
+		}
+
+		core.Success("Optimized %d SVG files", len(o.files))
+		core.Info("  ┃ " + blueStyle.Render("Geometric Pass:") + " %d -> %d nodes (%.1f%% density reduction)", tBefore, tAfter, reduction)
+		core.Info("  ┃ " + goldStyle.Render("Byte Pass:") + "      %s -> %s (%.1f%% reduction)", formatBytes(totalSizeBefore), formatBytes(totalSizeAfter), sizeReduction)
 		return nil
 	}
 	return fmt.Errorf("failed to process %d files", failed)
+}
+
+func formatBytes(b int64) string {
+	const unit = 1024
+	if b < unit {
+		return fmt.Sprintf("%d B", b)
+	}
+	div, exp := int64(unit), 0
+	for n := b / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f %cB", float64(b)/float64(div), "KMGTPE"[exp])
 }
 
 func formatProgressLine(icon, path, suffix string) string {

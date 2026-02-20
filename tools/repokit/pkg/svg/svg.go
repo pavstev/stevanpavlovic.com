@@ -7,11 +7,13 @@ import (
 	"os/signal"
 	"path/filepath"
 	"regexp"
+	"repokit/pkg/core"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
 	"time"
-	"repokit/pkg/core"
+
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/svg"
@@ -33,7 +35,9 @@ var (
 	blueStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
 	goldStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
 
-	pathTagRegex = regexp.MustCompile(`(?i)d="([^"]+)"`)
+	pathTagRegex     = regexp.MustCompile(`(?i)d="([^"]+)"`)
+	polygonTagRegex  = regexp.MustCompile(`(?i)points="([^"]+)"`)
+	polylineTagRegex = regexp.MustCompile(`(?i)points="([^"]+)"`)
 )
 
 // ─── Types & Logic ──────────────────────────────────────────────────────────
@@ -45,6 +49,8 @@ type Result struct {
 	Error       string
 	NodesBefore int
 	NodesAfter  int
+	SizeBefore  int64
+	SizeAfter   int64
 }
 
 type fileStatus struct {
@@ -172,12 +178,13 @@ func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 		default:
 			path := o.files[idx]
 			o.updateWorkerState(id, path, true)
-			before, after, err := o.processFile(path)
+			before, after, sBefore, sAfter, err := o.processFile(path)
 			o.updateWorkerState(id, "", false)
 
 			o.results[idx] = Result{
 				File: filepath.Base(path), Path: path,
 				Success: err == nil, NodesBefore: before, NodesAfter: after,
+				SizeBefore: sBefore, SizeAfter: sAfter,
 				Error: func() string {
 					if err != nil {
 						return err.Error()
@@ -196,15 +203,17 @@ func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 	}
 }
 
-func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, err error) {
+func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, sizeBefore int64, sizeAfter int64, err error) {
 	input, err := os.ReadFile(path)
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, 0, 0, err
 	}
 
+	sizeBefore = int64(len(input))
 	content := string(input)
 	tBefore, tAfter := 0, 0
 
+	// 1. Optimize Paths
 	processed := pathTagRegex.ReplaceAllStringFunc(content, func(m string) string {
 		match := pathTagRegex.FindStringSubmatch(m)
 		if len(match) < 2 {
@@ -216,11 +225,30 @@ func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, e
 		return fmt.Sprintf("d=%q", d)
 	})
 
+	// 2. Optimize Polygons/Polylines (they use 'points' attribute)
+	// We treat point strings similarly to 'd' data for geometric optimization
+	processed = polygonTagRegex.ReplaceAllStringFunc(processed, func(m string) string {
+		match := polygonTagRegex.FindStringSubmatch(m)
+		if len(match) < 2 {
+			return m
+		}
+		// We can reuse processPathData logic because point strings are just comma/space separated coordinates
+		// but we might need to be careful about the formatting.
+		// For polygons, we use FormatPathData but strip commands.
+		d, nb, na := processPathData("M" + match[1]) // Hack: prefix with M to use path parser
+		processedPoints := strings.TrimPrefix(d, "M")
+		processedPoints = strings.ReplaceAll(processedPoints, "L", " ") // Polygons don't use L
+		tBefore += nb
+		tAfter += na
+		return fmt.Sprintf("points=%q", processedPoints)
+	})
+
 	minified, err := o.minifier.Bytes("image/svg+xml", []byte(processed))
 	if err != nil {
-		return tBefore, tAfter, err
+		return tBefore, tAfter, sizeBefore, int64(len(processed)), err
 	}
 
+	sizeAfter = int64(len(minified))
 	info, _ := os.Stat(path)
 	mode := os.FileMode(0644)
 	if info != nil {
@@ -228,7 +256,7 @@ func (o *optimizer) processFile(path string) (nodesBefore int, nodesAfter int, e
 	}
 
 	err = os.WriteFile(path, minified, mode)
-	return tBefore, tAfter, err
+	return tBefore, tAfter, sizeBefore, sizeAfter, err
 }
 
 func (o *optimizer) updateWorkerState(id int, path string, active bool) {

@@ -3,8 +3,9 @@
 import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
 import { type FC, type ReactNode } from "react";
 
-import { AppSidebar } from "./app-sidebar";
-import { Header } from "./header";
+import BrowserAiChat from "../custom/ai-chat/browser-ai-chat";
+import { AppSidebar } from "@components/layout/app-sidebar"; // Changed to alias
+import { Header } from "@components/layout/header"; // Changed to alias
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -19,5 +20,6 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => (
         <div className="flex-1">{children}</div>
       </div>
     </SidebarInset>
+    <BrowserAiChat client:load />
   </SidebarProvider>
 );

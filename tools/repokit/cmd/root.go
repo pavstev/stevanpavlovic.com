@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"os"
-	cliutil "repokit/pkg/cli"
-	cmdutil "repokit/pkg/cli"
+
+	"repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )
@@ -21,15 +21,15 @@ func Execute() {
 }
 
 func init() {
-	// 1. Setup global flags
-	rootCmd.PersistentFlags().BoolVarP(&cliutil.Quiet, "quiet", "q", false, "suppress output")
+	// 1. Setup global flags (Using the clean standard 'cli' package alias)
+	rootCmd.PersistentFlags().BoolVarP(&cli.Quiet, "quiet", "q", false, "suppress output")
 
 	// 2. Register this command as the "Root" in the utility package
-	cmdutil.SetRootCommand(rootCmd)
+	cli.SetRootCommand(rootCmd)
 
 	// 3. Dynamically register commands from tasks.yaml
 	// In the unified system, we expose tasks of type "batch" as top-level commands.
-	config := cliutil.GetConfig()
+	config := cli.GetConfig()
 	for id, task := range config.Tasks {
 		if task.Type == "batch" {
 			taskID := id
@@ -39,7 +39,7 @@ func init() {
 				Use:   taskID,
 				Short: taskCfg.Description,
 				Run: func(cmd *cobra.Command, args []string) {
-					cliutil.RunTask(taskID, nil, nil)
+					cli.RunTask(taskID, nil, nil)
 				},
 			}
 			rootCmd.AddCommand(cmd)
@@ -52,7 +52,7 @@ func init() {
 		Short: "Execute any task (single or batch) by ID",
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			cliutil.RunTask(args[0], nil, nil)
+			cli.RunTask(args[0], nil, nil)
 		},
 	})
 }

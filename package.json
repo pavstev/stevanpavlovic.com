@@ -22,10 +22,10 @@
   },
   "type": "module",
   "scripts": {
-    "all": "pnpm -s rs all",
+    "all": "pnpm go-build && pr optimize-svg src/assets/logo.svg && ./rs task all",
     "deploy": "wrangler deploy",
     "dev": "astro dev",
-    "go-build": "(cd tools/repokit && go build -v -ldflags='-s -w' -o dist/repokit main.go > /dev/null && cd - > /dev/null) & ./rs pack tools",
+    "go-build": "(cd tools/repokit && go build -v -ldflags='-s -w' -o dist/repokit main.go > /dev/null && cd - > /dev/null) && ./rs pack tools",
     "go-install": "cd tools/repokit && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm -s rs setup",

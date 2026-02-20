@@ -62,15 +62,4 @@ func init() {
 
 	// 2. Register this command as the "Root" in the utility package
 	cli.SetRootCommand(rootCmd)
-
-	// 3. Add the generic task runner
-	rootCmd.AddCommand(&cobra.Command{
-		Use:     "task <task-id>",
-		Aliases: []string{"run"},
-		Short:   "Execute any task by ID",
-		Args:    cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			cli.RunTask(args[0], nil, nil)
-		},
-	})
 }

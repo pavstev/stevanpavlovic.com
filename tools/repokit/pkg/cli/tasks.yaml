@@ -13,7 +13,21 @@ tasks:
     type: single
     pre_msg: Analyzing frontend code quality...
     on_error: ESLint found issues in the codebase.
-    command: ${pnpm} eslint .
+    command: ${pnpm} eslint . --fix --cache --max-warnings=0
+
+  knip:
+    name: Knip
+    type: single
+    pre_msg: Checking for unused files and dependencies...
+    on_error: Knip found unused code, exports, or dependencies.
+    command: ${pnpm} knip -c knip.config.ts
+
+  format_prettier:
+    name: Prettier Format
+    type: single
+    pre_msg: Formatting codebase with Prettier...
+    on_error: Prettier failed to format files.
+    command: ${pnpm} prettier --write --cache .
 
   build_go:
     name: Go Build
@@ -29,7 +43,39 @@ tasks:
     type: batch
     pre_msg: Starting full project linting pass...
     on_error: One or more linters failed.
-    tasks: [lint_eslint]
+    tasks: [lint_eslint, knip]
+    parallel: true
+
+  test:
+    name: Test Pipeline
+    type: batch
+    pre_msg: Running project tests...
+    on_error: One or more tests failed.
+    tasks: []
+    parallel: true
+
+  format:
+    name: Format Pipeline
+    type: batch
+    pre_msg: Running code formatters...
+    on_error: Formatting failed.
+    tasks: [format_prettier]
+    parallel: true
+
+  check:
+    name: Check Pipeline
+    type: batch
+    pre_msg: Running all code quality checks...
+    on_error: Checks failed.
+    tasks: [lint, test]
+    parallel: false
+
+  build:
+    name: Build Pipeline
+    type: batch
+    pre_msg: Building full project...
+    on_error: Build failed.
+    tasks: [build_go]
     parallel: true
 
   setup:
@@ -38,4 +84,12 @@ tasks:
     pre_msg: Orchestrating hybrid environment setup...
     on_error: Environment setup failed.
     tasks: [build_go]
+    parallel: false
+
+  all:
+    name: All Tasks Pipeline
+    type: batch
+    pre_msg: Running complete project pipeline...
+    on_error: One or more pipelines failed.
+    tasks: [format, lint, check, build, test, knip]
     parallel: false

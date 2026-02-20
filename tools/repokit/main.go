@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 	"path/filepath"
+
+	"repokit/cmd"
 )
 
 func main() {
@@ -12,5 +14,5 @@ func main() {
 			_ = os.Chdir("../..")
 		}
 	}
-	cnd.Execute(cmdutil)
+	cmd.Execute()
 }

@@ -25,7 +25,7 @@ var generateReadmeCmd = &cobra.Command{
 
 func init() {
 	generateReadmeCmd.Flags().StringVar(&readmeProvider, "provider", "gemini", "LLM provider (gemini, groq, local)")
-	generateReadmeCmd.Flags().StringVar(&readmeModel, "model", "", "Model name (defaults: gemini-1.5-flash, llama3-8b-8192)")
+	generateReadmeCmd.Flags().StringVar(&readmeModel, "model", "", "Model name (defaults: gemini-2.5-flash, llama3-8b-8192)")
 	generateReadmeCmd.Flags().StringVar(&readmeAPIKey, "api-key", "", "API Key (or set GEMINI_API_KEY / GROQ_API_KEY)")
 	generateReadmeCmd.Flags().StringVar(&readmeOutput, "output", "README.md", "Output file path")
 	rootCmd.AddCommand(generateReadmeCmd)

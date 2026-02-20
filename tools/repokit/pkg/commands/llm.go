@@ -24,8 +24,10 @@ type GeminiProvider struct {
 	Model  string
 }
 
+var modelsBaseUrl = "https://generativelanguage.googleapis.com/v1beta/models/"
+
 func (p *GeminiProvider) Generate(ctx context.Context, prompt string) (string, error) {
-	url := fmt.Sprintf("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s", p.Model, p.APIKey)
+	url := fmt.Sprintf("%s%s:generateContent?key=%s", modelsBaseUrl, p.Model, p.APIKey)
 
 	reqBody := map[string]any{
 		"contents": []any{
@@ -162,7 +164,7 @@ func NewProvider(providerType, model, apiKey string) (Provider, error) {
 			apiKey = os.Getenv("GEMINI_API_KEY")
 		}
 		if model == "" {
-			model = "gemini-1.5-flash"
+			model = "gemini-2.5-flash"
 		}
 		return &GeminiProvider{APIKey: apiKey, Model: model}, nil
 	case "groq":

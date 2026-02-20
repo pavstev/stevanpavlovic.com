@@ -1,9 +1,13 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"repokit/pkg/core"
 	"repokit/pkg/runner"
+	"repokit/pkg/tui"
+
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +18,12 @@ var rootCmd = &cobra.Command{
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
+	// If no arguments are provided (other than the binary name), launch the TUI.
+	if len(os.Args) == 1 {
+		launchTUI()
+		return
+	}
+
 	// Dynamically register commands from tasks.yaml right before executing.
 	// This ensures all init() functions have finished and hardcoded commands (like 'setup')
 	// are already registered, preventing duplicates and initialization race conditions.
@@ -54,6 +64,20 @@ func Execute() {
 	}
 
 	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+}
+
+func launchTUI() {
+	m, err := tui.NewModel()
+	if err != nil {
+		fmt.Println("Error initializing TUI:", err)
+		os.Exit(1)
+	}
+
+	p := tea.NewProgram(m, tea.WithAltScreen())
+	if _, err := p.Run(); err != nil {
+		fmt.Println("Error running TUI:", err)
 		os.Exit(1)
 	}
 }

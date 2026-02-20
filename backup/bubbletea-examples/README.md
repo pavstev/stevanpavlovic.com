@@ -49,7 +49,7 @@ your Bubble Tea application.
 
 The `exec` example shows how to execute a running command during the execution
 of a Bubble Tea application such as launching an `EDITOR`.
- 
+
 <a href="./exec/main.go">
   <img width="750" src="./exec/exec.gif" />
 </a>
@@ -325,4 +325,3 @@ multiple views and switch between them.
 <a href="./views/main.go">
   <img width="750" src="./views/views.gif" />
 </a>
-

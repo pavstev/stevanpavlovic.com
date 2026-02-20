@@ -147,7 +147,3 @@ def main(
             return
 
         run_once(files, no_deep, merge, simplify)
-
-
-if __name__ == "__main__":
-    app()

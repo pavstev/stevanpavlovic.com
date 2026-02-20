@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"regexp"
 	"strings"
 	"sync"
 	"syscall"
@@ -42,6 +43,7 @@ const (
 )
 
 var tailStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
+var ansiRegex = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 // ─── Shared Helpers ───────────────────────────────────────────────────────────
 
@@ -63,10 +65,20 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 }
 
 func formatTailLine(line string) string {
-	if len(line) > 100 {
-		return tailStyle.Render("  │ " + line[:97] + "...")
+	// Strip ANSI codes to prevent terminal corruption when truncated
+	cleanLine := ansiRegex.ReplaceAllString(line, "")
+	cleanLine = strings.ReplaceAll(cleanLine, "\r", "")
+	cleanLine = strings.ReplaceAll(cleanLine, "\t", "  ")
+
+	// Convert to runes for safe multi-byte/emoji truncation
+	runes := []rune(cleanLine)
+
+	// Max 75 chars: prevents wrapping on standard 80-column terminals.
+	// If a line wraps, \033[A cursor math breaks and causes duplicate lines!
+	if len(runes) > 75 {
+		return tailStyle.Render("  │ " + string(runes[:72]) + "...")
 	}
-	return tailStyle.Render("  │ " + line)
+	return tailStyle.Render("  │ " + string(runes))
 }
 
 func getFallbackError(output, errorOut string, err error) string {

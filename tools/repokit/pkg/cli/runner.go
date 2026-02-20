@@ -167,8 +167,15 @@ func runCommand(name, command, cwd string) {
 				firstRender, lineCount = false, 1
 
 				// UI rendering with the new theme
-				statusText := Yellow.Bold(true).Render("🚀 RUNNING")
-				fmt.Printf("  %-25s %s (%.1fs)\n", name, statusText, time.Since(start).Seconds())
+				spinner := Spinners[int(time.Now().UnixMilli()/80)%len(Spinners)]
+				icon := Blue.Render(spinner)
+				statusText := Blue.Bold(true).Render("RUNNING")
+				durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
+
+				nameStr := lipgloss.NewStyle().Width(35).Render(name)
+				statStr := lipgloss.NewStyle().Width(12).Render(statusText)
+
+				fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 
 				if !Quiet {
 					for _, l := range currentTail {
@@ -189,8 +196,22 @@ func runCommand(name, command, cwd string) {
 	}
 
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
+		if !Quiet && !firstRender {
+			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
+			nameStr := lipgloss.NewStyle().Width(35).Render(name)
+			statStr := lipgloss.NewStyle().Width(12).Render(Green.Bold(true).Render("DONE"))
+			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
+			fmt.Printf(" %s  %s %s %s\n", Green.Render("✓"), nameStr, statStr, durStr)
+		}
 		Success(name)
 	} else {
+		if !Quiet && !firstRender {
+			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
+			nameStr := lipgloss.NewStyle().Width(35).Render(name)
+			statStr := lipgloss.NewStyle().Width(12).Render(Red.Bold(true).Render("FAIL"))
+			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
+			fmt.Printf(" %s  %s %s %s\n", Red.Render("✗"), nameStr, statStr, durStr)
+		}
 		Error(name)
 		BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
@@ -312,9 +333,10 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		}()
 	}
 
-	ticker := time.NewTicker(100 * time.Millisecond)
+	ticker := time.NewTicker(80 * time.Millisecond)
 	defer ticker.Stop()
 	firstRender, lineCount := true, 0
+	startPipeline := time.Now()
 
 	render := func() {
 		mu.Lock()
@@ -323,22 +345,46 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 		}
 		firstRender, lineCount = false, 0
+
+		spinnerIdx := int(time.Now().UnixMilli()/80) % len(Spinners)
+
 		for _, s := range states {
-			status := s.status
+			var icon, statText string
+			durStr := fmt.Sprintf("%5.1fs", s.elapsed.Seconds())
+
 			switch s.status {
-			case statusActive:
-				status = Yellow.Bold(true).Render("🚀 ACTIVE")
 			case statusCompleted:
-				status = Green.Bold(true).Render("✅ DONE  ")
+				icon = Green.Render("✓")
+				statText = Green.Bold(true).Render("DONE")
 			case statusFailed:
-				status = Red.Bold(true).Render("❌ FAILED")
+				icon = Red.Render("✗")
+				statText = Red.Bold(true).Render("FAIL")
+			case statusActive:
+				icon = Blue.Render(Spinners[spinnerIdx])
+				statText = Blue.Bold(true).Render("RUNNING")
+				durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 			case statusCancelled:
-				status = subtleStyle.Render("🚫 CANCEL")
+				icon = Subtle.Render("⊘")
+				statText = Subtle.Render("CANCEL")
+				durStr = Subtle.Render("  --.-s")
 			default:
-				status = subtleStyle.Render("⏳ QUEUED")
+				icon = Subtle.Render("○")
+				statText = Subtle.Render("PENDING")
+				durStr = Subtle.Render("  --.-s")
 			}
-			fmt.Printf("  %-25s %s\n", s.name, status)
+
+			nameStr := lipgloss.NewStyle().Width(35).Render(s.name)
+			statStr := lipgloss.NewStyle().Width(12).Render(statText)
+
+			fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 			lineCount++
+
+			if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !Quiet {
+				for _, tl := range s.tail {
+					fmt.Println(formatTailLine(tl))
+					lineCount++
+				}
+			}
 		}
 	}
 
@@ -359,11 +405,27 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 	render()
 
+	totalDur := time.Since(startPipeline).Seconds()
+	completed, failedTasks := 0, 0
+	for _, s := range states {
+		if s.status == statusCompleted {
+			completed++
+		} else if s.status == statusFailed {
+			failedTasks++
+		}
+	}
+
+	fmt.Println()
+	fmt.Printf("  %s %d completed", Green.Render("●"), completed)
+	if failedTasks > 0 {
+		fmt.Printf(" | %s %d failed", Red.Render("●"), failedTasks)
+	}
+	fmt.Printf(" | %s %d total | %s %.1fs\n\n", Blue.Render("●"), len(states), Subtle.Render("⏱"), totalDur)
+
 	if failed {
 		fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
 		os.Exit(1)
 	}
-	Success("Pipeline finished.")
 }
 
 func formatTailLine(line string) string {

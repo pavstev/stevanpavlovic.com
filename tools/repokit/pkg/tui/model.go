@@ -76,6 +76,8 @@ func NewModel() (*Model, error) {
 	// Default hardcoded commands that aren't in tasks.yaml
 	items = append(items, item{title: "Pack", description: "Bundle directory into Markdown", id: "pack"})
 	items = append(items, item{title: "Clean", description: "Clean build artifacts", id: "clean"})
+	items = append(items, item{title: "Generate README", description: "Create AI README", id: "generate_readme"})
+	items = append(items, item{title: "Auto Commit", description: "Create AI commit", id: "auto_commit"})
 
 	delegate := list.NewDefaultDelegate()
 	delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.Foreground(lipgloss.Color("#7D56F4")).BorderLeftForeground(lipgloss.Color("#7D56F4"))
@@ -100,6 +102,11 @@ func NewModel() (*Model, error) {
 
 	// Set TUI mode so logger writes to buffer
 	core.TuiMode = true
+	// Prevent core.Fatal from killing the TUI process abruptly by turning it into a panic
+	// which we will catch in our asynchronous commands.
+	core.OSExit = func(code int) {
+		panic(fmt.Errorf("task exited with code %d", code))
+	}
 
 	return &Model{
 		currentState: stateMenu,
@@ -126,11 +133,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		switch m.currentState {
 		case stateMenu:
-			if msg.String() == "q" {
+			if msg.String() == "q" && m.list.FilterState() != list.Filtering {
 				m.quitting = true
 				return m, tea.Quit
 			}
 			if msg.String() == "enter" {
+				if m.list.FilterState() == list.Filtering {
+					// Let the list process the enter key to select the filtered item
+					var cmd tea.Cmd
+					m.list, cmd = m.list.Update(msg)
+					return m, cmd
+				}
+
 				i, ok := m.list.SelectedItem().(item)
 				if ok {
 					m.activeTask = i.id
@@ -185,6 +199,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			var cmd tea.Cmd
 			m.viewport, cmd = m.viewport.Update(msg)
 			cmds = append(cmds, cmd)
+		case stateDone:
+			if msg.String() == "esc" || msg.String() == "q" {
+				m.currentState = stateMenu
+			}
 		}
 
 	case tea.WindowSizeMsg:
@@ -208,9 +226,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case taskDoneMsg:
 		m.currentState = stateDone
-		// We could exit or prompt to continue
-		// For now, let's just stay on the done screen so they can read logs.
-		// Wait for them to press ESC or Q to go back to menu.
 		cmds = append(cmds, tickCmd()) // One last tick to flush logs
 	}
 
@@ -253,7 +268,7 @@ func (m Model) View() string {
 		s = header + "\n" + m.viewport.View()
 	case stateDone:
 		header := fmt.Sprintf("\n  %s %s finished.\n", core.IconSuccess, inputStyle.Render(m.activeTask))
-		s = header + "\n" + m.viewport.View() + "\n  (press esc to return to menu)"
+		s = header + "\n" + m.viewport.View() + "\n\n  (press esc or q to return to menu)"
 	}
 
 	return appStyle.Render(s)
@@ -276,6 +291,13 @@ type taskDoneMsg struct {
 // runTaskCmd creates a tea.Cmd that executes the task asynchronously
 func runTaskCmd(taskID string, arg string) tea.Cmd {
 	return func() tea.Msg {
+		var runErr error
+		defer func() {
+			if r := recover(); r != nil {
+				runErr = fmt.Errorf("task failed: %v", r)
+			}
+		}()
+
 		switch taskID {
 		case "pack":
 			commands.RunPack(arg) // Now we need to import commands
@@ -296,6 +318,6 @@ func runTaskCmd(taskID string, arg string) tea.Cmd {
 		default:
 			runner.RunTask(taskID, nil, nil) // Need to import runner
 		}
-		return taskDoneMsg{err: nil}
+		return taskDoneMsg{err: runErr}
 	}
 }

@@ -15,7 +15,7 @@ func Run(force bool) {
 	cliutils.Step("Checking clean preconditions...")
 
 	if !force {
-		// 1. Check git tree is clean (no uncommitted changes)
+		// 1. Check git tree is clean
 		statusOut, err := exec.Command("git", "status", "--porcelain").Output()
 		if err != nil {
 			cliutils.Fatal("Failed to run git status: " + err.Error())
@@ -23,7 +23,6 @@ func Run(force bool) {
 		if strings.TrimSpace(string(statusOut)) != "" {
 			cliutils.Error("Git working tree is dirty — there are uncommitted changes.")
 			cliutils.Info("Commit or stash your changes first, or use --force to skip this check.")
-			cliutils.Info("Dirty files:\n" + strings.TrimSpace(string(statusOut)))
 			os.Exit(1)
 		}
 
@@ -45,7 +44,6 @@ func Run(force bool) {
 		}
 		fmt.Println()
 
-		// 3. Prompt for confirmation
 		fmt.Print("Proceed with deletion? [y/N]: ")
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
@@ -57,10 +55,10 @@ func Run(force bool) {
 	}
 
 	cliutils.Step("Cleaning project...")
-	cliutils.RunTask("clean_git", nil)
+	cliutils.RunTask("clean_git", nil, nil)
 
 	cliutils.Step("Reinstalling dependencies...")
-	cliutils.RunTask("clean_install", nil)
+	cliutils.RunTask("clean_install", nil, nil)
 
-	cliutils.Success("Project cleaned and dependencies reinstalled.")
+	cliutils.Success("Project cleaned successfully.")
 }

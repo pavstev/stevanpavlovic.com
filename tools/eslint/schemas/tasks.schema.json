@@ -1,10 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Repokit Task Configuration",
-  "description": "Configuration schema for the Repokit task runner and project orchestrator.",
-  "type": "object",
   "additionalProperties": false,
-  "required": ["tasks", "batches"],
+  "description": "Configuration schema for the Repokit task runner and project orchestrator.",
   "properties": {
     "vars": {
       "type": "object",
@@ -96,5 +93,8 @@
         }
       }
     }
-  }
+  },
+  "required": ["tasks", "batches"],
+  "title": "Repokit Task Configuration",
+  "type": "object"
 }

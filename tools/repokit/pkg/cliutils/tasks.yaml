@@ -36,7 +36,7 @@ tasks:
     name: Go Tests
     command: ${go} test ./... -coverprofile=coverage.out -v
     cwd: ${repo_dir}
-    pre_run: ["build_go"] # Ensure it compiles before testing
+    pre_run: [build_go] # Ensure it compiles before testing
 
   # --- Build ---
   build_astro:
@@ -68,31 +68,31 @@ batches:
   lint:
     name: Linting Pipeline
     description: Run all code quality linters
-    tasks: ["lint_eslint", "lint_go"]
+    tasks: [lint_eslint, lint_go]
     parallel: true
 
   check:
     name: Type Check
     description: Run static type analysis
-    tasks: ["check_astro", "check_go"]
+    tasks: [check_astro, check_go]
     parallel: true
 
   test:
     name: Test Suite
     description: Execute all frontend and backend tests
-    tasks: ["test_vitest", "test_go"]
+    tasks: [test_vitest, test_go]
     parallel: false # Run sequentially to avoid DB/port conflicts
 
   build:
     name: Production Build
     description: Compile all project artifacts
-    tasks: ["build_astro", "build_go"]
+    tasks: [build_astro, build_go]
     parallel: true
 
   format:
     name: Formatter
     description: Auto-format code and optimize assets
-    tasks: ["optimize_svg", "prettier"]
+    tasks: [optimize_svg, prettier]
     parallel: false
 
   all:

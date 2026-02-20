@@ -1,15 +1,15 @@
 import type { JSX, ReactNode } from "react";
 
-import { cn } from "@client/utils.ts";
-import { Button } from "@components/ui/button.tsx";
+import { cn } from "@client/utils";
+import { Button } from "@components/ui/button";
 import {
   Empty,
   EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyTitle,
-} from "@components/ui/empty.tsx";
-import { Icon } from "@components/ui/icon.tsx";
+} from "@components/ui/empty";
+import { Icon } from "@components/ui/icon";
 
 interface ErrorPageProps {
   children?: ReactNode;

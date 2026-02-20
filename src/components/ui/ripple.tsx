@@ -1,4 +1,4 @@
-import { cn } from "@client/utils.ts";
+import { cn } from "@client/utils";
 import { type ComponentPropsWithoutRef, type CSSProperties, memo } from "react";
 
 interface RippleProps extends ComponentPropsWithoutRef<"div"> {

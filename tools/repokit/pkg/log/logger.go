@@ -105,6 +105,14 @@ func Success(format string, args ...any) {
 	renderEntry(successBadge, IconSuccess, msg, primaryColor)
 }
 
+func Step(format string, args ...any) {
+	msg := format
+	if len(args) > 0 {
+		msg = fmt.Sprintf(format, args...)
+	}
+	renderEntry(infoBadge, "STEP", msg, cyanColor)
+}
+
 func Warning(format string, args ...any) {
 	msg := format
 	if len(args) > 0 {

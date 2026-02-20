@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cmd = &cobra.Command{
+var optimizeSvgCmd = &cobra.Command{
 	Use:   "optimize-svg <pattern>",
 	Short: "Optimize SVG files using native minifier",
 	Args:  cobra.ExactArgs(1),
@@ -16,5 +16,5 @@ var cmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(cmd)
+	rootCmd.AddCommand(optimizeSvgCmd)
 }

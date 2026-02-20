@@ -9,7 +9,7 @@ import (
 
 var schemaOut string
 
-var schemaCmd = &cobra.Command{
+var exportSchemaCmd = &cobra.Command{
 	Use:   "export_schema",
 	Short: "Generate JSON schema for tasks.yaml configuration",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -23,6 +23,6 @@ var schemaCmd = &cobra.Command{
 
 func init() {
 	// Relative defaults mapping smoothly to execution paths
-	schemaCmd.Flags().StringVarP(&schemaOut, "out", "o", "tools/eslint/schemas/tasks.schema.json", "Output file path")
-	rootCmd.AddCommand(schemaCmd)
+	exportSchemaCmd.Flags().StringVarP(&schemaOut, "out", "o", "tools/eslint/schemas/tasks.schema.json", "Output file path")
+	rootCmd.AddCommand(exportSchemaCmd)
 }

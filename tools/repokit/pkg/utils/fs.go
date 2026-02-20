@@ -16,14 +16,31 @@ func ResolveFiles(pattern string) ([]string, error) {
 	if !strings.Contains(pattern, "**") {
 		return filepath.Glob(pattern)
 	}
+
 	parts := strings.SplitN(pattern, "**", 2)
-	root, suffix := filepath.Clean(parts[0]), parts[1]
+	root := parts[0]
+	if root == "" {
+		root = "."
+	} else if strings.HasSuffix(root, string(filepath.Separator)) {
+		root = root[:len(root)-1]
+	}
+	if root == "" {
+		root = "/"
+	}
+
+	suffix := parts[1]
 	var matches []string
 	err := filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
-		if err != nil || d.IsDir() {
+		if err != nil {
 			return err
 		}
-		if strings.HasSuffix(path, suffix) {
+		if d.IsDir() {
+			return nil
+		}
+		// Convert both to same separator for robustness
+		p := filepath.ToSlash(path)
+		s := filepath.ToSlash(suffix)
+		if strings.HasSuffix(p, s) {
 			matches = append(matches, path)
 		}
 		return nil

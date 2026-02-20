@@ -61,6 +61,14 @@ tasks:
     command: ${go} test ./... -v
     cwd: ${rk_dir}
 
+  test_go_cov:
+    name: Run Go Tests with Coverage
+    type: single
+    pre_msg: Executing tests and generating coverage report...
+    on_error: Coverage analysis failed.
+    command: ${go} test -v -coverprofile=coverage.out -json ./pkg/... | tparse -all -top
+    cwd: ${rk_dir}
+
   optimize_svg:
     name: Optimize SVGs
     type: single
@@ -145,6 +153,13 @@ tasks:
     pre_msg: Abstracting Cloudflare binding interfaces...
     on_error: Failed to generate interface typings.
     command: ${pnpm} wrangler types
+
+  ls-files:
+    name: List Files
+    type: single
+    pre_msg: Listing project files...
+    on_error: Failed to list files.
+    command: git ls-files --exclude-standard -co | tree --fromfile .
 
   export_schema:
     name: Export JSON Schema

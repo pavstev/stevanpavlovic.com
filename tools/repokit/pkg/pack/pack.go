@@ -29,7 +29,7 @@ func Run(targetDir string) {
 
 	cleanOldOutputs("pack_output_*.md")
 
-	docContent, pkgCount, err := buildDocumentation(targetDir, targetDirName)
+	docContent, pkgCount, lineCount, err := buildDocumentation(targetDir, targetDirName)
 	if err != nil {
 		log.Fatal("Failed to parse packages: %v", err)
 	}
@@ -39,8 +39,14 @@ func Run(targetDir string) {
 
 	writeOutput(outputPath, docContent)
 
-	log.Success("Success! Documented %d Go packages.", pkgCount)
-	log.Info("Output saved to: %s", outputPath)
+	info, _ := os.Stat(outputPath)
+	sizeKB := float64(info.Size()) / 1024.0
+
+	log.Success("Success! API surface bundled.")
+	log.Info("  • Packages:      %d", pkgCount)
+	log.Info("  • Lines:         %d", lineCount)
+	log.Info("  • File Size:     %.2f KB", sizeKB)
+	log.Info("  • Output Saved:  %s", outputPath)
 	log.Info("Content copied to clipboard.")
 }
 
@@ -80,10 +86,10 @@ func cleanOldOutputs(pattern string) {
 	}
 }
 
-func buildDocumentation(targetDir, targetDirName string) (string, int, error) {
+func buildDocumentation(targetDir, targetDirName string) (string, int, int, error) {
 	outRenderer, err := gomarkdoc.NewRenderer()
 	if err != nil {
-		return "", 0, fmt.Errorf("failed to create renderer: %w", err)
+		return "", 0, 0, fmt.Errorf("failed to create renderer: %w", err)
 	}
 
 	mdLog := logger.New(logger.ErrorLevel)
@@ -92,6 +98,7 @@ func buildDocumentation(targetDir, targetDirName string) (string, int, error) {
 	md.WriteString(fmt.Sprintf("# 📦 Go API Documentation: `%s`\n\n", targetDirName))
 
 	pkgCount := 0
+	lineCount := 0
 	err = filepath.WalkDir(targetDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -124,10 +131,11 @@ func buildDocumentation(targetDir, targetDirName string) (string, int, error) {
 		md.WriteString(doc)
 		md.WriteString("\n---\n\n")
 		pkgCount++
+		lineCount += strings.Count(doc, "\n")
 		return nil
 	})
 
-	return md.String(), pkgCount, err
+	return md.String(), pkgCount, lineCount, err
 }
 
 func writeOutput(outputPath, content string) {

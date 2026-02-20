@@ -1,10 +1,11 @@
-package utils
+package core
 
 import (
 	"errors"
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/h2non/filetype"
@@ -17,30 +18,45 @@ func ResolveFiles(pattern string) ([]string, error) {
 		return filepath.Glob(pattern)
 	}
 
-	parts := strings.SplitN(pattern, "**", 2)
-	root := parts[0]
-	if root == "" {
-		root = "."
-	} else if strings.HasSuffix(root, string(filepath.Separator)) {
-		root = root[:len(root)-1]
-	}
-	if root == "" {
-		root = "/"
+	parts := strings.Split(pattern, "**")
+	base := parts[0]
+	if base == "" {
+		base = "."
 	}
 
-	suffix := parts[1]
+	absBase, err := filepath.Abs(base)
+	if err != nil {
+		return nil, err
+	}
+
+	// Build regex: base + .* + rest
+	// Quote the base path
+	regStr := "^" + regexp.QuoteMeta(filepath.ToSlash(absBase))
+	for i := 1; i < len(parts); i++ {
+		regStr += ".*"
+		p := parts[i]
+		// Quote the rest but keep * as glob star and . as dot
+		p = regexp.QuoteMeta(p)
+		p = strings.ReplaceAll(p, "\\*", ".*")   // * becomes .* in our simplified version
+		p = strings.ReplaceAll(p, "\\.\\*", ".*") // handle .* specifically if it was already there
+		regStr += p
+	}
+	regStr += "$"
+
+	re, err := regexp.Compile(regStr)
+	if err != nil {
+		return nil, err
+	}
+
 	var matches []string
-	err := filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+	err = filepath.WalkDir(absBase, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 		if d.IsDir() {
 			return nil
 		}
-		// Convert both to same separator for robustness
-		p := filepath.ToSlash(path)
-		s := filepath.ToSlash(suffix)
-		if strings.HasSuffix(p, s) {
+		if re.MatchString(filepath.ToSlash(path)) {
 			matches = append(matches, path)
 		}
 		return nil
@@ -57,7 +73,6 @@ var knownTextExts = map[string]bool{
 }
 
 // IsBinary attempts to detect if a file is a non-text binary payload.
-// Uses h2non/filetype magic byte inspection alongside manual null-byte scanning.
 func IsBinary(path string) bool {
 	ext := strings.ToLower(filepath.Ext(path))
 	if knownTextExts[ext] {
@@ -66,7 +81,7 @@ func IsBinary(path string) bool {
 
 	f, err := os.Open(path)
 	if err != nil {
-		return true // Assumed unreadable/binary if missing access
+		return true
 	}
 	defer func() { _ = f.Close() }()
 
@@ -77,14 +92,12 @@ func IsBinary(path string) bool {
 	}
 	head = head[:n]
 
-	// Manual null byte check fallback for raw binary chunks without magic headers
 	for _, b := range head {
 		if b == 0 {
 			return true
 		}
 	}
 
-	// Magic byte inspection
 	kind, _ := filetype.Match(head)
 	if kind != filetype.Unknown && strings.HasPrefix(kind.MIME.Value, "application/") {
 		return true

@@ -2,11 +2,8 @@ package cmd
 
 import (
 	"os"
-
-	"repokit/pkg/config"
-	"repokit/pkg/log"
+	"repokit/pkg/core"
 	"repokit/pkg/runner"
-
 	"github.com/spf13/cobra"
 )
 
@@ -20,9 +17,9 @@ func Execute() {
 	// Dynamically register commands from tasks.yaml right before executing.
 	// This ensures all init() functions have finished and hardcoded commands (like 'setup')
 	// are already registered, preventing duplicates and initialization race conditions.
-	configData, err := config.GetConfig()
+	configData, err := core.GetConfig()
 	if err != nil {
-		log.Fatal("%v", err)
+		core.Fatal("%v", err)
 	}
 	for id := range configData.Tasks {
 		taskID := id
@@ -63,5 +60,5 @@ func Execute() {
 
 func init() {
 	// Setup global flags (Using the clean standard 'cli' package alias)
-	rootCmd.PersistentFlags().BoolVarP(&log.Quiet, "quiet", "q", false, "suppress output")
+	rootCmd.PersistentFlags().BoolVarP(&core.Quiet, "quiet", "q", false, "suppress output")
 }

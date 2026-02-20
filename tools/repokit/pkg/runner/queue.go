@@ -10,10 +10,7 @@ import (
 	"sync"
 	"syscall"
 	"time"
-
-	"repokit/pkg/config"
-	"repokit/pkg/log"
-
+	"repokit/pkg/core"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -51,7 +48,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 	taskChan := make(chan int, len(ids))
 	for i, id := range ids {
-		t, _ := config.GetTaskByID(id)
+		t, _ := core.GetTaskByID(id)
 		q.states[i] = &taskState{name: t.Name, status: statusQueued}
 		taskChan <- i
 	}
@@ -84,7 +81,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 	if q.failed {
 		if os.Getenv("REPOKIT_NESTED") != "1" {
-			fmt.Println("\n" + log.Bold.Render("PIPELINE FAILED"))
+			fmt.Println("\n" + core.Bold.Render("PIPELINE FAILED"))
 		}
 		os.Exit(1)
 	}
@@ -123,7 +120,7 @@ func (q *queueContext) processTask(idx int) {
 	q.mu.Unlock()
 
 	id := q.ids[idx]
-	task, _ := config.GetTaskByID(id)
+	task, _ := core.GetTaskByID(id)
 
 	var cmdStr string
 	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
@@ -133,7 +130,7 @@ func (q *queueContext) processTask(idx int) {
 		}
 		cmdStr = fmt.Sprintf("%q %q", executable, id)
 	} else {
-		cmdStr, _ = config.EvaluateCommand(task.Command, nil)
+		cmdStr, _ = core.EvaluateCommand(task.Command, nil)
 	}
 
 	cmd := createCmd(q.ctx, cmdStr, task.Cwd)
@@ -189,7 +186,7 @@ func (q *queueContext) renderUI(firstRender bool, lineCount int) (bool, int) {
 		fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 	}
 	newLineCount := 0
-	spinnerIdx := int(time.Now().UnixMilli()/80) % len(log.Spinners)
+	spinnerIdx := int(time.Now().UnixMilli()/80) % len(core.Spinners)
 
 	for _, s := range q.states {
 		var icon, statText string
@@ -197,37 +194,37 @@ func (q *queueContext) renderUI(firstRender bool, lineCount int) (bool, int) {
 
 		switch s.status {
 		case statusCompleted:
-			icon = log.Green.Render("•")
-			statText = log.Green.Bold(true).Render(log.IconSuccess)
+			icon = core.Green.Render("•")
+			statText = core.Green.Bold(true).Render(core.IconSuccess)
 		case statusFailed:
-			icon = log.Red.Render("•")
-			statText = log.Red.Bold(true).Render(log.IconError)
+			icon = core.Red.Render("•")
+			statText = core.Red.Bold(true).Render(core.IconError)
 		case statusActive:
-			icon = log.Blue.Render(log.Spinners[spinnerIdx])
-			statText = log.Blue.Bold(true).Render(log.IconPending)
+			icon = core.Blue.Render(core.Spinners[spinnerIdx])
+			statText = core.Blue.Bold(true).Render(core.IconPending)
 			durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 		case statusCancelled:
-			icon = log.Subtle.Render("•")
-			statText = log.Subtle.Render(log.IconCancelled)
-			durStr = log.Subtle.Render("  --.-s")
+			icon = core.Subtle.Render("•")
+			statText = core.Subtle.Render(core.IconCancelled)
+			durStr = core.Subtle.Render("  --.-s")
 		default:
-			icon = log.Subtle.Render("○")
-			statText = log.Subtle.Render(log.IconPending)
-			durStr = log.Subtle.Render("  --.-s")
+			icon = core.Subtle.Render("○")
+			statText = core.Subtle.Render(core.IconPending)
+			durStr = core.Subtle.Render("  --.-s")
 		}
 
 		padLen := 38 - lipgloss.Width(s.name)
 		if padLen < 2 {
 			padLen = 2
 		}
-		dots := log.Subtle.Render(strings.Repeat(".", padLen))
+		dots := core.Subtle.Render(strings.Repeat(".", padLen))
 		nameStr := s.name + " " + dots
 		statStr := lipgloss.NewStyle().Width(4).Render(statText)
 
 		fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 		newLineCount++
 
-		if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !log.Quiet {
+		if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !core.Quiet {
 			for _, tl := range s.tail {
 				fmt.Println(formatTailLine(tl))
 				newLineCount++
@@ -252,9 +249,9 @@ func (q *queueContext) printSummary(startPipeline time.Time) {
 	}
 
 	fmt.Println()
-	fmt.Printf("  %s %d completed", log.Green.Render("●"), completed)
+	fmt.Printf("  %s %d completed", core.Green.Render("●"), completed)
 	if failedTasks > 0 {
-		fmt.Printf(" | %s %d failed", log.Red.Render("●"), failedTasks)
+		fmt.Printf(" | %s %d failed", core.Red.Render("●"), failedTasks)
 	}
-	fmt.Printf(" | %s %d total | %s %.1fs\n\n", log.Blue.Render("●"), len(q.states), log.Subtle.Render("⏱"), totalDur)
+	fmt.Printf(" | %s %d total | %s %.1fs\n\n", core.Blue.Render("●"), len(q.states), core.Subtle.Render("⏱"), totalDur)
 }

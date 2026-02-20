@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"repokit/pkg/clean"
-
+	"repokit/pkg/commands"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +11,7 @@ var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "Clean project (removes git-ignored files and reinstalls deps)",
 	Run: func(cmd *cobra.Command, args []string) {
-		clean.Run(cleanForce)
+		commands.RunClean(cleanForce)
 	},
 }
 

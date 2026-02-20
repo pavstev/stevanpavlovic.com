@@ -13,10 +13,7 @@ import (
 	"sync"
 	"syscall"
 	"time"
-
-	"repokit/pkg/log"
-	"repokit/pkg/utils"
-
+	"repokit/pkg/core"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -71,7 +68,7 @@ func runCommand(name, command, cwd string) {
 	close(done)
 
 	if err != nil && ctx.Err() != nil {
-		fmt.Println("\n" + log.Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
+		fmt.Println("\n" + core.Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
 		os.Exit(1)
 	}
 
@@ -116,14 +113,14 @@ func (ui *commandUI) renderLoop(done <-chan struct{}) {
 			ui.firstRender = false
 			ui.lineCount = 1
 
-			spinner := log.Spinners[int(time.Now().UnixMilli()/80)%len(log.Spinners)]
-			icon := log.Blue.Render(spinner)
-			statusText := log.Blue.Bold(true).Render(log.IconPending)
+			spinner := core.Spinners[int(time.Now().UnixMilli()/80)%len(core.Spinners)]
+			icon := core.Blue.Render(spinner)
+			statusText := core.Blue.Bold(true).Render(core.IconPending)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 
 			ui.printLine(icon, statusText, durStr)
 
-			if !log.Quiet {
+			if !core.Quiet {
 				for _, l := range currentTail {
 					fmt.Println(formatTailLine(l))
 					ui.lineCount++
@@ -138,7 +135,7 @@ func (ui *commandUI) printLine(icon, statusText, durStr string) {
 	if padLen < 2 {
 		padLen = 2
 	}
-	dots := log.Subtle.Render(strings.Repeat(".", padLen))
+	dots := core.Subtle.Render(strings.Repeat(".", padLen))
 	nameStr := ui.name + " " + dots
 	statStr := lipgloss.NewStyle().Width(4).Render(statusText)
 
@@ -147,44 +144,44 @@ func (ui *commandUI) printLine(icon, statusText, durStr string) {
 
 func (ui *commandUI) printResult(cmd *exec.Cmd) {
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
-		if !log.Quiet && !ui.firstRender {
+		if !core.Quiet && !ui.firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
-			icon := log.Green.Render("•")
-			statusText := log.Green.Bold(true).Render(log.IconSuccess)
+			icon := core.Green.Render("•")
+			statusText := core.Green.Bold(true).Render(core.IconSuccess)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}
-		log.Success("%s", ui.name)
+		core.Success("%s", ui.name)
 	} else {
-		if !log.Quiet && !ui.firstRender {
+		if !core.Quiet && !ui.firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
-			icon := log.Red.Render("•")
-			statusText := log.Red.Bold(true).Render(log.IconError)
+			icon := core.Red.Render("•")
+			statusText := core.Red.Bold(true).Render(core.IconError)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}
-		log.Error("%s", ui.name)
-		log.BoxOutput("Failure Log: "+ui.name, ui.outBuf.String(), lipgloss.Color("1"))
+		core.Error("%s", ui.name)
+		core.BoxOutput("Failure Log: "+ui.name, ui.outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
 	}
 }
 
 func RunInteractive(name, command, cwd string) {
-	log.Info("Interactive Session: %s", name)
+	core.Info("Interactive Session: %s", name)
 	cmd := exec.Command("bash", "-c", command)
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
 	}
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
-		log.Error("%s failed: %v", name, err)
+		core.Error("%s failed: %v", name, err)
 		os.Exit(1)
 	}
-	log.Success("%s", name)
+	core.Success("%s", name)
 }
 
 func formatTailLine(line string) string {
-	clean := utils.CleanANSI(line)
+	clean := core.CleanANSI(line)
 	if len(clean) > 85 {
 		clean = clean[:82] + "..."
 	}

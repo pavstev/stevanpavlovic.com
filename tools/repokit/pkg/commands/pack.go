@@ -1,4 +1,4 @@
-package pack
+package commands
 
 import (
 	"fmt"
@@ -7,9 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"repokit/pkg/log"
-
+	"repokit/pkg/core"
 	"github.com/atotto/clipboard"
 	"github.com/princjef/gomarkdoc"
 	"github.com/princjef/gomarkdoc/lang"
@@ -18,20 +16,20 @@ import (
 
 var slugifyRegexp = regexp.MustCompile(`[^a-z0-9]+`)
 
-// Run executes the pack command to bundle Go package documentation into a Markdown file.
-func Run(targetDir string) {
+// RunPack executes the pack command to bundle Go package documentation into a Markdown file.
+func RunPack(targetDir string) {
 	cwd, targetDir, targetDirName := resolveTargetDir(targetDir)
 	if targetDir == "" {
 		return // error already logged
 	}
 
-	log.Info("Generating Go documentation for: %s", targetDir)
+	core.Info("Generating Go documentation for: %s", targetDir)
 
 	cleanOldOutputs("pack_output_*.md")
 
 	docContent, pkgCount, lineCount, err := buildDocumentation(targetDir, targetDirName)
 	if err != nil {
-		log.Fatal("Failed to parse packages: %v", err)
+		core.Fatal("Failed to parse packages: %v", err)
 	}
 
 	outputFilename := fmt.Sprintf("pack_output_%s.md", slugifyStr(targetDirName))
@@ -42,12 +40,12 @@ func Run(targetDir string) {
 	info, _ := os.Stat(outputPath)
 	sizeKB := float64(info.Size()) / 1024.0
 
-	log.Success("Success! API surface bundled.")
-	log.Info("  • Packages:      %d", pkgCount)
-	log.Info("  • Lines:         %d", lineCount)
-	log.Info("  • File Size:     %.2f KB", sizeKB)
-	log.Info("  • Output Saved:  %s", outputPath)
-	log.Info("Content copied to clipboard.")
+	core.Success("Success! API surface bundled.")
+	core.Info("  • Packages:      %d", pkgCount)
+	core.Info("  • Lines:         %d", lineCount)
+	core.Info("  • File Size:     %.2f KB", sizeKB)
+	core.Info("  • Output Saved:  %s", outputPath)
+	core.Info("Content copied to clipboard.")
 }
 
 func resolveTargetDir(targetDir string) (string, string, string) {
@@ -65,7 +63,7 @@ func resolveTargetDir(targetDir string) (string, string, string) {
 			if info, err := os.Stat(alt); err == nil && info.IsDir() {
 				targetDir = alt
 			} else {
-				log.Error("Directory not found: %s", targetDir)
+				core.Error("Directory not found: %s", targetDir)
 				return cwd, "", ""
 			}
 		}
@@ -141,7 +139,7 @@ func buildDocumentation(targetDir, targetDirName string) (string, int, int, erro
 func writeOutput(outputPath, content string) {
 	err := os.WriteFile(outputPath, []byte(content), 0644)
 	if err != nil {
-		log.Error("Failed to write output: %v", err)
+		core.Error("Failed to write output: %v", err)
 		return
 	}
 	_ = clipboard.WriteAll(content)

@@ -1,4 +1,4 @@
-package llm
+package commands
 
 import (
 	"bytes"

@@ -1,4 +1,4 @@
-package readme
+package commands
 
 import (
 	"context"
@@ -8,10 +8,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"repokit/pkg/llm"
-	"repokit/pkg/log"
-
+	"repokit/pkg/core"
 	"gopkg.in/yaml.v3"
 )
 
@@ -27,35 +24,35 @@ type projectMetadata struct {
 	FileStats    map[string]int    `json:"file_stats"`
 }
 
-// Run executes the codebase analysis and generates a structured README using an LLM.
-func Run(ctx context.Context, providerName, model, apiKey string) {
-	log.Info("Starting codebase analysis for README generation...")
+// RunGenerateReadme executes the readme generation logic.
+func RunGenerateReadme(ctx context.Context, providerName, model, apiKey, output string) {
+	core.Info("Starting codebase analysis for README generation...")
 
 	meta, err := gatherContext()
 	if err != nil {
-		log.Fatal("Analysis failed: %v", err)
+		core.Fatal("Analysis failed: %v", err)
 	}
 
-	log.Info("Generating README using %s...", providerName)
+	core.Info("Generating README using %s...", providerName)
 
-	p, err := llm.NewProvider(providerName, model, apiKey)
+	p, err := NewProvider(providerName, model, apiKey)
 	if err != nil {
-		log.Fatal("Failed to initialize LLM provider: %v", err)
+		core.Fatal("Failed to initialize LLM provider: %v", err)
 	}
 
 	prompt := buildOpinionatedPrompt(meta)
 
 	resp, err := p.Generate(ctx, prompt)
 	if err != nil {
-		log.Fatal("LLM generation failed: %v", err)
+		core.Fatal("LLM generation failed: %v", err)
 	}
 
 	outFile := "README.md"
 	if err := os.WriteFile(outFile, []byte(resp), 0644); err != nil {
-		log.Fatal("Failed to write to %s: %v", outFile, err)
+		core.Fatal("Failed to write to %s: %v", outFile, err)
 	}
 
-	log.Success("Generated %s successfully!", outFile)
+	core.Success("Generated %s successfully!", outFile)
 }
 
 func gatherContext() (*projectMetadata, error) {

@@ -1,11 +1,10 @@
 // Package cli provides the command-line interface, task runner, and UI logging utilities.
-package log
+package core
 
 import (
 	"fmt"
 	"os"
 	"strings"
-
 	"github.com/charmbracelet/lipgloss"
 )
 

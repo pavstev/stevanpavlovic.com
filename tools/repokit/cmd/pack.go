@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"repokit/pkg/pack"
-
+	"repokit/pkg/commands"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +14,7 @@ var packCmd = &cobra.Command{
 		if len(args) > 0 {
 			targetDir = args[0]
 		}
-		pack.Run(targetDir)
+		commands.RunPack(targetDir)
 	},
 }
 

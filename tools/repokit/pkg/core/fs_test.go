@@ -1,4 +1,4 @@
-package utils
+package core
 
 import (
 	"os"
@@ -12,6 +12,7 @@ func TestResolveFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	tmpDir, _ = filepath.Abs(tmpDir)
 	defer os.RemoveAll(tmpDir)
 
 	// Create some files
@@ -61,8 +62,9 @@ func TestResolveFiles(t *testing.T) {
 			if err != nil {
 				t.Errorf("ResolveFiles(%q) error: %v", tt.pattern, err)
 			}
+			t.Logf("Pattern: %q, Matches: %v", tt.pattern, matches)
 			if len(matches) != tt.expected {
-				t.Errorf("ResolveFiles(%q) got %d matches, expected %d", tt.pattern, len(matches), tt.expected)
+				t.Errorf("ResolveFiles(%q) got %d matches, expected %d. matches: %v", tt.pattern, len(matches), tt.expected, matches)
 			}
 		})
 	}
@@ -90,6 +92,16 @@ func TestIsBinary(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	emptyPath := filepath.Join(tmpDir, "empty.txt")
+	if err := os.WriteFile(emptyPath, []byte(""), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Test non-existent file
+	if !IsBinary("non-existent-file") {
+		t.Error("IsBinary() on non-existent file should return true (conservative)")
+	}
+
 	if IsBinary(textPath) {
 		t.Errorf("IsBinary(%q) returned true, expected false for text file", textPath)
 	}
@@ -100,5 +112,9 @@ func TestIsBinary(t *testing.T) {
 
 	if IsBinary(goPath) {
 		t.Errorf("IsBinary(%q) returned true, expected false for .go file", goPath)
+	}
+
+	if IsBinary(emptyPath) {
+		t.Errorf("IsBinary(%q) returned true, expected false for empty file", emptyPath)
 	}
 }

@@ -1,11 +1,9 @@
-package schema
+package core
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
-
-	"repokit/pkg/config"
 
 	"github.com/swaggest/jsonschema-go"
 )
@@ -36,20 +34,20 @@ func TasksPropertyInterceptor() func(params jsonschema.InterceptPropParams) erro
 	}
 }
 
-// exportTasksSchema generates the tasks.yaml configuration schema.
+// exportTasksSchema generates the tasks.yaml configuration
 func exportTasksSchema(outPath string) error {
 	reflector := jsonschema.Reflector{}
 
-	schema, err := reflector.Reflect(config.Config{}, jsonschema.InterceptProp(TasksPropertyInterceptor()))
+	schema, err := reflector.Reflect(Config{}, jsonschema.InterceptProp(TasksPropertyInterceptor()))
 	if err != nil {
 		return fmt.Errorf("failed to reflect schema: %w", err)
 	}
 
-	schemaDraft := "http://json-schema.org/draft-07/schema#"
+	schemaDraft := "http://json-org/draft-07/schema#"
 	title := "Repokit Task Configuration"
 	description := "Unified Configuration schema for Repokit task runner."
 
-	schema.Schema = &schemaDraft
+	schema.ID = &schemaDraft
 	schema.Title = &title
 	schema.Description = &description
 

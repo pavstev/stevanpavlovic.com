@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"repokit/pkg/svg"
-
 	"github.com/spf13/cobra"
 )
 

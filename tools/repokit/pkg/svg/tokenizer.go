@@ -16,7 +16,7 @@ type Command struct {
 }
 
 // Robust regex for tokenizing SVG paths (handles scientific notation and tight spacing).
-var cmdRegex = regexp.MustCompile(`([a-df-z])|([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)`)
+var cmdRegex = regexp.MustCompile(`(?i)([a-z])|([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)`)
 
 // ParsePath tokenizes a 'd' attribute into a slice of Commands.
 func ParsePath(d string) []Command {

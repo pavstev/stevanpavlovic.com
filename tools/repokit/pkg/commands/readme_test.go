@@ -1,4 +1,4 @@
-package readme
+package commands
 
 import (
 	"sort"
@@ -106,6 +106,32 @@ func TestBuildOpinionatedPrompt(t *testing.T) {
 	}
 }
 
+func TestDetectStackFull(t *testing.T) {
+	deps := map[string]string{
+		"astro": "3.0",
+		"react": "18.0",
+	}
+	stack := []string{}
+	detectStack(deps, &stack)
+
+	foundAstro := false
+	foundReact := false
+	for _, s := range stack {
+		if s == "Astro" { foundAstro = true }
+		if s == "React" { foundReact = true }
+	}
+	if !foundAstro || !foundReact {
+		t.Errorf("detectStack failed: %+v", stack)
+	}
+}
+
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || s[:len(substr)] == substr || (len(s) > len(substr) && contains(s[1:], substr)))
+	if len(substr) == 0 { return true }
+	if len(s) < len(substr) { return false }
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
 }

@@ -11,10 +11,7 @@ import (
 	"sync/atomic"
 	"syscall"
 	"time"
-
-	"repokit/pkg/log"
-	"repokit/pkg/utils"
-
+	"repokit/pkg/core"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/svg"
@@ -101,7 +98,7 @@ func processPathData(d string) (optimizedDS string, nodesBefore int, nodesAfter 
 // ─── Parallel Pipeline Execution ────────────────────────────────────────────
 
 func Optimize(pattern string) error {
-	files, err := utils.ResolveFiles(pattern)
+	files, err := core.ResolveFiles(pattern)
 	if err != nil {
 		return err
 	}
@@ -159,7 +156,7 @@ func (o *optimizer) run() error {
 	close(done)
 
 	if ctx.Err() != nil {
-		log.Info("\n%s", goldStyle.Render("Interrupted by user."))
+		core.Info("\n%s", goldStyle.Render("Interrupted by user."))
 		return ctx.Err()
 	}
 

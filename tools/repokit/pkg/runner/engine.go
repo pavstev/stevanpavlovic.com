@@ -2,10 +2,7 @@ package runner
 
 import (
 	"regexp"
-
-	"repokit/pkg/config"
-	"repokit/pkg/log"
-
+	"repokit/pkg/core"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -38,9 +35,9 @@ func RunTask(id string, data any, visited map[string]bool) {
 	}
 	visited[id] = true
 
-	task, err := config.GetTaskByID(id)
+	task, err := core.GetTaskByID(id)
 	if err != nil {
-		log.Fatal("%v", err)
+		core.Fatal("%v", err)
 	}
 
 	// 1. Pre-Run Hooks
@@ -52,9 +49,9 @@ func RunTask(id string, data any, visited map[string]bool) {
 	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
 		RunPipeline(id, &task, visited)
 	} else {
-		cmdStr, err := config.EvaluateCommand(task.Command, data)
+		cmdStr, err := core.EvaluateCommand(task.Command, data)
 		if err != nil {
-			log.Fatal("Template error in %q: %v", id, err)
+			core.Fatal("Template error in %q: %v", id, err)
 		}
 
 		if task.Interactive {
@@ -71,8 +68,8 @@ func RunTask(id string, data any, visited map[string]bool) {
 }
 
 // RunPipeline executes a set of tasks based on the TaskConfig type.
-func RunPipeline(id string, cfg *config.TaskConfig, visited map[string]bool) {
-	log.Info("Pipeline: %s", cfg.Name)
+func RunPipeline(id string, cfg *core.TaskConfig, visited map[string]bool) {
+	core.Info("Pipeline: %s", cfg.Name)
 
 	if cfg.Type == "batch" || cfg.Parallel {
 		workers := cfg.Workers

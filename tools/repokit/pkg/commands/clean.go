@@ -1,4 +1,4 @@
-package clean
+package commands
 
 import (
 	"bufio"
@@ -6,41 +6,40 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	"repokit/pkg/log"
+	"repokit/pkg/core"
 	"repokit/pkg/runner"
 )
 
-// Run executes the project clean logic.
+// RunClean executes the project clean logic.
 // If force is true, it skips the git status check and confirmation prompt.
-func Run(force bool) {
-	log.Step("Checking clean preconditions...")
+func RunClean(force bool) {
+	core.Step("Checking clean preconditions...")
 
 	if !force {
 		// 1. Check git tree is clean (no uncommitted changes)
 		statusOut, err := exec.Command("git", "status", "--porcelain").Output()
 		if err != nil {
-			log.Fatal("Failed to run git status: %v", err)
+			core.Fatal("Failed to run git status: %v", err)
 		}
 		if len(strings.TrimSpace(string(statusOut))) > 0 {
-			log.Error("Git working tree is dirty — there are uncommitted changes.")
-			log.Info("Commit or stash your changes first, or use --force to skip this check.")
-			log.Info("Dirty files:\n%s", strings.TrimSpace(string(statusOut)))
+			core.Error("Git working tree is dirty — there are uncommitted changes.")
+			core.Info("Commit or stash your changes first, or use --force to skip this check.")
+			core.Info("Dirty files:\n%s", strings.TrimSpace(string(statusOut)))
 			os.Exit(1)
 		}
 
 		// 2. Show what would be deleted
 		listOut, err := exec.Command("git", "clean", "-Xnd", "-e", ".env.local").Output()
 		if err != nil {
-			log.Fatal("Failed to list files to clean: %v", err)
+			core.Fatal("Failed to list files to clean: %v", err)
 		}
 		fileList := strings.TrimSpace(string(listOut))
 		if fileList == "" {
-			log.Success("Nothing to clean — working tree already clean.")
+			core.Success("Nothing to clean — working tree already clean.")
 			return
 		}
 
-		log.Warning("The following files will be permanently deleted:")
+		core.Warning("The following files will be permanently deleted:")
 		fmt.Println()
 		for _, line := range strings.Split(fileList, "\n") {
 			fmt.Println("  " + line)
@@ -53,16 +52,16 @@ func Run(force bool) {
 		scanner.Scan()
 		answer := strings.ToLower(strings.TrimSpace(scanner.Text()))
 		if answer != "y" && answer != "yes" {
-			log.Info("Aborted.")
+			core.Info("Aborted.")
 			return
 		}
 	}
 
-	log.Step("Cleaning project...")
+	core.Step("Cleaning project...")
 	runner.RunInteractive("Git Clean", "git clean -Xfd -e .env.local", ".")
 
-	log.Step("Reinstalling dependencies...")
+	core.Step("Reinstalling dependencies...")
 	runner.RunInteractive("PNPM Install", "pnpm install", ".")
 
-	log.Success("Project cleaned and dependencies reinstalled.")
+	core.Success("Project cleaned and dependencies reinstalled.")
 }

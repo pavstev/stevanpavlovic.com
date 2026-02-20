@@ -132,16 +132,8 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": [
-        "eslint",
-        "eslint-plugin-import",
-        "eslint-plugin-react"
-      ]
+      "allowAny": ["eslint", "eslint-plugin-import", "eslint-plugin-react"]
     },
-    "onlyBuiltDependencies": [
-      "core-js",
-      "lefthook",
-      "nx"
-    ]
+    "onlyBuiltDependencies": ["core-js", "lefthook", "nx"]
   }
 }

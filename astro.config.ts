@@ -12,7 +12,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
-import viteTsconfigPaths from 'vite-tsconfig-paths';
+import viteTsconfigPaths from "vite-tsconfig-paths";
 
 import { SITE_CONFIG } from "./src/constants";
 import { resumeGenerator } from "./src/integrations/resume-generator";
@@ -91,7 +91,7 @@ export default defineConfig({
         "@constants": "./src/constants.ts",
         "@server/": "./src/server/",
       },
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+      extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
     },
 
     ssr: {

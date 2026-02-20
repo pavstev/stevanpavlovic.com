@@ -12,6 +12,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 import { SITE_CONFIG } from "./src/constants";
 import { resumeGenerator } from "./src/integrations/resume-generator";
@@ -81,7 +82,7 @@ export default defineConfig({
     define: {
       __dirname: JSON.stringify(""),
     },
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), viteTsconfigPaths()],
     resolve: {
       alias: {
         "@assets/": "./src/assets/",

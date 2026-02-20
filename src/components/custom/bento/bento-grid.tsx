@@ -2,7 +2,7 @@
 
 import type { FC } from "react";
 
-import { cn } from "@client/utils.ts";
+import { cn } from "@client/utils";
 import { motion, type Variants } from "framer-motion";
 
 import type { BentoItem } from "./bento-types";

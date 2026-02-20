@@ -126,13 +126,22 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0",
     "unlighthouse": "^0.17.4",
+    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18",
     "wrangler": "^4.66.0"
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": ["eslint", "eslint-plugin-import", "eslint-plugin-react"]
+      "allowAny": [
+        "eslint",
+        "eslint-plugin-import",
+        "eslint-plugin-react"
+      ]
     },
-    "onlyBuiltDependencies": ["core-js", "lefthook", "nx"]
+    "onlyBuiltDependencies": [
+      "core-js",
+      "lefthook",
+      "nx"
+    ]
   }
 }

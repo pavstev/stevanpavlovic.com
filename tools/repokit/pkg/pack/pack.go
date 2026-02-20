@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"repokit/pkg/cliutils"
+	"repokit/pkg/cli"
 
 	"github.com/atotto/clipboard"
 	"github.com/go-git/go-git/v5"
@@ -94,13 +94,13 @@ func Run(targetDir string) {
 			if info, err := os.Stat(alt); err == nil && info.IsDir() {
 				targetDir = alt
 			} else {
-				cliutils.Error(fmt.Sprintf("Directory not found: %s", targetDir))
+				cli.Error(fmt.Sprintf("Directory not found: %s", targetDir))
 				return
 			}
 		}
 	}
 
-	cliutils.Step(fmt.Sprintf("Bundling: %s", targetDir))
+	cli.Step(fmt.Sprintf("Bundling: %s", targetDir))
 
 	// Clean up old output files
 	files, _ := filepath.Glob("pack_output_*.md")
@@ -109,7 +109,7 @@ func Run(targetDir string) {
 	}
 
 	gitStatus := getGitStatus(cwd)
-	cliutils.Info(gitStatus)
+	cli.Info(gitStatus)
 
 	ctx := &Context{
 		Cwd:           cwd,
@@ -130,15 +130,15 @@ func Run(targetDir string) {
 
 	err := os.WriteFile(outputPath, []byte(md.String()), 0644)
 	if err != nil {
-		cliutils.Error(fmt.Sprintf("Failed to write output: %v", err))
+		cli.Error(fmt.Sprintf("Failed to write output: %v", err))
 		return
 	}
 
 	_ = clipboard.WriteAll(md.String())
 
-	cliutils.Success(fmt.Sprintf("Success! Bundled %d files.", ctx.FileIndex))
-	cliutils.Info(fmt.Sprintf("Output saved to: %s", outputPath))
-	cliutils.Info("Content copied to clipboard.")
+	cli.Success(fmt.Sprintf("Success! Bundled %d files.", ctx.FileIndex))
+	cli.Info(fmt.Sprintf("Output saved to: %s", outputPath))
+	cli.Info("Content copied to clipboard.")
 }
 
 func generateMarkdown(ctx *Context, targetDir, cwd, gitStatus string) strings.Builder {

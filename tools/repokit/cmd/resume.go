@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"repokit/pkg/cliutils"
+	"repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )
@@ -13,11 +13,11 @@ var resumeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		switch args[0] {
 		case "export":
-			cliutils.Step("Exporting resume...")
-			cliutils.RunTask("resume_export", nil, map[string]bool{})
-			cliutils.Success("Resume exported to resume.pdf")
+			cli.Step("Exporting resume...")
+			cli.RunTask("resume_export", nil, map[string]bool{})
+			cli.Success("Resume exported to resume.pdf")
 		default:
-			cliutils.Fatal("Unknown command: " + args[0])
+			cli.Fatal("Unknown command: " + args[0])
 		}
 	},
 }

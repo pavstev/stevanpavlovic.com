@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"repokit/pkg/cliutils"
+	"repokit/pkg/cli"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/tdewolff/minify/v2"
@@ -245,7 +245,7 @@ func (o *optimizer) report() error {
 	if failed == 0 {
 		reduction := 0.0
 		if tBefore > 0 { reduction = 100 * (1 - float64(tAfter)/float64(tBefore)) }
-		cliutils.Success(fmt.Sprintf("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction))
+		cli.Success(fmt.Sprintf("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction))
 		return nil
 	}
 	return fmt.Errorf("failed to process %d files", failed)

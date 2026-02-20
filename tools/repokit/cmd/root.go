@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"repokit/pkg/cliutils"
+	"repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )
@@ -21,10 +21,10 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&cliutils.Quiet, "quiet", "q", false, "suppress output")
+	rootCmd.PersistentFlags().BoolVarP(&cli.Quiet, "quiet", "q", false, "suppress output")
 
 	// Dynamically register Batch Commands
-	config := cliutils.GetConfig()
+	config := cli.GetConfig()
 	for id, batch := range config.Batches {
 		batchID := id // capture for closure
 		batchCfg := batch
@@ -33,7 +33,7 @@ func init() {
 			Use:   batchID,
 			Short: batchCfg.Description,
 			Run: func(cmd *cobra.Command, args []string) {
-				cliutils.RunBatch(batchID, batchCfg)
+				cli.RunBatch(batchID, batchCfg)
 			},
 		}
 		rootCmd.AddCommand(cmd)
@@ -45,7 +45,7 @@ func init() {
 		Short: "Execute an atomic task by ID",
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			cliutils.RunTask(args[0], nil, nil)
+			cli.RunTask(args[0], nil, nil)
 		},
 	})
 }

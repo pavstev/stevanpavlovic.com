@@ -5,8 +5,8 @@ import (
 	"os"
 	"sort"
 
-	"repokit/pkg/cliutils"
-	"repokit/pkg/cmdutil"
+	"repokit/pkg/cli"
+	"repokit/pkg/command"
 
 	"github.com/spf13/cobra"
 )
@@ -39,16 +39,16 @@ To list all available task IDs, run:
 
 			taskID := args[0]
 			// Using the public RunTask API with 2 arguments
-			cliutils.RunTask(taskID, nil, map[string]bool{})
+			cli.RunTask(taskID, nil, map[string]bool{})
 		},
 	}
 	cmd.Flags().Bool("list", false, "list all available task IDs")
-	cmdutil.AddToRoot(cmd)
+	command.AddToRoot(cmd)
 }
 
 func listTasks() {
 	// Dynamically pull task IDs from the config
-	config := cliutils.GetConfig()
+	config := cli.GetConfig()
 
 	ids := make([]string, 0, len(config.Tasks))
 	for id := range config.Tasks {

@@ -1,9 +1,9 @@
-package cmdutil
+package command
 
 import (
 	"sync"
 
-	"repokit/pkg/cliutils"
+	"repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )
@@ -30,7 +30,7 @@ func NewDataCommand(use, short string, taskID string) *cobra.Command {
 				ID:      id,
 				Args:    args,
 			}
-			cliutils.RunTask(taskID, data, nil)
+			cli.RunTask(taskID, data, nil)
 		},
 	}
 
@@ -46,7 +46,7 @@ func NewStepCommand(use, short string, taskID string) *cobra.Command {
 		Use:   use,
 		Short: short,
 		Run: func(cmd *cobra.Command, args []string) {
-			cliutils.RunTask(taskID, &CommandData{Args: args}, nil)
+			cli.RunTask(taskID, &CommandData{Args: args}, nil)
 		},
 	}
 }

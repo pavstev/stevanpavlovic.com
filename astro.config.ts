@@ -18,7 +18,6 @@ import Sonda from 'sonda/astro';
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 import { SITE_CONFIG } from "./src/constants";
-import aiContextGenerator from "./src/integrations/ai-context-generator"; // Import the new integration
 import { resumeGenerator } from "./src/integrations/resume-generator";
 
 export default defineConfig({
@@ -48,6 +47,9 @@ export default defineConfig({
   },
   integrations: [
     resumeGenerator(),
+    astroExpressiveCode({
+      plugins: [pluginCollapsible()],
+    }),
     mdx(),
     sitemap(),
     favicons({
@@ -64,11 +66,7 @@ export default defineConfig({
       },
     }),
     react(),
-    astroExpressiveCode({
-      plugins: [pluginCollapsible()],
-    }),
     Sonda(),
-    aiContextGenerator(), // Enable the new integration
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

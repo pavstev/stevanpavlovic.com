@@ -61,6 +61,13 @@ tasks:
     command: ${go} test ./... -v
     cwd: ${rk_dir}
 
+  optimize_svg:
+    name: Optimize SVGs
+    type: single
+    pre_msg: Optimizing project SVG assets...
+    on_error: Failed to optimize SVGs.
+    command: ${rk_bin} optimize-svg src/assets/**/*.svg
+
   # --- Schema ---
   format_schema:
     name: Format Schema
@@ -152,5 +159,15 @@ tasks:
     type: batch
     pre_msg: Running complete project pipeline...
     on_error: One or more pipelines failed.
-    tasks: [build_go, generate_schema, format, lint, check, build, test, knip]
+    tasks:
+      - build_go
+      - export_schema
+      - format_schema
+      - format_prettier
+      - lint_eslint
+      - knip
+      - optimize_svg
+      - check_astro
+      - check_go
+      - test_go
     parallel: false

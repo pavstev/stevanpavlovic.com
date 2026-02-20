@@ -22,10 +22,10 @@
   },
   "type": "module",
   "scripts": {
-    "all": "pnpm go-build && pr optimize-svg src/assets/**/*.svg && ./rs task all",
-    "repokit": "./tools/repokit/dist/repokit",
+    "all": "pnpm go-build && ./bin/repokit optimize-svg src/assets/**/*.svg && ./bin/repokit all",
+    "repokit": "./bin/repokit",
     "dev": "astro dev",
-    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o dist/repokit main.go > /dev/null && cd - > /dev/null",
+    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ../../bin/repokit main.go > /dev/null && cd - > /dev/null",
     "go-install": "cd tools/repokit && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm go-build && pnpm repokit setup",

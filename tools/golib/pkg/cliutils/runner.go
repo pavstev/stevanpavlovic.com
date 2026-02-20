@@ -18,7 +18,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types & Constants ───────────────────────────────────────────────────────
 
 type Task struct {
 	Name    string
@@ -42,8 +42,10 @@ const (
 	statusCancelled = "cancelled"
 )
 
-var tailStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
-var ansiRegex = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
+var (
+	tailStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
+	ansiRegex = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
+)
 
 // ─── Shared Helpers ───────────────────────────────────────────────────────────
 
@@ -53,10 +55,12 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
 	}
+	// Setpgid ensures the shell and its children are in the same process group
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	cmd.Cancel = func() error {
 		pgid, err := syscall.Getpgid(cmd.Process.Pid)
 		if err == nil {
+			// Kill the entire process group with a negative PGID
 			return syscall.Kill(-pgid, syscall.SIGKILL)
 		}
 		return cmd.Process.Kill()
@@ -65,20 +69,28 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 }
 
 func formatTailLine(line string) string {
-	// Strip ANSI codes to prevent terminal corruption when truncated
-	cleanLine := ansiRegex.ReplaceAllString(line, "")
-	cleanLine = strings.ReplaceAll(cleanLine, "\r", "")
-	cleanLine = strings.ReplaceAll(cleanLine, "\t", "  ")
+	// 1. Strip ANSI codes to calculate actual visible length
+	clean := ansiRegex.ReplaceAllString(line, "")
+	clean = strings.Map(func(r rune) rune {
+		if r == '\r' || r == '\n' {
+			return -1
+		}
+		if r == '\t' {
+			return ' '
+		}
+		return r
+	}, clean)
 
-	// Convert to runes for safe multi-byte/emoji truncation
-	runes := []rune(cleanLine)
-
-	// Max 75 chars: prevents wrapping on standard 80-column terminals.
-	// If a line wraps, \033[A cursor math breaks and causes duplicate lines!
-	if len(runes) > 75 {
-		return tailStyle.Render("  │ " + string(runes[:72]) + "...")
+	// 2. Truncate strictly to prevent terminal wrapping which breaks cursor math (\033[A)
+	runes := []rune(clean)
+	const maxLen = 85
+	if len(runes) > maxLen {
+		clean = string(runes[:maxLen-3]) + "..."
+	} else {
+		clean = string(runes)
 	}
-	return tailStyle.Render("  │ " + string(runes))
+
+	return tailStyle.Render("  │ " + clean)
 }
 
 func getFallbackError(output, errorOut string, err error) string {
@@ -88,15 +100,15 @@ func getFallbackError(output, errorOut string, err error) string {
 	}
 	if errStr == "" {
 		if err != nil {
-			errStr = fmt.Sprintf("Task failed with no output.\nSystem Error: %v", err)
+			errStr = fmt.Sprintf("Process exited with error: %v", err)
 		} else {
-			errStr = "Task failed with no output."
+			errStr = "Process failed silently with no output."
 		}
 	}
 	return errStr
 }
 
-// ─── Sequential Runners ───────────────────────────────────────────────────────
+// ─── Sequential Runner ────────────────────────────────────────────────────────
 
 func runCommand(name, command, cwd string) {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -124,7 +136,7 @@ func runCommand(name, command, cwd string) {
 		}
 	}()
 
-	ticker := time.NewTicker(100 * time.Millisecond)
+	ticker := time.NewTicker(80 * time.Millisecond)
 	defer ticker.Stop()
 	start := time.Now()
 	done := make(chan struct{})
@@ -137,7 +149,7 @@ func runCommand(name, command, cwd string) {
 				return
 			case <-ticker.C:
 				mu.Lock()
-				currentTail := append([]string(nil), tail...) // copy tail safely
+				currentTail := append([]string(nil), tail...)
 				mu.Unlock()
 
 				if !firstRender {
@@ -164,27 +176,27 @@ func runCommand(name, command, cwd string) {
 
 	if err != nil {
 		if ctx.Err() != nil {
-			Error(fmt.Sprintf("%s was cancelled.", name))
+			Error(fmt.Sprintf("%s cancelled.", name))
 			osExit(1)
 		}
-		if _, isExitError := err.(*exec.ExitError); !isExitError {
+		if _, ok := err.(*exec.ExitError); !ok {
 			Fatal(err.Error())
 		}
 	}
 
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
-		Success(name + " completed.")
+		Success(name + " finished.")
 		output := strings.TrimSpace(outBuf.String())
 		if output != "" && !Quiet {
 			lines := strings.Split(output, "\n")
-			if len(lines) > 8 {
-				lines = lines[len(lines)-8:]
+			if len(lines) > 10 {
+				lines = lines[len(lines)-10:]
 			}
 			BoxOutput(name, strings.Join(lines, "\n"), lipgloss.Color("6"))
 		}
 	} else {
 		Error(name + " failed.")
-		BoxOutput("Error Detail: "+name, getFallbackError(outBuf.String(), "", err), lipgloss.Color("1"))
+		BoxOutput("Failure Detail: "+name, getFallbackError(outBuf.String(), "", err), lipgloss.Color("1"))
 		osExit(1)
 	}
 }
@@ -192,11 +204,11 @@ func runCommand(name, command, cwd string) {
 func RunStepByID(id string, data any) {
 	step, err := GetStepByID(id)
 	if err != nil {
-		Fatal(fmt.Sprintf("Step %q not found: %v", id, err))
+		Fatal(fmt.Sprintf("Task ID %q not found: %v", id, err))
 	}
 	cmdStr, err := EvaluateCommand(step.Command, data)
 	if err != nil {
-		Fatal(fmt.Sprintf("Failed to map step %q: %v", id, err))
+		Fatal(fmt.Sprintf("Template error in %q: %v", id, err))
 	}
 	runCommand(step.Name, cmdStr, step.Cwd)
 }
@@ -206,11 +218,9 @@ func RunStep(name, command string) {
 }
 
 func RunInteractive(name, command, cwd string) {
-	Step("Running: " + name)
+	Step("Interactive: " + name)
 
-	// FIX: We do NOT use NotifyContext here. We temporarily catch SIGINT so
-	// the Go CLI doesn't crash, allowing the terminal to naturally pass
-	// the SIGINT to the interactive child process (e.g. Python).
+	// We allow the terminal to handle the interrupt for interactive sessions
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	defer signal.Stop(c)
@@ -222,13 +232,13 @@ func RunInteractive(name, command, cwd string) {
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		Error(fmt.Sprintf("%s failed: %v", name, err))
+		Error(fmt.Sprintf("%s exited with error: %v", name, err))
 		osExit(1)
 	}
-	Success(name + " completed.")
+	Success(name + " done.")
 }
 
-// ─── Parallel Queue ───────────────────────────────────────────────────────────
+// ─── Parallel Queue Runner ───────────────────────────────────────────────────
 
 type taskState struct {
 	task      Task
@@ -261,7 +271,7 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 		return
 	}
 
-	Info(fmt.Sprintf("Starting task queue with %d workers...", workerCount))
+	Info(fmt.Sprintf("Queue initialized: %d tasks | %d workers", len(tasks), workerCount))
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -279,23 +289,18 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 		q.states[i] = &taskState{task: tasks[i], status: statusQueued}
 		q.taskChan <- i
 	}
-
-	// FIX: We MUST close the channel immediately after queuing!
-	// This tells the workers to gracefully exit once the queue is empty.
 	close(q.taskChan)
 
-	// FIX: Use a buffer of 2 so a double Ctrl+C can bypass hangs
 	sigChan := make(chan os.Signal, 2)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		sig := <-sigChan
-		Info(fmt.Sprintf("\nReceived %v, stopping tasks... (Press Ctrl+C again to force quit)", sig))
+		Info(fmt.Sprintf("\nInterrupt (%v) received. Draining workers...", sig))
 		q.mu.Lock()
 		q.interrupted = true
 		q.mu.Unlock()
 		q.cancel()
 
-		// If a stuck subprocess ignores the SIGKILL, pressing Ctrl+C again forces exit immediately
 		<-sigChan
 		osExit(1)
 	}()
@@ -308,12 +313,12 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 	q.renderUI()
 
 	if q.interrupted {
-		fmt.Println("\n" + bold.Render("PIPELINE INTERRUPTED:"))
+		fmt.Println("\n" + bold.Render("PIPELINE CANCELLED"))
 		q.mu.Lock()
 		for i := range q.results {
 			if s := q.states[i].status; s == statusActive || s == statusQueued {
 				q.states[i].status = statusCancelled
-				BoxOutput("Cancelled: "+q.tasks[i].Name, "Task was cancelled due to interrupt", lipgloss.Color("8"))
+				BoxOutput("Cancelled: "+q.tasks[i].Name, "Task was terminated by user.", lipgloss.Color("8"))
 			}
 		}
 		q.mu.Unlock()
@@ -321,7 +326,7 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 	}
 
 	if q.failed {
-		fmt.Println("\n" + bold.Render("PIPELINE FAILED:"))
+		fmt.Println("\n" + bold.Render("PIPELINE FAILED"))
 		q.mu.Lock()
 		for i, res := range q.results {
 			if q.states[i].status == statusFailed {
@@ -332,7 +337,7 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 		osExit(1)
 	}
 
-	Success("All tasks completed successfully!")
+	Success("Pipeline execution successful.")
 }
 
 func (q *queueContext) worker() {
@@ -346,7 +351,6 @@ func (q *queueContext) worker() {
 		}
 
 		q.mu.Lock()
-		// If another task failed and we aren't continuing, skip this task
 		if q.failed && !q.continueOnError {
 			q.states[idx].status = statusCancelled
 			q.results[idx] = TaskResult{Name: q.tasks[idx].Name}
@@ -399,16 +403,14 @@ func (q *queueContext) finalizeTask(idx int, err error, output, errorOut string)
 
 	s := q.states[idx]
 	s.elapsed = time.Since(s.startTime)
-	s.tail = nil // clear tail on finish
+	s.tail = nil
 
 	if err != nil {
 		if q.ctx.Err() != nil || q.interrupted {
 			s.status = statusCancelled
 		} else {
 			s.status = statusFailed
-			if !q.failed {
-				q.failed = true
-			}
+			q.failed = true
 		}
 	} else {
 		s.status = statusCompleted
@@ -424,7 +426,7 @@ func (q *queueContext) finalizeTask(idx int, err error, output, errorOut string)
 }
 
 func (q *queueContext) renderUI() {
-	ticker := time.NewTicker(120 * time.Millisecond)
+	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 	firstRender, lineCount := true, 0
 

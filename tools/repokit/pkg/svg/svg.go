@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"regexp"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
@@ -84,17 +83,17 @@ func processPathData(d string) (optimizedDS string, nodesBefore int, nodesAfter 
 
 	// 3. Mathematical Decimation (RDP Pass)
 	// Removes redundant data points while preserving geometric intent
-	beautified := SimplifyPoints(points, epsilon)
+	beautified := SimplifyPath(points, epsilon)
 
 	// 4. Primitive Analysis & Recovery
 	// If the points describe a circular arc, we could replace with an arc command
 	// For now, we perform regularization on the decimated set
-	beautified = RegularizePoints(beautified, snapAngle)
+	beautified = SnapPointsToAxes(beautified, snapAngle)
 
 	// 5. Intelligent Serialization
 	// The Geometer now calculates the entropy of Absolute vs Relative pathing
 	// and picks the byte-optimal representation for every segment.
-	newD := SerializePoints(beautified, precision)
+	newD := FormatPathData(beautified, precision)
 
 	return newD, nodesBefore, len(beautified)
 }
@@ -241,60 +240,5 @@ func (o *optimizer) updateWorkerState(id int, path string, active bool) {
 	o.workerStates[id].path, o.workerStates[id].active, o.workerStates[id].startTime = path, active, time.Now()
 }
 
-func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
-	ticker := time.NewTicker(uiTickRate)
-	defer ticker.Stop()
-	lines, first := 0, true
-	for {
-		select {
-		case <-done:
-			return
-		case <-ticker.C:
-			if !first {
-				log.Info("%s", strings.Repeat("\033[A\033[2K", lines))
-			}
-			first, lines = false, o.drawFrame(start)
-		}
-	}
-}
 
-func (o *optimizer) drawFrame(start time.Time) int {
-	o.mu.Lock()
-	defer o.mu.Unlock()
-	p := atomic.LoadInt32(&o.processed)
-	log.Info("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
-	for _, s := range o.workerStates {
-		if !s.active {
-			log.Info("%s", formatProgressLine(tailStyle.Render("•"), "idle", ""))
-		} else {
-			log.Info("%s", formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
-		}
-	}
-	return len(o.workerStates) + 1
-}
 
-func (o *optimizer) report() error {
-	failed, tBefore, tAfter := atomic.LoadInt32(&o.failedCount), 0, 0
-	for _, r := range o.results {
-		tBefore += r.NodesBefore
-		tAfter += r.NodesAfter
-	}
-
-	if failed == 0 {
-		reduction := 0.0
-		if tBefore > 0 {
-			reduction = 100 * (1 - float64(tAfter)/float64(tBefore))
-		}
-		log.Success("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction)
-		return nil
-	}
-	return fmt.Errorf("failed to process %d files", failed)
-}
-
-func formatProgressLine(icon, path, suffix string) string {
-	clean := utils.CleanANSI(path)
-	if len([]rune(clean)) > pathMaxLen {
-		path = "..." + string([]rune(clean)[len([]rune(clean))-(pathMaxLen-3):])
-	}
-	return fmt.Sprintf("  %s %-60s %s", icon, path, tailStyle.Render(suffix))
-}

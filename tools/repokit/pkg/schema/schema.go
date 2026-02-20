@@ -18,12 +18,10 @@ var Registry = map[string]Exporter{
 	"tasks": exportTasksSchema,
 }
 
-// exportTasksSchema generates the tasks.yaml configuration schema.
-func exportTasksSchema(outPath string) error {
-	reflector := jsonschema.Reflector{}
-
-	// Intercept property reflection as a Reflect option to enforce strict patternProperties
-	schema, err := reflector.Reflect(config.Config{}, jsonschema.InterceptProp(func(params jsonschema.InterceptPropParams) error {
+// TasksPropertyInterceptor returns an InterceptProp hook that enforces strict patternProperties
+// on the "tasks" field of the schema, disabling arbitrary random keys.
+func TasksPropertyInterceptor() func(params jsonschema.InterceptPropParams) error {
+	return func(params jsonschema.InterceptPropParams) error {
 		if params.Name == "tasks" && params.PropertySchema != nil {
 			if params.PropertySchema.AdditionalProperties != nil {
 				params.PropertySchema.PatternProperties = map[string]jsonschema.SchemaOrBool{
@@ -35,8 +33,14 @@ func exportTasksSchema(outPath string) error {
 			}
 		}
 		return nil
-	}))
+	}
+}
 
+// exportTasksSchema generates the tasks.yaml configuration schema.
+func exportTasksSchema(outPath string) error {
+	reflector := jsonschema.Reflector{}
+
+	schema, err := reflector.Reflect(config.Config{}, jsonschema.InterceptProp(TasksPropertyInterceptor()))
 	if err != nil {
 		return fmt.Errorf("failed to reflect schema: %w", err)
 	}
@@ -54,12 +58,17 @@ func exportTasksSchema(outPath string) error {
 		return fmt.Errorf("failed to marshal schema: %w", err)
 	}
 
+	return WriteSchemaFile(outPath, j)
+}
+
+// WriteSchemaFile handles the output logic: stdout if empty path, or write to file.
+func WriteSchemaFile(outPath string, data []byte) error {
 	if outPath == "" {
-		fmt.Println(string(j))
+		fmt.Println(string(data))
 		return nil
 	}
 
-	err = os.WriteFile(outPath, j, 0644)
+	err := os.WriteFile(outPath, data, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write schema file: %w", err)
 	}

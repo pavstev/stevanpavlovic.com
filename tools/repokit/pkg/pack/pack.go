@@ -19,12 +19,34 @@ import (
 var slugifyRegexp = regexp.MustCompile(`[^a-z0-9]+`)
 
 // Run executes the pack command to bundle Go package documentation into a Markdown file.
-//
-//nolint:nestif,gocyclo
 func Run(targetDir string) {
+	cwd, targetDir, targetDirName := resolveTargetDir(targetDir)
+	if targetDir == "" {
+		return // error already logged
+	}
+
+	log.Info("Generating Go documentation for: %s", targetDir)
+
+	cleanOldOutputs("pack_output_*.md")
+
+	docContent, pkgCount, err := buildDocumentation(targetDir, targetDirName)
+	if err != nil {
+		log.Fatal("Failed to parse packages: %v", err)
+	}
+
+	outputFilename := fmt.Sprintf("pack_output_%s.md", slugifyStr(targetDirName))
+	outputPath := filepath.Join(cwd, "tools", "repokit", "dist", outputFilename)
+
+	writeOutput(outputPath, docContent)
+
+	log.Success("Success! Documented %d Go packages.", pkgCount)
+	log.Info("Output saved to: %s", outputPath)
+	log.Info("Content copied to clipboard.")
+}
+
+func resolveTargetDir(targetDir string) (string, string, string) {
 	cwd, _ := os.Getwd()
 
-	// Resolve target directory
 	if targetDir == "" {
 		targetDir = cwd
 	} else {
@@ -38,31 +60,35 @@ func Run(targetDir string) {
 				targetDir = alt
 			} else {
 				log.Error("Directory not found: %s", targetDir)
-				return
+				return cwd, "", ""
 			}
 		}
 	}
-
-	log.Info("Generating Go documentation for: %s", targetDir)
-
-	// Clean up old output files
-	files, _ := filepath.Glob("pack_output_*.md")
-	for _, f := range files {
-		_ = os.Remove(f)
-	}
-
-	outRenderer, err := gomarkdoc.NewRenderer()
-	if err != nil {
-		log.Fatal("Failed to create renderer: %v", err)
-	}
-
-	mdLog := logger.New(logger.ErrorLevel)
-	var md strings.Builder
 
 	targetDirName := filepath.Base(targetDir)
 	if targetDir == cwd {
 		targetDirName = "current-directory"
 	}
+
+	return cwd, targetDir, targetDirName
+}
+
+func cleanOldOutputs(pattern string) {
+	files, _ := filepath.Glob(pattern)
+	for _, f := range files {
+		_ = os.Remove(f)
+	}
+}
+
+func buildDocumentation(targetDir, targetDirName string) (string, int, error) {
+	outRenderer, err := gomarkdoc.NewRenderer()
+	if err != nil {
+		return "", 0, fmt.Errorf("failed to create renderer: %w", err)
+	}
+
+	mdLog := logger.New(logger.ErrorLevel)
+	var md strings.Builder
+
 	md.WriteString(fmt.Sprintf("# 📦 Go API Documentation: `%s`\n\n", targetDirName))
 
 	pkgCount := 0
@@ -101,24 +127,16 @@ func Run(targetDir string) {
 		return nil
 	})
 
-	if err != nil {
-		log.Fatal("Failed to parse packages: %v", err)
-	}
+	return md.String(), pkgCount, err
+}
 
-	outputFilename := fmt.Sprintf("pack_output_%s.md", slugifyStr(targetDirName))
-	outputPath := filepath.Join(cwd, "tools", "repokit", "dist", outputFilename)
-
-	err = os.WriteFile(outputPath, []byte(md.String()), 0644)
+func writeOutput(outputPath, content string) {
+	err := os.WriteFile(outputPath, []byte(content), 0644)
 	if err != nil {
 		log.Error("Failed to write output: %v", err)
 		return
 	}
-
-	_ = clipboard.WriteAll(md.String())
-
-	log.Success("Success! Documented %d Go packages.", pkgCount)
-	log.Info("Output saved to: %s", outputPath)
-	log.Info("Content copied to clipboard.")
+	_ = clipboard.WriteAll(content)
 }
 
 func slugifyStr(s string) string {
@@ -126,3 +144,4 @@ func slugifyStr(s string) string {
 	s = slugifyRegexp.ReplaceAllString(s, "-")
 	return strings.Trim(s, "-")
 }
+

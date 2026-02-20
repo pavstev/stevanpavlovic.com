@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -31,17 +30,13 @@ var (
 	tailStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 	blueStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
 	goldStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
-	dimStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("242"))
 )
 
 type Result struct {
-	File         string
-	Path         string
-	Success      bool
-	Error        string
-	OriginalSize int64
-	NewSize      int64
-	Duration     time.Duration
+	File    string
+	Path    string
+	Success bool
+	Error   string
 }
 
 type fileStatus struct {
@@ -64,7 +59,6 @@ type optimizer struct {
 	wg sync.WaitGroup
 }
 
-// Optimize is the entry point for the SVG optimization process.
 func Optimize(pattern string) error {
 	files, err := resolveFiles(pattern)
 	if err != nil {
@@ -109,14 +103,12 @@ func (o *optimizer) run() error {
 	}
 	close(tasks)
 
-	// Create interrupt context
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
 	done := make(chan struct{})
 	startTime := time.Now()
 
-	// Start UI and Workers
 	go o.renderUI(startTime, done)
 
 	workerCount := len(o.workerStates)
@@ -145,21 +137,14 @@ func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 		default:
 			path := o.files[idx]
 			o.updateWorkerState(id, path, true)
-
-			start := time.Now()
-			origSize, newSize, err := o.processFile(path)
-			dur := time.Since(start)
-
+			err := o.processFile(path)
 			o.updateWorkerState(id, "", false)
 
 			o.results[idx] = Result{
-				File:         filepath.Base(path),
-				Path:         path,
-				Success:      err == nil,
-				Error:        func() string { if err != nil { return err.Error() }; return "" }(),
-				OriginalSize: origSize,
-				NewSize:      newSize,
-				Duration:     dur,
+				File:    filepath.Base(path),
+				Path:    path,
+				Success: err == nil,
+				Error:   func() string { if err != nil { return err.Error() }; return "" }(),
 			}
 
 			atomic.AddInt32(&o.processed, 1)
@@ -172,29 +157,21 @@ func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 	}
 }
 
-func (o *optimizer) processFile(path string) (int64, int64, error) {
+func (o *optimizer) processFile(path string) error {
 	input, err := os.ReadFile(path)
 	if err != nil {
-		return 0, 0, fmt.Errorf("read: %w", err)
+		return fmt.Errorf("read: %w", err)
 	}
-	origSize := int64(len(input))
-
 	output, err := o.minifier.Bytes("image/svg+xml", input)
 	if err != nil {
-		return origSize, 0, fmt.Errorf("minify: %w", err)
+		return fmt.Errorf("minify: %w", err)
 	}
-	newSize := int64(len(output))
-
 	info, err := os.Stat(path)
 	mode := os.FileMode(0644)
 	if err == nil {
 		mode = info.Mode()
 	}
-
-	if err := os.WriteFile(path, output, mode); err != nil {
-		return origSize, newSize, fmt.Errorf("write: %w", err)
-	}
-	return origSize, newSize, nil
+	return os.WriteFile(path, output, mode)
 }
 
 func (o *optimizer) updateWorkerState(id int, path string, active bool) {
@@ -208,9 +185,7 @@ func (o *optimizer) updateWorkerState(id int, path string, active bool) {
 func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 	ticker := time.NewTicker(uiTickRate)
 	defer ticker.Stop()
-
-	lineCount := 0
-	firstRender := true
+	lineCount, firstRender := 0, true
 
 	for {
 		select {
@@ -229,11 +204,9 @@ func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 func (o *optimizer) drawFrame(start time.Time) int {
 	o.mu.Lock()
 	defer o.mu.Unlock()
-
 	p := atomic.LoadInt32(&o.processed)
 	fmt.Printf("  SVG Optimization %s [%d/%d] (%.1fs)\n",
 		goldStyle.Render("🚀 OPTIMIZING"), p, len(o.files), time.Since(start).Seconds())
-
 	lines := 1
 	for _, s := range o.workerStates {
 		if !s.active {
@@ -248,76 +221,27 @@ func (o *optimizer) drawFrame(start time.Time) int {
 }
 
 func (o *optimizer) report() error {
-	var totalOrig, totalNew int64
-	groups := make(map[string][]Result)
-
+	failed := atomic.LoadInt32(&o.failedCount)
+	if failed == 0 {
+		cliutils.Success(fmt.Sprintf("Successfully optimized %d SVG files natively.", len(o.files)))
+		return nil
+	}
+	var errorLog strings.Builder
 	for _, r := range o.results {
-		dir := filepath.Dir(r.Path)
-		groups[dir] = append(groups[dir], r)
-		if r.Success {
-			totalOrig += r.OriginalSize
-			totalNew += r.NewSize
+		if !r.Success {
+			errorLog.WriteString(fmt.Sprintf("✖ %s: %s\n", r.File, r.Error))
 		}
 	}
-
-	// Sort directories for consistent output
-	dirs := make([]string, 0, len(groups))
-	for k := range groups {
-		dirs = append(dirs, k)
-	}
-	sort.Strings(dirs)
-
-	var sb strings.Builder
-	for _, dir := range dirs {
-		sb.WriteString(fmt.Sprintf("\n%s\n", lipgloss.NewStyle().Bold(true).Underline(true).Render(dir)))
-
-		resList := groups[dir]
-		sort.Slice(resList, func(i, j int) bool { return resList[i].File < resList[j].File })
-
-		for _, r := range resList {
-			if !r.Success {
-				sb.WriteString(fmt.Sprintf("  %-30s %s\n", r.File, lipgloss.NewStyle().Foreground(lipgloss.Color("1")).Render("✖ "+r.Error)))
-				continue
-			}
-
-			diff := r.OriginalSize - r.NewSize
-			percent := 0.0
-			if r.OriginalSize > 0 {
-				percent = (float64(diff) / float64(r.OriginalSize)) * 100
-			}
-
-			sizeStr := fmt.Sprintf("%.2f KB → %.2f KB", float64(r.OriginalSize)/1024, float64(r.NewSize)/1024)
-			savingStr := fmt.Sprintf("(-%.1f%%)", percent)
-			durStr := fmt.Sprintf("%v", r.Duration.Round(time.Millisecond))
-
-			sb.WriteString(fmt.Sprintf("  %-30s %-25s %-10s %s\n",
-				r.File,
-				dimStyle.Render(sizeStr),
-				lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Render(savingStr),
-				dimStyle.Render(durStr),
-			))
-		}
-	}
-
-	cliutils.BoxOutput("SVG Optimization Report", strings.TrimSpace(sb.String()), lipgloss.Color("6"))
-
-	savingsKB := float64(totalOrig-totalNew) / 1024
-	cliutils.Success(fmt.Sprintf("Optimized %d files. Total savings: %.2f KB", atomic.LoadInt32(&o.successCount), savingsKB))
-
-	if atomic.LoadInt32(&o.failedCount) > 0 {
-		return fmt.Errorf("failed to optimize %d files", o.failedCount)
-	}
-	return nil
+	cliutils.BoxOutput("Optimization Errors", strings.TrimSpace(errorLog.String()), lipgloss.Color("1"))
+	return fmt.Errorf("failed to optimize %d files", failed)
 }
 
 func formatProgressLine(icon, path, suffix string) string {
 	cleanPath := ansiRegex.ReplaceAllString(path, "")
 	runes := []rune(cleanPath)
-
 	if len(runes) > pathMaxLen {
 		path = "..." + string(runes[len(runes)-(pathMaxLen-3):])
 	}
-
 	return fmt.Sprintf("  %s %-60s %s", icon, path, tailStyle.Render(suffix))
 }
 
@@ -325,18 +249,12 @@ func resolveFiles(pattern string) ([]string, error) {
 	if !strings.Contains(pattern, "**") {
 		return filepath.Glob(pattern)
 	}
-
 	parts := strings.SplitN(pattern, "**", 2)
 	root, suffix := filepath.Clean(parts[0]), parts[1]
-
 	var matches []string
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			return err
-		}
-		if strings.HasSuffix(path, suffix) {
-			matches = append(matches, path)
-		}
+		if err != nil || info.IsDir() { return err }
+		if strings.HasSuffix(path, suffix) { matches = append(matches, path) }
 		return nil
 	})
 	return matches, err

@@ -47,6 +47,13 @@ var (
 
 	osExit = os.Exit
 	Quiet  = false
+
+	// Exported styles for package-wide use
+	Primary = lipgloss.NewStyle().Foreground(primaryColor)
+	Yellow  = lipgloss.NewStyle().Foreground(accentColor)
+	Green   = lipgloss.NewStyle().Foreground(secondaryColor)
+	Red     = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF5555"))
+	Bold    = lipgloss.NewStyle().Bold(true)
 )
 
 // ─── Enhanced Logging ────────────────────────────────────────────────────────
@@ -76,7 +83,7 @@ func Error(msg string) {
 // Step prints a major section header with a visual separator.
 func Step(msg string) {
 	headerText := "▶ " + strings.ToUpper(msg)
-	separator := subtleStyle.Render(strings.Repeat("─", lipgloss.Width(headerText) + 4))
+	separator := subtleStyle.Render(strings.Repeat("─", lipgloss.Width(headerText)+4))
 
 	fmt.Println(lipgloss.JoinVertical(
 		lipgloss.Left,
@@ -116,23 +123,16 @@ func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 	renderedContent := style.Render(content)
 
 	// Stack them using Vertical Join
-	// We use a small negative margin or specific placement if we wanted
-	// a perfect "interruption" of the border, but for CLI reliability,
-	// standard stacking is safest.
 	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleInner, renderedContent))
 }
 
 // BoxOutput provides a simplified wrapper compatible with existing runner logic.
 func BoxOutput(title, content string, borderColor lipgloss.Color) {
-	// Map common ANSI colors to our adaptive theme
 	themeColor := primaryColor
-
-	// If the old code passed "1" (Red), use our Error theme
 	if borderColor == lipgloss.Color("1") {
 		themeColor = lipgloss.AdaptiveColor{Light: "#FF5555", Dark: "#FF5555"}
 	} else if borderColor == lipgloss.Color("2") {
 		themeColor = secondaryColor
 	}
-
 	CustomBox(title, content, themeColor)
 }

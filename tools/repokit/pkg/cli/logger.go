@@ -8,117 +8,120 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// ─── Theme Definitions (Mapped from Global CSS) ─────────────────────────────
+// ─── Design System (Mapped from OKLCH & HSL) ───────────────────────────────
 
 var (
-	// Adaptive Colors mapped from the CSS variables
-	// Primary: oklch(0.6862 0.2146 140.0627) -> Vibrant Green
+	// Primary: Vibrant Emerald oklch(0.6862 0.2146 140.0627)
 	primaryColor = lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#34d399"}
-	// Secondary/Accent: hsl(240 3.7% 15.9%) -> Deep Slate
-	secondaryColor = lipgloss.AdaptiveColor{Light: "#1e293b", Dark: "#f8fafc"}
-	// Destructive: oklch(0.5714 0.2121 27.2502) -> Rose/Red
+	// Slate Backgrounds from hsl(240 3.7% 15.9%)
+	slateColor = lipgloss.AdaptiveColor{Light: "#1e293b", Dark: "#334155"}
+	// Destructive: Rose oklch(0.5714 0.2121 27.2502)
 	destructiveColor = lipgloss.AdaptiveColor{Light: "#e11d48", Dark: "#fb7185"}
-	// Muted: hsl(240 5% 64.9%) -> Slate Grey
+	// Amber/Warning
+	amberColor = lipgloss.AdaptiveColor{Light: "#d97706", Dark: "#fbbf24"}
+	// Muted Foreground
 	mutedColor = lipgloss.AdaptiveColor{Light: "#64748b", Dark: "#94a3b8"}
 
-	// Label Styles (Shadcn-like Badge system)
-	labelStyle = lipgloss.NewStyle().
+	// Typography & Layout Constants
+	boldStyle   = lipgloss.NewStyle().Bold(true)
+	subtleStyle = lipgloss.NewStyle().Foreground(mutedColor)
+
+	// Badge Styles (The "Pill" UI Component)
+	badgeBase = lipgloss.NewStyle().
 			Bold(true).
 			Padding(0, 1).
 			Foreground(lipgloss.Color("#FFFFFF"))
 
-	infoLabel    = labelStyle.Copy().Background(primaryColor)
-	successLabel = labelStyle.Copy().Background(lipgloss.Color("#10b981")) // Secondary Green
-	warningLabel = labelStyle.Copy().Background(lipgloss.Color("#f59e0b")) // Amber Accent
-	errorLabel   = labelStyle.Copy().Background(destructiveColor)
+	infoBadge    = badgeBase.Copy().Background(primaryColor)
+	successBadge = badgeBase.Copy().Background(lipgloss.Color("#059669"))
+	warningBadge = badgeBase.Copy().Background(amberColor)
+	errorBadge   = badgeBase.Copy().Background(destructiveColor)
 
-	// Typography Styles
-	boldStyle   = lipgloss.NewStyle().Bold(true)
-	subtleStyle = lipgloss.NewStyle().Foreground(mutedColor)
+	// Spine Style (The vertical line box effect)
+	spineStyle = lipgloss.NewStyle().
+			Border(lipgloss.Border{Left: "┃"}).
+			PaddingLeft(1).
+			MarginLeft(1)
 
-	// Step Header
-	stepHeaderStyle = lipgloss.NewStyle().
+	// Step Header Components
+	stepGlyphStyle = lipgloss.NewStyle().
 			Foreground(primaryColor).
+			PaddingRight(1).
+			Bold(true)
+
+	stepTextStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.AdaptiveColor{Light: "#0f172a", Dark: "#f8fafc"}).
 			Bold(true).
-			MarginTop(1)
+			Underline(true)
 
-	// Box Styling (Simulating .glass and .shadow-glow)
-	boxBorderStyle = lipgloss.NewStyle().
-			Border(lipgloss.DoubleBorder()).
+	// Box / Container Styles (The "Glass" effect)
+	glassStyle = lipgloss.NewStyle().
+			Border(lipgloss.ThickBorder()).
+			BorderTop(false).
+			BorderLeft(true).
+			BorderRight(false).
+			BorderBottom(false).
 			BorderForeground(primaryColor).
-			Padding(0, 2)
-
-	// Subtle Log Entry "Box" Effect
-	// This creates a left-border accent for every log message
-	logEntryStyle = lipgloss.NewStyle().
-			Border(lipgloss.Border{Left: "▎"}).
-			PaddingLeft(1)
+			Padding(1, 2).
+			Margin(1, 0)
 
 	osExit = osExitFunc
 	Quiet  = false
 
-	// Exported styles for package-wide use
+	// Exported Styles for high-level runner integration
 	Primary = lipgloss.NewStyle().Foreground(primaryColor)
-	Yellow  = lipgloss.NewStyle().Foreground(lipgloss.Color("#f59e0b"))
+	Yellow  = lipgloss.NewStyle().Foreground(amberColor)
 	Green   = lipgloss.NewStyle().Foreground(primaryColor)
 	Red     = lipgloss.NewStyle().Foreground(destructiveColor)
 	Bold    = lipgloss.NewStyle().Bold(true)
 )
 
-// Wrapper to allow mocking for tests
 var osExitFunc = os.Exit
 
-// ─── Enhanced Logging ────────────────────────────────────────────────────────
+// ─── Core Logging Interface ──────────────────────────────────────────────────
 
-// renderLog applies the subtle box/border effect to a log line
-func renderLog(label lipgloss.Style, tag string, msg string, color lipgloss.AdaptiveColor) {
-	badge := label.Render(tag)
-	content := logEntryStyle.Copy().BorderForeground(color).Render(msg)
-	fmt.Printf("%s %s\n", badge, content)
+// renderEntry creates the "Spine" layout for log messages
+func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveColor) {
+	badgePart := badge.Render(tag)
+	contentPart := spineStyle.Copy().BorderForeground(color).Render(msg)
+	fmt.Printf("%s %s\n", badgePart, contentPart)
 }
 
-// Info prints a message with a high-contrast informational badge.
 func Info(msg string) {
-	renderLog(infoLabel, "INFO", msg, primaryColor)
+	renderEntry(infoBadge, "INFO", msg, primaryColor)
 }
 
-// Success prints a message with a "DONE" badge using the primary theme green.
 func Success(msg string) {
-	renderLog(successLabel, "DONE", msg, lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#10b981"})
+	renderEntry(successBadge, "DONE", msg, lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#10b981"})
 }
 
-// Warning prints a message with an Amber warning badge.
 func Warning(msg string) {
-	renderLog(warningLabel, "WARN", msg, lipgloss.AdaptiveColor{Light: "#f59e0b", Dark: "#f59e0b"})
+	renderEntry(warningBadge, "WARN", msg, amberColor)
 }
 
-// Error prints a message with the destructive red badge to stderr.
 func Error(msg string) {
 	if !Quiet {
-		badge := errorLabel.Render("FAIL")
-		content := logEntryStyle.Copy().BorderForeground(destructiveColor).Render(msg)
-		fmt.Fprintf(os.Stderr, "%s %s\n", badge, content)
+		badgePart := errorBadge.Render("FAIL")
+		contentPart := spineStyle.Copy().BorderForeground(destructiveColor).Render(msg)
+		fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
 	}
 }
 
-// Step prints a major section header.
+// Step renders an architectural header with a horizontal structural element
 func Step(msg string) {
-	headerText := "▶ " + strings.ToUpper(msg)
+	glyph := stepGlyphStyle.Render("◆")
+	text := stepTextStyle.Render(strings.ToUpper(msg))
 
-	// Subtle separator line
-	separator := lipgloss.NewStyle().
-		Foreground(mutedColor).
-		Faint(true).
-		Render(strings.Repeat("━", lipgloss.Width(headerText)+2))
+	// Create a structural bracket line
+	lineLen := lipgloss.Width(text) + 4
+	bracket := subtleStyle.Render("└" + strings.Repeat("─", lineLen) + "╴")
 
-	fmt.Println(lipgloss.JoinVertical(
-		lipgloss.Left,
-		stepHeaderStyle.Render(headerText),
-		separator,
+	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left,
+		lipgloss.JoinHorizontal(lipgloss.Center, glyph, text),
+		bracket,
 	))
 }
 
-// Fatal prints an error and terminates execution.
 func Fatal(msg string) {
 	if !Quiet {
 		Error(msg)
@@ -126,37 +129,31 @@ func Fatal(msg string) {
 	osExit(1)
 }
 
-// ─── Advanced Box Logic ─────────────────────────────────────────────────────
+// ─── Advanced UI Components ──────────────────────────────────────────────────
 
-// CustomBox renders content inside a container that mimics the "Glass" UI utility.
+// CustomBox renders a high-contrast container with a "Glass-Border" accent
 func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 	if Quiet && (color != destructiveColor) {
 		return
 	}
 
-	// Prepare the border style with the theme color
-	style := boxBorderStyle.Copy().BorderForeground(color)
-
-	// Create a title that sits "inset" on the border line
-	titleInner := lipgloss.NewStyle().
+	// The Title Badge
+	titleLabel := lipgloss.NewStyle().
 		Background(color).
 		Foreground(lipgloss.Color("#FFFFFF")).
 		Bold(true).
-		Padding(0, 2).
+		Padding(0, 1).
 		Render(strings.ToUpper(title))
 
-	// Stack using Vertical Join
-	fmt.Println("\n" + lipgloss.JoinVertical(
-		lipgloss.Left,
-		titleInner,
-		style.Render(content),
-	))
+	// The Inset Content (Glass effect)
+	container := glassStyle.Copy().BorderForeground(color).Render(content)
+
+	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleLabel, container))
 }
 
-// BoxOutput provides a simplified wrapper compatible with legacy calls.
+// BoxOutput provides a shim for existing runner implementations
 func BoxOutput(title, content string, borderColor lipgloss.Color) {
 	themeColor := primaryColor
-	// Map numeric colors to the new design system
 	if borderColor == lipgloss.Color("1") {
 		themeColor = destructiveColor
 	} else if borderColor == lipgloss.Color("2") {

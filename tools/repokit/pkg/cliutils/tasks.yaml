@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../eslint/schemas/tasks.schema.json
+# yaml-language-server: $schema=../../../eslint/schemas/tasks.schema.json
 vars:
   root_dir: .
   repo_dir: tools/repokit

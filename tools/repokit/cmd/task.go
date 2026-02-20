@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"sort"
 
 	"repokit/pkg/cliutils"
 	"repokit/pkg/cmdutil"
@@ -19,7 +20,6 @@ func init() {
 Example:
   repokit task lint_go
   repokit task build_astro
-  repokit task check_go
 
 To list all available task IDs, run:
   repokit task --list`,
@@ -38,7 +38,8 @@ To list all available task IDs, run:
 			}
 
 			taskID := args[0]
-			cliutils.RunTask(taskID, nil)
+			// Using the public RunTask API with 2 arguments
+			cliutils.RunTask(taskID, nil, map[string]bool{})
 		},
 	}
 	cmd.Flags().Bool("list", false, "list all available task IDs")
@@ -46,32 +47,22 @@ To list all available task IDs, run:
 }
 
 func listTasks() {
-	// Get all tasks from the YAML
-	// We need to access the internal data or parse the file again
-	// For now, let's use a simple approach - show known task IDs
+	// Dynamically pull task IDs from the config
+	config := cliutils.GetConfig()
 
-	knownTasks := []string{
-		"lint_eslint",
-		"lint_go",
-		"check_astro",
-		"check_go",
-		"build_astro",
-		"build_go",
-		"test_vitest",
-		"test_go",
-		"optimize_svg",
-		"format",
-		"setup_install_pnpm",
-		"setup_wrangler_types",
-		"ls_files",
-		"resume_export",
-		"chmod_scripts",
-		"clean_git",
-		"clean_install",
+	ids := make([]string, 0, len(config.Tasks))
+	for id := range config.Tasks {
+		ids = append(ids, id)
 	}
+	sort.Strings(ids)
 
 	fmt.Println("Available tasks:")
-	for _, task := range knownTasks {
-		fmt.Printf("  %s\n", task)
+	for _, id := range ids {
+		task := config.Tasks[id]
+		desc := task.Description
+		if desc == "" {
+			desc = task.Name
+		}
+		fmt.Printf("  %-20s # %s\n", id, desc)
 	}
 }

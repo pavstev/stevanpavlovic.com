@@ -14,7 +14,7 @@ var resumeCmd = &cobra.Command{
 		switch args[0] {
 		case "export":
 			cliutils.Step("Exporting resume...")
-			cliutils.RunTask("resume_export", nil)
+			cliutils.RunTask("resume_export", nil, map[string]bool{})
 			cliutils.Success("Resume exported to resume.pdf")
 		default:
 			cliutils.Fatal("Unknown command: " + args[0])

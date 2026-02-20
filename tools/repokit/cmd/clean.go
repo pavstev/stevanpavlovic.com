@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"repokit/pkg/clean"
-
 	"github.com/spf13/cobra"
 )
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 	cliutil "repokit/pkg/cli"
-	cmdutil "repokit/pkg/command"
+	cmdutil "repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )

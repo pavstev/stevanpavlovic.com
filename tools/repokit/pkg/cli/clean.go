@@ -1,4 +1,4 @@
-package clean
+package cli
 
 import (
 	"bufio"

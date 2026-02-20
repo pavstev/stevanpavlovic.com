@@ -57,11 +57,24 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 	}
 	// Setpgid ensures the shell and its children are in the same process group
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+
+	// Custom Cancel function to ensure we hit the whole process group
 	cmd.Cancel = func() error {
+		if cmd.Process == nil {
+			return nil
+		}
 		pgid, err := syscall.Getpgid(cmd.Process.Pid)
 		if err == nil {
-			// Kill the entire process group with a negative PGID
-			return syscall.Kill(-pgid, syscall.SIGKILL)
+			// First attempt graceful termination
+			_ = syscall.Kill(-pgid, syscall.SIGTERM)
+
+			// Give it a tiny moment to exit gracefully before SIGKILL
+			// Note: CommandContext will eventually SIGKILL if we don't exit,
+			// but we can be explicit here if needed.
+			time.AfterFunc(2*time.Second, func() {
+				_ = syscall.Kill(-pgid, syscall.SIGKILL)
+			})
+			return nil
 		}
 		return cmd.Process.Kill()
 	}
@@ -69,7 +82,6 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 }
 
 func formatTailLine(line string) string {
-	// 1. Strip ANSI codes to calculate actual visible length
 	clean := ansiRegex.ReplaceAllString(line, "")
 	clean = strings.Map(func(r rune) rune {
 		if r == '\r' || r == '\n' {
@@ -81,7 +93,6 @@ func formatTailLine(line string) string {
 		return r
 	}, clean)
 
-	// 2. Truncate strictly to prevent terminal wrapping which breaks cursor math (\033[A)
 	runes := []rune(clean)
 	const maxLen = 85
 	if len(runes) > maxLen {
@@ -176,7 +187,7 @@ func runCommand(name, command, cwd string) {
 
 	if err != nil {
 		if ctx.Err() != nil {
-			Error(fmt.Sprintf("%s cancelled.", name))
+			fmt.Println("\n" + yellow.Render(fmt.Sprintf("⏹️  %s cancelled by user.", name)))
 			osExit(1)
 		}
 		if _, ok := err.(*exec.ExitError); !ok {
@@ -220,7 +231,6 @@ func RunStep(name, command string) {
 func RunInteractive(name, command, cwd string) {
 	Step("Interactive: " + name)
 
-	// We allow the terminal to handle the interrupt for interactive sessions
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	defer signal.Stop(c)
@@ -272,7 +282,9 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 	}
 
 	Info(fmt.Sprintf("Queue initialized: %d tasks | %d workers", len(tasks), workerCount))
-	ctx, cancel := context.WithCancel(context.Background())
+
+	// Create a context that respects Ctrl+C
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	q := &queueContext{
@@ -291,18 +303,15 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 	}
 	close(q.taskChan)
 
-	sigChan := make(chan os.Signal, 2)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	// Monitor for the interruption via the context
 	go func() {
-		sig := <-sigChan
-		Info(fmt.Sprintf("\nInterrupt (%v) received. Draining workers...", sig))
-		q.mu.Lock()
-		q.interrupted = true
-		q.mu.Unlock()
-		q.cancel()
-
-		<-sigChan
-		osExit(1)
+		<-ctx.Done()
+		if ctx.Err() != nil {
+			q.mu.Lock()
+			q.interrupted = true
+			q.mu.Unlock()
+			Info("\nInterrupt received. Signaling workers to stop...")
+		}
 	}()
 
 	for i := 0; i < workerCount; i++ {
@@ -318,7 +327,6 @@ func RunQueue(ids []string, workerCount int, continueOnError bool) {
 		for i := range q.results {
 			if s := q.states[i].status; s == statusActive || s == statusQueued {
 				q.states[i].status = statusCancelled
-				BoxOutput("Cancelled: "+q.tasks[i].Name, "Task was terminated by user.", lipgloss.Color("8"))
 			}
 		}
 		q.mu.Unlock()
@@ -346,6 +354,9 @@ func (q *queueContext) worker() {
 	for idx := range q.taskChan {
 		select {
 		case <-q.ctx.Done():
+			q.mu.Lock()
+			q.states[idx].status = statusCancelled
+			q.mu.Unlock()
 			return
 		default:
 		}

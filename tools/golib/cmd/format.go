@@ -9,9 +9,8 @@ func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
 			"optimize_svg",
-			"format",
-			"format_py",
-		},
+			"prettier_write",
+					},
 		PreRun: func() {
 			cliutils.Step("Starting formatters...")
 		},

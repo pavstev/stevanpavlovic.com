@@ -3,6 +3,7 @@ vars:
   # Directories
   root_dir: .
   golib_dir: tools/golib
+  golib_bin: tools/golib/dist/gocli
 
   # Base Commands
   pnpm_exec: pnpm exec
@@ -31,7 +32,7 @@ tasks:
     cwd: ${root_dir}
   build_go:
     name: Go Build
-    command: ${go_cmd} build -o ../../${golib_dir}/bin/gocli ./main.go
+    command: ${go_cmd} build -o ../../${golib_bin} ./main.go
     cwd: ${golib_dir}
   test_vitest:
     name: Vitest
@@ -42,9 +43,13 @@ tasks:
     command: ${go_cmd} test ./... -coverprofile=coverage.out -v
     cwd: ${golib_dir}
 
-  format:
+  prettier_write:
     name: Prettier
     command: ${pnpm_exec} prettier -w --cache .
+    cwd: ${root_dir}
+  optimize_svg:
+    name: Optimize SVG
+    command: ${golib_bin} optimize-svg src/assets/**/*.svg
     cwd: ${root_dir}
 
   # Setup
@@ -75,16 +80,4 @@ tasks:
   resume_export:
     name: Export Resume
     command: ${pnpm_exec} resumed export -t jsonresume-theme-even -o resume.pdf resume.json
-    cwd: ${root_dir}
-  chmod_scripts:
-    name: Chmod
-    command: ${golib_dir}/bin/gocli chmod
-    cwd: ${root_dir}
-  clean_git:
-    name: Git Clean
-    command: git clean -Xfd -e .env.local
-    cwd: ${root_dir}
-  clean_install:
-    name: Install
-    command: pnpm install
     cwd: ${root_dir}

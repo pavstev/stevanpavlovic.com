@@ -9,8 +9,7 @@ func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
 			"lint_eslint",
-			"lint_py",
-			"lint_go",
+						"lint_go",
 		},
 		PreRun: func() {
 			cliutils.Step("Running linters...")

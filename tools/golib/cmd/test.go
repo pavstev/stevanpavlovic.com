@@ -9,8 +9,7 @@ func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
 			"test_vitest",
-			"test_py",
-			"test_go",
+						"test_go",
 		},
 		PreRun: func() {
 			cliutils.Step("Running tests...")

@@ -2,115 +2,121 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Repokit Task Configuration",
   "description": "Unified Configuration schema for Repokit task runner.",
-  "type": "object",
-  "properties": {
-    "vars": {
-      "description": "Global variables for command and path interpolation.",
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      }
-    },
-    "tasks": {
-      "description": "Task definitions (Atomic or Pipeline).",
-      "type": "object",
-      "patternProperties": {
-        "^[a-z0-9_\\-]+$": {
-          "$ref": "#/definitions/CliTaskConfig"
-        }
-      },
-      "additionalProperties": false
-    }
-  },
-  "additionalProperties": false,
   "required": [
     "tasks"
   ],
+  "additionalProperties": false,
   "definitions": {
     "CliTaskConfig": {
-      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "pre_msg",
+        "on_error"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "name": {
-          "description": "Human-readable name of the task.",
-          "type": "string"
-        },
-        "type": {
-          "description": "Single command or a list of child tasks.",
-          "type": "string",
-          "enum": [
-            "single",
-            "batch"
-          ]
-        },
-        "pre_msg": {
-          "description": "Status message shown before execution starts.",
-          "type": "string"
-        },
-        "on_error": {
-          "description": "Message shown if the task fails.",
-          "type": "string"
-        },
-        "description": {
-          "description": "Optional detailed description of the task.",
-          "type": "string"
-        },
         "command": {
           "description": "Required if type is 'single'.",
           "type": "string"
-        },
-        "tasks": {
-          "description": "Required if type is 'batch'.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "cwd": {
-          "description": "Working directory for the command.",
-          "type": "string"
-        },
-        "pre_run": {
-          "description": "Tasks to run before this one.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "post_run": {
-          "description": "Tasks to run after this one.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "parallel": {
-          "description": "Run child tasks in parallel.",
-          "default": false,
-          "type": "boolean"
-        },
-        "workers": {
-          "description": "Number of parallel workers.",
-          "default": 3,
-          "type": "integer"
         },
         "continue_on_error": {
           "description": "Continue execution even if child tasks fail.",
           "default": false,
           "type": "boolean"
         },
+        "cwd": {
+          "description": "Working directory for the command.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Optional detailed description of the task.",
+          "type": "string"
+        },
         "interactive": {
           "description": "Run in interactive mode (attaches stdin/stdout).",
           "default": false,
           "type": "boolean"
+        },
+        "name": {
+          "description": "Human-readable name of the task.",
+          "type": "string"
+        },
+        "on_error": {
+          "description": "Message shown if the task fails.",
+          "type": "string"
+        },
+        "parallel": {
+          "description": "Run child tasks in parallel.",
+          "default": false,
+          "type": "boolean"
+        },
+        "post_run": {
+          "description": "Tasks to run after this one.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pre_msg": {
+          "description": "Status message shown before execution starts.",
+          "type": "string"
+        },
+        "pre_run": {
+          "description": "Tasks to run before this one.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tasks": {
+          "description": "Required if type is 'batch'.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "description": "Single command or a list of child tasks.",
+          "enum": [
+            "single",
+            "batch"
+          ],
+          "type": "string"
+        },
+        "workers": {
+          "description": "Number of parallel workers.",
+          "default": 3,
+          "type": "integer"
         }
       },
+      "type": "object"
+    }
+  },
+  "properties": {
+    "tasks": {
+      "description": "Task definitions (Atomic or Pipeline).",
       "additionalProperties": false,
-      "required": [
-        "name",
-        "type",
-        "pre_msg",
-        "on_error"
+      "patternProperties": {
+        "^[a-z0-9_\\-]+$": {
+          "$ref": "#/definitions/CliTaskConfig"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "vars": {
+      "description": "Global variables for command and path interpolation.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": [
+        "object",
+        "null"
       ]
     }
-  }
+  },
+  "type": "object"
 }

@@ -9,7 +9,7 @@ func init() {
 	cfg := &cmdutil.QueueConfig{
 		TaskIDs: []string{
 			"check_astro",
-						"check_go",
+			"check_go",
 		},
 		PreRun: func() {
 			cliutils.Step("Running type checkers...")

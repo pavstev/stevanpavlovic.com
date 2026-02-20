@@ -12,7 +12,7 @@ func Run(continueOnError bool) {
 	cliutils.Step("Checking Node package manager (pnpm)...")
 	if !cliutils.EnsureCommandExists("pnpm") {
 		cliutils.Info("pnpm not found. Installing pnpm via npm...")
-		cliutils.RunStepByID("setup_install_pnpm", nil)
+		cliutils.RunTask("setup_install_pnpm", nil, map[string]bool{})
 	} else {
 		cliutils.Success("pnpm is already installed.")
 	}

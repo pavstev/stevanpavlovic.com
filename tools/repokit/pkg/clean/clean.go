@@ -57,10 +57,10 @@ func Run(force bool) {
 	}
 
 	cliutils.Step("Cleaning project...")
-	cliutils.RunStepByID("clean_git", nil)
+	cliutils.RunTask("clean_git", nil)
 
 	cliutils.Step("Reinstalling dependencies...")
-	cliutils.RunStepByID("clean_install", nil)
+	cliutils.RunTask("clean_install", nil)
 
 	cliutils.Success("Project cleaned and dependencies reinstalled.")
 }

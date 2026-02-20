@@ -184,7 +184,7 @@ func NewDataCommand(use, short string, cfg *DataConfig) *cobra.Command {
 				cfg.PreRun()
 			}
 
-			cliutils.RunStepByID(cfg.TaskID, data)
+			cliutils.RunTask(cfg.TaskID, data)
 
 			if cfg.PostRun != nil {
 				cfg.PostRun(true)
@@ -232,7 +232,7 @@ func NewStepCommand(use, short string, cfg *StepConfig) *cobra.Command {
 				cfg.PreRun()
 			}
 
-			cliutils.RunStepByID(cfg.TaskID, data)
+			cliutils.RunTask(cfg.TaskID, data)
 
 			if cfg.PostRun != nil {
 				cfg.PostRun(true)
@@ -282,7 +282,7 @@ func NewStepCommandWithData(use, short string, cfg *StepConfig) *cobra.Command {
 				cfg.PreRun()
 			}
 
-			cliutils.RunStepByID(cfg.TaskID, data)
+			cliutils.RunTask(cfg.TaskID, data)
 
 			if cfg.PostRun != nil {
 				cfg.PostRun(true)

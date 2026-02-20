@@ -10,7 +10,7 @@ func init() {
 		TaskIDs: []string{
 			"optimize_svg",
 			"prettier_write",
-					},
+		},
 		PreRun: func() {
 			cliutils.Step("Starting formatters...")
 		},

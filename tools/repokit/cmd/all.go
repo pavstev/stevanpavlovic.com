@@ -27,15 +27,15 @@ func init() {
 		[]string{ // Phase 1: Validation
 			"lint_eslint",
 			"lint_go",
-						"check_astro",
+			"check_astro",
 			"check_go",
-						"test_vitest",
+			"test_vitest",
 			"test_go",
-					},
+		},
 		[]string{ // Phase 2: Build
 			"build_astro",
 			"build_go",
-					},
+		},
 		[]string{ // Phase 3: Post-processing
 			"chmod_scripts",
 		},

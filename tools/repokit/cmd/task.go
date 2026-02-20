@@ -38,7 +38,7 @@ To list all available task IDs, run:
 			}
 
 			taskID := args[0]
-			cliutils.RunStepByID(taskID, nil)
+			cliutils.RunTask(taskID, nil)
 		},
 	}
 	cmd.Flags().Bool("list", false, "list all available task IDs")
@@ -53,13 +53,13 @@ func listTasks() {
 	knownTasks := []string{
 		"lint_eslint",
 		"lint_go",
-				"check_astro",
+		"check_astro",
 		"check_go",
-				"build_astro",
+		"build_astro",
 		"build_go",
-				"test_vitest",
+		"test_vitest",
 		"test_go",
-				"optimize_svg",
+		"optimize_svg",
 		"format",
 		"setup_install_pnpm",
 		"setup_wrangler_types",

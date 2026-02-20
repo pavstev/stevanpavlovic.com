@@ -1,52 +1,34 @@
 import concurrent.futures
 import glob
+import json
 import subprocess
 import sys
 from pathlib import Path
 
-# ANSI Colors for "Coolness"
-C_GREEN = "\033[92m"
-C_RED = "\033[91m"
-C_YELLOW = "\033[93m"
-C_CYAN = "\033[96m"
-C_END = "\033[0m"
-C_BOLD = "\033[1m"
 
-
-def log_success(msg):
-    print(f"{C_GREEN}  ✓ {msg}{C_END}")
-
-
-def log_error(msg):
-    print(f"{C_RED}  ✗ {msg}{C_END}")
-
-
-def log_info(msg):
-    print(f"{C_CYAN}  ℹ {msg}{C_END}")
-
-
-def optimize_file(file_path: Path) -> bool:
-    """Invokes SVGO on a single file. Returns True on success."""
-    # Ensure pnpm is available in the shell context
+def optimize_file(file_path: Path) -> dict:
+    """Invokes SVGO on a single file and returns a result dictionary."""
     cmd = ["pnpm", "exec", "svgo", str(file_path)]
 
     try:
         # We use check=True to raise an error on non-zero exit codes
-        res = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        log_success(f"Optimized: {file_path.name}")
-        return True
+        subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return {"file": file_path.name, "path": str(file_path), "success": True}
     except subprocess.CalledProcessError as e:
         err = (e.stderr or e.stdout or "Unknown SVGO error").strip()
-        log_error(f"Failed {file_path.name}: {err.splitlines()[0]}")
-        return False
+        return {
+            "file": file_path.name,
+            "path": str(file_path),
+            "success": False,
+            "error": err.splitlines()[0] if err else "Unknown SVGO error",
+        }
     except Exception as e:
-        log_error(f"System Error {file_path.name}: {e}")
-        return False
+        return {"file": file_path.name, "path": str(file_path), "success": False, "error": str(e)}
 
 
 def main():
     if len(sys.argv) < 2:
-        print(f'{C_BOLD}Usage:{C_END} python svg.py "<glob_pattern>"')
+        print(json.dumps({"error": "Missing glob pattern argument"}))
         sys.exit(1)
 
     pattern = sys.argv[1]
@@ -54,24 +36,34 @@ def main():
     files = [Path(p) for p in glob.glob(pattern, recursive=True) if Path(p).is_file()]
 
     if not files:
-        print(f"{C_YELLOW}⚠️  No SVG files found for pattern: {pattern}{C_END}")
+        print(
+            json.dumps(
+                {
+                    "summary": {"total": 0, "success": 0, "failed": 0},
+                    "results": [],
+                    "message": f"No SVG files found for pattern: {pattern}",
+                }
+            )
+        )
         return
 
-    log_info(f"Found {len(files)} files. Optimizing in parallel...")
-
-    # Using ThreadPoolExecutor for parallel SVGO runs (faster I/O)
+    # Using ThreadPoolExecutor for parallel SVGO runs
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(executor.map(optimize_file, files))
 
-    success_count = sum(results)
+    success_count = sum(1 for r in results if r["success"])
     failed_count = len(results) - success_count
 
-    print("-" * 40)
-    if failed_count > 0:
-        print(f"{C_RED}{C_BOLD}FAILURE:{C_END} {success_count} succeeded, {failed_count} failed.")
-        sys.exit(1)
+    output = {
+        "summary": {"total": len(results), "success": success_count, "failed": failed_count},
+        "results": results,
+    }
 
-    print(f"{C_GREEN}{C_BOLD}SUCCESS:{C_END} All {success_count} SVGs optimized.")
+    # Output the final JSON results
+    print(json.dumps(output, indent=2))
+
+    if failed_count > 0:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -44,12 +44,19 @@ type Config struct {
 }
 
 func (c *Config) Validate() error {
+	var NativeCommands = map[string]bool{
+		"export_schema": true,
+		"pack":          true,
+		"optimize-svg":  true,
+		"help":          true,
+	}
+
 	for name := range c.Tasks {
 		task := c.Tasks[name]
 		// Validating batch/sequential task dependencies
 		if task.Type == "batch" || task.Type == "sequential" {
 			for _, subTask := range task.Tasks {
-				if _, ok := c.Tasks[subTask]; !ok {
+				if _, ok := c.Tasks[subTask]; !ok && !NativeCommands[subTask] {
 					return fmt.Errorf("task %q depends on non-existent task %q", name, subTask)
 				}
 			}
@@ -57,12 +64,12 @@ func (c *Config) Validate() error {
 
 		// Validating hook dependencies
 		for _, hook := range task.PreRun {
-			if _, ok := c.Tasks[hook]; !ok {
+			if _, ok := c.Tasks[hook]; !ok && !NativeCommands[hook] {
 				return fmt.Errorf("task %q has non-existent pre_run hook %q", name, hook)
 			}
 		}
 		for _, hook := range task.PostRun {
-			if _, ok := c.Tasks[hook]; !ok {
+			if _, ok := c.Tasks[hook]; !ok && !NativeCommands[hook] {
 				return fmt.Errorf("task %q has non-existent post_run hook %q", name, hook)
 			}
 		}

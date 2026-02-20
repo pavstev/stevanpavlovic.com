@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"repokit/pkg/cli"
-
 	"github.com/spf13/cobra"
 )
 
@@ -53,7 +51,7 @@ func NewQueueCommand(use, short string, cfg *QueueConfig) *cobra.Command {
 			}
 
 			cont, _ := cmd.Flags().GetBool("continue")
-			cli.RunQueue(cfg.TaskIDs, cfg.Workers, cfg.ContinueOnError || cont)
+			RunQueue(cfg.TaskIDs, cfg.Workers, cfg.ContinueOnError || cont)
 
 			if cfg.PostRun != nil {
 				cfg.PostRun(true)
@@ -79,14 +77,14 @@ func NewPhaseCommand(use, short string, cfg *PhaseConfig, phases ...[]string) *c
 					cfg.PrePhase(i)
 				}
 
-				cli.Info(fmt.Sprintf("Phase %d: Running %d tasks...", i+1, len(phase)))
-				cli.RunQueue(phase, cfg.Workers, cfg.ContinueOnError)
+				Info(fmt.Sprintf("Phase %d: Running %d tasks...", i+1, len(phase)))
+				RunQueue(phase, cfg.Workers, cfg.ContinueOnError)
 
 				if cfg.PostPhase != nil {
 					cfg.PostPhase(i, true)
 				}
 			}
-			cli.Success("All phases completed!")
+			Success("All phases completed!")
 		},
 	}
 }
@@ -105,7 +103,7 @@ func NewDataCommand(use, short string, taskID string) *cobra.Command {
 				ID:      id,
 				Args:    args,
 			}
-			cli.RunTask(taskID, data, map[string]bool{})
+			RunTask(taskID, data, map[string]bool{})
 		},
 	}
 
@@ -121,7 +119,7 @@ func NewStepCommand(use, short string, taskID string) *cobra.Command {
 		Use:   use,
 		Short: short,
 		Run: func(cmd *cobra.Command, args []string) {
-			cli.RunTask(taskID, &CommandData{Args: args}, map[string]bool{})
+			RunTask(taskID, &CommandData{Args: args}, map[string]bool{})
 		},
 	}
 }

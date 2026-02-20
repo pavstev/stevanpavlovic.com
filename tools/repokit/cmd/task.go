@@ -6,7 +6,6 @@ import (
 	"sort"
 
 	"repokit/pkg/cli"
-	cmdutil "repokit/pkg/cli"
 
 	"github.com/spf13/cobra"
 )
@@ -43,7 +42,7 @@ To list all available task IDs, run:
 		},
 	}
 	cmd.Flags().Bool("list", false, "list all available task IDs")
-	cmdutil.AddToRoot(cmd)
+	cli.AddToRoot(cmd)
 }
 
 func listTasks() {

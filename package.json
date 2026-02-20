@@ -25,7 +25,7 @@
     "all": "pnpm go-build && pnpm repokit all",
     "repokit": "./tools/repokit/dist/repokit",
     "dev": "astro dev",
-    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ./dist/repokit main.go > /dev/null && cp dist/repokit dist/rk && cd - > /dev/null",
+    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ./dist/repokit main.go && cp dist/repokit dist/rk && cd -",
     "go-install": "cd tools/repokit && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm go-build && pnpm repokit setup",
@@ -108,7 +108,6 @@
     "jsonc-eslint-parser": "^3.0.0",
     "knip": "^5.84.1",
     "lefthook": "^2.1.1",
-    "nx": "^22.5.1",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-packagejson": "^3.0.0",
@@ -130,8 +129,16 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": ["eslint", "eslint-plugin-import", "eslint-plugin-react"]
+      "allowAny": [
+        "eslint",
+        "eslint-plugin-import",
+        "eslint-plugin-react"
+      ]
     },
-    "onlyBuiltDependencies": ["core-js", "lefthook", "nx"]
+    "onlyBuiltDependencies": [
+      "core-js",
+      "lefthook",
+      "nx"
+    ]
   }
 }

@@ -34,7 +34,8 @@ tasks:
     type: single
     pre_msg: Compiling the Repokit orchestrator...
     on_error: Failed to compile the Repokit binary.
-    command: ${pnpm} go-build
+    command: cd tools/repokit && go build -v -ldflags='-s -w' -o ./dist/repokit main.go && cd -
+    cwd: ${root_dir}
 
   check_astro:
     name: Typecheck Astro

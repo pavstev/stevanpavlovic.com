@@ -27,6 +27,5 @@ export const globalIgnoresList = [
   ".git/**/*",
   ".unlighthouse/**/*",
   "worker-configuration.d.ts",
-  "commitlint.ts", // Ignore commitlint.ts
   ".vscode/**/*",
 ];

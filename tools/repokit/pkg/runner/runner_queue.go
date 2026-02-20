@@ -11,6 +11,9 @@ import (
 	"syscall"
 	"time"
 
+	"repokit/pkg/config"
+	"repokit/pkg/log"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -33,7 +36,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	taskChan := make(chan int, len(ids))
 
 	for i, id := range ids {
-		t, _ := GetTaskByID(id)
+		t, _ := config.GetTaskByID(id)
 		states[i] = &taskState{name: t.Name, status: statusQueued}
 		taskChan <- i
 	}
@@ -64,7 +67,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 				mu.Unlock()
 
 				id := ids[idx]
-				task, _ := GetTaskByID(id)
+				task, _ := config.GetTaskByID(id)
 
 				// Recursion Support: Dynamically resolve the absolute path of the Repokit binary
 				// so that queues can safely fork sub-pipelines while preserving UI spinners!
@@ -76,7 +79,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 					}
 					cmdStr = fmt.Sprintf("%q %q", executable, id)
 				} else {
-					cmdStr, _ = EvaluateCommand(task.Command, nil)
+					cmdStr, _ = config.EvaluateCommand(task.Command, nil)
 				}
 
 				cmd := createCmd(ctx, cmdStr, task.Cwd)
@@ -139,7 +142,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		}
 		firstRender, lineCount = false, 0
 
-		spinnerIdx := int(time.Now().UnixMilli()/80) % len(Spinners)
+		spinnerIdx := int(time.Now().UnixMilli()/80) % len(log.Spinners)
 
 		for _, s := range states {
 			var icon, statText string
@@ -147,23 +150,23 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 			switch s.status {
 			case statusCompleted:
-				icon = Green.Render("✓")
-				statText = Green.Bold(true).Render("✅")
+				icon = log.Green.Render("✓")
+				statText = log.Green.Bold(true).Render("✅")
 			case statusFailed:
-				icon = Red.Render("✗")
-				statText = Red.Bold(true).Render("❌")
+				icon = log.Red.Render("✗")
+				statText = log.Red.Bold(true).Render("❌")
 			case statusActive:
-				icon = Blue.Render(Spinners[spinnerIdx])
-				statText = Blue.Bold(true).Render("⏳")
+				icon = log.Blue.Render(log.Spinners[spinnerIdx])
+				statText = log.Blue.Bold(true).Render("⏳")
 				durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 			case statusCancelled:
-				icon = Subtle.Render("⊘")
-				statText = Subtle.Render("⛔")
-				durStr = Subtle.Render("  --.-s")
+				icon = log.Subtle.Render("⊘")
+				statText = log.Subtle.Render("⛔")
+				durStr = log.Subtle.Render("  --.-s")
 			default:
-				icon = Subtle.Render("○")
-				statText = Subtle.Render("🕒")
-				durStr = Subtle.Render("  --.-s")
+				icon = log.Subtle.Render("○")
+				statText = log.Subtle.Render("🕒")
+				durStr = log.Subtle.Render("  --.-s")
 			}
 
 			nameStr := lipgloss.NewStyle().Width(35).Render(s.name)
@@ -172,7 +175,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 			lineCount++
 
-			if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !Quiet {
+			if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !log.Quiet {
 				for _, tl := range s.tail {
 					fmt.Println(formatTailLine(tl))
 					lineCount++
@@ -210,16 +213,16 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 	if os.Getenv("REPOKIT_NESTED") != "1" {
 		fmt.Println()
-		fmt.Printf("  %s %d completed", Green.Render("●"), completed)
+		fmt.Printf("  %s %d completed", log.Green.Render("●"), completed)
 		if failedTasks > 0 {
-			fmt.Printf(" | %s %d failed", Red.Render("●"), failedTasks)
+			fmt.Printf(" | %s %d failed", log.Red.Render("●"), failedTasks)
 		}
-		fmt.Printf(" | %s %d total | %s %.1fs\n\n", Blue.Render("●"), len(states), Subtle.Render("⏱"), totalDur)
+		fmt.Printf(" | %s %d total | %s %.1fs\n\n", log.Blue.Render("●"), len(states), log.Subtle.Render("⏱"), totalDur)
 	}
 
 	if failed {
 		if os.Getenv("REPOKIT_NESTED") != "1" {
-			fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
+			fmt.Println("\n" + log.Bold.Render("PIPELINE FAILED"))
 		}
 		os.Exit(1)
 	}

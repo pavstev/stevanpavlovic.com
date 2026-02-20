@@ -3,6 +3,9 @@ package runner
 import (
 	"regexp"
 
+	"repokit/pkg/config"
+	"repokit/pkg/log"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -35,9 +38,9 @@ func RunTask(id string, data any, visited map[string]bool) {
 	}
 	visited[id] = true
 
-	task, err := GetTaskByID(id)
+	task, err := config.GetTaskByID(id)
 	if err != nil {
-		Fatal("%v", err)
+		log.Fatal("%v", err)
 	}
 
 	// 1. Pre-Run Hooks
@@ -49,9 +52,9 @@ func RunTask(id string, data any, visited map[string]bool) {
 	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
 		RunPipeline(id, &task, visited)
 	} else {
-		cmdStr, err := EvaluateCommand(task.Command, data)
+		cmdStr, err := config.EvaluateCommand(task.Command, data)
 		if err != nil {
-			Fatal("Template error in %q: %v", id, err)
+			log.Fatal("Template error in %q: %v", id, err)
 		}
 
 		if task.Interactive {
@@ -68,18 +71,18 @@ func RunTask(id string, data any, visited map[string]bool) {
 }
 
 // RunPipeline executes a set of tasks based on the TaskConfig type.
-func RunPipeline(id string, config *TaskConfig, visited map[string]bool) {
-	Info("Pipeline: %s", config.Name)
+func RunPipeline(id string, cfg *config.TaskConfig, visited map[string]bool) {
+	log.Info("Pipeline: %s", cfg.Name)
 
-	if config.Type == "batch" || config.Parallel {
-		workers := config.Workers
+	if cfg.Type == "batch" || cfg.Parallel {
+		workers := cfg.Workers
 		if workers <= 0 {
 			workers = 3
 		}
-		RunQueue(config.Tasks, workers, config.ContinueOnError)
+		RunQueue(cfg.Tasks, workers, cfg.ContinueOnError)
 	} else {
 		// Sequential Pipeline
-		for _, taskID := range config.Tasks {
+		for _, taskID := range cfg.Tasks {
 			RunTask(taskID, nil, visited)
 		}
 	}

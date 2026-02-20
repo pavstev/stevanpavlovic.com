@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"repokit/pkg/log"
 	"repokit/pkg/utils"
 
 	"github.com/charmbracelet/lipgloss"
@@ -87,9 +88,9 @@ func runCommand(name, command, cwd string) {
 				firstRender, lineCount = false, 1
 
 				// UI rendering with the new theme
-				spinner := Spinners[int(time.Now().UnixMilli()/80)%len(Spinners)]
-				icon := Blue.Render(spinner)
-				statusText := Blue.Bold(true).Render("⏳")
+				spinner := log.Spinners[int(time.Now().UnixMilli()/80)%len(log.Spinners)]
+				icon := log.Blue.Render(spinner)
+				statusText := log.Blue.Bold(true).Render("⏳")
 				durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
 
 				nameStr := lipgloss.NewStyle().Width(35).Render(name)
@@ -97,7 +98,7 @@ func runCommand(name, command, cwd string) {
 
 				fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
 
-				if !Quiet {
+				if !log.Quiet {
 					for _, l := range currentTail {
 						fmt.Println(formatTailLine(l))
 						lineCount++
@@ -111,45 +112,45 @@ func runCommand(name, command, cwd string) {
 	close(done)
 
 	if err != nil && ctx.Err() != nil {
-		fmt.Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
+		fmt.Println("\n" + log.Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
 		os.Exit(1)
 	}
 
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
-		if !Quiet && !firstRender {
+		if !log.Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(Green.Bold(true).Render("✅"))
+			statStr := lipgloss.NewStyle().Width(12).Render(log.Green.Bold(true).Render("✅"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", Green.Render("✓"), nameStr, statStr, durStr)
+			fmt.Printf(" %s  %s %s %s\n", log.Green.Render("✓"), nameStr, statStr, durStr)
 		}
-		Success("%s", name)
+		log.Success("%s", name)
 	} else {
-		if !Quiet && !firstRender {
+		if !log.Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(Red.Bold(true).Render("❌"))
+			statStr := lipgloss.NewStyle().Width(12).Render(log.Red.Bold(true).Render("❌"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", Red.Render("✗"), nameStr, statStr, durStr)
+			fmt.Printf(" %s  %s %s %s\n", log.Red.Render("✗"), nameStr, statStr, durStr)
 		}
-		Error("%s", name)
-		BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))
+		log.Error("%s", name)
+		log.BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
 	}
 }
 
 func RunInteractive(name, command, cwd string) {
-	Info("Interactive Session: %s", name)
+	log.Info("Interactive Session: %s", name)
 	cmd := exec.Command("bash", "-c", command)
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
 	}
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
-		Error("%s failed: %v", name, err)
+		log.Error("%s failed: %v", name, err)
 		os.Exit(1)
 	}
-	Success("%s", name)
+	log.Success("%s", name)
 }
 
 func formatTailLine(line string) string {

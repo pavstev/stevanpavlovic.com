@@ -85,6 +85,9 @@
       "rs": "shellscript",
       "wrangler.json": "jsonc",
     },
+    "go.toolsEnvVars": {
+      "GO111MODULE": "on",
+    },
     "files.exclude": {
       "**/tools/": true,
       "**/go.sum": true,

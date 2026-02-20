@@ -1,23 +1,84 @@
 ---
+import LogoSvg from "@assets/logo.svg";
 import { cn } from "@client/utils";
 
 import { fullName } from "../../constants";
-import LogoIcon from "./logo-icon.astro";
 
 interface Props {
   [key: string]: any;
   className?: string;
+  size?: number;
+  showName?: boolean;
 }
 
-const { className, ...props } = Astro.props;
+const { className, size = 24, showName = true, ...props } = Astro.props;
 ---
 
-<div
-  class={cn("text-md flex items-center gap-2 font-mono font-bold tracking-tight", className)}
-  {...props}
->
-  <div aria-hidden="true" class="size-6 shrink-0 [&_svg]:size-full">
-    <LogoIcon />
+<div class={cn("flex items-center gap-2", className)} {...props}>
+  <div
+    class={cn(
+      "logo-container relative flex items-center justify-center overflow-hidden p-1",
+      className
+    )}
+  >
+    <LogoSvg
+      aria-hidden="true"
+      class="logo-svg z-10 transition-all duration-500 ease-out"
+      height={`${size}px`}
+      width={`${size}px`}
+    />
+    <div class="shine-effect pointer-events-none absolute inset-0 z-20"></div>
   </div>
-  <span class="truncate">{fullName}</span>
+  {showName && <span class="font-mono text-md font-bold tracking-tight truncate">{fullName}</span>}
 </div>
+
+<style>
+  .logo-container {
+    --logo-stroke: currentColor;
+    --logo-fill: currentColor;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .logo-container:hover {
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  .shine-effect {
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 70%,
+      transparent 100%
+    );
+    background-size: 200% 200%;
+    transform: translateX(-100%) translateY(-100%);
+    animation: shine-idle 8s infinite linear;
+  }
+
+  .logo-container:hover .shine-effect {
+    animation: shine-hover 1.2s infinite linear;
+  }
+
+  @keyframes shine-idle {
+    0% {
+      transform: translateX(-100%) translateY(-100%);
+    }
+    15% {
+      transform: translateX(100%) translateY(100%);
+    }
+    100% {
+      transform: translateX(100%) translateY(100%);
+    }
+  }
+
+  @keyframes shine-hover {
+    0% {
+      transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+      transform: translateX(100%) translateY(100%);
+    }
+  }
+</style>

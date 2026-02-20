@@ -26,7 +26,6 @@ func Run(continueOnError bool) {
 
 	cliutils.Step("Syncing dependencies (Node & Python)...")
 	cliutils.RunQueue([]string{
-		"setup_install",
 		"setup_uv_sync",
 	}, 2, continueOnError)
 

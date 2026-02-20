@@ -61,10 +61,6 @@ tasks:
     name: Install pnpm
     command: npm install -g pnpm
     cwd: ${root_dir}
-  setup_install:
-    name: Install
-    command: pnpm install
-    cwd: ${root_dir}
   setup_uv_sync:
     name: uv sync
     command: uv sync

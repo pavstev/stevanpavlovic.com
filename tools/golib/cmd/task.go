@@ -63,7 +63,6 @@ func listTasks() {
 		"format",
 				"setup_install_uv",
 		"setup_install_pnpm",
-		"setup_install",
 		"setup_uv_sync",
 		"setup_wrangler_types",
 		"ls_files",

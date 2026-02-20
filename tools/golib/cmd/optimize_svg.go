@@ -9,7 +9,7 @@ import (
 
 func init() {
 	// Register the 'optimize-svg' command with the root CLI
-	cmd := cmdutil.NewSimpleCommand("optimize-svg", "Optimize SVG files using svgo", func(cmd *cobra.Command, args []string) {
+	cmd := cmdutil.NewSimpleCommand("optimize-svg", "Optimize SVG files", func(cmd *cobra.Command, args []string) {
 		// No default pattern; use the provided argument
 		pattern := args[0]
 

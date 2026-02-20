@@ -12,42 +12,38 @@ import (
 // ─── Design System (Mapped from OKLCH & HSL) ───────────────────────────────
 
 var (
-	// Primary: Vibrant Emerald oklch(0.6862 0.2146 140.0627)
+	// Primary: Vibrant Emerald oklch(0.6862 0.2146 140.0627).
 	primaryColor = lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#34d399"}
-	// Slate Backgrounds from hsl(240 3.7% 15.9%)
-	slateColor = lipgloss.AdaptiveColor{Light: "#1e293b", Dark: "#334155"}
-	// Destructive: Rose oklch(0.5714 0.2121 27.2502)
+	// Destructive: Rose oklch(0.5714 0.2121 27.2502).
 	destructiveColor = lipgloss.AdaptiveColor{Light: "#e11d48", Dark: "#fb7185"}
-	// Amber/Warning
+	// Amber/Warning.
 	amberColor = lipgloss.AdaptiveColor{Light: "#d97706", Dark: "#fbbf24"}
-	// Muted Foreground
+	// Muted Foreground.
 	mutedColor = lipgloss.AdaptiveColor{Light: "#64748b", Dark: "#94a3b8"}
 
 	blueColor = lipgloss.AdaptiveColor{Light: "#3b82f6", Dark: "#60a5fa"}
 	cyanColor = lipgloss.AdaptiveColor{Light: "#06b6d4", Dark: "#22d3ee"}
 
-	// Typography & Layout Constants
-	boldStyle   = lipgloss.NewStyle().Bold(true)
-	subtleStyle = lipgloss.NewStyle().Foreground(mutedColor)
+	// Typography & Layout Constants.
 
-	// Badge Styles (The "Pill" UI Component)
+	// Badge Styles (The "Pill" UI Component).
 	badgeBase = lipgloss.NewStyle().
 			Bold(true).
 			Padding(0, 1).
 			Foreground(lipgloss.Color("#FFFFFF"))
 
-	infoBadge    = badgeBase.Copy().Background(primaryColor)
-	successBadge = badgeBase.Copy().Background(lipgloss.Color("#059669"))
-	warningBadge = badgeBase.Copy().Background(amberColor)
-	errorBadge   = badgeBase.Copy().Background(destructiveColor)
+	infoBadge    = badgeBase.Background(primaryColor)
+	successBadge = badgeBase.Background(lipgloss.Color("#059669"))
+	warningBadge = badgeBase.Background(amberColor)
+	errorBadge   = badgeBase.Background(destructiveColor)
 
-	// Spine Style (The vertical line box effect)
+	// Spine Style (The vertical line box effect).
 	spineStyle = lipgloss.NewStyle().
 			Border(lipgloss.Border{Left: "┃"}).
 			PaddingLeft(1).
 			MarginLeft(1)
 
-	// Box / Container Styles (The "Glass" effect)
+		// Box / Container Styles (The "Glass" effect).
 	glassStyle = lipgloss.NewStyle().
 			Border(lipgloss.ThickBorder()).
 			BorderTop(false).
@@ -61,7 +57,7 @@ var (
 	osExit = osExitFunc
 	Quiet  = false
 
-	// Exported Styles for high-level runner integration
+	// Exported Styles for high-level runner integration.
 	Primary = lipgloss.NewStyle().Foreground(primaryColor)
 	Yellow  = lipgloss.NewStyle().Foreground(amberColor)
 	Green   = lipgloss.NewStyle().Foreground(primaryColor)
@@ -78,10 +74,10 @@ var osExitFunc = os.Exit
 
 // ─── Core Logging Interface ──────────────────────────────────────────────────
 
-// renderEntry creates the "Spine" layout for log messages
+// renderEntry creates the "Spine" layout for log messages.
 func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveColor) {
 	badgePart := badge.Render(tag)
-	contentPart := spineStyle.Copy().BorderForeground(color).Render(msg)
+	contentPart := spineStyle.BorderForeground(color).Render(msg)
 	fmt.Printf("%s %s\n", badgePart, contentPart)
 }
 
@@ -89,20 +85,36 @@ func Info(msg string) {
 	renderEntry(infoBadge, "INFO", msg, primaryColor)
 }
 
+func Infof(format string, args ...any) {
+	Info(fmt.Sprintf(format, args...))
+}
+
 func Success(msg string) {
 	renderEntry(successBadge, "DONE", msg, lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#10b981"})
+}
+
+func Successf(format string, args ...any) {
+	Success(fmt.Sprintf(format, args...))
 }
 
 func Warning(msg string) {
 	renderEntry(warningBadge, "WARN", msg, amberColor)
 }
 
+func Warningf(format string, args ...any) {
+	Warning(fmt.Sprintf(format, args...))
+}
+
 func Error(msg string) {
 	if !Quiet {
 		badgePart := errorBadge.Render("FAIL")
-		contentPart := spineStyle.Copy().BorderForeground(destructiveColor).Render(msg)
+		contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
 		fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
 	}
+}
+
+func Errorf(format string, args ...any) {
+	Error(fmt.Sprintf(format, args...))
 }
 
 func Fatal(msg string) {
@@ -112,9 +124,13 @@ func Fatal(msg string) {
 	osExit(1)
 }
 
+func Fatalf(format string, args ...any) {
+	Fatal(fmt.Sprintf(format, args...))
+}
+
 // ─── Advanced UI Components ──────────────────────────────────────────────────
 
-// CustomBox renders a high-contrast container with a "Glass-Border" accent
+// CustomBox renders a high-contrast container with a "Glass-Border" accent.
 func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 	if Quiet && (color != destructiveColor) {
 		return
@@ -129,12 +145,12 @@ func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 		Render(strings.ToUpper(title))
 
 	// The Inset Content (Glass effect)
-	container := glassStyle.Copy().BorderForeground(color).Render(content)
+	container := glassStyle.BorderForeground(color).Render(content)
 
 	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleLabel, container))
 }
 
-// BoxOutput provides a shim for existing runner implementations
+// BoxOutput provides a shim for existing runner implementations.
 func BoxOutput(title, content string, borderColor lipgloss.Color) {
 	themeColor := primaryColor
 	if borderColor == lipgloss.Color("1") {

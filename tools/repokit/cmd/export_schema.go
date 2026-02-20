@@ -35,7 +35,7 @@ var schemaCmd = &cobra.Command{
 		}))
 
 		if err != nil {
-			cli.Fatal(fmt.Sprintf("Failed to reflect schema: %v", err))
+			cli.Fatalf("Failed to reflect schema: %v", err)
 		}
 
 		schemaDraft := "http://json-schema.org/draft-07/schema#"
@@ -48,7 +48,7 @@ var schemaCmd = &cobra.Command{
 
 		j, err := json.MarshalIndent(schema, "", "  ")
 		if err != nil {
-			cli.Fatal(fmt.Sprintf("Failed to marshal schema: %v", err))
+			cli.Fatalf("Failed to marshal schema: %v", err)
 		}
 
 		if schemaOut == "" {
@@ -58,9 +58,9 @@ var schemaCmd = &cobra.Command{
 
 		err = os.WriteFile(schemaOut, j, 0644)
 		if err != nil {
-			cli.Fatal(fmt.Sprintf("Failed to write schema file: %v", err))
+			cli.Fatalf("Failed to write schema file: %v", err)
 		}
-		cli.Success(fmt.Sprintf("Successfully generated JSON schema at %s", schemaOut))
+		cli.Successf("Successfully generated JSON schema at %s", schemaOut)
 	},
 }
 

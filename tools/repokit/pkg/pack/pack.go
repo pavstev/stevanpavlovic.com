@@ -94,13 +94,13 @@ func Run(targetDir string) {
 			if info, err := os.Stat(alt); err == nil && info.IsDir() {
 				targetDir = alt
 			} else {
-				cli.Error(fmt.Sprintf("Directory not found: %s", targetDir))
+				cli.Errorf("Directory not found: %s", targetDir)
 				return
 			}
 		}
 	}
 
-	cli.Info(fmt.Sprintf("Bundling: %s", targetDir))
+	cli.Infof("Bundling: %s", targetDir)
 
 	// Clean up old output files
 	files, _ := filepath.Glob("pack_output_*.md")
@@ -130,14 +130,14 @@ func Run(targetDir string) {
 
 	err := os.WriteFile(outputPath, []byte(md.String()), 0644)
 	if err != nil {
-		cli.Error(fmt.Sprintf("Failed to write output: %v", err))
+		cli.Errorf("Failed to write output: %v", err)
 		return
 	}
 
 	_ = clipboard.WriteAll(md.String())
 
-	cli.Success(fmt.Sprintf("Success! Bundled %d files.", ctx.FileIndex))
-	cli.Info(fmt.Sprintf("Output saved to: %s", outputPath))
+	cli.Successf("Success! Bundled %d files.", ctx.FileIndex)
+	cli.Infof("Output saved to: %s", outputPath)
 	cli.Info("Content copied to clipboard.")
 }
 

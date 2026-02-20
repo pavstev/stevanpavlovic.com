@@ -64,7 +64,6 @@ linters:
     - gomoddirectives
     - gomodguard
     - goprintffuncname
-    - lll
     - makezero
     - nakedret
     - nilerr

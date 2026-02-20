@@ -262,7 +262,7 @@ func (o *optimizer) drawFrame(start time.Time) int {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	p := atomic.LoadInt32(&o.processed)
-	cli.Info(fmt.Sprintf("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds()))
+	cli.Infof("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
 	for _, s := range o.workerStates {
 		if !s.active {
 			cli.Info(formatProgressLine(tailStyle.Render("•"), "idle", ""))
@@ -285,7 +285,7 @@ func (o *optimizer) report() error {
 		if tBefore > 0 {
 			reduction = 100 * (1 - float64(tAfter)/float64(tBefore))
 		}
-		cli.Success(fmt.Sprintf("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction))
+		cli.Successf("Intelligence Pass: %d -> %d nodes (%.1f%% geometric density reduction)", tBefore, tAfter, reduction)
 		return nil
 	}
 	return fmt.Errorf("failed to process %d files", failed)

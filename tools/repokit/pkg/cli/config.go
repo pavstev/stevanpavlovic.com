@@ -43,22 +43,57 @@ type Config struct {
 	Tasks map[string]TaskConfig `yaml:"tasks" json:"tasks" required:"true" description:"Task definitions (Atomic or Pipeline)."`
 }
 
+func (c *Config) Validate() error {
+	for name := range c.Tasks {
+		task := c.Tasks[name]
+		// Validating batch/sequential task dependencies
+		if task.Type == "batch" || task.Type == "sequential" {
+			for _, subTask := range task.Tasks {
+				if _, ok := c.Tasks[subTask]; !ok {
+					return fmt.Errorf("task %q depends on non-existent task %q", name, subTask)
+				}
+			}
+		}
+
+		// Validating hook dependencies
+		for _, hook := range task.PreRun {
+			if _, ok := c.Tasks[hook]; !ok {
+				return fmt.Errorf("task %q has non-existent pre_run hook %q", name, hook)
+			}
+		}
+		for _, hook := range task.PostRun {
+			if _, ok := c.Tasks[hook]; !ok {
+				return fmt.Errorf("task %q has non-existent post_run hook %q", name, hook)
+			}
+		}
+	}
+	return nil
+}
+
 var cfg struct {
 	sync sync.Once
 	data Config
+	err  error
 }
 
-func GetConfig() Config {
+func GetConfig() (Config, error) {
 	cfg.sync.Do(func() {
 		if err := yaml.Unmarshal(configYAML, &cfg.data); err != nil {
-			Fatal(fmt.Sprintf("Failed to parse config: %v", err))
+			cfg.err = fmt.Errorf("failed to parse config: %w", err)
+			return
+		}
+		if err := cfg.data.Validate(); err != nil {
+			cfg.err = fmt.Errorf("config validation failed: %w", err)
 		}
 	})
-	return cfg.data
+	return cfg.data, cfg.err
 }
 
 func GetTaskByID(id string) (TaskConfig, error) {
-	config := GetConfig()
+	config, err := GetConfig()
+	if err != nil {
+		return TaskConfig{}, err
+	}
 	task, ok := config.Tasks[id]
 	if !ok {
 		return TaskConfig{}, fmt.Errorf("task %q not found", id)

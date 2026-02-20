@@ -34,7 +34,7 @@ tasks:
     type: single
     pre_msg: Compiling Repokit orchestrator...
     on_error: Failed to build Go binary.
-    command: ${go} build -o ../../${rk_bin} ./main.go
+    command: ${go} build -o ../../${rk_bin} ./main.go > /dev/null
     cwd: ${rk_dir}
 
   check_astro:

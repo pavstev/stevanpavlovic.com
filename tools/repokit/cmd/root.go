@@ -18,24 +18,27 @@ func Execute() {
 	// Dynamically register commands from tasks.yaml right before executing.
 	// This ensures all init() functions have finished and hardcoded commands (like 'setup')
 	// are already registered, preventing duplicates and initialization race conditions.
-	config := cli.GetConfig()
-	for id, task := range config.Tasks {
+	config, err := cli.GetConfig()
+	if err != nil {
+		cli.Fatal(err.Error())
+	}
+	for id := range config.Tasks {
 		taskID := id
-		taskCfg := task
+		taskCfg := config.Tasks[id]
 
 		// Skip if a hardcoded command with this name already exists
 		var exists bool
-			for _, existingCmd := range rootCmd.Commands() {
-				if existingCmd.Name() == taskID {
-					exists = true
-					break
-				}
+		for _, existingCmd := range rootCmd.Commands() {
+			if existingCmd.Name() == taskID {
+				exists = true
+				break
 			}
-			if exists {
-				continue
-			}
+		}
+		if exists {
+			continue
+		}
 
-			// Fallback to Name if Description is missing in tasks.yaml
+		// Fallback to Name if Description is missing in tasks.yaml
 		shortDesc := taskCfg.Description
 		if shortDesc == "" {
 			shortDesc = taskCfg.Name
@@ -57,9 +60,6 @@ func Execute() {
 }
 
 func init() {
-	// 1. Setup global flags (Using the clean standard 'cli' package alias)
+	// Setup global flags (Using the clean standard 'cli' package alias)
 	rootCmd.PersistentFlags().BoolVarP(&cli.Quiet, "quiet", "q", false, "suppress output")
-
-	// 2. Register this command as the "Root" in the utility package
-	cli.SetRootCommand(rootCmd)
 }

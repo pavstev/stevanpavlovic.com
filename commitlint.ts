@@ -38,7 +38,15 @@ const commitTypes = {
   },
 } as const;
 
-const scopes = {
+const Configuration: UserConfig = {
+  extends: ["@commitlint/config-conventional"],
+  formatter: "@commitlint/format",
+  parserPreset: "conventional-changelog-atom",
+  prompt: {
+    questions: {
+      scope: {
+        description: "What is the scope of this change",
+        enum: {
           all: {
             description: "Changes that affect the build system or external dependencies",
             emoji: "🌍",
@@ -64,17 +72,7 @@ const scopes = {
             emoji: "📄",
             title: "Resume",
           },
-        } as const;
-
-const Configuration: UserConfig = {
-  extends: ["@commitlint/config-conventional"],
-  formatter: "@commitlint/format",
-  parserPreset: "conventional-changelog-atom",
-  prompt: {
-    questions: {
-      scope: {
-        description: "What is the scope of this change",
-        enum: scopes,
+        },
       },
       type: {
         description: "What is the type of this change",
@@ -88,7 +86,7 @@ const Configuration: UserConfig = {
     "header-max-length": [RuleConfigSeverity.Error, "always", 72],
     "scope-case": [RuleConfigSeverity.Error, "always", "kebab-case"],
     "scope-empty": [RuleConfigSeverity.Error, "never"],
-    "scope-enum": [RuleConfigSeverity.Error, "always", Object.keys(scopes)],
+    "scope-enum": [RuleConfigSeverity.Error, "always", scopes.map((s) => s.id)],
     "subject-empty": [RuleConfigSeverity.Error, "never"],
     "type-empty": [RuleConfigSeverity.Error, "never"],
     "type-enum": [RuleConfigSeverity.Error, "always", Object.keys(commitTypes)],

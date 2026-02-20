@@ -120,6 +120,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.4.2
         version: 20.4.2
+      '@commitlint/types':
+        specifier: ^20.4.0
+        version: 20.4.0
       '@eslint/compat':
         specifier: ^2.0.2
         version: 2.0.2(eslint@10.0.0(jiti@2.6.1))

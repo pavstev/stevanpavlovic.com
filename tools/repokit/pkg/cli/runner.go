@@ -41,8 +41,9 @@ func RunTask(id string, data any, visited map[string]bool) {
 		visited = make(map[string]bool)
 	}
 
+	// Prevent infinite recursion in cyclical dependencies
 	if visited[id] {
-		return // Prevent infinite recursion
+		return
 	}
 	visited[id] = true
 
@@ -56,16 +57,20 @@ func RunTask(id string, data any, visited map[string]bool) {
 		RunTask(preID, data, visited)
 	}
 
-	// 2. Main Execution
-	cmdStr, err := EvaluateCommand(task.Command, data)
-	if err != nil {
-		Fatal(fmt.Sprintf("Template error in %q: %v", id, err))
-	}
-
-	if task.Interactive {
-		RunInteractive(task.Name, cmdStr, task.Cwd)
+	// 2. Main Execution: Route pipelines vs single commands properly
+	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
+		RunPipeline(id, task, visited)
 	} else {
-		runCommand(task.Name, cmdStr, task.Cwd)
+		cmdStr, err := EvaluateCommand(task.Command, data)
+		if err != nil {
+			Fatal(fmt.Sprintf("Template error in %q: %v", id, err))
+		}
+
+		if task.Interactive {
+			RunInteractive(task.Name, cmdStr, task.Cwd)
+		} else {
+			runCommand(task.Name, cmdStr, task.Cwd)
+		}
 	}
 
 	// 3. Post-Run Hooks
@@ -74,19 +79,20 @@ func RunTask(id string, data any, visited map[string]bool) {
 	}
 }
 
-// RunBatch executes a set of tasks based on BatchConfig.
-func RunBatch(id string, config BatchConfig) {
-	Info(fmt.Sprintf("Batch Pipeline: %s", config.Name))
+// RunPipeline executes a set of tasks based on the TaskConfig type.
+func RunPipeline(id string, config TaskConfig, visited map[string]bool) {
+	Info(fmt.Sprintf("Pipeline: %s", config.Name))
 
-	if config.Parallel {
+	if config.Type == "batch" || config.Parallel {
 		workers := config.Workers
 		if workers <= 0 {
 			workers = 3
 		}
 		RunQueue(config.Tasks, workers, config.ContinueOnError)
 	} else {
+		// Sequential Pipeline
 		for _, taskID := range config.Tasks {
-			RunTask(taskID, nil, nil)
+			RunTask(taskID, nil, visited)
 		}
 	}
 }
@@ -258,7 +264,21 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 
 				id := ids[idx]
 				task, _ := GetTaskByID(id)
-				cmd := createCmd(ctx, task.Command, task.Cwd)
+
+				// Recursion Support: Dynamically resolve the absolute path of the Repokit binary
+				// so that queues can safely fork sub-pipelines while preserving UI spinners!
+				var cmdStr string
+				if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
+					executable, _ := os.Executable()
+					if executable == "" {
+						executable = os.Args[0] // Fallback
+					}
+					cmdStr = fmt.Sprintf("%q task %q", executable, id)
+				} else {
+					cmdStr, _ = EvaluateCommand(task.Command, nil)
+				}
+
+				cmd := createCmd(ctx, cmdStr, task.Cwd)
 
 				pr, pw, _ := os.Pipe()
 				cmd.Stdout, cmd.Stderr = pw, pw

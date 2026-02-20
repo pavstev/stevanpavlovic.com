@@ -22,7 +22,7 @@
   },
   "type": "module",
   "scripts": {
-    "all": "pnpm go-build && ./dist/repokit optimize-svg src/assets/**/*.svg && ./dist/repokit all",
+    "all": "pnpm go-build && pnpm repokit all",
     "repokit": "./dist/repokit",
     "dev": "astro dev",
     "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ../../dist/repokit main.go > /dev/null && cd - > /dev/null",

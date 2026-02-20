@@ -69,7 +69,7 @@ tasks:
     command: ${go} test -v -coverprofile=coverage.out -json ./pkg/... | tparse -all -top && ${go} tool cover -html=coverage.out -o coverage.html
     cwd: ${rk_dir}
 
-  optimize_svg:
+  optimize_logo:
     name: Optimize SVGs
     type: single
     pre_msg: Minifying and optimizing SVG assets...
@@ -98,7 +98,7 @@ tasks:
     type: batch
     pre_msg: Executing the global linting pipeline...
     on_error: The linting pipeline encountered errors.
-    tasks: [lint_eslint, knip, optimize_svg]
+    tasks: [lint_eslint, knip, optimize_logo]
     parallel: true
 
   test:

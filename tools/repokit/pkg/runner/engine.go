@@ -3,6 +3,9 @@ package runner
 import (
 	"regexp"
 	"repokit/pkg/core"
+
+	"os"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -69,16 +72,18 @@ func RunTask(id string, data any, visited map[string]bool) {
 
 // RunPipeline executes a set of tasks based on the TaskConfig type.
 func RunPipeline(id string, cfg *core.TaskConfig, visited map[string]bool) {
-	core.Info("Pipeline: %s", cfg.Name)
+	if os.Getenv("REPOKIT_NESTED") != "1" {
+		core.Info("Pipeline: %s", cfg.Name)
+	}
 
-	if cfg.Type == "batch" || cfg.Parallel {
+	if cfg.Type == "batch" && cfg.Parallel {
 		workers := cfg.Workers
 		if workers <= 0 {
 			workers = 3
 		}
 		RunQueue(cfg.Tasks, workers, cfg.ContinueOnError)
 	} else {
-		// Sequential Pipeline
+		// Sequential Pipeline (or batch with parallel: false)
 		for _, taskID := range cfg.Tasks {
 			RunTask(taskID, nil, visited)
 		}

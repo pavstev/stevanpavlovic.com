@@ -2,6 +2,7 @@ package svg
 
 import (
 	"fmt"
+	"os"
 	"repokit/pkg/core"
 	"strings"
 	"sync/atomic"
@@ -9,6 +10,9 @@ import (
 )
 
 func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
+	if os.Getenv("REPOKIT_NESTED") == "1" {
+		return
+	}
 	ticker := time.NewTicker(uiTickRate)
 	defer ticker.Stop()
 	lines, first, tick := 0, true, 0
@@ -18,7 +22,7 @@ func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 			return
 		case <-ticker.C:
 			if !first {
-				core.Info("%s", strings.Repeat("\033[A\033[2K", lines))
+				fmt.Print(strings.Repeat("\033[A\033[2K", lines))
 			}
 			first, lines = false, o.drawFrame(start, tick)
 			tick++
@@ -31,13 +35,13 @@ func (o *optimizer) drawFrame(start time.Time, tick int) int {
 	defer o.mu.Unlock()
 	p := atomic.LoadInt32(&o.processed)
 	spinner := core.Spinners[tick%len(core.Spinners)]
-	core.Info("  %s SVG Intelligence %s [%d/%d] (%.1fs)", blueStyle.Render(spinner), goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
+	fmt.Printf("  %s SVG Intelligence %s [%d/%d] (%.1fs)\n", blueStyle.Render(spinner), goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
 	for _, s := range o.workerStates {
 		if !s.active {
-			core.Info("%s", formatProgressLine(tailStyle.Render("•"), "idle", ""))
+			fmt.Println(formatProgressLine(tailStyle.Render("•"), "idle", ""))
 		} else {
 			icon := blueStyle.Render(spinner)
-			core.Info("%s", formatProgressLine(icon, s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
+			fmt.Println(formatProgressLine(icon, s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
 		}
 	}
 	return len(o.workerStates) + 1

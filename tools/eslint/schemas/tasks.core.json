@@ -1,9 +1,19 @@
 {
   "$id": "http://json-org/draft-07/schema#",
+  "title": "Repokit Task Configuration",
+  "description": "Unified Configuration schema for Repokit task runner.",
+  "required": [
+    "tasks"
+  ],
   "additionalProperties": false,
   "definitions": {
     "CoreTaskConfig": {
-      "required": ["name", "type", "pre_msg", "on_error"],
+      "required": [
+        "name",
+        "type",
+        "pre_msg",
+        "on_error"
+      ],
       "additionalProperties": false,
       "properties": {
         "command": {
@@ -68,7 +78,11 @@
         },
         "type": {
           "description": "Single command, parallel batch, or sequential pipeline.",
-          "enum": ["single", "batch", "sequential"],
+          "enum": [
+            "single",
+            "batch",
+            "sequential"
+          ],
           "type": "string"
         },
         "workers": {
@@ -80,7 +94,6 @@
       "type": "object"
     }
   },
-  "description": "Unified Configuration schema for Repokit task runner.",
   "properties": {
     "tasks": {
       "description": "Task definitions (Atomic or Pipeline).",
@@ -90,17 +103,21 @@
           "$ref": "#/definitions/CoreTaskConfig"
         }
       },
-      "type": ["object", "null"]
+      "type": [
+        "object",
+        "null"
+      ]
     },
     "vars": {
       "description": "Global variables for command and path interpolation.",
       "additionalProperties": {
         "type": "string"
       },
-      "type": ["object", "null"]
+      "type": [
+        "object",
+        "null"
+      ]
     }
   },
-  "required": ["tasks"],
-  "title": "Repokit Task Configuration",
   "type": "object"
 }

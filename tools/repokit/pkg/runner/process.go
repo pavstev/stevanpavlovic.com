@@ -9,11 +9,12 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"repokit/pkg/core"
 	"strings"
 	"sync"
 	"syscall"
 	"time"
-	"repokit/pkg/core"
+
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -151,7 +152,6 @@ func (ui *commandUI) printResult(cmd *exec.Cmd) {
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}
-		core.Success("%s", ui.name)
 	} else {
 		if !core.Quiet && !ui.firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
@@ -160,14 +160,17 @@ func (ui *commandUI) printResult(cmd *exec.Cmd) {
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}
-		core.Error("%s", ui.name)
 		core.BoxOutput("Failure Log: "+ui.name, ui.outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
 	}
 }
 
 func RunInteractive(name, command, cwd string) {
-	core.Info("Interactive Session: %s", name)
+	isNested := os.Getenv("REPOKIT_NESTED") == "1"
+	if !isNested {
+		core.Info("Interactive Session: %s", name)
+	}
+
 	cmd := exec.Command("bash", "-c", command)
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
@@ -177,7 +180,6 @@ func RunInteractive(name, command, cwd string) {
 		core.Error("%s failed: %v", name, err)
 		os.Exit(1)
 	}
-	core.Success("%s", name)
 }
 
 func formatTailLine(line string) string {

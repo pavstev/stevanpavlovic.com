@@ -1,14 +1,17 @@
 package svg
 
 import (
+	"context"
 	"fmt"
 	"golib/pkg/cliutils"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"sync"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
@@ -101,6 +104,10 @@ func (o *optimizer) run() error {
 	}
 	close(tasks)
 
+	// Create interrupt context
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
 	done := make(chan struct{})
 	startTime := time.Now()
 
@@ -110,40 +117,48 @@ func (o *optimizer) run() error {
 	workerCount := len(o.workerStates)
 	for i := 0; i < workerCount; i++ {
 		o.wg.Add(1)
-		go o.worker(i, tasks)
+		go o.worker(i, ctx, tasks)
 	}
 
 	o.wg.Wait()
 	close(done)
 
-	// Brief pause to allow terminal to settle after UI goroutine closes
-	time.Sleep(100 * time.Millisecond)
+	// Check if we exited because of an interrupt
+	if ctx.Err() != nil {
+		fmt.Println("\n" + goldStyle.Render("Optimization interrupted by user."))
+		return ctx.Err()
+	}
 
 	return o.report()
 }
 
-func (o *optimizer) worker(id int, tasks <-chan int) {
+func (o *optimizer) worker(id int, ctx context.Context, tasks <-chan int) {
 	defer o.wg.Done()
 	for idx := range tasks {
-		path := o.files[idx]
+		select {
+		case <-ctx.Done():
+			return
+		default:
+			path := o.files[idx]
 
-		o.updateWorkerState(id, path, true)
-		err := o.processFile(path)
-		o.updateWorkerState(id, "", false)
+			o.updateWorkerState(id, path, true)
+			err := o.processFile(path)
+			o.updateWorkerState(id, "", false)
 
-		o.results[idx] = Result{
-			File:    filepath.Base(path),
-			Path:    path,
-			Success: err == nil,
-			Error:   func() string { if err != nil { return err.Error() }; return "" }(),
+			o.results[idx] = Result{
+				File:    filepath.Base(path),
+				Path:    path,
+				Success: err == nil,
+				Error:   func() string { if err != nil { return err.Error() }; return "" }(),
+			}
+
+			atomic.AddInt32(&o.processed, 1)
+			if err != nil {
+				atomic.AddInt32(&o.failedCount, 1)
+				continue
+			}
+			atomic.AddInt32(&o.successCount, 1)
 		}
-
-		atomic.AddInt32(&o.processed, 1)
-		if err != nil {
-			atomic.AddInt32(&o.failedCount, 1)
-			continue
-		}
-		atomic.AddInt32(&o.successCount, 1)
 	}
 }
 

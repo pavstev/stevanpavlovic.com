@@ -18,11 +18,11 @@ specifying the URL of the file to download. For example:
 Note that in this example a TUI will not be shown for URLs that do not respond
 with a ContentLength header.
 
-* * *
+---
 
 This example originally came from [this discussion][discussion].
 
-* * *
+---
 
 <a href="https://charm.sh/"><img alt="The Charm logo" src="https://stuff.charm.sh/charm-badge.jpg" width="400"></a>
 

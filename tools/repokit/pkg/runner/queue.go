@@ -6,24 +6,14 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"strings"
 	"sync"
 	"syscall"
 	"time"
+
 	"repokit/pkg/core"
-	"github.com/charmbracelet/lipgloss"
 )
 
-type taskState struct {
-	name      string
-	status    string
-	startTime time.Time
-	elapsed   time.Duration
-	tail      []string
-}
-
 type queueContext struct {
-	states          []*taskState
 	ids             []string
 	workers         int
 	continueOnError bool
@@ -33,13 +23,12 @@ type queueContext struct {
 	ctx             context.Context
 }
 
-// RunQueue executes a list of task IDs in parallel with a dynamic UI spinner and logging tail.
+// RunQueue executes a list of task IDs in parallel
 func RunQueue(ids []string, workers int, continueOnError bool) {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	q := &queueContext{
-		states:          make([]*taskState, len(ids)),
 		ids:             ids,
 		workers:         workers,
 		continueOnError: continueOnError,
@@ -47,9 +36,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	}
 
 	taskChan := make(chan int, len(ids))
-	for i, id := range ids {
-		t, _ := core.GetTaskByID(id)
-		q.states[i] = &taskState{name: t.Name, status: statusQueued}
+	for i := range ids {
 		taskChan <- i
 	}
 	close(taskChan)
@@ -57,33 +44,30 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	q.startWorkers(taskChan)
 
 	startPipeline := time.Now()
-	done := make(chan struct{})
-	go func() {
-		q.wg.Wait()
-		close(done)
-	}()
+	q.wg.Wait()
 
-	ticker := time.NewTicker(80 * time.Millisecond)
-	defer ticker.Stop()
-	firstRender, lineCount := true, 0
-
-	for processing := true; processing; {
-		select {
-		case <-done:
-			processing = false
-		case <-ticker.C:
-			firstRender, lineCount = q.renderUI(firstRender, lineCount)
+	if !core.TuiMode && os.Getenv("REPOKIT_NESTED") != "1" {
+		totalDur := time.Since(startPipeline).Seconds()
+		if q.failed {
+			fmt.Printf("\n  %s Pipeline completed with failures | %s %.1fs\n\n", core.Red.Render("●"), core.Subtle.Render("⏱"), totalDur)
+		} else {
+			fmt.Printf("\n  %s Pipeline completed successfully | %s %.1fs\n\n", core.Green.Render("●"), core.Subtle.Render("⏱"), totalDur)
 		}
 	}
-	q.renderUI(false, lineCount)
 
-	q.printSummary(startPipeline)
+	core.PublishEvent(core.EventPipelineDone, "pipeline", "")
 
 	if q.failed {
-		if os.Getenv("REPOKIT_NESTED") != "1" {
+		if os.Getenv("REPOKIT_NESTED") != "1" && !core.TuiMode {
 			fmt.Println("\n" + core.Bold.Render("PIPELINE FAILED"))
 		}
-		os.Exit(1)
+		// If in TUI mode, we rely on the TUI to handle the error presentation and exit gracefully
+		if !core.TuiMode {
+			os.Exit(1)
+		} else {
+			// Trigger a panic so our TUI's runner recovery grabs it
+			panic("pipeline failed")
+		}
 	}
 }
 
@@ -100,27 +84,25 @@ func (q *queueContext) startWorkers(taskChan <-chan int) {
 }
 
 func (q *queueContext) processTask(idx int) {
+	id := q.ids[idx]
+	task, _ := core.GetTaskByID(id)
+
 	select {
 	case <-q.ctx.Done():
-		q.mu.Lock()
-		q.states[idx].status = statusCancelled
-		q.mu.Unlock()
+		core.PublishEvent(core.EventTaskError, id, "cancelled")
 		return
 	default:
 	}
 
 	q.mu.Lock()
 	if q.failed && !q.continueOnError {
-		q.states[idx].status = statusCancelled
 		q.mu.Unlock()
+		core.PublishEvent(core.EventTaskError, id, "cancelled due to previous failure")
 		return
 	}
-	q.states[idx].status = statusActive
-	q.states[idx].startTime = time.Now()
 	q.mu.Unlock()
 
-	id := q.ids[idx]
-	task, _ := core.GetTaskByID(id)
+	core.PublishEvent(core.EventTaskStart, id, task.Name)
 
 	var cmdStr string
 	if task.Type == "batch" || task.Type == "sequential" || len(task.Tasks) > 0 {
@@ -142,116 +124,26 @@ func (q *queueContext) processTask(idx int) {
 	pr, pw, _ := os.Pipe()
 	cmd.Stdout, cmd.Stderr = pw, pw
 
-	go func(sIdx int) {
+	go func() {
 		scanner := bufio.NewScanner(pr)
 		for scanner.Scan() {
 			line := scanner.Text()
-			q.mu.Lock()
-			q.states[sIdx].tail = append(q.states[sIdx].tail, line)
-			if len(q.states[sIdx].tail) > 5 {
-				q.states[sIdx].tail = q.states[sIdx].tail[1:]
+			core.PublishEvent(core.EventTaskLog, id, line)
+			if !core.TuiMode && !core.Quiet {
+				fmt.Printf("[%s] %s\n", task.Name, line)
 			}
-			q.mu.Unlock()
 		}
-	}(idx)
+	}()
 
 	err := cmd.Run()
 	_ = pw.Close()
 
-	q.mu.Lock()
-	defer q.mu.Unlock()
-	q.states[idx].elapsed = time.Since(q.states[idx].startTime)
 	if err != nil {
-		q.states[idx].status = statusFailed
+		q.mu.Lock()
 		q.failed = true
-		if os.Getenv("REPOKIT_NESTED") == "1" {
-			fmt.Printf("Error in %s:\n", q.states[idx].name)
-			for _, t := range q.states[idx].tail {
-				fmt.Println(t)
-			}
-		}
+		q.mu.Unlock()
+		core.PublishEvent(core.EventTaskError, id, err.Error())
 	} else {
-		q.states[idx].status = statusCompleted
+		core.PublishEvent(core.EventTaskDone, id, "")
 	}
-}
-
-func (q *queueContext) renderUI(firstRender bool, lineCount int) (bool, int) {
-	if os.Getenv("REPOKIT_NESTED") == "1" {
-		return firstRender, lineCount
-	}
-	q.mu.Lock()
-	defer q.mu.Unlock()
-
-	if !firstRender {
-		fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-	}
-	newLineCount := 0
-	spinnerIdx := int(time.Now().UnixMilli()/80) % len(core.Spinners)
-
-	for _, s := range q.states {
-		var icon, statText string
-		durStr := fmt.Sprintf("%5.1fs", s.elapsed.Seconds())
-
-		switch s.status {
-		case statusCompleted:
-			icon = core.Green.Render("•")
-			statText = core.Green.Bold(true).Render(core.IconSuccess)
-		case statusFailed:
-			icon = core.Red.Render("•")
-			statText = core.Red.Bold(true).Render(core.IconError)
-		case statusActive:
-			icon = core.Blue.Render(core.Spinners[spinnerIdx])
-			statText = core.Blue.Bold(true).Render(core.IconPending)
-			durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
-		case statusCancelled:
-			icon = core.Subtle.Render("•")
-			statText = core.Subtle.Render(core.IconCancelled)
-			durStr = core.Subtle.Render("  --.-s")
-		default:
-			icon = core.Subtle.Render("○")
-			statText = core.Subtle.Render(core.IconPending)
-			durStr = core.Subtle.Render("  --.-s")
-		}
-
-		padLen := 38 - lipgloss.Width(s.name)
-		if padLen < 2 {
-			padLen = 2
-		}
-		dots := core.Subtle.Render(strings.Repeat(".", padLen))
-		nameStr := s.name + " " + dots
-		statStr := lipgloss.NewStyle().Width(4).Render(statText)
-
-		fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
-		newLineCount++
-
-		if len(s.tail) > 0 && (s.status == statusActive || s.status == statusFailed) && !core.Quiet {
-			for _, tl := range s.tail {
-				fmt.Println(formatTailLine(tl))
-				newLineCount++
-			}
-		}
-	}
-	return false, newLineCount
-}
-
-func (q *queueContext) printSummary(startPipeline time.Time) {
-	if os.Getenv("REPOKIT_NESTED") == "1" {
-		return
-	}
-	totalDur := time.Since(startPipeline).Seconds()
-	completed, failedTasks := 0, 0
-	for _, s := range q.states {
-		if s.status == statusCompleted {
-			completed++
-		} else if s.status == statusFailed {
-			failedTasks++
-		}
-	}
-
-	fmt.Println()
-	fmt.Printf("  %s %d completed", core.Green.Render("●"), completed)
-	if failedTasks > 0 {
-		fmt.Printf(" | %s %d failed", core.Red.Render("●"), failedTasks)
-	}
-	fmt.Printf(" | %s %d total | %s %.1fs\n\n", core.Blue.Render("●"), len(q.states), core.Subtle.Render("⏱"), totalDur)
 }

@@ -47,7 +47,7 @@ func (c *Config) Validate() error {
 	var NativeCommands = map[string]bool{
 		"export_schema": true,
 		"pack":          true,
-		"optimize-svg":  true,
+		"optimize_svg":  true,
 		"help":          true,
 	}
 

@@ -64,7 +64,8 @@ The `fullscreen` example shows how to make a Bubble Tea application fullscreen.
 
 ### Glamour
 
-The `glamour` example shows how to use [Glamour](https://github.com/charmbracelet/glamour) inside a viewport bubble.
+The `glamour` example shows how to use
+[Glamour](https://github.com/charmbracelet/glamour) inside a viewport bubble.
 
 <a href="./glamour/main.go">
   <img width="750" src="./glamour/glamour.gif" />
@@ -98,7 +99,8 @@ The `list-default` example shows how to use the list bubble.
 
 ### Fancy List
 
-The `list-fancy` example shows how to use the list bubble with extra customizations.
+The `list-fancy` example shows how to use the list bubble with extra
+customizations.
 
 <a href="./list-fancy/main.go">
   <img width="750" src="./list-fancy/list-fancy.gif" />
@@ -106,7 +108,8 @@ The `list-fancy` example shows how to use the list bubble with extra customizati
 
 ### Simple List
 
-The `list-simple` example shows how to use the list and customize it to have a simpler, more compact, appearance.
+The `list-simple` example shows how to use the list and customize it to have a
+simpler, more compact, appearance.
 
 <a href="./list-simple/main.go">
   <img width="750" src="./list-simple/list-simple.gif" />
@@ -149,8 +152,8 @@ The `paginator` example shows how to build a simple paginated list.
 
 ### Pipe
 
-The `pipe` example demonstrates using shell pipes to communicate with Bubble
-Tea applications.
+The `pipe` example demonstrates using shell pipes to communicate with Bubble Tea
+applications.
 
 <a href="./pipe/main.go">
   <img width="750" src="./pipe/pipe.gif" />
@@ -176,8 +179,8 @@ indicating download progress through Bubble Tea.
 
 ### Static Progress
 
-The `progress-static` example shows a progress bar with static incrementation
-of progress.
+The `progress-static` example shows a progress bar with static incrementation of
+progress.
 
 <a href="./progress-static/main.go">
   <img width="750" src="./progress-static/progress-static.gif" />
@@ -226,7 +229,8 @@ The `simple` example shows a very simple Bubble Tea application.
 
 ### Spinner
 
-The `spinner` example demonstrates a spinner bubble being used to indicate loading.
+The `spinner` example demonstrates a spinner bubble being used to indicate
+loading.
 
 <a href="./spinner/main.go">
   <img width="750" src="./spinner/spinner.gif" />
@@ -268,7 +272,8 @@ data.
 
 ### Tabs
 
-The `tabs` example demonstrates tabbed navigation styled with [Lip Gloss](https://github.com/charmbracelet/lipgloss).
+The `tabs` example demonstrates tabbed navigation styled with
+[Lip Gloss](https://github.com/charmbracelet/lipgloss).
 
 <a href="./tabs/main.go">
   <img width="750" src="./tabs/tabs.gif" />
@@ -285,7 +290,8 @@ The `textarea` example demonstrates a simple Bubble Tea application using a
 
 ### Text Input
 
-The `textinput` example demonstrates a simple Bubble Tea application using a `textinput` bubble.
+The `textinput` example demonstrates a simple Bubble Tea application using a
+`textinput` bubble.
 
 <a href="./textinput/main.go">
   <img width="750" src="./textinput/textinput.gif" />

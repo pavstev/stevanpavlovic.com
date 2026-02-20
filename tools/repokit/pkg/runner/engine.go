@@ -72,7 +72,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 
 // RunPipeline executes a set of tasks based on the TaskConfig type.
 func RunPipeline(id string, cfg *core.TaskConfig, visited map[string]bool) {
-	if os.Getenv("REPOKIT_NESTED") != "1" {
+	if os.Getenv("REPOKIT_NESTED") != "1" && !core.TuiMode {
 		core.Info("Pipeline: %s", cfg.Name)
 	}
 

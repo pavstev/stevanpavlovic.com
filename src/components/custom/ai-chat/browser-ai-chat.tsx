@@ -7,7 +7,7 @@ import { Icon } from "@components/ui/icon";
 import { Input } from "@components/ui/input";
 import { Progress } from "@components/ui/progress";
 import { ScrollArea } from "@components/ui/scroll-area";
-import React, { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 interface BrowserAiChatProps {}

@@ -1,13 +1,12 @@
 package commands
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 	"repokit/pkg/core"
 	"repokit/pkg/runner"
+	"strings"
 )
 
 // RunClean executes the project clean logic.
@@ -46,15 +45,7 @@ func RunClean(force bool) {
 		}
 		fmt.Println()
 
-		// 3. Prompt for confirmation
-		fmt.Print("Proceed with deletion? [y/N]: ")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		answer := strings.ToLower(strings.TrimSpace(scanner.Text()))
-		if answer != "y" && answer != "yes" {
-			core.Info("Aborted.")
-			return
-		}
+		// 3. We skip manual Stdin prompts here because the TUI or flag already confirmed the intent.
 	}
 
 	core.Step("Cleaning project...")

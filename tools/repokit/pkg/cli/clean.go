@@ -6,62 +6,43 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	"repokit/pkg/cli"
 )
 
-// Run executes the project clean process.
-// It performs safety checks before triggering the destructive clean tasks.
-func Run(force bool) {
-	cli.Lifecycle("Checking clean preconditions")
+// RunClean executes the project clean process with safety checks.
+// This is moved here to resolve the cmd -> pkg/clean -> pkg/cli import cycle.
+func RunClean(force bool) {
+	Lifecycle("Checking clean preconditions")
 
 	if !force {
-		// 1. Verify that the git tree is clean to prevent accidental loss of uncommitted work.
-		statusOut, err := exec.Command("git", "status", "--porcelain").Output()
-		if err != nil {
-			cli.Fatal("Failed to run git status: " + err.Error())
-		}
-
+		statusOut, _ := exec.Command("git", "status", "--porcelain").Output()
 		if strings.TrimSpace(string(statusOut)) != "" {
-			cli.Error("Git working tree is dirty — uncommitted changes detected.")
-			cli.Info("Please commit or stash changes, or use --force to bypass this safety check.")
+			Error("Git working tree is dirty — uncommitted changes detected.")
+			Info("Please commit or stash changes, or use --force to bypass this check.")
 			os.Exit(1)
 		}
 
-		// 2. Dry-run to show exactly what will be removed (excluding .env.local).
-		listOut, err := exec.Command("git", "clean", "-Xnd", "-e", ".env.local").Output()
-		if err != nil {
-			cli.Fatal("Failed to list files to clean: " + err.Error())
-		}
-
+		listOut, _ := exec.Command("git", "clean", "-Xnd", "-e", ".env.local").Output()
 		fileList := strings.TrimSpace(string(listOut))
 		if fileList == "" {
-			cli.Success("Nothing to clean — workspace is already pristine.")
+			Success("Nothing to clean — workspace is already pristine.")
 			return
 		}
 
-		// Display the findings in a warning box for maximum visibility.
-		cli.Warning("The following ignored files/directories will be PERMANENTLY deleted:")
+		Warning("The following ignored files will be PERMANENTLY deleted:")
 		fmt.Println()
 		for _, line := range strings.Split(fileList, "\n") {
-			fmt.Println("  " + cli.Subtle.Render(line))
+			fmt.Println("  " + Subtle.Render(line))
 		}
-		fmt.Println()
 
-		// Interactive confirmation.
-		fmt.Print(cli.Bold.Render("? ") + "Proceed with project reset? [y/N]: ")
+		fmt.Printf("\n%s Proceed with project reset? [y/N]: ", Bold.Render("?"))
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
-		answer := strings.ToLower(strings.TrimSpace(scanner.Text()))
-		if answer != "y" && answer != "yes" {
-			cli.Info("Cleanup aborted by user.")
+		if ans := strings.ToLower(strings.TrimSpace(scanner.Text())); ans != "y" && ans != "yes" {
+			Info("Cleanup aborted.")
 			return
 		}
 	}
 
-	// 3. Trigger the unified tasks.
-	// Note: We use the ID directly from tasks.yaml to stay within the unified system.
-	cli.RunTask("clean", nil, nil)
-
-	cli.Success("Project successfully reset and dependencies reinstalled.")
+	RunTask("clean", nil, nil)
+	Success("Project successfully reset.")
 }

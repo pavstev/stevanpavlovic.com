@@ -118,7 +118,7 @@ func (ui *commandUI) renderLoop(done <-chan struct{}) {
 
 			spinner := log.Spinners[int(time.Now().UnixMilli()/80)%len(log.Spinners)]
 			icon := log.Blue.Render(spinner)
-			statusText := log.Blue.Bold(true).Render("⏳")
+			statusText := log.Blue.Bold(true).Render(log.IconPending)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 
 			ui.printLine(icon, statusText, durStr)
@@ -150,7 +150,7 @@ func (ui *commandUI) printResult(cmd *exec.Cmd) {
 		if !log.Quiet && !ui.firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
 			icon := log.Green.Render("•")
-			statusText := log.Green.Bold(true).Render("✅")
+			statusText := log.Green.Bold(true).Render(log.IconSuccess)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}
@@ -159,7 +159,7 @@ func (ui *commandUI) printResult(cmd *exec.Cmd) {
 		if !log.Quiet && !ui.firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
 			icon := log.Red.Render("•")
-			statusText := log.Red.Bold(true).Render("❌")
+			statusText := log.Red.Bold(true).Render(log.IconError)
 			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
 			ui.printLine(icon, statusText, durStr)
 		}

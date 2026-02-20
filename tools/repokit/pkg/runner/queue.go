@@ -198,21 +198,21 @@ func (q *queueContext) renderUI(firstRender bool, lineCount int) (bool, int) {
 		switch s.status {
 		case statusCompleted:
 			icon = log.Green.Render("•")
-			statText = log.Green.Bold(true).Render("✅")
+			statText = log.Green.Bold(true).Render(log.IconSuccess)
 		case statusFailed:
 			icon = log.Red.Render("•")
-			statText = log.Red.Bold(true).Render("❌")
+			statText = log.Red.Bold(true).Render(log.IconError)
 		case statusActive:
 			icon = log.Blue.Render(log.Spinners[spinnerIdx])
-			statText = log.Blue.Bold(true).Render("⏳")
+			statText = log.Blue.Bold(true).Render(log.IconPending)
 			durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 		case statusCancelled:
 			icon = log.Subtle.Render("•")
-			statText = log.Subtle.Render("⛔")
+			statText = log.Subtle.Render(log.IconCancelled)
 			durStr = log.Subtle.Render("  --.-s")
 		default:
 			icon = log.Subtle.Render("○")
-			statText = log.Subtle.Render("🕒")
+			statText = log.Subtle.Render(log.IconPending)
 			durStr = log.Subtle.Render("  --.-s")
 		}
 

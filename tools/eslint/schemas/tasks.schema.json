@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
   "definitions": {
-    "CliTaskConfig": {
+    "ConfigTaskConfig": {
       "required": ["name", "type", "pre_msg", "on_error"],
       "additionalProperties": false,
       "properties": {
@@ -87,7 +87,7 @@
       "additionalProperties": false,
       "patternProperties": {
         "^[a-z0-9_\\-]+$": {
-          "$ref": "#/definitions/CliTaskConfig"
+          "$ref": "#/definitions/ConfigTaskConfig"
         }
       },
       "type": ["object", "null"]

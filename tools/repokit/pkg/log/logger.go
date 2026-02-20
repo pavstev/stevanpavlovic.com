@@ -66,6 +66,14 @@ var (
 	Cyan    = lipgloss.NewStyle().Foreground(cyanColor)
 	Subtle  = lipgloss.NewStyle().Foreground(mutedColor)
 	Bold    = lipgloss.NewStyle().Bold(true)
+
+	// Professional subtle UI Icons
+	IconInfo      = "·"
+	IconSuccess   = "✓"
+	IconWarning   = "!"
+	IconError     = "✕"
+	IconPending   = "⟳"
+	IconCancelled = "−"
 )
 
 var Spinners = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
@@ -86,7 +94,7 @@ func Info(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(infoBadge, "ℹ️ ", msg, primaryColor)
+	renderEntry(infoBadge, IconInfo, msg, primaryColor)
 }
 
 func Success(format string, args ...any) {
@@ -94,7 +102,7 @@ func Success(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(successBadge, "✅", msg, primaryColor)
+	renderEntry(successBadge, IconSuccess, msg, primaryColor)
 }
 
 func Warning(format string, args ...any) {
@@ -102,7 +110,7 @@ func Warning(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(warningBadge, "⚠️ ", msg, amberColor)
+	renderEntry(warningBadge, IconWarning, msg, amberColor)
 }
 
 func Error(format string, args ...any) {
@@ -113,7 +121,7 @@ func Error(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	badgePart := errorBadge.Render("❌")
+	badgePart := errorBadge.Render(IconError)
 	contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
 	fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
 }

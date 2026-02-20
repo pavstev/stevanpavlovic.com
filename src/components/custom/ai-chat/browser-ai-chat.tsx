@@ -1,15 +1,14 @@
 import { BrowserAI } from "@browserai/browserai";
 import { cn } from "@client/utils";
-import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import { Button } from "@components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@components/ui/card";
+import { Icon } from "@components/ui/icon";
+import { Input } from "@components/ui/input";
+import { Progress } from "@components/ui/progress";
+import { ScrollArea } from "@components/ui/scroll-area";
+import React, { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Icon } from "@/components/ui/icon";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BrowserAiChatProps {}
 

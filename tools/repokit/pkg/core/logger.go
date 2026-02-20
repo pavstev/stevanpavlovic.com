@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/charmbracelet/lipgloss"
 	"golang.org/x/term"
@@ -47,6 +48,11 @@ var (
 	OSExit = osExitFunc
 	Quiet  = false
 
+	// TUI Mode variables
+	TuiMode   = false
+	TuiBuffer []string
+	tuiMu     sync.Mutex
+
 	// Exported Styles for high-level runner integration.
 	Primary = lipgloss.NewStyle().Foreground(primaryColor)
 	Yellow  = lipgloss.NewStyle().Foreground(amberColor)
@@ -76,7 +82,26 @@ var osExitFunc = os.Exit
 func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveColor) {
 	badgePart := badge.Render(tag)
 	contentPart := spineStyle.BorderForeground(color).Render(msg)
-	fmt.Printf("%s %s\n", badgePart, contentPart)
+
+	formatted := fmt.Sprintf("%s %s", badgePart, contentPart)
+
+	if TuiMode {
+		tuiMu.Lock()
+		TuiBuffer = append(TuiBuffer, formatted)
+		tuiMu.Unlock()
+	} else {
+		fmt.Println(formatted)
+	}
+}
+
+// GetLogLines returns a copy of the current buffered log lines and clears the buffer.
+func GetLogLines() []string {
+	tuiMu.Lock()
+	defer tuiMu.Unlock()
+	lines := make([]string, len(TuiBuffer))
+	copy(lines, TuiBuffer)
+	TuiBuffer = nil
+	return lines
 }
 
 func Info(format string, args ...any) {
@@ -121,7 +146,16 @@ func Error(format string, args ...any) {
 	}
 	badgePart := errorBadge.Render(IconError)
 	contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
-	fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
+
+	formatted := fmt.Sprintf("%s %s", badgePart, contentPart)
+
+	if TuiMode {
+		tuiMu.Lock()
+		TuiBuffer = append(TuiBuffer, formatted)
+		tuiMu.Unlock()
+	} else {
+		fmt.Fprintln(os.Stderr, formatted)
+	}
 }
 
 func Fatal(format string, args ...any) {
@@ -187,9 +221,18 @@ func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 
 	// Join the parts vertically
 	ui := lipgloss.JoinVertical(lipgloss.Left, titleStr, contentStr)
+	formatted := outerBoxStyle.Render(ui)
 
-	// Render the final output
-	fmt.Println(outerBoxStyle.Render(ui))
+	if TuiMode {
+		tuiMu.Lock()
+		// Split by newline and append so TUI viewport renders properly
+		lines := strings.Split(formatted, "\n")
+		TuiBuffer = append(TuiBuffer, lines...)
+		tuiMu.Unlock()
+	} else {
+		// Render the final output
+		fmt.Println(formatted)
+	}
 }
 
 // BoxOutput provides a shim for existing runner implementations.

@@ -41,77 +41,31 @@ func createCmd(ctx context.Context, command, cwd string) *exec.Cmd {
 	return cmd
 }
 
+type commandUI struct {
+	name        string
+	mu          sync.Mutex
+	outBuf      bytes.Buffer
+	tail        []string
+	start       time.Time
+	lineCount   int
+	firstRender bool
+}
+
 func runCommand(name, command, cwd string) {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
 	cmd := createCmd(ctx, command, cwd)
-	var outBuf bytes.Buffer
-	var mu sync.Mutex
-	var tail []string
+	ui := &commandUI{
+		name:        name,
+		start:       time.Now(),
+		firstRender: true,
+	}
 
-	stdout, _ := cmd.StdoutPipe()
-	stderr, _ := cmd.StderrPipe()
+	ui.capture(cmd)
 
-	go func() {
-		scanner := bufio.NewScanner(io.MultiReader(stdout, stderr))
-		for scanner.Scan() {
-			line := scanner.Text()
-			mu.Lock()
-			outBuf.WriteString(line + "\n")
-			tail = append(tail, line)
-			if len(tail) > 5 {
-				tail = tail[1:]
-			}
-			mu.Unlock()
-		}
-	}()
-
-	ticker := time.NewTicker(80 * time.Millisecond)
-	defer ticker.Stop()
-	start, done := time.Now(), make(chan struct{})
-	lineCount, firstRender := 0, true
-
-	go func() {
-		for {
-			select {
-			case <-done:
-				return
-			case <-ticker.C:
-				mu.Lock()
-				currentTail := append([]string(nil), tail...)
-				mu.Unlock()
-
-				if !firstRender {
-					fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-				}
-				firstRender, lineCount = false, 1
-
-				// UI rendering with the new theme
-				spinner := log.Spinners[int(time.Now().UnixMilli()/80)%len(log.Spinners)]
-				icon := log.Blue.Render(spinner)
-				statusText := log.Blue.Bold(true).Render("⏳")
-				durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-
-				padLen := 38 - lipgloss.Width(name)
-				if padLen < 2 {
-					padLen = 2
-				}
-				dots := log.Subtle.Render(strings.Repeat(".", padLen))
-				nameStr := name + " " + dots
-				statStr := lipgloss.NewStyle().Width(4).Render(statusText)
-
-				fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
-
-				if !log.Quiet {
-					for _, l := range currentTail {
-						fmt.Println(formatTailLine(l))
-						lineCount++
-					}
-				}
-			}
-		}
-	}()
+	done := make(chan struct{})
+	go ui.renderLoop(done)
 
 	err := cmd.Run()
 	close(done)
@@ -121,35 +75,96 @@ func runCommand(name, command, cwd string) {
 		os.Exit(1)
 	}
 
+	ui.printResult(cmd)
+}
+
+func (ui *commandUI) capture(cmd *exec.Cmd) {
+	stdout, _ := cmd.StdoutPipe()
+	stderr, _ := cmd.StderrPipe()
+
+	go func() {
+		scanner := bufio.NewScanner(io.MultiReader(stdout, stderr))
+		for scanner.Scan() {
+			line := scanner.Text()
+			ui.mu.Lock()
+			ui.outBuf.WriteString(line + "\n")
+			ui.tail = append(ui.tail, line)
+			if len(ui.tail) > 5 {
+				ui.tail = ui.tail[1:]
+			}
+			ui.mu.Unlock()
+		}
+	}()
+}
+
+func (ui *commandUI) renderLoop(done <-chan struct{}) {
+	ticker := time.NewTicker(80 * time.Millisecond)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-done:
+			return
+		case <-ticker.C:
+			ui.mu.Lock()
+			currentTail := append([]string(nil), ui.tail...)
+			ui.mu.Unlock()
+
+			if !ui.firstRender {
+				fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
+			}
+			ui.firstRender = false
+			ui.lineCount = 1
+
+			spinner := log.Spinners[int(time.Now().UnixMilli()/80)%len(log.Spinners)]
+			icon := log.Blue.Render(spinner)
+			statusText := log.Blue.Bold(true).Render("⏳")
+			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
+
+			ui.printLine(icon, statusText, durStr)
+
+			if !log.Quiet {
+				for _, l := range currentTail {
+					fmt.Println(formatTailLine(l))
+					ui.lineCount++
+				}
+			}
+		}
+	}
+}
+
+func (ui *commandUI) printLine(icon, statusText, durStr string) {
+	padLen := 38 - lipgloss.Width(ui.name)
+	if padLen < 2 {
+		padLen = 2
+	}
+	dots := log.Subtle.Render(strings.Repeat(".", padLen))
+	nameStr := ui.name + " " + dots
+	statStr := lipgloss.NewStyle().Width(4).Render(statusText)
+
+	fmt.Printf(" %s  %s %s %s\n", icon, nameStr, statStr, durStr)
+}
+
+func (ui *commandUI) printResult(cmd *exec.Cmd) {
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
-		if !log.Quiet && !firstRender {
-			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-			padLen := 38 - lipgloss.Width(name)
-			if padLen < 2 {
-				padLen = 2
-			}
-			dots := log.Subtle.Render(strings.Repeat(".", padLen))
-			nameStr := name + " " + dots
-			statStr := lipgloss.NewStyle().Width(4).Render(log.Green.Bold(true).Render("✅"))
-			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", log.Green.Render("•"), nameStr, statStr, durStr)
+		if !log.Quiet && !ui.firstRender {
+			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
+			icon := log.Green.Render("•")
+			statusText := log.Green.Bold(true).Render("✅")
+			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
+			ui.printLine(icon, statusText, durStr)
 		}
-		log.Success("%s", name)
+		log.Success("%s", ui.name)
 	} else {
-		if !log.Quiet && !firstRender {
-			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
-			padLen := 38 - lipgloss.Width(name)
-			if padLen < 2 {
-				padLen = 2
-			}
-			dots := log.Subtle.Render(strings.Repeat(".", padLen))
-			nameStr := name + " " + dots
-			statStr := lipgloss.NewStyle().Width(4).Render(log.Red.Bold(true).Render("❌"))
-			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
-			fmt.Printf(" %s  %s %s %s\n", log.Red.Render("•"), nameStr, statStr, durStr)
+		if !log.Quiet && !ui.firstRender {
+			fmt.Print(strings.Repeat("\033[A\033[2K", ui.lineCount))
+			icon := log.Red.Render("•")
+			statusText := log.Red.Bold(true).Render("❌")
+			durStr := fmt.Sprintf("%5.1fs", time.Since(ui.start).Seconds())
+			ui.printLine(icon, statusText, durStr)
 		}
-		log.Error("%s", name)
-		log.BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))
+		log.Error("%s", ui.name)
+		log.BoxOutput("Failure Log: "+ui.name, ui.outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
 	}
 }

@@ -83,7 +83,7 @@ tasks:
     type: batch
     pre_msg: Starting full project linting pass...
     on_error: One or more linters failed.
-    tasks: [lint_eslint, knip]
+    tasks: [lint_eslint, knip, optimize_svg]
     parallel: true
 
   test:

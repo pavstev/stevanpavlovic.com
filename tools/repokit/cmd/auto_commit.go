@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"repokit/pkg/commands"
+	"repokit/pkg/core"
+
 	"github.com/spf13/cobra"
 )
 
@@ -15,6 +17,7 @@ var autoCommitCmd = &cobra.Command{
 	Use:   "auto_commit",
 	Short: "Automatically commits and pushes changes with an LLM-generated commit message",
 	Run: func(cmd *cobra.Command, args []string) {
+		core.LoadClosestEnv()
 		commands.RunAutocommit(cmd.Context(), acProvider, acModel, acAPIKey)
 	},
 }

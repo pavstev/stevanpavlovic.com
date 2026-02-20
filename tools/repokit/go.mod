@@ -6,6 +6,7 @@ require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834
 	github.com/h2non/filetype v1.1.3
+	github.com/joho/godotenv v1.5.1
 	github.com/princjef/gomarkdoc v1.1.0
 	github.com/spf13/cobra v1.10.2
 	github.com/swaggest/jsonschema-go v0.3.79

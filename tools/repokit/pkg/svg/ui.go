@@ -2,16 +2,16 @@ package svg
 
 import (
 	"fmt"
+	"repokit/pkg/core"
 	"strings"
 	"sync/atomic"
 	"time"
-	"repokit/pkg/core"
 )
 
 func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 	ticker := time.NewTicker(uiTickRate)
 	defer ticker.Stop()
-	lines, first := 0, true
+	lines, first, tick := 0, true, 0
 	for {
 		select {
 		case <-done:
@@ -20,21 +20,24 @@ func (o *optimizer) renderUI(start time.Time, done <-chan struct{}) {
 			if !first {
 				core.Info("%s", strings.Repeat("\033[A\033[2K", lines))
 			}
-			first, lines = false, o.drawFrame(start)
+			first, lines = false, o.drawFrame(start, tick)
+			tick++
 		}
 	}
 }
 
-func (o *optimizer) drawFrame(start time.Time) int {
+func (o *optimizer) drawFrame(start time.Time, tick int) int {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	p := atomic.LoadInt32(&o.processed)
-	core.Info("  SVG Intelligence %s [%d/%d] (%.1fs)", goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
+	spinner := core.Spinners[tick%len(core.Spinners)]
+	core.Info("  %s SVG Intelligence %s [%d/%d] (%.1fs)", blueStyle.Render(spinner), goldStyle.Render("🧠 GEOMETER"), p, len(o.files), time.Since(start).Seconds())
 	for _, s := range o.workerStates {
 		if !s.active {
 			core.Info("%s", formatProgressLine(tailStyle.Render("•"), "idle", ""))
 		} else {
-			core.Info("%s", formatProgressLine(blueStyle.Render("•"), s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
+			icon := blueStyle.Render(spinner)
+			core.Info("%s", formatProgressLine(icon, s.path, fmt.Sprintf("%.1fs", time.Since(s.startTime).Seconds())))
 		}
 	}
 	return len(o.workerStates) + 1

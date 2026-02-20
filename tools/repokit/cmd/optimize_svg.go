@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"repokit/pkg/svg"
+
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +11,7 @@ var optimizeSvgCmd = &cobra.Command{
 	Short: "Optimize SVG files using native minifier",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		_ = svg.Optimize(args[0])
+		svg.Optimize(args[0])
 	},
 }
 

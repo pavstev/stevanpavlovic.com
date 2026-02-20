@@ -23,7 +23,7 @@
             },
             "command": {
               "type": "string",
-              "description": "The command to execute. Supports variable interpolation (e.g., ${uv_py})."
+              "description": "The command to execute. Supports variable interpolation (e.g., ${golib_bin})."
             },
             "cwd": {
               "type": "string",

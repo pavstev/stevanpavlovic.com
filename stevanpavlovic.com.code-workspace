@@ -67,7 +67,6 @@
       "astro.config.ts": "wrangler.json*, unlighthouse.config.ts, tsconfig*.json, components.json",
       "*.py": "test_${capture}.py, ${capture}.py",
       "*.go": "${capture}.go, ${capture}_test.go",
-      "pyproject.toml": "uv.lock",
     },
     "workbench.editorAssociations": {
       "*.svg": "vscode.markdown.preview.editor",
@@ -88,8 +87,6 @@
     },
     "files.exclude": {
       "**/tools/": true,
-      "**/__init__.py": true,
-      "**/uv.lock": true,
       "**/go.sum": true,
       "**/pnpm-lock.yaml": true,
       "**/.git": true,

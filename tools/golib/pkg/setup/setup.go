@@ -9,14 +9,6 @@ import (
 func Run(continueOnError bool) {
 	cliutils.Step("Starting Project Hybrid Setup...")
 
-	cliutils.Step("Checking Python environment manager (uv)...")
-	if !cliutils.EnsureCommandExists("uv") {
-		cliutils.Info("uv not found. Installing uv...")
-		cliutils.RunStepByID("setup_install_uv", nil)
-	} else {
-		cliutils.Success("uv is already installed.")
-	}
-
 	cliutils.Step("Checking Node package manager (pnpm)...")
 	if !cliutils.EnsureCommandExists("pnpm") {
 		cliutils.Info("pnpm not found. Installing pnpm via npm...")
@@ -24,11 +16,6 @@ func Run(continueOnError bool) {
 	} else {
 		cliutils.Success("pnpm is already installed.")
 	}
-
-	cliutils.Step("Syncing dependencies (Node & Python)...")
-	cliutils.RunQueue([]string{
-		"setup_uv_sync",
-	}, 2, continueOnError)
 
 	cliutils.Step("Optimizing Project Assets...")
 	// Break the recursive loop: Call the Go function directly

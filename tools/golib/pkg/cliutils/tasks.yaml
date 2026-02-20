@@ -57,17 +57,9 @@ tasks:
     cwd: ${root_dir}
 
   # Setup
-  setup_install_uv:
-    name: Install uv
-    command: curl -LsSf https://astral.sh/uv/install.sh | sh
-    cwd: ${root_dir}
   setup_install_pnpm:
     name: Install pnpm
     command: npm install -g pnpm
-    cwd: ${root_dir}
-  setup_uv_sync:
-    name: uv sync
-    command: uv sync
     cwd: ${root_dir}
   setup_wrangler_types:
     name: Wrangler Types

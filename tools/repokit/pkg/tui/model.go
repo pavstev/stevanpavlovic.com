@@ -344,13 +344,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width, m.height = msg.Width, msg.Height
 		h, v := appStyle.GetFrameSize()
-		availHeight := m.height - v
+		innerWidth := m.width - h
+		innerHeight := m.height - v
 
-		m.list.SetSize(35, availHeight-2)
+		// Left menu width is fixed at 35
+		m.list.SetSize(30, innerHeight-4) // -4 for tabs and padding
 
-		availWidth := m.width - h
-		m.viewport.Width = availWidth - 4
-		m.viewport.Height = availHeight - 8 // Account for tabs and task summary
+		m.viewport.Width = innerWidth - 4
+		m.viewport.Height = innerHeight - 10 // Account for tabs and task summary
 
 	case spinner.TickMsg:
 		var cmd tea.Cmd
@@ -468,7 +469,12 @@ func (m Model) View() string {
 
 	switch m.activeTab {
 	case tabCommands:
-		left := leftPaneStyle.Render(m.list.View())
+		h, _ := appStyle.GetFrameSize()
+		innerWidth := m.width - h
+		leftWidth := 35
+		rightWidth := innerWidth - leftWidth
+
+		left := leftPaneStyle.Width(leftWidth - 2).Render(m.list.View()) // -2 for padding/border
 		var right string
 		switch m.currentState {
 		case stateMenu:
@@ -486,7 +492,10 @@ func (m Model) View() string {
 		case stateRunning, stateDone:
 			right = lipgloss.NewStyle().Foreground(core.Subtle.GetForeground()).Italic(true).Render("Task is running...\n\nSwitch to Output tab (2) to see details.")
 		}
-		content = lipgloss.JoinHorizontal(lipgloss.Top, left, rightPaneStyle.Render(right))
+
+		// Ensure right pane fills remaining width
+		rpStyled := rightPaneStyle.Width(rightWidth - 6).Render(right) // -6 for padding (2+2) and margins (1+1)
+		content = lipgloss.JoinHorizontal(lipgloss.Top, left, rpStyled)
 
 	case tabOutput:
 		var sb strings.Builder

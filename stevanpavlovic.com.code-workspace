@@ -27,10 +27,6 @@
       "path": "tools/golib",
     },
     {
-      "name": "tools/pylib",
-      "path": "tools/pylib",
-    },
-    {
       "name": "tools/eslint",
       "path": "tools/eslint",
     },

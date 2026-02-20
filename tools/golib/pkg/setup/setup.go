@@ -44,7 +44,6 @@ func Run(continueOnError bool) {
 
 	cliutils.Success("Hybrid environment setup completed successfully!")
 	cliutils.Info("Node:   Run 'pnpm dev' to start.")
-	cliutils.Info("Python: Run 'uv run -C tools/pylib python -m tools.pylib.main --help' to see available tools.")
 }
 
 // ensurePythonPackageStructure ensures __init__.py files exist in Python packages.

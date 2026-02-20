@@ -2,13 +2,8 @@ import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
   astro: {},
-  entry: [
-    "unlighthouse.config.ts",
-    "tools/eslint/index.ts",
-    "src/**/*.{test,spec}.{ts,tsx}",
-    "src/test/setup.ts",
-  ],
-  ignoreBinaries: ["only-allow"],
+  entry: ["unlighthouse.config.ts", "tools/eslint/index.ts", "src/**/*.{test,spec}.{ts,tsx}"],
+  ignoreBinaries: ["only-allow", "go"],
   ignoreDependencies: [
     "sharp",
     "@iconify-json/*",
@@ -16,6 +11,7 @@ const config: KnipConfig = {
     "@astrojs/check",
     "resumed",
   ],
+  vitest: {},
 };
 
 export default config;

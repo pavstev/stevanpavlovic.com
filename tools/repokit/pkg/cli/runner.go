@@ -76,7 +76,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 
 // RunBatch executes a set of tasks based on BatchConfig.
 func RunBatch(id string, config BatchConfig) {
-	Step(fmt.Sprintf("Batch: %s", config.Name))
+	Step(fmt.Sprintf("Batch Pipeline: %s", config.Name))
 
 	if config.Parallel {
 		workers := config.Workers
@@ -159,7 +159,11 @@ func runCommand(name, command, cwd string) {
 					fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 				}
 				firstRender, lineCount = false, 1
-				fmt.Printf("  %-25s %s (%.1fs)\n", name, yellow.Render("🚀 ACTIVE"), time.Since(start).Seconds())
+
+				// UI rendering with the new theme
+				statusText := Yellow.Bold(true).Render("🚀 RUNNING")
+				fmt.Printf("  %-25s %s (%.1fs)\n", name, statusText, time.Since(start).Seconds())
+
 				if !Quiet {
 					for _, l := range currentTail {
 						fmt.Println(formatTailLine(l))
@@ -174,21 +178,21 @@ func runCommand(name, command, cwd string) {
 	close(done)
 
 	if err != nil && ctx.Err() != nil {
-		fmt.Println("\n" + yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
+		fmt.Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
 		os.Exit(1)
 	}
 
 	if cmd.ProcessState != nil && cmd.ProcessState.Success() {
-		Success(name + " finished.")
+		Success(name)
 	} else {
-		Error(name + " failed.")
-		BoxOutput("Failure Detail: "+name, outBuf.String(), lipgloss.Color("1"))
+		Error(name)
+		BoxOutput("Failure Log: "+name, outBuf.String(), lipgloss.Color("1"))
 		os.Exit(1)
 	}
 }
 
 func RunInteractive(name, command, cwd string) {
-	Step("Interactive: " + name)
+	Step("Interactive Session: " + name)
 	cmd := exec.Command("bash", "-c", command)
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
@@ -198,7 +202,7 @@ func RunInteractive(name, command, cwd string) {
 		Error(fmt.Sprintf("%s failed: %v", name, err))
 		os.Exit(1)
 	}
-	Success(name + " done.")
+	Success(name)
 }
 
 // ─── Queue Logic ─────────────────────────────────────────────────────────────
@@ -288,7 +292,6 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		}()
 	}
 
-	// UI Render loop
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 	firstRender, lineCount := true, 0
@@ -304,15 +307,15 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			status := s.status
 			switch s.status {
 			case statusActive:
-				status = yellow.Render("🚀 ACTIVE")
+				status = Yellow.Bold(true).Render("🚀 ACTIVE")
 			case statusCompleted:
-				status = green.Render("✅ DONE  ")
+				status = Green.Bold(true).Render("✅ DONE  ")
 			case statusFailed:
-				status = red.Render("❌ FAILED")
+				status = Red.Bold(true).Render("❌ FAILED")
 			case statusCancelled:
-				status = lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("🚫 CANCEL")
+				status = subtleStyle.Render("🚫 CANCEL")
 			default:
-				status = lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("⏳ QUEUED")
+				status = subtleStyle.Render("⏳ QUEUED")
 			}
 			fmt.Printf("  %-25s %s\n", s.name, status)
 			lineCount++
@@ -325,7 +328,6 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		close(done)
 	}()
 
-	// Simplified UI Loop: Watch channels directly
 	for processing := true; processing; {
 		select {
 		case <-done:
@@ -335,11 +337,10 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		}
 	}
 
-	// Final render to show completed state
 	render()
 
 	if failed {
-		fmt.Println("\n" + bold.Render("PIPELINE FAILED"))
+		fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
 		os.Exit(1)
 	}
 	Success("Pipeline finished.")

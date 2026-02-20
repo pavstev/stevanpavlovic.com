@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
-import { buttonVariants } from "@components/ui/button";
-import { Icon } from "@components/ui/icon";
+import { buttonVariants } from "@components/ui/button.tsx";
+import { Icon } from "@components/ui/icon.tsx";
 
 interface ProjectActionButtonsProps {
   demoUrl?: string;

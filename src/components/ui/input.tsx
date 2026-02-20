@@ -1,4 +1,4 @@
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { type ComponentProps, forwardRef } from "react";
 
 type InputProps = ComponentProps<"input">;

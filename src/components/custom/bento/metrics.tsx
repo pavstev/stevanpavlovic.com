@@ -2,7 +2,7 @@
 
 import type { FC } from "react";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { motion } from "framer-motion";
 
 const getColorClass = (color = "emerald"): string => {
@@ -16,7 +16,7 @@ const getColorClass = (color = "emerald"): string => {
   return colors[color] || colors.emerald;
 };
 
-import { fadeInUpSubtle } from "../shared/animations";
+import { fadeInUpSubtle } from "../shared/animations.ts";
 
 export const MetricsFeature: FC<{
   metrics: Array<{

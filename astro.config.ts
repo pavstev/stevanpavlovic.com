@@ -12,6 +12,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import readingTimeRemarkPlugin from "remark-reading-time";
 import remarkToc from "remark-toc";
+import Sonda from 'sonda/astro';
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 import { SITE_CONFIG } from "./src/constants";
@@ -60,6 +61,7 @@ export default defineConfig({
       },
     }),
     react(),
+    Sonda(),
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
@@ -77,6 +79,7 @@ export default defineConfig({
   vite: {
     build: {
       rollupOptions: {},
+      sourcemap: true,
     },
 
     define: {

@@ -1,6 +1,6 @@
 import type { ComponentProps, FC, JSX } from "react";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { cva, type VariantProps } from "class-variance-authority";
 
 export const Empty: FC<ComponentProps<"div">> = ({ className, ...props }) => (

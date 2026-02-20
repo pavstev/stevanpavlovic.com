@@ -1,6 +1,6 @@
 import type { ComponentProps, FC } from "react";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 
 export const Skeleton: FC<ComponentProps<"div">> = ({ className, ...props }) => (
   <div

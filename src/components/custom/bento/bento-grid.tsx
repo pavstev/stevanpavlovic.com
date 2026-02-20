@@ -2,13 +2,13 @@
 
 import type { FC } from "react";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { motion, type Variants } from "framer-motion";
 
-import type { BentoItem } from "./bento-types";
+import type { BentoItem } from "./bento-types.ts";
 
-import { fadeInUp } from "../shared/animations";
-import { BentoCard } from "./bento-card";
+import { fadeInUp } from "../shared/animations.ts";
+import { BentoCard } from "./bento-card.tsx";
 
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },

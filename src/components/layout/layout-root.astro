@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 
 import "../../styles/global.css";
 import "@fontsource-variable/space-grotesk";
@@ -9,7 +9,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
-import { MainLayout } from "./main-layout";
+import { MainLayout } from "./main-layout.tsx";
 
 interface Props extends HTMLAttributes<"html"> {
   description: string;

@@ -2,7 +2,7 @@
 
 import type { FC } from "react";
 
-import { Icon } from "@components/ui/icon";
+import { Icon } from "@components/ui/icon.tsx";
 import { motion } from "framer-motion";
 
 export const IconsFeature: FC<{ icons: string[] }> = ({ icons }) => (

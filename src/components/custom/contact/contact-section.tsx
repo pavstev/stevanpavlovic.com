@@ -2,11 +2,11 @@
 
 import type { FC, JSX, ReactNode } from "react";
 
-import { cn } from "@client/utils";
-import { Icon } from "@components/ui/icon";
+import { cn } from "@client/utils.ts";
+import { Icon } from "@components/ui/icon.tsx";
 
-import { SITE_CONFIG, SOCIALS } from "../../../constants";
-import { ContactDialog } from "./contact-dialog";
+import { SITE_CONFIG, SOCIALS } from "../../../constants.ts";
+import { ContactDialog } from "./contact-dialog.tsx";
 
 export const ContactSection: FC = () => (
   <div className="flex flex-col items-start gap-12 md:py-12">

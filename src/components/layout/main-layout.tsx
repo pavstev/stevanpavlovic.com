@@ -1,11 +1,11 @@
 "use client";
 
-import { AppSidebar } from "@components/layout/app-sidebar";
-import { Header } from "@components/layout/header";
-import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
+import { AppSidebar } from "@components/layout/app-sidebar.tsx";
+import { Header } from "@components/layout/header.astro";
+import { SidebarInset, SidebarProvider } from "@components/ui/sidebar.tsx";
 import { type FC, type ReactNode } from "react";
 
-import BrowserAiChat from "../custom/ai-chat/browser-ai-chat";
+import BrowserAiChat from "../custom/ai-chat/browser-ai-chat.tsx";
 
 interface MainLayoutProps {
   children: ReactNode;

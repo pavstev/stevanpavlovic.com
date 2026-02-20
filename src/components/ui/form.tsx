@@ -1,5 +1,5 @@
-import { cn } from "@client/utils";
-import { Label } from "@components/ui/label";
+import { cn } from "@client/utils.ts";
+import { Label } from "@components/ui/label.tsx";
 import { type AnyFieldApi } from "@tanstack/react-form";
 import { Slot } from "radix-ui";
 import {

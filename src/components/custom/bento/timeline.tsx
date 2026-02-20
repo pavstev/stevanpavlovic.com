@@ -4,7 +4,7 @@ import type { FC } from "react";
 
 import { motion } from "framer-motion";
 
-import { fadeInLeft } from "../shared/animations";
+import { fadeInLeft } from "../shared/animations.ts";
 
 export const TimelineFeature: FC<{ timeline: Array<{ event: string; year: string }> }> = ({
   timeline,

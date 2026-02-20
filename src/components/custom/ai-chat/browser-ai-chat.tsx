@@ -1,5 +1,5 @@
 import { BrowserAI } from "@browserai/browserai";
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 

@@ -1,4 +1,4 @@
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { Avatar as AvatarPrimitive } from "radix-ui";
 import { type ComponentProps, type FC, type JSX } from "react";
 

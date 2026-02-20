@@ -1,4 +1,4 @@
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { Separator as SeparatorPrimitive } from "radix-ui";
 import { type ComponentProps, type JSX } from "react";
 

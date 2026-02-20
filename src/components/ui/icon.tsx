@@ -1,7 +1,7 @@
 import type { IconProps as IconifyProps } from "@iconify/react";
 import type { FC } from "react";
 
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { Icon as Iconify } from "@iconify/react";
 
 interface IconProps extends Omit<IconifyProps, "icon"> {

@@ -2,10 +2,10 @@
 
 import type { FC } from "react";
 
-import { Icon } from "@components/ui/icon";
+import { Icon } from "@components/ui/icon.tsx";
 import { motion } from "framer-motion";
 
-import { fadeInLeft } from "../shared/animations";
+import { fadeInLeft } from "../shared/animations.ts";
 
 export const SpotlightFeature: FC<{ icon?: string; items: string[] }> = ({
   icon = "mdi:check-circle",

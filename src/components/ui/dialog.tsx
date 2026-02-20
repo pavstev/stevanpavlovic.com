@@ -1,6 +1,6 @@
-import { cn } from "@client/utils";
-import { Button } from "@components/ui/button";
-import { Icon } from "@components/ui/icon";
+import { cn } from "@client/utils.ts";
+import { Button } from "@components/ui/button.tsx";
+import { Icon } from "@components/ui/icon.tsx";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { type ComponentProps, type FC, type JSX } from "react";
 

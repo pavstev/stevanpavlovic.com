@@ -1,7 +1,7 @@
 import type { FC, JSX, ReactNode } from "react";
 
-import { cn } from "@client/utils";
-import { HyperText } from "@components/ui/hyper-text";
+import { cn } from "@client/utils.ts";
+import { HyperText } from "@components/ui/hyper-text.tsx";
 import { motion } from "motion/react";
 
 interface PageHeaderProps {

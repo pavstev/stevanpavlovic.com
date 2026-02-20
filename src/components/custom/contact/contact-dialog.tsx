@@ -1,4 +1,4 @@
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/button.tsx";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
 } from "@components/ui/dialog";
 import { type FC, useState } from "react";
 
-import { ContactForm } from "./contact-form";
+import { ContactForm } from "./contact-form.tsx";
 
 export const ContactDialog: FC = () => {
   const [open, setOpen] = useState(false);

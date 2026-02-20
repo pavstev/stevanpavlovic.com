@@ -1,6 +1,6 @@
-import { cn } from "@client/utils";
-import { type Button, buttonVariants } from "@components/ui/button";
-import { Icon } from "@components/ui/icon";
+import { cn } from "@client/utils.ts";
+import { type Button, buttonVariants } from "@components/ui/button.tsx";
+import { Icon } from "@components/ui/icon.tsx";
 import { type ComponentProps, type FC, type JSX } from "react";
 
 type PaginationLinkProps = ComponentProps<"a"> &

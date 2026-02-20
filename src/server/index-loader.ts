@@ -1,4 +1,4 @@
-import type { BentoItem } from "@components/custom/bento/bento-types";
+import type { BentoItem } from "@components/custom/bento/bento-types.ts";
 
 import { type CollectionEntry, getCollection } from "astro:content";
 

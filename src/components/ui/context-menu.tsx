@@ -1,5 +1,5 @@
-import { cn } from "@client/utils";
-import { Icon } from "@components/ui/icon";
+import { cn } from "@client/utils.ts";
+import { Icon } from "@components/ui/icon.tsx";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
 import { type ComponentProps, type FC, type JSX } from "react";
 

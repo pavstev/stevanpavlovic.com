@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
 	"net/http"
 	"os"
@@ -162,6 +163,21 @@ func NewProvider(llmCfg *LLMConfig) (Provider, error) {
 	case "gemini":
 		apiKey := llmCfg.APIKey
 		if apiKey == "" {
+			// Try to load from .env.local
+			godotenv.Load(".env.local")
+			if val := os.Getenv("GEMINI_API_KEY"); val != "" {
+				apiKey = val
+			}
+		}
+		if apiKey == "" {
+			// Try to load from .env
+			godotenv.Load(".env")
+			if val := os.Getenv("GEMINI_API_KEY"); val != "" {
+				apiKey = val
+			}
+		}
+		if apiKey == "" {
+			// Fallback to environment variable
 			apiKey = os.Getenv("GEMINI_API_KEY")
 		}
 		model := llmCfg.Model

@@ -8,6 +8,7 @@ require (
 	github.com/h2non/filetype v1.1.3
 	github.com/joho/godotenv v1.5.1
 	github.com/princjef/gomarkdoc v1.1.0
+	github.com/rustyoz/svg v0.0.0-20250705135709-8b1786137cb3
 	github.com/spf13/cobra v1.10.2
 	github.com/swaggest/jsonschema-go v0.3.79
 	github.com/tdewolff/minify/v2 v2.24.8
@@ -49,7 +50,6 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/rustyoz/Mtransform v0.0.0-20250628105438-00796a985d0a // indirect
 	github.com/rustyoz/genericlexer v0.0.0-20250522144106-d3cfee480384 // indirect
-	github.com/rustyoz/svg v0.0.0-20250705135709-8b1786137cb3 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/skeema/knownhosts v1.3.2 // indirect

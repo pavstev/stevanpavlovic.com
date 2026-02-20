@@ -3,7 +3,7 @@
   "additionalProperties": false,
   "definitions": {
     "CoreTaskConfig": {
-      "required": ["name", "type", "pre_msg", "on_error"],
+      "required": ["name", "type", "pre_msg", "on_error", "cwd"],
       "additionalProperties": false,
       "properties": {
         "command": {
@@ -14,6 +14,10 @@
           "description": "Continue execution even if child tasks fail.",
           "default": false,
           "type": "boolean"
+        },
+        "cwd": {
+          "description": "Working directory for the command.",
+          "type": "string"
         },
         "description": {
           "description": "Optional detailed description of the task.",

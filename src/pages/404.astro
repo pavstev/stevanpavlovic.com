@@ -3,7 +3,7 @@ import { ErrorPage } from "@components/custom/common/not-found";
 import { BackButton } from "@components/custom/navigation/back-button";
 import PageLayout from "@components/layout/page-layout.astro";
 import { Button } from "@components/ui/button";
-import Icon from "@components/ui/icon";
+import { Icon } from "@components/ui/icon";
 
 const title: string = "404 - Lost in Space";
 const description: string = "The coordinates you entered do not correspond to a known sector.";
@@ -20,7 +20,7 @@ const description: string = "The coordinates you entered do not correspond to a 
     <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
       <Button asChild className="w-full sm:w-auto" size="lg">
         <a href="/">
-          <Icon class="mr-2 size-5" name="mdi:home" /> Warp Home
+          <Icon className="mr-2 size-5" name="mdi:home" /> Warp Home
         </a>
       </Button>
       <BackButton client:load href="/" label="Go Back" />

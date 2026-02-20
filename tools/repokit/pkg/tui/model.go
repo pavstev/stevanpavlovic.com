@@ -19,23 +19,58 @@ import (
 )
 
 var (
-	appStyle = lipgloss.NewStyle().Padding(1, 2)
-	titleStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFFDF5")).Background(lipgloss.Color("#7D56F4")).Padding(0, 1)
-	inputStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#7D56F4"))
+	// Colors from global.css (approximate hex values)
+	colorBG      = lipgloss.Color("#09090b")
+	colorFG      = lipgloss.Color("#fafafa")
+	colorBorder  = lipgloss.Color("#27272a") // hsl(240 3.7% 15.9%)
+	colorMuted   = lipgloss.Color("#71717a") // hsl(240 5% 64.9%)
+	colorPrimary = lipgloss.Color("#fafafa")
+	colorAccent  = lipgloss.Color("#3b82f6") // Standard blue for flow
 
-	taskStylePending = lipgloss.NewStyle().Foreground(core.BlueColor).Bold(true)
-	taskStyleSuccess = lipgloss.NewStyle().Foreground(core.Primary.GetForeground()).Bold(true)
-	taskStyleError   = lipgloss.NewStyle().Foreground(core.Red.GetForeground()).Bold(true)
-	logStyle         = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
+	appStyle = lipgloss.NewStyle().Padding(0, 1).Background(colorBG).Foreground(colorFG)
+
+	logoStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#000000")).
+		Background(lipgloss.Color("#ffffff")).
+		Padding(0, 1).
+		Bold(true).
+		MarginRight(2)
+
+	taskStylePending = lipgloss.NewStyle().Foreground(lipgloss.Color("#3b82f6")).Bold(true)
+	taskStyleSuccess = lipgloss.NewStyle().Foreground(lipgloss.Color("#10b981")).Bold(true)
+	taskStyleError   = lipgloss.NewStyle().Foreground(lipgloss.Color("#ef4444")).Bold(true)
+	logStyle         = lipgloss.NewStyle().Foreground(colorMuted)
 
 	// Layout Styles
-	leftPaneStyle  = lipgloss.NewStyle().Width(35).PaddingRight(1).Border(lipgloss.NormalBorder(), false, true, false, false).BorderForeground(lipgloss.Color("8"))
-	rightPaneStyle = lipgloss.NewStyle().Padding(1, 2).MarginLeft(1).MarginRight(1).Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color("8"))
+	headerStyle    = lipgloss.NewStyle().
+		Height(1).
+		Padding(0, 1).
+		Border(lipgloss.NormalBorder(), false, false, true, false).
+		BorderForeground(colorBorder).
+		MarginBottom(1)
+
+	leftPaneStyle  = lipgloss.NewStyle().Width(35).PaddingRight(1).Border(lipgloss.NormalBorder(), false, true, false, false).BorderForeground(colorBorder)
+	rightPaneStyle = lipgloss.NewStyle().Padding(0, 2)
 
 	// Tab Styles
-	tabStyle = lipgloss.NewStyle().Padding(0, 2).Border(lipgloss.NormalBorder(), false, false, true, false).BorderForeground(lipgloss.Color("8"))
-	activeTabStyle = lipgloss.NewStyle().Padding(0, 2).Foreground(lipgloss.Color("#7D56F4")).Border(lipgloss.NormalBorder(), false, false, true, false).BorderForeground(lipgloss.Color("#7D56F4")).Bold(true)
-	tabWindowStyle = lipgloss.NewStyle().Padding(1, 1).Border(lipgloss.NormalBorder(), true, false, false, false).BorderForeground(lipgloss.Color("8"))
+	tabStyle = lipgloss.NewStyle().
+		Padding(0, 1).
+		Foreground(colorMuted)
+
+	activeTabStyle = lipgloss.NewStyle().
+		Padding(0, 1).
+		Foreground(colorPrimary).
+		Bold(true).
+		Underline(true)
+
+	tabWindowStyle = lipgloss.NewStyle().
+		Padding(0).
+		Border(lipgloss.NormalBorder(), true, false, false, false).
+		BorderForeground(colorBorder)
+
+	// Navigation Styles
+	helpStyle = lipgloss.NewStyle().Foreground(colorMuted)
+	keyStyle  = lipgloss.NewStyle().Foreground(colorAccent).Bold(true)
 )
 
 type state int
@@ -84,15 +119,17 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		return
 	}
 
-	str := fmt.Sprintf("%s %s", i.title, lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("("+i.id+")"))
+	str := i.title + "\n" + lipgloss.NewStyle().Foreground(colorMuted).PaddingLeft(2).Render("("+i.id+")")
 
-	fn := lipgloss.NewStyle().PaddingLeft(2).Render
+	fn := func(s ...string) string {
+		return lipgloss.NewStyle().PaddingLeft(2).Render(strings.Join(s, " "))
+	}
 	if index == m.Index() {
 		fn = func(s ...string) string {
 			return lipgloss.NewStyle().
 				Border(lipgloss.NormalBorder(), false, false, false, true).
-				BorderForeground(lipgloss.Color("#7D56F4")).
-				Foreground(lipgloss.Color("#7D56F4")).
+				BorderForeground(colorAccent).
+				Foreground(colorAccent).
 				PaddingLeft(1).
 				Render(strings.Join(s, " "))
 		}
@@ -132,6 +169,11 @@ type Model struct {
 	// Tab state
 	activeTab tab
 	history   []runRecord
+
+	// Navigation State
+	selectedTaskIndex int  // -1 for All
+	focusOutputList  bool // true: task list, false: viewport
+	sidebarCollapsed bool
 }
 
 func NewAppModel(initialTask string) (*Model, error) {
@@ -161,10 +203,11 @@ func NewAppModel(initialTask string) (*Model, error) {
 
 	l := list.New(items, delegate, 0, 0)
 	l.Title = "Repokit"
-	l.Styles.Title = titleStyle
+	l.Styles.Title = logoStyle
 	l.SetShowHelp(false)
 	l.SetShowStatusBar(false)
 	l.SetShowPagination(true)
+	l.Styles.PaginationStyle = lipgloss.NewStyle().PaddingLeft(2).Foreground(colorMuted)
 
 	ti := textinput.New()
 	ti.Focus()
@@ -173,7 +216,7 @@ func NewAppModel(initialTask string) (*Model, error) {
 
 	s := spinner.New()
 	s.Spinner = spinner.Dot
-	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
+	s.Style = lipgloss.NewStyle().Foreground(colorAccent)
 
 	vp := viewport.New(100, 20)
 	vp.Style = lipgloss.NewStyle().Padding(0, 0)
@@ -191,6 +234,8 @@ func NewAppModel(initialTask string) (*Model, error) {
 		viewport:     vp,
 		tasks:        make(map[string]*taskState),
 		activeTab:    tabCommands,
+		selectedTaskIndex: -1,
+		focusOutputList:  true,
 	}
 
 	if initialTask != "" {
@@ -335,10 +380,84 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 			if msg.String() == "up" || msg.String() == "down" || msg.String() == "pgup" || msg.String() == "pgdown" {
+				if m.activeTab == tabOutput && m.focusOutputList {
+					if msg.String() == "up" {
+						if m.selectedTaskIndex > -1 {
+							m.selectedTaskIndex--
+						}
+					} else if msg.String() == "down" {
+						if m.selectedTaskIndex < len(m.taskIds)-1 {
+							m.selectedTaskIndex++
+						}
+					}
+					m.updateViewportContent()
+					return m, nil
+				}
 				var cmd tea.Cmd
 				m.viewport, cmd = m.viewport.Update(msg)
 				cmds = append(cmds, cmd)
 			}
+			if msg.String() == "b" {
+				m.sidebarCollapsed = !m.sidebarCollapsed
+				return m, nil
+			}
+			if msg.String() == "enter" && m.activeTab == tabOutput {
+				m.focusOutputList = !m.focusOutputList
+				return m, nil
+			}
+		}
+
+	case tea.MouseMsg:
+		if msg.Type == tea.MouseLeftRelease {
+			// Tab switching
+			if msg.Y == 0 { // Clicked in top row
+				// logo is roughly 9 chars " REPOKIT "
+				x := msg.X
+				if x > 10 {
+					tabX := x - 10
+					// tabs are roughly "1:Commands ", "2:Output ", "3:History "
+					if tabX < 12 {
+						m.activeTab = tabCommands
+					} else if tabX < 21 {
+						m.activeTab = tabOutput
+					} else if tabX < 31 {
+						m.activeTab = tabHistory
+					}
+					return m, nil
+				}
+			}
+
+			// Sidebar click
+			if !m.sidebarCollapsed && msg.X < 35 && msg.Y > 1 {
+				// Rough index calculation - delegate height is 1
+				// Header is line 0, border is line 1 + margin
+				idx := msg.Y - 2
+				if idx >= 0 && idx < len(m.list.Items()) {
+					m.list.Select(idx)
+					// Trigger action if in menu
+					if m.currentState == stateMenu {
+						// Logic duplicated from enter key for now or just select
+					}
+					return m, nil
+				}
+			}
+		}
+
+		if msg.Type == tea.MouseWheelUp {
+			if !m.sidebarCollapsed && msg.X < 35 {
+				m.list.CursorUp()
+			} else {
+				m.viewport.LineUp(3)
+			}
+			return m, nil
+		}
+		if msg.Type == tea.MouseWheelDown {
+			if !m.sidebarCollapsed && msg.X < 35 {
+				m.list.CursorDown()
+			} else {
+				m.viewport.LineDown(3)
+			}
+			return m, nil
 		}
 
 	case tea.WindowSizeMsg:
@@ -347,11 +466,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		innerWidth := m.width - h
 		innerHeight := m.height - v
 
-		// Left menu width is fixed at 35
-		m.list.SetSize(30, innerHeight-4) // -4 for tabs and padding
+		// Left menu width calculation
+		leftWidth := 35
+		if m.sidebarCollapsed {
+			leftWidth = 0
+		}
 
-		m.viewport.Width = innerWidth - 4
-		m.viewport.Height = innerHeight - 10 // Account for tabs and task summary
+		m.list.SetSize(30, innerHeight-6)
+
+		m.viewport.Width = innerWidth - leftWidth - 1
+		m.viewport.Height = innerHeight - 12
 
 	case spinner.TickMsg:
 		var cmd tea.Cmd
@@ -387,12 +511,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			newLog := core.CleanANSI(msg.Data)
 			if newLog != "" {
-				m.fullLog = append(m.fullLog, logStyle.Render(fmt.Sprintf("[%s] %s", msg.TaskID, newLog)))
+				formatted := colorizeLog(fmt.Sprintf("[%s] %s", msg.TaskID, newLog))
+				m.fullLog = append(m.fullLog, formatted)
 				if len(m.fullLog) > 500 {
 					m.fullLog = m.fullLog[len(m.fullLog)-500:]
 				}
-				m.viewport.SetContent(strings.Join(m.fullLog, "\n"))
-				m.viewport.GotoBottom()
+				m.updateViewportContent()
 			}
 		case core.EventTaskDone:
 			if t, ok := m.tasks[msg.TaskID]; ok {
@@ -446,17 +570,29 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-func (m Model) renderTabs() string {
+func (m Model) renderHeader() string {
+	logo := logoStyle.Render("REPOKIT")
+
 	var tabs []string
-	titles := []string{"1: Commands", "2: Output", "3: History"}
+	titles := []string{"Commands", "Output", "History"}
 	for i, t := range titles {
+		label := fmt.Sprintf("%d:%s", i+1, t)
 		if tab(i) == m.activeTab {
-			tabs = append(tabs, activeTabStyle.Render(t))
+			tabs = append(tabs, activeTabStyle.Render(label))
 		} else {
-			tabs = append(tabs, tabStyle.Render(t))
+			tabs = append(tabs, tabStyle.Render(label))
 		}
 	}
-	return lipgloss.JoinHorizontal(lipgloss.Top, tabs...)
+
+	tabRow := lipgloss.JoinHorizontal(lipgloss.Top, tabs...)
+
+	sidebarHint := lipgloss.NewStyle().Foreground(colorMuted).Render(" [b: toggle sidebar]")
+	if m.sidebarCollapsed {
+		sidebarHint = lipgloss.NewStyle().Foreground(colorAccent).Render(" [b: show sidebar]")
+	}
+
+	headerContent := lipgloss.JoinHorizontal(lipgloss.Left, logo, tabRow, sidebarHint)
+	return headerStyle.Width(m.width - 2).Render(headerContent)
 }
 
 func (m Model) View() string {
@@ -464,53 +600,75 @@ func (m Model) View() string {
 		return ""
 	}
 
-	header := m.renderTabs()
+	header := m.renderHeader()
 	var content string
 
 	switch m.activeTab {
 	case tabCommands:
 		h, _ := appStyle.GetFrameSize()
 		innerWidth := m.width - h
-		leftWidth := 35
-		rightWidth := innerWidth - leftWidth
 
-		left := leftPaneStyle.Width(leftWidth - 2).Render(m.list.View()) // -2 for padding/border
+		var left string
+		rightWidth := innerWidth
+
+		if !m.sidebarCollapsed {
+			leftWidth := 35
+			rightWidth = innerWidth - leftWidth
+			left = leftPaneStyle.Width(leftWidth - 2).Render(m.list.View())
+		}
+
 		var right string
 		switch m.currentState {
 		case stateMenu:
-			logo := lipgloss.NewStyle().Foreground(lipgloss.Color("#7D56F4")).Bold(true).Render("Repokit v1.0")
-			desc := "Select a command from the left to execute.\n\n" +
+			desc := lipgloss.NewStyle().Foreground(colorMuted).Render("Select a command from the left to execute.\n\n" +
 				"Use Tab / Shift-Tab to switch views.\n" +
-				"Use 1, 2, 3 for direct navigation."
-			right = fmt.Sprintf("\n%s\n\n%s\n", logo, desc)
+				"Use 1, 2, 3 for direct navigation.")
+			right = fmt.Sprintf("\n%s\n", desc)
 		case stateInput:
 			right = fmt.Sprintf(
 				"%s\n\n%s\n\n(esc to cancel)",
-				inputStyle.Render(m.taskQuery),
+				lipgloss.NewStyle().Foreground(colorAccent).Render(m.taskQuery),
 				m.textInput.View(),
 			)
 		case stateRunning, stateDone:
-			right = lipgloss.NewStyle().Foreground(core.Subtle.GetForeground()).Italic(true).Render("Task is running...\n\nSwitch to Output tab (2) to see details.")
+			right = lipgloss.NewStyle().Foreground(colorMuted).Italic(true).Render("Task is running...\n\nSwitch to Output tab (2) to see details.")
 		}
 
-		// Ensure right pane fills remaining width
-		rpStyled := rightPaneStyle.Width(rightWidth - 6).Render(right) // -6 for padding (2+2) and margins (1+1)
-		content = lipgloss.JoinHorizontal(lipgloss.Top, left, rpStyled)
+		rpStyled := rightPaneStyle.Width(rightWidth - 4).Render(right)
+		if m.sidebarCollapsed {
+			content = rpStyled
+		} else {
+			content = lipgloss.JoinHorizontal(lipgloss.Top, left, rpStyled)
+		}
 
 	case tabOutput:
 		var sb strings.Builder
 		if len(m.taskIds) == 0 {
 			sb.WriteString(fmt.Sprintf("\n  %s Waiting for task execution...\n", m.spinner.View()))
 		} else {
-			sb.WriteString(fmt.Sprintf(" Pipeline: %s\n\n", inputStyle.Render(m.activeMenuItem)))
+			sb.WriteString(fmt.Sprintf(" Pipeline: %s\n", lipgloss.NewStyle().Foreground(colorAccent).Render(m.activeMenuItem)))
+
+			// Summary line
+			allSelected := m.selectedTaskIndex == -1
+			allIcon := lipgloss.NewStyle().Foreground(colorMuted).Render("○")
+			if allSelected {
+				allIcon = taskStyleSuccess.Render("●")
+			}
+			allText := "ALL TASKS"
+			if allSelected && m.focusOutputList {
+				allText = lipgloss.NewStyle().Background(colorAccent).Foreground(lipgloss.Color("#FFFFFF")).Render(" ALL TASKS ")
+			}
+			sb.WriteString(fmt.Sprintf(" %s %s\n", allIcon, allText))
 
 			// Show task summaries in a compact way
-			for _, id := range m.taskIds {
+			for idx, id := range m.taskIds {
 				t := m.tasks[id]
+				selected := m.selectedTaskIndex == idx
+
 				var icon, statText string
-				durStr := core.Subtle.Render(fmt.Sprintf("%5.1fs", time.Since(t.start).Seconds()))
+				durStr := lipgloss.NewStyle().Foreground(colorMuted).Render(fmt.Sprintf("%5.1fs", time.Since(t.start).Seconds()))
 				if t.status == "done" || t.status == "error" {
-					durStr = core.Subtle.Render(fmt.Sprintf("%5.1fs", t.elapsed.Seconds()))
+					durStr = lipgloss.NewStyle().Foreground(colorMuted).Render(fmt.Sprintf("%5.1fs", t.elapsed.Seconds()))
 				}
 
 				switch t.status {
@@ -524,18 +682,42 @@ func (m Model) View() string {
 					icon = taskStylePending.Render(m.spinner.View())
 					statText = taskStylePending.Render("RUN ")
 				default:
-					icon = core.Subtle.Render("○")
-					statText = core.Subtle.Render("WAIT")
-					durStr = core.Subtle.Render("  --.-s")
+					icon = lipgloss.NewStyle().Foreground(colorMuted).Render("○")
+					statText = lipgloss.NewStyle().Foreground(colorMuted).Render("WAIT")
+					durStr = lipgloss.NewStyle().Foreground(colorMuted).Render("  --.-s")
 				}
-				sb.WriteString(fmt.Sprintf(" %s %-25.25s %s %s\n", icon, t.name, statText, durStr))
+
+
+				taskName := t.name
+				if selected && m.focusOutputList {
+					taskName = lipgloss.NewStyle().Background(colorAccent).Foreground(lipgloss.Color("#FFFFFF")).Render(" " + t.name + " ")
+				} else if selected {
+					taskName = lipgloss.NewStyle().Foreground(colorAccent).Underline(true).Render(t.name)
+				}
+
+				sb.WriteString(fmt.Sprintf(" %s %-25.25s %s %s\n", icon, taskName, statText, durStr))
 			}
 		}
 
-		sb.WriteString("\n" + tabWindowStyle.Width(m.viewport.Width+2).Render(m.viewport.View()))
+		viewportStyle := tabWindowStyle.Width(m.width - 4)
+		if !m.focusOutputList {
+			viewportStyle = viewportStyle.BorderForeground(colorAccent)
+		}
+		sb.WriteString("\n" + viewportStyle.Render(m.viewport.View()))
+
+		// Navigation Bar
+		sb.WriteString("\n\n")
+		var help []string
+		help = append(help, keyStyle.Render("↑/↓")+" navigate tasks")
+		help = append(help, keyStyle.Render("Enter")+" toggle scroll")
+		help = append(help, keyStyle.Render("1,2,3")+" switch tabs")
+		if m.currentState == stateDone {
+			help = append(help, keyStyle.Render("Esc")+" back to menu")
+		}
+		sb.WriteString("  " + helpStyle.Render(strings.Join(help, " • ")))
 
 		if m.currentState == stateDone {
-			sb.WriteString("\n" + core.Subtle.Render("(Press enter/esc to return to menu)"))
+			// sb.WriteString("\n" + core.Subtle.Render("(Press enter/esc to return to menu)"))
 		}
 		content = sb.String()
 
@@ -604,4 +786,52 @@ func runBgTaskCmd(taskID string, arg string) tea.Cmd {
 		time.Sleep(100 * time.Millisecond) // Let events flush
 		return taskResultMsg{err: runErr}
 	}
+}
+
+func (m *Model) updateViewportContent() {
+	var logs []string
+	if m.selectedTaskIndex == -1 {
+		logs = m.fullLog
+	} else {
+		taskID := m.taskIds[m.selectedTaskIndex]
+		for _, line := range m.fullLog {
+			if strings.Contains(line, "["+taskID+"]") {
+				logs = append(logs, line)
+			}
+		}
+	}
+	m.viewport.SetContent(strings.Join(logs, "\n"))
+	m.viewport.GotoBottom()
+}
+
+func colorizeLog(line string) string {
+	// Simple keyword coloring
+	line = strings.ReplaceAll(line, "DONE", taskStyleSuccess.Render("DONE"))
+	line = strings.ReplaceAll(line, "SUCCESS", taskStyleSuccess.Render("SUCCESS"))
+	line = strings.ReplaceAll(line, "FAIL", taskStyleError.Render("FAIL"))
+	line = strings.ReplaceAll(line, "ERROR", taskStyleError.Render("ERROR"))
+	line = strings.ReplaceAll(line, "WARN", core.Yellow.Render("WARN"))
+	line = strings.ReplaceAll(line, "STEP", core.Cyan.Render("STEP"))
+
+	// Color task IDs in brackets [task-id]
+	if strings.HasPrefix(line, "[") {
+		end := strings.Index(line, "]")
+		if end > 0 {
+			taskID := line[1:end]
+			color := getTaskColor(taskID)
+			line = lipgloss.NewStyle().Foreground(color).Render("["+taskID+"]") + line[end+1:]
+		}
+	}
+
+	return line
+}
+
+func getTaskColor(id string) lipgloss.Color {
+	// Generate a stable color based on task ID
+	hash := 0
+	for _, c := range id {
+		hash = 31*hash + int(c)
+	}
+	colors := []string{"#3b82f6", "#06b6d4", "#10b981", "#fbbf24", "#e11d48", "#a855f7"}
+	return lipgloss.Color(colors[uint(hash)%uint(len(colors))])
 }

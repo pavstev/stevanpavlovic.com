@@ -5,6 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
+
 <!-- Placeholder, adjust if different -->
 
 ---
@@ -310,9 +311,12 @@ For any inquiries or collaborations, please feel free to reach out.
 
 **Author:** [Your Name/Stevan Pavlovic] **Website:**
 [https://stevanpavlovic.com](https://stevanpavlovic.com)
+
 <!-- Placeholder, assuming based on code workspace file --> **Email:**
+
 [your-email@example.com] <!-- Placeholder --> **LinkedIn:**
 [https://www.linkedin.com/in/yourprofile/](https://www.linkedin.com/in/yourprofile/)
+
 <!-- Placeholder -->
 
 ---

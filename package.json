@@ -54,7 +54,6 @@
     "astro-expressive-code": "^0.41.6",
     "astro-favicons": "^3.1.5",
     "astro-icon": "^1.1.5",
-    "astro-integration-kit": "^0.19.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expressive-code-collapsible": "^0.1.0",
@@ -130,13 +129,16 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0",
     "unlighthouse": "^0.17.4",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18",
     "wrangler": "^4.66.0"
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": ["eslint", "eslint-plugin-import", "eslint-plugin-react"]
+      "allowAny": [
+        "eslint",
+        "eslint-plugin-import",
+        "eslint-plugin-react"
+      ]
     },
     "onlyBuiltDependencies": [
       "@parcel/watcher",

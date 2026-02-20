@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path/filepath"
-	"regexp"
-	commands_pkg "repokit/pkg/commands" // Aliased for clarity
-	"repokit/pkg/core"
 	"os/signal"
+	"path/filepath"
 	"reflect" // Added for robust type name extraction
+	"regexp"  // Aliased for clarity
+	"repokit/pkg/core"
 	"strconv" // Added for parsing numbers from SVG attributes
 	"strings"
 	"sync"
@@ -24,11 +23,13 @@ import (
 )
 
 // Declare package-level LLMConfig for optimizer commands
-var svgLLMConfig *commands_pkg.LLMConfig
+var svgLLMConfig *core.LLMConfig
+var svgLLMProvider core.Provider
 
 // SetLLMConfig sets the package-level LLM configuration.
-func SetLLMConfig(cfg *commands_pkg.LLMConfig) {
+func SetLLMConfig(cfg *core.LLMConfig, p core.Provider) {
 	svgLLMConfig = cfg
+	svgLLMProvider = p
 }
 
 // ─── Constants & Styling ────────────────────────────────────────────────────
@@ -155,18 +156,13 @@ func buildSVGDescriptionPrompt(svgAST *svg_parser.Svg) string {
 
 // generateSVGDescription uses an LLM to describe the SVG.
 func generateSVGDescription(ctx context.Context, svgAST *svg_parser.Svg) (string, error) {
-	if svgLLMConfig == nil || svgLLMConfig.Provider == "" {
-		return "", fmt.Errorf("LLM configuration not set for SVG analysis")
-	}
-
-	p, err := commands_pkg.NewProvider(svgLLMConfig)
-	if err != nil {
-		return "", fmt.Errorf("failed to initialize LLM provider: %w", err)
+	if svgLLMProvider == nil {
+		return "", fmt.Errorf("LLM provider not set for SVG analysis")
 	}
 
 	prompt := buildSVGDescriptionPrompt(svgAST)
 
-	description, err := p.Generate(ctx, prompt) // Pass the context here
+	description, err := svgLLMProvider.Generate(ctx, prompt) // Pass the context here
 	if err != nil {
 		return "", fmt.Errorf("LLM generation failed: %w", err)
 	}

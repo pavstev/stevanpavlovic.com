@@ -1,0 +1,180 @@
+14:02:31 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+14:02:31 [@astrojs/cloudflare] If you see the error "Invalid binding `SESSION`" in your build output, you need to add the binding to your wrangler config file.
+14:02:32 [content] Syncing content
+14:02:32 [content] Synced content
+14:02:32 [types] Generated 698ms
+14:02:32 [check] Getting diagnostics for Astro files in /home/stevan/work/spcom-final...
+[96msrc/components/custom/ai-chat/browser-ai-chat.tsx[0m:[93m73[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'FormEvent' is deprecated.
+
+[7m73[0m     async (e: FormEvent<HTMLFormElement>) => {
+[7m  [0m [93m              ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/custom/ai-chat/browser-ai-chat.tsx[0m:[93m10[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'FormEvent' is deprecated.
+
+[7m10[0m import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+[7m  [0m [93m                ~~~~~~~~~~~~~~[0m
+
+[96msrc/components/custom/shared/csv-table.tsx[0m:[93m3[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m3[0m import React from "react";
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/layout/main-layout.tsx[0m:[93m23[0m:[93m20[0m - [91merror[0m[90m ts(2322): [0mType '{ "client:load": true; }' is not assignable to type 'IntrinsicAttributes & BrowserAiChatProps'.
+  Property 'client:load' does not exist on type 'IntrinsicAttributes & BrowserAiChatProps'.
+
+[7m23[0m     <BrowserAiChat client:load />
+[7m  [0m [91m                   ~~~~~~~~~~~[0m
+[96msrc/components/layout/main-layout.tsx[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m ts(2614): [0mModule '"@components/layout/header.astro"' has no exported member 'Header'. Did you mean to use 'import Header from "@components/layout/header.astro"' instead?
+
+[7m4[0m import { Header } from "@components/layout/header.astro";
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/components/ui/avatar.tsx[0m:[93m73[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'AvatarGroupCount' is declared but its value is never read.
+
+[7m73[0m const AvatarGroupCount: FC<ComponentProps<"div">> = ({ className, ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/avatar.tsx[0m:[93m62[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'AvatarGroup' is declared but its value is never read.
+
+[7m62[0m const AvatarGroup: FC<ComponentProps<"div">> = ({ className, ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~[0m
+[96msrc/components/ui/avatar.tsx[0m:[93m48[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'AvatarBadge' is declared but its value is never read.
+
+[7m48[0m const AvatarBadge: FC<ComponentProps<"span">> = ({ className, ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~[0m
+
+[96msrc/components/ui/context-menu.tsx[0m:[93m187[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuShortcut' is declared but its value is never read.
+
+[7m187[0m const ContextMenuShortcut: FC<ComponentProps<"span">> = ({ className, ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m176[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuSeparator' is declared but its value is never read.
+
+[7m176[0m const ContextMenuSeparator = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m161[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuLabel' is declared but its value is never read.
+
+[7m161[0m const ContextMenuLabel = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m139[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuRadioItem' is declared but its value is never read.
+
+[7m139[0m const ContextMenuRadioItem = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m115[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuCheckboxItem' is declared but its value is never read.
+
+[7m115[0m const ContextMenuCheckboxItem = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m64[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuSubContent' is declared but its value is never read.
+
+[7m64[0m const ContextMenuSubContent = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m42[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuSubTrigger' is declared but its value is never read.
+
+[7m42[0m const ContextMenuSubTrigger = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m36[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuRadioGroup' is declared but its value is never read.
+
+[7m36[0m const ContextMenuRadioGroup = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m30[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuSub' is declared but its value is never read.
+
+[7m30[0m const ContextMenuSub = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m24[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuPortal' is declared but its value is never read.
+
+[7m24[0m const ContextMenuPortal = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/context-menu.tsx[0m:[93m18[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ContextMenuGroup' is declared but its value is never read.
+
+[7m18[0m const ContextMenuGroup = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/ui/dialog.tsx[0m:[93m79[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'DialogFooter' is declared but its value is never read.
+
+[7m79[0m const DialogFooter = ({
+[7m  [0m [93m      ~~~~~~~~~~~~[0m
+[96msrc/components/ui/dialog.tsx[0m:[93m21[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'DialogClose' is declared but its value is never read.
+
+[7m21[0m const DialogClose: FC<ComponentProps<typeof DialogPrimitive.Close>> = ({ ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~[0m
+
+[96msrc/components/ui/empty.tsx[0m:[93m40[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'EmptyMedia' is declared but its value is never read.
+
+[7m40[0m const EmptyMedia = ({
+[7m  [0m [93m      ~~~~~~~~~~[0m
+
+[96msrc/components/ui/form.tsx[0m:[93m146[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'FormDescription' is declared but its value is never read.
+
+[7m146[0m const FormDescription: FC<ComponentProps<"p">> = ({ className, ...props }) => {
+[7m   [0m [93m      ~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/ui/navigation-menu.tsx[0m:[93m100[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'NavigationMenuTrigger' is declared but its value is never read.
+
+[7m100[0m const NavigationMenuTrigger = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/navigation-menu.tsx[0m:[93m70[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'NavigationMenuIndicator' is declared but its value is never read.
+
+[7m70[0m const NavigationMenuIndicator = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/navigation-menu.tsx[0m:[93m55[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'NavigationMenuContent' is declared but its value is never read.
+
+[7m55[0m const NavigationMenuContent = ({
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/ui/pagination.tsx[0m:[93m29[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'PaginationEllipsis' is declared but its value is never read.
+
+[7m29[0m const PaginationEllipsis: FC<ComponentProps<"span">> = ({ className, ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/ui/sheet.tsx[0m:[93m107[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SheetTrigger' is declared but its value is never read.
+
+[7m107[0m const SheetTrigger: FC<ComponentProps<typeof SheetPrimitive.Trigger>> = ({ ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~[0m
+[96msrc/components/ui/sheet.tsx[0m:[93m66[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SheetFooter' is declared but its value is never read.
+
+[7m66[0m const SheetFooter: FC<ComponentProps<"div">> = ({ className, ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~~[0m
+[96msrc/components/ui/sheet.tsx[0m:[93m12[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SheetClose' is declared but its value is never read.
+
+[7m12[0m const SheetClose: FC<ComponentProps<typeof SheetPrimitive.Close>> = ({ ...props }) => (
+[7m  [0m [93m      ~~~~~~~~~~[0m
+
+[96msrc/components/ui/sidebar.tsx[0m:[93m654[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuSubItem' is declared but its value is never read.
+
+[7m654[0m const SidebarMenuSubItem: FC<ComponentProps<"li">> = ({ className, ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m622[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuSubButton' is declared but its value is never read.
+
+[7m622[0m const SidebarMenuSubButton = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m609[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuSub' is declared but its value is never read.
+
+[7m609[0m const SidebarMenuSub: FC<ComponentProps<"ul">> = ({ className, ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m579[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuSkeleton' is declared but its value is never read.
+
+[7m579[0m const SidebarMenuSkeleton = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m511[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuBadge' is declared but its value is never read.
+
+[7m511[0m const SidebarMenuBadge: FC<ComponentProps<"div">> = ({ className, ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m479[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarMenuAction' is declared but its value is never read.
+
+[7m479[0m const SidebarMenuAction = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m410[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarSeparator' is declared but its value is never read.
+
+[7m410[0m const SidebarSeparator = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m255[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarInput' is declared but its value is never read.
+
+[7m255[0m const SidebarInput: FC<ComponentProps<typeof Input>> = ({ className, ...props }) => (
+[7m   [0m [93m      ~~~~~~~~~~~~[0m
+[96msrc/components/ui/sidebar.tsx[0m:[93m190[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'SidebarGroupAction' is declared but its value is never read.
+
+[7m190[0m const SidebarGroupAction = ({
+[7m   [0m [93m      ~~~~~~~~~~~~~~~~~~[0m
+
+Result (90 files): 
+- 2 errors
+- 0 warnings
+- 37 hints
+

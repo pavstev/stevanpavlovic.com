@@ -9,6 +9,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { ClientRouter } from "astro:transitions";
 
+import Header from "./header.astro";
 import { MainLayout } from "./main-layout";
 
 interface Props extends HTMLAttributes<"html"> {
@@ -74,6 +75,7 @@ const { class: className, description, lang = "en", title, ...rest } = Astro.pro
     )}
   >
     <MainLayout client:load>
+      <Header slot="header" />
       <slot />
     </MainLayout>
   </body>

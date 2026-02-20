@@ -5,18 +5,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/joho/godotenv"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
+	"repokit/pkg/core"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
-// Provider defines the interface for LLM operations.
-type Provider interface {
-	Generate(ctx context.Context, prompt string) (string, error)
-}
+// The interface and config are now in core
 
 // ─── Gemini Provider (Cloud) ────────────────────────────────────────────────
 
@@ -158,7 +157,7 @@ func (p *LocalProvider) Generate(ctx context.Context, prompt string) (string, er
 
 // ─── Factory ────────────────────────────────────────────────────────────────
 
-func NewProvider(llmCfg *LLMConfig) (Provider, error) {
+func NewProvider(llmCfg *core.LLMConfig) (core.Provider, error) {
 	switch strings.ToLower(llmCfg.Provider) {
 	case "gemini":
 		apiKey := llmCfg.APIKey

@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import { BackButton } from "@components/custom/navigation/back-button";
 import PageLayout from "@components/layout/page-layout.astro";
 import { Badge } from "@components/ui/badge";
-import Icon from "@components/ui/icon";
+import { Icon } from "@components/ui/icon";
 import { getEntries, render } from "astro:content";
 
 interface Props {
@@ -57,7 +57,7 @@ const image = entry.data.image;
                     href={`/tags/${tag.id}`}
                   >
                     <Badge className="gap-1.5 rounded-md pl-1.5" variant="secondary">
-                      {tag.icon && <Icon class="size-3.5" name={tag.icon} />}
+                      {tag.icon && <Icon className="size-3.5" name={tag.icon} />}
                       {tag.label || tag.id}
                     </Badge>
                   </a>

@@ -1,14 +1,14 @@
 "use client";
 
-import { cn } from "@components/lib/utils";
+import { cn } from "@client/utils";
 import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
 import * as React from "react";
 
-const ScrollArea = ({
+export const ScrollArea = ({
   children,
   className,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) => {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>): React.JSX.Element => {
   return (
     <ScrollAreaPrimitive.Root
       className={cn("relative", className)}
@@ -27,11 +27,11 @@ const ScrollArea = ({
   );
 };
 
-const ScrollBar = ({
+export const ScrollBar = ({
   className,
   orientation = "vertical",
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) => {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>): React.JSX.Element => {
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
       className={cn(
@@ -51,5 +51,3 @@ const ScrollBar = ({
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   );
 };
-
-export { ScrollArea, ScrollBar };

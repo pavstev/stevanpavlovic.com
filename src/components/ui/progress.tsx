@@ -1,12 +1,12 @@
-import { cn } from "@components/lib/utils";
+import { cn } from "@client/utils";
 import { Progress as ProgressPrimitive } from "radix-ui";
 import * as React from "react";
 
-const Progress = ({
+export const Progress = ({
   className,
   value,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) => {
+}: React.ComponentProps<typeof ProgressPrimitive.Root>): React.JSX.Element => {
   return (
     <ProgressPrimitive.Root
       className={cn("bg-primary/20 relative h-2 w-full overflow-hidden rounded-full", className)}
@@ -21,5 +21,3 @@ const Progress = ({
     </ProgressPrimitive.Root>
   );
 };
-
-export { Progress };

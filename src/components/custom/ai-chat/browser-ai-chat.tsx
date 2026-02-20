@@ -10,6 +10,7 @@ import { ScrollArea } from "@components/ui/scroll-area";
 import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface BrowserAiChatProps {}
 
 interface Message {
@@ -17,7 +18,7 @@ interface Message {
   role: "assistant" | "user";
 }
 
-const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
+const BrowserAiChat: React.FC<BrowserAiChatProps> = (): React.JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isModelLoaded, setIsModelLoaded] = useState<boolean>(false);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
@@ -37,33 +38,35 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
   }, [messages]);
 
   useEffect(() => {
-    const initializeBrowserAI = async () => {
+    const initializeBrowserAI = async (): Promise<void> => {
       try {
         const contextResponse = await fetch("/api/ai-context.json");
         if (!contextResponse.ok) {
           throw new Error(`Failed to fetch AI context: ${contextResponse.statusText}`);
         }
-        const { context } = await contextResponse.json();
+        const { context } = (await contextResponse.json()) as { context: string };
         setSystemContext(context);
 
         browserAIInstanceRef.current = new BrowserAI();
         await browserAIInstanceRef.current.loadModel("llama-3.2-1b-instruct", {
-          onProgress: (progress) => {
+          onProgress: (progress: { progress: number }) => {
             setLoadingProgress(progress.progress);
           },
           quantization: "q4f16_1",
         });
         setIsModelLoaded(true);
         console.log("BrowserAI model loaded successfully.");
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error("Failed to load BrowserAI model:", e);
         setError(
-          `Failed to load AI model. Please ensure your browser supports WebGPU and try again. Error: ${e.message}`
+          `Failed to load AI model. Please ensure your browser supports WebGPU and try again. Error: ${
+            e instanceof Error ? e.message : String(e)
+          }`
         );
       }
     };
 
-    initializeBrowserAI();
+    void initializeBrowserAI();
   }, []);
 
   const handleSubmit = useCallback(
@@ -88,21 +91,33 @@ ${systemContext}`,
           userMessage,
         ];
 
-        const response = await browserAIInstanceRef.current.generateText(promptArray, {
-          max_tokens: 250,
-          temperature: 0.3,
-        });
+        const response = (await browserAIInstanceRef.current.generateText(
+          promptArray as unknown as string,
+          {
+            max_tokens: 250,
+            temperature: 0.3,
+          }
+        )) as {
+          choices: {
+            message: {
+              content: string;
+            };
+          }[];
+        };
 
         const aiMessageContent = response.choices[0].message.content;
         setMessages((prevMessages) => [
           ...prevMessages,
           { content: aiMessageContent, role: "assistant" },
         ]);
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error("Error generating text:", e);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { content: `Sorry, I encountered an error: ${e.message}`, role: "assistant" },
+          {
+            content: `Sorry, I encountered an error: ${e instanceof Error ? e.message : String(e)}`,
+            role: "assistant",
+          },
         ]);
       } finally {
         setIsGenerating(false);
@@ -212,7 +227,12 @@ ${systemContext}`,
           </CardContent>
           {isModelLoaded && !error && (
             <CardFooter className="border-t p-2">
-              <form className="flex w-full space-x-2" onSubmit={handleSubmit}>
+              <form
+                className="flex w-full space-x-2"
+                onSubmit={(e) => {
+                  void handleSubmit(e);
+                }}
+              >
                 <Input
                   autoComplete="off"
                   className="flex-1"

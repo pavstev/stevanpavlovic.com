@@ -1,0 +1,289 @@
+
+/home/stevan/work/spcom-final/.github/pull_request_template.md
+  20:1  error  Emphasis used instead of a heading [Context: Frontend (Astro / React / TS)]      markdownlint/md036
+  26:1  error  Emphasis used instead of a heading [Context: Backend & Tools (Golang / Clou...]  markdownlint/md036
+  32:1  error  Emphasis used instead of a heading [Context: General]                            markdownlint/md036
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/README.md
+    3:1  error  Heading levels should only increment by one level at a time: Expected: h2; Actual: h3  markdownlint/md001
+    8:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+    9:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+    9:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   17:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   18:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   18:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   26:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   27:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   27:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   35:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   36:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   36:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   44:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   45:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   45:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   53:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   54:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   54:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   61:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   62:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   62:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   70:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   71:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   71:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   79:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   80:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   80:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   88:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   89:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   89:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+   96:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+   97:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+   97:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  105:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  106:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  106:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  114:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  115:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  115:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  123:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  132:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  133:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  133:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  141:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  142:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  142:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  149:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  150:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  150:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  158:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  159:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  159:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  167:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  168:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  168:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  176:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  185:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  186:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  186:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  194:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  195:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  195:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  202:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  203:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  203:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  210:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  211:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  211:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  218:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  219:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  219:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  226:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  227:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  227:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  235:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  236:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  236:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  243:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  244:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  244:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  252:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  253:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  253:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  260:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  261:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  261:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  269:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  270:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  270:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  278:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  279:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  279:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  287:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  288:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  288:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  296:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  297:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  297:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  305:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  306:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  306:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  313:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  314:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  314:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  322:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  323:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  323:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+  331:2  error  Inline HTML: Element: a                                                                markdownlint/md033
+  332:4  error  Inline HTML: Element: img                                                              markdownlint/md033
+  332:4  error  Images should have alternate text (alt text)                                           markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/altscreen-toggle/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/chat/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/composable-views/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/credit-card-form/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/debounce/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/exec/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/fullscreen/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/glamour/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/help/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/http/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/list-default/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/list-fancy/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/list-simple/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/package-manager/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/pager/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/paginator/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/pipe/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/progress-animated/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/progress-download/README.md
+  14:1   error  Fenced code blocks should have a language specified [Context: ```]  markdownlint/md040
+  27:2   error  Inline HTML: Element: a                                             markdownlint/md033
+  27:30  error  Inline HTML: Element: img                                           markdownlint/md033
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/progress-static/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/realtime/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/result/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/send-msg/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/sequence/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/simple/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/spinner/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/spinners/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/split-editors/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/stopwatch/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/table/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/tabs/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/textarea/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/textinput/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/textinputs/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/timer/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/tui-daemon-combo/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/backup/bubbletea-examples/views/README.md
+  3:2  error  Inline HTML: Element: img                     markdownlint/md033
+  3:2  error  Images should have alternate text (alt text)  markdownlint/md045
+
+/home/stevan/work/spcom-final/src/components/custom/ai-chat/browser-ai-chat.tsx
+   13:11  error  An empty interface declaration allows any non-nullish value, including literals like `0` and `""`.
+- If that's what you want, disable this lint rule with an inline comment or configure the 'allowInterfaces' rule option.
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead  @typescript-eslint/no-empty-object-type
+   40:42  error  Missing return type on function                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/explicit-function-return-type
+   58:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+   66:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                                                                                                                                                                                        @typescript-eslint/no-floating-promises
+  101:19  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  215:64  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/stevan/work/spcom-final/src/components/ui/progress.tsx
+   9:57  error  Missing return type on function                       @typescript-eslint/explicit-function-return-type
+  25:1   error  Use inline 'export const' instead of grouped exports  no-restricted-syntax
+
+/home/stevan/work/spcom-final/src/components/ui/scroll-area.tsx
+  54:1  error  Delete `⏎`  prettier/prettier
+
+✖ 198 problems (198 errors, 0 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

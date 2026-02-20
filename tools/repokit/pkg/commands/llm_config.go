@@ -1,16 +1,13 @@
 package commands
 
 import (
+	"repokit/pkg/core"
+
 	"github.com/spf13/cobra"
 )
 
-// LLMConfig holds common LLM configuration parameters.
-type LLMConfig struct {
-	Provider string
-	Model    string
-	APIKey   string
-	Output   string // Specific to README generation, but kept here for convenience.
-}
+// LLMConfig is now an alias or we just use core.LLMConfig
+type LLMConfig = core.LLMConfig
 
 // AddLLMFlags adds common LLM-related flags to a Cobra command.
 // It returns a pointer to an LLMConfig struct which will be populated when flags are parsed.

@@ -28,4 +28,5 @@ export const globalIgnoresList = [
   ".unlighthouse/**/*",
   "worker-configuration.d.ts",
   ".vscode/**/*",
+  "backup/**/*",
 ];

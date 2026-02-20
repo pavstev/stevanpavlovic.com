@@ -2,7 +2,12 @@ import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
   astro: {},
-  entry: ["unlighthouse.config.ts", "tools/eslint/index.ts", "src/**/*.{test,spec}.{ts,tsx}"],
+  entry: [
+    "unlighthouse.config.ts",
+    "tools/eslint/index.ts",
+    "src/**/*.{test,spec}.{ts,tsx}",
+    "src/components/ui/*.tsx",
+  ],
   ignoreBinaries: ["only-allow", "go"],
   ignoreDependencies: [
     "sharp",

@@ -22,7 +22,8 @@ import tseslint from "typescript-eslint";
 import {
   //   allRules,
   //  registerPlugin,
-  files, globalIgnoresList,
+  files,
+  globalIgnoresList,
 } from "./tools/eslint";
 
 // const localPlugin = registerPlugin({

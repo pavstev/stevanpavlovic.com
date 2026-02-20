@@ -17,19 +17,19 @@
 
 ## ✅ Overlord Checklist
 
-**Frontend (Astro / React / TS)**
+### Frontend (Astro / React / TS)
 
 - [ ] Ran `pnpm lint` (ESLint/Knip)
 - [ ] Checked responsive design on mobile/desktop
 - [ ] Build passes locally (`pnpm build`)
 
-**Backend & Tools (Golang / Cloudflare)**
+### Backend & Tools (Golang / Cloudflare)
 
 - [ ] Ran `go fmt ./...` and `go test ./...` in `/tools/repokit`
 - [ ] Cloudflare Worker builds and handles env vars correctly
 - [ ] Checked `wrangler.jsonc` for any required routing updates
 
-**General**
+### General
 
 - [ ] I have reviewed my own code
 - [ ] Commit messages follow the conventional standard

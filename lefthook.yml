@@ -31,16 +31,16 @@ pre-commit:
       run: |
         echo "🔍 Checking formatting..."
         prettier --check . --config=.prettierrc.json --ignore-path=.prettierignore --cache --cache-location node_modules/.cache/prettier
-      files: '^(src|e2e|drizzle|messages|static)/.*\.(ts|css|json|yml|yaml|md)$'
+      files: ^(src|e2e|drizzle|messages|static)/.*\.(ts|css|json|yml|yaml|md)$
     lint:
       run: pnpm lint
-      files: '^(src|e2e)/.*\.(ts)$'
+      files: ^(src|e2e)/.*\.(ts)$
     typecheck:
       run: pnpm typecheck
-      files: '^(src)/.*\.(ts)$'
+      files: ^(src)/.*\.(ts)$
     build:
       run: pnpm build
-      files: '^(src)/.*\.(ts)$'
+      files: ^(src)/.*\.(ts)$
 
 pre-push:
   only:
@@ -73,4 +73,4 @@ commit-msg:
       run: pnpm uncomment
     build:
       run: pnpm build
-      files: '^(src)/.*\.(ts)$'
+      files: ^(src)/.*\.(ts)$

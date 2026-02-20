@@ -12,8 +12,7 @@ const commitTypes = {
   fix: { title: "Bug Fixes", description: "A bug fix" },
   build: {
     title: "Builds",
-    description:
-      "Changes that affect the build system or external dependencies",
+    description: "Changes that affect the build system or external dependencies",
   },
   chore: {
     title: "Chores",
@@ -51,7 +50,7 @@ const Configuration: UserConfig = {
   formatter: "@commitlint/format",
   rules: {
     "header-max-length": [RuleConfigSeverity.Error, "always", 72],
-    "scope-enum": [RuleConfigSeverity.Error, "always", scopes.map(s => s.id)],
+    "scope-enum": [RuleConfigSeverity.Error, "always", scopes.map((s) => s.id)],
     "scope-case": [RuleConfigSeverity.Error, "always", "kebab-case"],
     "type-enum": [RuleConfigSeverity.Error, "always", Object.keys(commitTypes)],
     "type-empty": [RuleConfigSeverity.Error, "never"],
@@ -78,7 +77,7 @@ const Configuration: UserConfig = {
                 title: project.name,
                 description: project.metadata?.description ?? "No description",
               },
-            ]),
+            ])
         ),
       },
     },

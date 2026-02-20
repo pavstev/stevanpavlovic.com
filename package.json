@@ -25,7 +25,7 @@
     "all": "pnpm go-build && pnpm repokit all",
     "repokit": "./tools/repokit/dist/repokit",
     "dev": "astro dev",
-    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ../../tools/repokit/dist/repokit main.go > /dev/null && cd - > /dev/null",
+    "go-build": "cd tools/repokit && go build -v -ldflags='-s -w' -o ./dist/repokit main.go > /dev/null && cp dist/repokit dist/rk && cd - > /dev/null",
     "go-install": "cd tools/repokit && go mod tidy && cd -",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "pnpm go-build && pnpm repokit setup",

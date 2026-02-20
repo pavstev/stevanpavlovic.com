@@ -183,8 +183,10 @@ func RunStepByID(id string, data any) {
 		Fatal(fmt.Sprintf("Step %q not found: %v", id, err))
 	}
 	cmdStr, err := EvaluateCommand(step.Command, data)
-  Info(fmt.Sprintf("Running %s", cmdStr))
-	if err != nil {
+
+  // Info(fmt.Sprintf("Running %s", cmdStr))
+
+  if err != nil {
 		Fatal(fmt.Sprintf("Failed to map step %q: %v", id, err))
 	}
 	runCommand(step.Name, cmdStr, step.Cwd)

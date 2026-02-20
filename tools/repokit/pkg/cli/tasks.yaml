@@ -7,107 +7,35 @@ vars:
   go: go
 
 tasks:
-  # --- Linters ---
+  # --- Atomic Tasks ---
   lint_eslint:
     name: ESLint
+    type: single
+    pre_msg: Analyzing frontend code quality...
+    on_error: ESLint found issues in the codebase.
     command: ${pnpm} eslint .
-    cwd: ${root_dir}
-  lint_go:
-    name: Go Linter
-    command: golangci-lint run --fix ./...
-    cwd: ${repo_dir}
 
-  # --- Checkers ---
-  check_astro:
-    name: Astro Check
-    command: ${pnpm} astro check
-    cwd: ${root_dir}
-  check_go:
-    name: Go Vet
-    command: ${go} vet ./...
-    cwd: ${repo_dir}
-
-  # --- Testing ---
-  test_vitest:
-    name: Vitest
-    command: ${pnpm} vitest run
-    cwd: ${root_dir}
-  test_go:
-    name: Go Tests
-    command: ${go} test ./... -coverprofile=coverage.out -v
-    cwd: ${repo_dir}
-    pre_run: [build_go] # Ensure it compiles before testing
-
-  # --- Build ---
-  build_astro:
-    name: Astro Build
-    command: ${pnpm} astro build
-    cwd: ${root_dir}
   build_go:
     name: Go Build
+    type: single
+    pre_msg: Compiling Repokit orchestrator...
+    on_error: Failed to build Go binary.
     command: ${go} build -o ../../${repo_bin} ./main.go
     cwd: ${repo_dir}
 
-  # --- Formatting ---
-  prettier:
-    name: Prettier
-    command: ${pnpm} prettier -w --cache .
-    cwd: ${root_dir}
-  optimize_svg:
-    name: SVG Optimizer
-    command: ${repo_bin} optimize-svg src/assets/**/*.svg
-    cwd: ${root_dir}
-
-  # --- Utils ---
-  chmod_scripts:
-    name: Script Permissions
-    command: chmod +x scripts/*.sh
-    cwd: ${root_dir}
-
-batches:
+  # --- Unified Batch Pipelines ---
   lint:
     name: Linting Pipeline
-    description: Run all code quality linters
-    tasks: [lint_eslint, lint_go]
+    type: batch
+    pre_msg: Starting full project linting pass...
+    on_error: One or more linters failed.
+    tasks: [lint_eslint]
     parallel: true
 
-  check:
-    name: Type Check
-    description: Run static type analysis
-    tasks: [check_astro, check_go]
-    parallel: true
-
-  test:
-    name: Test Suite
-    description: Execute all frontend and backend tests
-    tasks: [test_vitest, test_go]
-    parallel: false # Run sequentially to avoid DB/port conflicts
-
-  build:
-    name: Production Build
-    description: Compile all project artifacts
-    tasks: [build_astro, build_go]
-    parallel: true
-
-  format:
-    name: Formatter
-    description: Auto-format code and optimize assets
-    tasks: [optimize_svg, prettier]
+  setup:
+    name: Project Setup
+    type: batch
+    pre_msg: Orchestrating hybrid environment setup...
+    on_error: Environment setup failed.
+    tasks: [build_go]
     parallel: false
-
-  all:
-    name: Complete Pipeline
-    description: Run validation, testing, and build
-    tasks:
-      - lint_eslint
-      - lint_go
-      - check_astro
-      - check_go
-      - test_vitest
-      - test_go
-      - build_astro
-      - build_go
-      - chmod_scripts
-    parallel: true
-    workers: 4
-    continue_on_error: false

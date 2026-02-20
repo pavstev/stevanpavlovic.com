@@ -1,100 +1,41 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "description": "Configuration schema for the Repokit task runner and project orchestrator.",
+  "description": "Unified Configuration schema for Repokit task runner.",
   "properties": {
     "vars": {
       "type": "object",
-      "description": "Global variables for command and path interpolation using ${var} syntax.",
+      "description": "Global variables for command and path interpolation.",
       "additionalProperties": { "type": "string" }
     },
     "tasks": {
       "type": "object",
-      "description": "Atomic task definitions.",
+      "description": "Task definitions (Atomic or Pipeline).",
       "patternProperties": {
         "^[a-z0-9_\\-]+$": {
           "type": "object",
-          "required": ["name", "command"],
+          "required": ["name", "type", "pre_msg", "on_error"],
           "additionalProperties": false,
           "properties": {
-            "name": {
-              "type": "string",
-              "description": "Display name of the task."
-            },
-            "description": {
-              "type": "string",
-              "description": "Short description for the help menu."
-            },
-            "command": {
-              "type": "string",
-              "description": "The shell command to execute."
-            },
-            "cwd": {
-              "type": "string",
-              "description": "Working directory (defaults to project root)."
-            },
-            "pre_run": {
-              "type": "array",
-              "description": "List of task IDs to run before this task.",
-              "items": { "type": "string" }
-            },
-            "post_run": {
-              "type": "array",
-              "description": "List of task IDs to run after this task.",
-              "items": { "type": "string" }
-            },
-            "interactive": {
-              "type": "boolean",
-              "description": "Whether to run with a TTY (direct stdin/out).",
-              "default": false
-            }
-          }
-        }
-      }
-    },
-    "batches": {
-      "type": "object",
-      "description": "Grouped tasks that are exposed as top-level CLI commands.",
-      "patternProperties": {
-        "^[a-z0-9_\\-]+$": {
-          "type": "object",
-          "required": ["name", "tasks"],
-          "additionalProperties": false,
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "Display name for the batch pipeline."
-            },
-            "description": {
-              "type": "string",
-              "description": "Command line help text."
-            },
-            "tasks": {
-              "type": "array",
-              "description": "List of atomic task IDs to execute in this batch.",
-              "items": { "type": "string" }
-            },
-            "parallel": {
-              "type": "boolean",
-              "description": "Execute tasks in parallel using the queue worker.",
-              "default": false
-            },
-            "workers": {
-              "type": "integer",
-              "description": "Number of concurrent workers if parallel is true.",
-              "default": 3
-            },
-            "continue_on_error": {
-              "type": "boolean",
-              "description": "Whether to keep running other tasks if one fails.",
-              "default": false
-            }
+            "name": { "type": "string" },
+            "type": { "enum": ["single", "batch"], "description": "Single command or a list of child tasks." },
+            "description": { "type": "string" },
+            "pre_msg": { "type": "string", "description": "Status message shown before execution starts." },
+            "on_error": { "type": "string", "description": "Message shown if the task fails." },
+            "command": { "type": "string", "description": "Required if type is 'single'." },
+            "tasks": { "type": "array", "items": { "type": "string" }, "description": "Required if type is 'batch'." },
+            "cwd": { "type": "string" },
+            "pre_run": { "type": "array", "items": { "type": "string" } },
+            "post_run": { "type": "array", "items": { "type": "string" } },
+            "parallel": { "type": "boolean", "default": false },
+            "workers": { "type": "integer", "default": 3 },
+            "interactive": { "type": "boolean", "default": false }
           }
         }
       }
     }
   },
-  "required": ["tasks", "batches"],
+  "required": ["tasks"],
   "title": "Repokit Task Configuration",
   "type": "object"
 }

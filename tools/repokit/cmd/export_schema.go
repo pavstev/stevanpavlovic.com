@@ -14,7 +14,7 @@ import (
 var schemaOut string
 
 var schemaCmd = &cobra.Command{
-	Use:   "schema",
+	Use:   "export_schema",
 	Short: "Generate JSON schema for tasks.yaml configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		reflector := jsonschema.Reflector{}

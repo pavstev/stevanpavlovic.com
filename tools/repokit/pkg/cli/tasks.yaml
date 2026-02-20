@@ -53,6 +53,22 @@ tasks:
     command: ${go} vet ./...
     cwd: ${rk_dir}
 
+  # --- Schema ---
+  format_schema:
+    name: Format Schema
+    type: single
+    pre_msg: Formatting schemas...
+    on_error: Failed to format the json schemas.
+    command: ${pnpm} prettier tools/eslint/schemas/**/*.schema.json -w --cache
+
+  generate_schema:
+    name: Schema Generation Pipeline
+    type: batch
+    pre_msg: Starting the generation...
+    on_error: One or more linters failed.
+    tasks: [export_schema, format_schema]
+    parallel: false
+
   # --- Unified Batch Pipelines ---
   lint:
     name: Linting Pipeline
@@ -107,5 +123,5 @@ tasks:
     type: batch
     pre_msg: Running complete project pipeline...
     on_error: One or more pipelines failed.
-    tasks: [format, lint, check, build, test, knip]
+    tasks: [generate_schema, format, lint, check, build, test, knip]
     parallel: false

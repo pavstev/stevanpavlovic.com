@@ -3,6 +3,7 @@
   "additionalProperties": false,
   "definitions": {
     "CliTaskConfig": {
+      "required": ["name", "type", "pre_msg", "on_error"],
       "additionalProperties": false,
       "properties": {
         "command": {
@@ -10,8 +11,8 @@
           "type": "string"
         },
         "continue_on_error": {
-          "default": false,
           "description": "Continue execution even if child tasks fail.",
+          "default": false,
           "type": "boolean"
         },
         "cwd": {
@@ -23,8 +24,8 @@
           "type": "string"
         },
         "interactive": {
-          "default": false,
           "description": "Run in interactive mode (attaches stdin/stdout).",
+          "default": false,
           "type": "boolean"
         },
         "name": {
@@ -36,8 +37,8 @@
           "type": "string"
         },
         "parallel": {
-          "default": false,
           "description": "Run child tasks in parallel.",
+          "default": false,
           "type": "boolean"
         },
         "post_run": {
@@ -67,57 +68,39 @@
         },
         "type": {
           "description": "Single command, parallel batch, or sequential pipeline.",
-          "enum": [
-            "single",
-            "batch",
-            "sequential"
-          ],
+          "enum": ["single", "batch", "sequential"],
           "type": "string"
         },
         "workers": {
-          "default": 3,
           "description": "Number of parallel workers.",
+          "default": 3,
           "type": "integer"
         }
       },
-      "required": [
-        "name",
-        "type",
-        "pre_msg",
-        "on_error"
-      ],
       "type": "object"
     }
   },
   "description": "Unified Configuration schema for Repokit task runner.",
   "properties": {
     "tasks": {
-      "additionalProperties": false,
       "description": "Task definitions (Atomic or Pipeline).",
+      "additionalProperties": false,
       "patternProperties": {
         "^[a-z0-9_\\-]+$": {
           "$ref": "#/definitions/CliTaskConfig"
         }
       },
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": ["object", "null"]
     },
     "vars": {
+      "description": "Global variables for command and path interpolation.",
       "additionalProperties": {
         "type": "string"
       },
-      "description": "Global variables for command and path interpolation.",
-      "type": [
-        "object",
-        "null"
-      ]
+      "type": ["object", "null"]
     }
   },
-  "required": [
-    "tasks"
-  ],
+  "required": ["tasks"],
   "title": "Repokit Task Configuration",
   "type": "object"
 }

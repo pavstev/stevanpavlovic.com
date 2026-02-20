@@ -86,7 +86,7 @@ func Info(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(infoBadge, "INFO", msg, primaryColor)
+	renderEntry(infoBadge, "ℹ️ ", msg, primaryColor)
 }
 
 func Success(format string, args ...any) {
@@ -94,7 +94,7 @@ func Success(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(successBadge, "DONE", msg, primaryColor)
+	renderEntry(successBadge, "✅", msg, primaryColor)
 }
 
 func Warning(format string, args ...any) {
@@ -102,7 +102,7 @@ func Warning(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	renderEntry(warningBadge, "WARN", msg, amberColor)
+	renderEntry(warningBadge, "⚠️ ", msg, amberColor)
 }
 
 func Error(format string, args ...any) {
@@ -113,7 +113,7 @@ func Error(format string, args ...any) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(format, args...)
 	}
-	badgePart := errorBadge.Render("FAIL")
+	badgePart := errorBadge.Render("❌")
 	contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
 	fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
 }

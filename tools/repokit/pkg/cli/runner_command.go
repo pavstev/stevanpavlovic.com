@@ -89,7 +89,7 @@ func runCommand(name, command, cwd string) {
 				// UI rendering with the new theme
 				spinner := Spinners[int(time.Now().UnixMilli()/80)%len(Spinners)]
 				icon := Blue.Render(spinner)
-				statusText := Blue.Bold(true).Render("RUNNING")
+				statusText := Blue.Bold(true).Render("⏳")
 				durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
 
 				nameStr := lipgloss.NewStyle().Width(35).Render(name)
@@ -119,7 +119,7 @@ func runCommand(name, command, cwd string) {
 		if !Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(Green.Bold(true).Render("DONE"))
+			statStr := lipgloss.NewStyle().Width(12).Render(Green.Bold(true).Render("✅"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
 			fmt.Printf(" %s  %s %s %s\n", Green.Render("✓"), nameStr, statStr, durStr)
 		}
@@ -128,7 +128,7 @@ func runCommand(name, command, cwd string) {
 		if !Quiet && !firstRender {
 			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
 			nameStr := lipgloss.NewStyle().Width(35).Render(name)
-			statStr := lipgloss.NewStyle().Width(12).Render(Red.Bold(true).Render("FAIL"))
+			statStr := lipgloss.NewStyle().Width(12).Render(Red.Bold(true).Render("❌"))
 			durStr := fmt.Sprintf("%5.1fs", time.Since(start).Seconds())
 			fmt.Printf(" %s  %s %s %s\n", Red.Render("✗"), nameStr, statStr, durStr)
 		}

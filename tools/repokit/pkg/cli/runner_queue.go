@@ -148,21 +148,21 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			switch s.status {
 			case statusCompleted:
 				icon = Green.Render("✓")
-				statText = Green.Bold(true).Render("DONE")
+				statText = Green.Bold(true).Render("✅")
 			case statusFailed:
 				icon = Red.Render("✗")
-				statText = Red.Bold(true).Render("FAIL")
+				statText = Red.Bold(true).Render("❌")
 			case statusActive:
 				icon = Blue.Render(Spinners[spinnerIdx])
-				statText = Blue.Bold(true).Render("RUNNING")
+				statText = Blue.Bold(true).Render("⏳")
 				durStr = fmt.Sprintf("%5.1fs", time.Since(s.startTime).Seconds())
 			case statusCancelled:
 				icon = Subtle.Render("⊘")
-				statText = Subtle.Render("CANCEL")
+				statText = Subtle.Render("⛔")
 				durStr = Subtle.Render("  --.-s")
 			default:
 				icon = Subtle.Render("○")
-				statText = Subtle.Render("PENDING")
+				statText = Subtle.Render("🕒")
 				durStr = Subtle.Render("  --.-s")
 			}
 

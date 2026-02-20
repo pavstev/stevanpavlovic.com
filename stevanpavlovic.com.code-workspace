@@ -32,6 +32,12 @@
     }
   ],
   "settings": {
+    "terminal.integrated.env.linux": {
+      "PATH": "${workspaceFolder}/tools/repokit/dist:${env:PATH}"
+    },
+    "terminal.integrated.env.osx": {
+      "PATH": "${workspaceFolder}/tools/repokit/dist:${env:PATH}"
+    },
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true,
     "typescript.experimental.useTsgo": true,
@@ -175,6 +181,9 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "iconify.annotations": true,
-    "cSpell.words": ["command"]
+    "cSpell.words": ["command"],
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   }
 }

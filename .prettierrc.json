@@ -36,7 +36,9 @@
     {
       "files": "*.json",
       "options": {
-        "printWidth": 80
+        "printWidth": 80,
+        "parser": "json",
+        "plugins": ["prettier-plugin-sort-json"]
       }
     },
     {

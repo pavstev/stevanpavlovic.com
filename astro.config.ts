@@ -4,9 +4,11 @@ import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import astroExpressiveCode from 'astro-expressive-code';
 import favicons from "astro-favicons";
 import icon from "astro-icon";
 import { defineConfig, envField } from "astro/config";
+import { pluginCollapsible } from 'expressive-code-collapsible';
 import { readFile } from "fs/promises";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
@@ -16,6 +18,7 @@ import Sonda from 'sonda/astro';
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 import { SITE_CONFIG } from "./src/constants";
+import aiContextGenerator from "./src/integrations/ai-context-generator"; // Import the new integration
 import { resumeGenerator } from "./src/integrations/resume-generator";
 
 export default defineConfig({
@@ -61,7 +64,11 @@ export default defineConfig({
       },
     }),
     react(),
+    astroExpressiveCode({
+      plugins: [pluginCollapsible()],
+    }),
     Sonda(),
+    aiContextGenerator(), // Enable the new integration
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],

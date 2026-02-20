@@ -51,10 +51,13 @@
     "@tailwindcss/vite": "^4.2.0",
     "@tanstack/react-form": "^1.28.3",
     "astro": "^5.17.3",
+    "astro-expressive-code": "^0.41.6",
     "astro-favicons": "^3.1.5",
     "astro-icon": "^1.1.5",
+    "astro-integration-kit": "^0.19.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "expressive-code-collapsible": "^0.1.0",
     "framer-motion": "^12.34.2",
     "motion": "^12.34.2",
     "nanostores": "^1.1.0",
@@ -140,9 +143,15 @@
       ]
     },
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "core-js",
-      "protobufjs",
-      "tesseract.js"
+      "esbuild",
+      "lefthook",
+      "msw",
+      "puppeteer",
+      "sharp",
+      "vue-demi",
+      "workerd"
     ]
   }
 }

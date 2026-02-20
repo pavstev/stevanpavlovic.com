@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"repokit/pkg/core"
+
 	"github.com/spf13/cobra"
 )
 
@@ -21,6 +22,6 @@ var exportSchemaCmd = &cobra.Command{
 
 func init() {
 	// Relative defaults mapping smoothly to execution paths
-	exportSchemaCmd.Flags().StringVarP(&schemaOut, "out", "o", "tools/eslint/schemas/tasks.core.json", "Output file path")
+	exportSchemaCmd.Flags().StringVarP(&schemaOut, "out", "o", "tools/eslint/schemas/tasks.schema.json", "Output file path")
 	rootCmd.AddCommand(exportSchemaCmd)
 }

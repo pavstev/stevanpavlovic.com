@@ -26,7 +26,7 @@ type TaskConfig struct {
 	Description     string   `yaml:"description,omitempty" json:"description,omitempty" description:"Optional detailed description of the task."`
 	Command         string   `yaml:"command,omitempty" json:"command,omitempty" description:"Required if type is 'single'."`
 	Tasks           []string `yaml:"tasks,omitempty" json:"tasks,omitempty" description:"Required if type is 'batch' or 'sequential'."`
-	Cwd             string   `yaml:"cwd,omitempty" json:"cwd,omitempty" description:"Working directory for the command."`
+	Cwd             string   `yaml:"cwd,omitempty" required="true" json:"cwd" description:"Working directory for the command."`
 	PreRun          []string `yaml:"pre_run,omitempty" json:"pre_run,omitempty" description:"Tasks to run before this one."`
 	PostRun         []string `yaml:"post_run,omitempty" json:"post_run,omitempty" description:"Tasks to run after this one."`
 	Parallel        bool     `yaml:"parallel,omitempty" json:"parallel,omitempty" default:"false" description:"Run child tasks in parallel."`

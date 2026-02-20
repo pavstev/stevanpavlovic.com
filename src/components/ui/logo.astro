@@ -7,11 +7,11 @@ import { fullName } from "../../constants";
 interface Props {
   [key: string]: any;
   className?: string;
-  size?: number;
   showName?: boolean;
+  size?: number;
 }
 
-const { className, size = 24, showName = true, ...props } = Astro.props;
+const { className, showName = true, size = 24, ...props } = Astro.props;
 ---
 
 <div class={cn("flex items-center gap-2", className)} {...props}>
@@ -29,7 +29,7 @@ const { className, size = 24, showName = true, ...props } = Astro.props;
     />
     <div class="shine-effect pointer-events-none absolute inset-0 z-20"></div>
   </div>
-  {showName && <span class="font-mono text-md font-bold tracking-tight truncate">{fullName}</span>}
+  {showName && <span class="text-md truncate font-mono font-bold tracking-tight">{fullName}</span>}
 </div>
 
 <style>

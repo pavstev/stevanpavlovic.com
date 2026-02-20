@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../../../eslint/schemas/tasks.schema.json
+# yaml-language-server: $schema=./../../../eslint/schemas/tasks.schema.json
 vars:
   root_dir: .
   rk_dir: tools/repokit
@@ -8,12 +8,21 @@ vars:
 
 tasks:
   # --- Atomic Tasks ---
+  project_tree:
+    name: Project tree
+    type: single
+    pre_msg: Analyzing project files...
+    on_error: There was an error while extracting the tree
+    command: rg --files | tree --fromfile
+    cwd: ${root_dir}
+
   lint_eslint:
     name: ESLint
     type: single
     pre_msg: Analyzing frontend code quality...
     on_error: ESLint found code quality issues.
     command: ${pnpm} eslint . --fix --cache --max-warnings=0
+    cwd: ${root_dir}
 
   knip:
     name: Knip
@@ -21,6 +30,7 @@ tasks:
     pre_msg: Scanning for unused dependencies and exports...
     on_error: Knip detected unused code or dependencies.
     command: ${pnpm} knip -c knip.config.ts
+    cwd: ${root_dir}
 
   format_prettier:
     name: Prettier
@@ -28,6 +38,7 @@ tasks:
     pre_msg: Enforcing code formatting rules...
     on_error: Prettier formatting failed.
     command: ${pnpm} prettier --write --cache .
+    cwd: ${root_dir}
 
   build_go:
     name: Build Go Binary
@@ -75,6 +86,7 @@ tasks:
     pre_msg: Minifying and optimizing SVG assets...
     on_error: Failed to optimize SVGs.
     command: ${rk_bin} optimize-svg src/assets/**/*.svg
+    cwd: ${root_dir}
 
   # --- Schema ---
   format_schema:
@@ -83,6 +95,7 @@ tasks:
     pre_msg: Formatting generated JSON schema files...
     on_error: Schema formatting failed.
     command: ${pnpm} prettier tools/eslint/schemas/**/*.schema.json -w --cache
+    cwd: ${root_dir}
 
   generate_schema:
     name: Generate Schema Pipeline
@@ -91,6 +104,7 @@ tasks:
     on_error: Failed to securely synchronize schemas.
     tasks: [export_schema, format_schema]
     parallel: false
+    cwd: ${root_dir}
 
   # --- Unified Batch Pipelines ---
   lint:
@@ -100,6 +114,7 @@ tasks:
     on_error: The linting pipeline encountered errors.
     tasks: [lint_eslint, knip, optimize_svg]
     parallel: true
+    cwd: ${root_dir}
 
   test:
     name: Testing Pipeline
@@ -108,6 +123,7 @@ tasks:
     on_error: One or more test suites failed.
     tasks: [test_go]
     parallel: true
+    cwd: ${root_dir}
 
   format:
     name: Formatting Pipeline
@@ -116,6 +132,7 @@ tasks:
     on_error: The formatting pipeline failed.
     tasks: [format_prettier]
     parallel: true
+    cwd: ${root_dir}
 
   check:
     name: Typecheck Pipeline
@@ -124,6 +141,7 @@ tasks:
     on_error: The typechecking pipeline detected errors.
     tasks: [check_astro]
     parallel: false
+    cwd: ${root_dir}
 
   build:
     name: Build Pipeline
@@ -132,6 +150,7 @@ tasks:
     on_error: The build pipeline failed to produce artifacts.
     tasks: [build_go]
     parallel: true
+    cwd: ${root_dir}
 
   cf_deploy:
     name: Deploy
@@ -139,6 +158,7 @@ tasks:
     pre_msg: Shipping the deployment to Cloudflare...
     on_error: Deployment rejected by the Cloudflare edge.
     command: ${pnpm} wrangler deploy
+    cwd: ${root_dir}
 
   cf_dev:
     name: Development Server
@@ -146,6 +166,7 @@ tasks:
     pre_msg: Booting the local Cloudflare dev runtime...
     on_error: The development server crashed.
     command: ${pnpm} wrangler dev
+    cwd: ${root_dir}
 
   cf_types:
     name: Cloudflare Types
@@ -153,6 +174,7 @@ tasks:
     pre_msg: Abstracting Cloudflare binding interfaces...
     on_error: Failed to generate interface typings.
     command: ${pnpm} wrangler types
+    cwd: ${root_dir}
 
   ls-files:
     name: List Files
@@ -160,6 +182,7 @@ tasks:
     pre_msg: Listing project files...
     on_error: Failed to list files.
     command: git ls-files --exclude-standard -co | tree --fromfile .
+    cwd: ${root_dir}
 
   export_schema:
     name: Export JSON Schema
@@ -167,6 +190,7 @@ tasks:
     pre_msg: Exporting configuration constraints...
     on_error: Constraint export failed.
     command: ${rk_bin} export_schema
+    cwd: ${root_dir}
 
   setup:
     name: Initialize Project
@@ -175,6 +199,7 @@ tasks:
     on_error: Development setup aborted.
     tasks: [build, generate_schema]
     parallel: false
+    cwd: ${root_dir}
 
   all:
     name: Universal Pipeline
@@ -194,3 +219,4 @@ tasks:
       - test_go
       - cf_types
     parallel: false
+    cwd: ${root_dir}

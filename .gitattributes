@@ -1,0 +1,32 @@
+# --- DEFAULT BEHAVIOR ---
+* text=auto
+
+# --- BASH (Crucial for CI/CD) ---
+# Always enforce LF for Bash so scripts don't break when executed on Linux servers
+*.sh text eol=lf
+*.bash text eol=lf
+
+# --- GOLANG ---
+# Prevent massive diffs in pull requests from Go dependency updates
+go.sum -diff
+# Hide generated Go code from PR reviews (e.g., mock files or protobufs if you add them later)
+*_gen.go linguist-generated=true
+*.pb.go linguist-generated=true
+
+# --- ASTRO, REACT & TYPESCRIPT ---
+# Hide package lock files from diffs—nobody reviews these manually anyway
+package-lock.json -diff
+yarn.lock -diff
+pnpm-lock.yaml -diff
+bun.lockb -diff
+
+# Treat Astro and TS config/build outputs as generated so they don't skew GitHub's language stats
+.astro/ linguist-generated=true
+dist/ linguist-generated=true
+build/ linguist-generated=true
+
+# --- LINGUIST (GitHub Language Bar) ---
+# Ensure GitHub accurately reports this as a Go/TS project instead of getting confused by vendor files
+vendor/** linguist-generated=true
+node_modules/** linguist-generated=true
+public/assets/** linguist-generated=true

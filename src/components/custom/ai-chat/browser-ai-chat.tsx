@@ -1,8 +1,9 @@
-import React, { useRef, useState, useEffect, useCallback, type FormEvent } from "react";
 import { BrowserAI } from "@browserai/browserai";
+import { cn } from "@client/utils";
+import React, { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-// shadcn/ui components
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,21 +13,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Icon } from "@/components/ui/icon"; // Our custom icon component using @iconify/react
-import { cn } from "@client/utils"; // Utility for conditional class names
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-// Type Definitions
+interface BrowserAiChatProps {}
+
 interface Message {
-  role: "user" | "assistant";
   content: string;
-}
-
-interface BrowserAiChatProps {
-  // No props needed for now based on the prompt, but good to have the interface
+  role: "assistant" | "user";
 }
 
 const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
@@ -37,23 +33,20 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
   const [input, setInput] = useState<string>("");
   const [systemContext, setSystemContext] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<null | string>(null);
 
   const browserAIInstanceRef = useRef<BrowserAI | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to the latest message
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  // Initialization and Model Loading
   useEffect(() => {
     const initializeBrowserAI = async () => {
       try {
-        // Fetch system context
         const contextResponse = await fetch("/api/ai-context.json");
         if (!contextResponse.ok) {
           throw new Error(`Failed to fetch AI context: ${contextResponse.statusText}`);
@@ -63,10 +56,10 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
 
         browserAIInstanceRef.current = new BrowserAI();
         await browserAIInstanceRef.current.loadModel("llama-3.2-1b-instruct", {
-          quantization: "q4f16_1",
           onProgress: (progress) => {
             setLoadingProgress(progress.progress);
           },
+          quantization: "q4f16_1",
         });
         setIsModelLoaded(true);
         console.log("BrowserAI model loaded successfully.");
@@ -79,15 +72,14 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
     };
 
     initializeBrowserAI();
-  }, []); // Run only once on mount
+  }, []);
 
-  // Handle message submission
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!input.trim() || isGenerating || !isModelLoaded || !browserAIInstanceRef.current) return;
 
-      const userMessage: Message = { role: "user", content: input };
+      const userMessage: Message = { content: input, role: "user" };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput("");
       setIsGenerating(true);
@@ -95,30 +87,30 @@ const BrowserAiChat: React.FC<BrowserAiChatProps> = () => {
       try {
         const promptArray = [
           {
-            role: "system",
             content: `You are the personal portfolio assistant for Stevan. Be concise, professional, and confident. Use the following context to answer questions: 
 
 ${systemContext}`,
+            role: "system",
           },
-          ...messages, // Previous messages in the conversation
-          userMessage, // Current user message
+          ...messages,
+          userMessage,
         ];
 
         const response = await browserAIInstanceRef.current.generateText(promptArray, {
-          temperature: 0.3,
           max_tokens: 250,
+          temperature: 0.3,
         });
 
         const aiMessageContent = response.choices[0].message.content;
         setMessages((prevMessages) => [
           ...prevMessages,
-          { role: "assistant", content: aiMessageContent },
+          { content: aiMessageContent, role: "assistant" },
         ]);
       } catch (e: any) {
         console.error("Error generating text:", e);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { role: "assistant", content: `Sorry, I encountered an error: ${e.message}` },
+          { content: `Sorry, I encountered an error: ${e.message}`, role: "assistant" },
         ]);
       } finally {
         setIsGenerating(false);
@@ -129,14 +121,14 @@ ${systemContext}`,
 
   return (
     <div className="fixed right-4 bottom-4 z-50">
-      {/* Minimized FAB */}
+      {}
       {!isOpen && (
         <Button
+          aria-label="Open AI Chat"
           className="size-14 rounded-full shadow-lg"
           onClick={() => setIsOpen(true)}
-          aria-label="Open AI Chat"
         >
-          <Icon name="lucide:bot" className="size-6" />
+          <Icon className="size-6" name="lucide:bot" />
         </Button>
       )}
 
@@ -145,12 +137,12 @@ ${systemContext}`,
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xl font-semibold">AI Assistant</CardTitle>
             <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(false)}
               aria-label="Close AI Chat"
+              onClick={() => setIsOpen(false)}
+              size="icon"
+              variant="ghost"
             >
-              <Icon name="lucide:x" className="size-4" />
+              <Icon className="size-4" name="lucide:x" />
             </Button>
           </CardHeader>
           <CardContent className="flex-1 overflow-hidden p-0">
@@ -162,7 +154,7 @@ ${systemContext}`,
             {!isModelLoaded && !error && (
               <div className="flex h-full flex-col items-center justify-center rounded-b-lg bg-black p-4 font-mono text-green-400">
                 <p className="mb-4 text-center">{"> Initializing Local AI Engine..."}</p>
-                <Progress value={loadingProgress} className="mb-2 w-[80%]" />
+                <Progress className="mb-2 w-[80%]" value={loadingProgress} />
                 <p className="text-center text-xs text-gray-500">
                   Downloading a private, local AI model directly into your browser memory. No data
                   is sent to the cloud.
@@ -175,21 +167,21 @@ ${systemContext}`,
                 <div className="flex flex-col gap-3">
                   {messages.length === 0 && (
                     <div className="text-muted-foreground flex h-full flex-col items-center justify-center py-4 text-center">
-                      <Icon name="lucide:message-circle" className="mb-2 size-8" />
+                      <Icon className="mb-2 size-8" name="lucide:message-circle" />
                       <p>How can I help you today?</p>
                     </div>
                   )}
                   {messages.map((msg, index) => (
                     <div
-                      key={index}
                       className={cn(
                         "flex gap-2",
                         msg.role === "user" ? "justify-end" : "justify-start"
                       )}
+                      key={index}
                     >
                       {msg.role === "assistant" && (
                         <Avatar className="size-8">
-                          <AvatarImage src="/profile.jpeg" alt="AI Assistant" />
+                          <AvatarImage alt="AI Assistant" src="/profile.jpeg" />
                           <AvatarFallback>AI</AvatarFallback>
                         </Avatar>
                       )}
@@ -213,7 +205,7 @@ ${systemContext}`,
                   {isGenerating && (
                     <div className="flex justify-start gap-2">
                       <Avatar className="size-8">
-                        <AvatarImage src="/profile.jpeg" alt="AI Assistant" />
+                        <AvatarImage alt="AI Assistant" src="/profile.jpeg" />
                         <AvatarFallback>AI</AvatarFallback>
                       </Avatar>
                       <div className="bg-muted text-muted-foreground max-w-[70%] rounded-lg p-2 text-sm">
@@ -228,18 +220,18 @@ ${systemContext}`,
           </CardContent>
           {isModelLoaded && !error && (
             <CardFooter className="border-t p-2">
-              <form onSubmit={handleSubmit} className="flex w-full space-x-2">
+              <form className="flex w-full space-x-2" onSubmit={handleSubmit}>
                 <Input
-                  id="message"
-                  placeholder="Type your message..."
-                  className="flex-1"
                   autoComplete="off"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  className="flex-1"
                   disabled={isGenerating}
+                  id="message"
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type your message..."
+                  value={input}
                 />
-                <Button type="submit" size="icon" disabled={isGenerating}>
-                  <Icon name="lucide:send" className="size-4" />
+                <Button disabled={isGenerating} size="icon" type="submit">
+                  <Icon className="size-4" name="lucide:send" />
                   <span className="sr-only">Send message</span>
                 </Button>
               </form>

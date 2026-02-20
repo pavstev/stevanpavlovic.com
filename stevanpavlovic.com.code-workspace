@@ -88,7 +88,7 @@
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
       ".env": ".env.local, .env.production, .env.development, .env.test, .env.example",
-      ".gitignore": ".gitattributes, .gitmodules, .prettierignore",
+      ".gitignore": ".gitattributes, .gitmodules, .gitmessage, CODEOWNERS",
       "*.config.ts": "${capture}.config.*.ts, ${capture}.config.mjs, ${capture}.config.cjs",
       "*.config.js": "${capture}.config.*.js",
       "*.json": "${capture}.jsonc, ${capture}.json5",
@@ -97,13 +97,14 @@
       "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, .nvmrc, .npmrc, pnpm-workspace.yaml",
       "README.md": "CHANGELOG.md, LICENSE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md",
       "tsconfig.json": "tsconfig.*.json, jsconfig.json",
-      "eslint.config.ts": "eslint.config.*.ts, eslint.config.mjs, eslint.config.cjs, knip.config.*, .prettier*, .editorconfig",
+      "eslint.config.ts": "eslint.config.*.ts, eslint.config.mjs, eslint.config.cjs, knip.config.*, .prettier*, .editorconfig, lefthook.yml",
       "astro.config.ts": "wrangler.json*, unlighthouse.config.ts, tsconfig*.json, components.json",
       "*.py": "test_${capture}.py, ${capture}.py",
       "*.go": "${capture}.go, ${capture}_test.go"
     },
     "files.associations": {
       "*.svg": "html",
+      "*.gitmessage": "ignore",
       "*.html.template": "html",
       "*.ts.template": "typescript",
       "*.tsx.template": "typescriptreact",
@@ -124,7 +125,7 @@
     "yaml.schemas": {
       "tools/eslint/schemas/tasks.schema.json": "tools/repokit/pkg/cli/tasks.yamlt"
     },
-    "cSpell.words": ["command"],
+    "cSpell.words": ["command", "knip", "pavstev"],
     "cSpell.ignorePaths": [
       "package-lock.json",
       "node_modules",

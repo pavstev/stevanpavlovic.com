@@ -1,4 +1,4 @@
-import { cn } from "@client/utils";
+import { cn } from "@client/utils.ts";
 import { AnimatePresence, motion, type MotionProps } from "motion/react";
 import { type ElementType, type FC, type ReactNode, useEffect, useRef, useState } from "react";
 

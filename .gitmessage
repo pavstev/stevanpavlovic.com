@@ -1,0 +1,17 @@
+# <emoji> <type>(<scope>): <subject>
+#
+# <description/body>
+#
+# Resolves #<issue_number>
+
+# --- Commit Message Guide ---
+# EMOJI & TYPE:
+#   ✨ feat     : New feature
+#   🐛 fix      : Bug fix
+#   ♻️  refactor : Code change that neither fixes a bug nor adds a feature
+#   ⚡️ perf     : Code change that improves performance
+#   📝 docs     : Documentation changes only
+#   🔧 chore    : Changes to build process, auxiliary tools, libraries
+# SCOPE: The section of the codebase affected (e.g., auth, ui, db).
+# SUBJECT: Imperative, present tense (e.g., "add", not "added"). Max 50 chars.
+# BODY: Explain *why* and *what*, not *how*. Wrap at 72 chars.

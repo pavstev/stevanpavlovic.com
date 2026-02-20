@@ -82,6 +82,16 @@ export default defineConfig({
       __dirname: JSON.stringify(""),
     },
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "@assets/": "./src/assets/",
+        "@client/": "./src/client/",
+        "@components/": "./src/components/",
+        "@constants": "./src/constants.ts",
+        "@server/": "./src/server/",
+      },
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+    },
 
     ssr: {
       noExternal: ["canvaskit-wasm"],

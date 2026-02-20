@@ -1,0 +1,22 @@
+# --- THE OVERLORD ---
+* @pavstev
+
+# --- FRONTEND (Astro, React, UI) ---
+/src/pages/ @pavstev
+/src/components/ @pavstev
+/src/client/ @pavstev
+/src/styles/ @pavstev
+
+# --- CONTENT & DATA (MDX, JSON) ---
+/src/content/ @pavstev
+/src/assets/ @pavstev
+/public/ @pavstev
+
+# --- CUSTOM TOOLING (Golang & TS) ---
+/tools/repokit/ @pavstev
+/tools/eslint/ @pavstev
+
+# --- CONFIG & INFRASTRUCTURE ---
+/*.config.ts @pavstev
+/wrangler.jsonc @pavstev
+/package.json @pavstev

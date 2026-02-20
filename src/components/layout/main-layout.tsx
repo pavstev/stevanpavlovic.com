@@ -1,11 +1,11 @@
 "use client";
 
+import { AppSidebar } from "@components/layout/app-sidebar";
+import { Header } from "@components/layout/header";
 import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
 import { type FC, type ReactNode } from "react";
 
 import BrowserAiChat from "../custom/ai-chat/browser-ai-chat";
-import { AppSidebar } from "@components/layout/app-sidebar"; // Changed to alias
-import { Header } from "@components/layout/header"; // Changed to alias
 
 interface MainLayoutProps {
   children: ReactNode;

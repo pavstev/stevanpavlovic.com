@@ -2,8 +2,8 @@
 
 import type { FC, JSX, ReactNode } from "react";
 
-import { cn } from "@client/utils";
-import { Icon } from "@components/ui/icon";
+import { cn } from "@client/utils.ts";
+import { Icon } from "@components/ui/icon.tsx";
 
 import { SITE_CONFIG, SOCIALS } from "../../../constants";
 import { ContactDialog } from "./contact-dialog";

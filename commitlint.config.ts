@@ -39,32 +39,32 @@ const commitTypes = {
 } as const;
 
 const scopes = {
-          all: {
-            description: "Changes that affect the build system or external dependencies",
-            emoji: "🌍",
-            title: "All",
-          },
-          blog: {
-            description: "Changes that affect the build system or external dependencies",
-            emoji: "�",
-            title: "Blog",
-          },
-          portfolio: {
-            description: "Changes that affect the build system or external dependencies",
-            emoji: "�",
-            title: "Portfolio",
-          },
-          repokit: {
-            description: "Changes that affect the build system or external dependencies",
-            emoji: "�",
-            title: "RepoKit",
-          },
-          resume: {
-            description: "Changes that affect the build system or external dependencies",
-            emoji: "📄",
-            title: "Resume",
-          },
-        } as const;
+  all: {
+    description: "Changes that affect the build system or external dependencies",
+    emoji: "🌍",
+    title: "All",
+  },
+  blog: {
+    description: "Changes that affect the build system or external dependencies",
+    emoji: "�",
+    title: "Blog",
+  },
+  portfolio: {
+    description: "Changes that affect the build system or external dependencies",
+    emoji: "�",
+    title: "Portfolio",
+  },
+  repokit: {
+    description: "Changes that affect the build system or external dependencies",
+    emoji: "�",
+    title: "RepoKit",
+  },
+  resume: {
+    description: "Changes that affect the build system or external dependencies",
+    emoji: "📄",
+    title: "Resume",
+  },
+} as const;
 
 const Configuration: UserConfig = {
   extends: ["@commitlint/config-conventional"],

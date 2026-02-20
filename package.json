@@ -136,11 +136,7 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "allowAny": [
-        "eslint",
-        "eslint-plugin-import",
-        "eslint-plugin-react"
-      ]
+      "allowAny": ["eslint", "eslint-plugin-import", "eslint-plugin-react"]
     },
     "onlyBuiltDependencies": [
       "@parcel/watcher",

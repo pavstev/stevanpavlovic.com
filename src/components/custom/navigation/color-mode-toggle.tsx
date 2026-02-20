@@ -4,10 +4,10 @@ import { setTheme, themeStore } from "@client/store";
 import { cn } from "@client/utils";
 import { Button } from "@components/ui/button";
 import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuTrigger,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
 } from "@components/ui/context-menu";
 import { Icon } from "@components/ui/icon";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/ui/tooltip";

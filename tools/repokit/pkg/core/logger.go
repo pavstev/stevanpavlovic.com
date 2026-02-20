@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"golang.org/x/term"
 )
 
 // ─── Design System (Mapped from OKLCH & HSL) ───────────────────────────────
@@ -42,17 +43,6 @@ var (
 			Border(lipgloss.Border{Left: "┃"}).
 			PaddingLeft(1).
 			MarginLeft(1)
-
-		// Box / Container Styles (The "Glass" effect).
-	glassStyle = lipgloss.NewStyle().
-			Border(lipgloss.ThickBorder()).
-			BorderTop(false).
-			BorderLeft(true).
-			BorderRight(false).
-			BorderBottom(false).
-			BorderForeground(primaryColor).
-			Padding(1, 2).
-			Margin(1, 0)
 
 	OSExit = osExitFunc
 	Quiet  = false
@@ -141,24 +131,51 @@ func Fatal(format string, args ...any) {
 
 // ─── Advanced UI Components ──────────────────────────────────────────────────
 
-// CustomBox renders a high-contrast container with a "Glass-Border" accent.
+// CustomBox renders a high-contrast container with a rounded border and title.
 func CustomBox(title, content string, color lipgloss.AdaptiveColor) {
 	if Quiet && (color != destructiveColor) {
 		return
 	}
 
-	// The Title Badge
-	titleLabel := lipgloss.NewStyle().
+	// Terminal width
+	termWidth, _, err := term.GetSize(int(os.Stdout.Fd()))
+	if err != nil {
+		termWidth = 80
+	}
+
+	// Title style
+	titleStyle := lipgloss.NewStyle().
 		Background(color).
 		Foreground(lipgloss.Color("#FFFFFF")).
 		Bold(true).
 		Padding(0, 1).
-		Render(strings.ToUpper(title))
+		MarginBottom(1)
 
-	// The Inset Content (Glass effect)
-	container := glassStyle.BorderForeground(color).Render(content)
+	// The width of the box needs to account for its own padding and border.
+	// Box width is terminal width - (horizontal margin of a parent container, if any)
+	// Content width is box width - box's own horizontal padding & border.
+	// Assuming the box is a top-level element, we can use most of the terminal width.
+	// Let's reserve a small margin for safety.
+	boxWidth := termWidth - 2
+	
+	// Recalculate content width based on the box's final width and its own styling
+	// Horizontal padding (1+1) + border (1+1) = 4
+	contentWidth := boxWidth - 4
+	if contentWidth < 0 {
+		contentWidth = 0
+	}
 
-	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleLabel, container))
+	box := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder(), true).
+		BorderForeground(color).
+		Padding(0, 1). // Padding inside the border
+		Width(contentWidth)
+
+	// Render title and content
+	titleStr := titleStyle.Render(strings.ToUpper(title))
+	contentStr := box.Render(content)
+
+	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left, titleStr, contentStr))
 }
 
 // BoxOutput provides a shim for existing runner implementations.

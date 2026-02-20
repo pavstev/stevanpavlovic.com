@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
-import type { ReactNode } from "react";
-
 import { cleanup } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, vi } from "vitest";
 
 // Automatically cleanup after each test
 afterEach(() => {

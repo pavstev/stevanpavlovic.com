@@ -19,8 +19,8 @@ func ResolveFiles(pattern string) ([]string, error) {
 	parts := strings.SplitN(pattern, "**", 2)
 	root, suffix := filepath.Clean(parts[0]), parts[1]
 	var matches []string
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
+	err := filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
 			return err
 		}
 		if strings.HasSuffix(path, suffix) {
@@ -31,9 +31,22 @@ func ResolveFiles(pattern string) ([]string, error) {
 	return matches, err
 }
 
+var knownTextExts = map[string]bool{
+	".js": true, ".ts": true, ".jsx": true, ".tsx": true,
+	".json": true, ".html": true, ".css": true, ".scss": true,
+	".md": true, ".yml": true, ".yaml": true, ".sh": true,
+	".zsh": true, ".astro": true, ".toml": true, ".sql": true,
+	".go": true, ".txt": true, ".csv": true, ".xml": true,
+}
+
 // IsBinary attempts to detect if a file is a non-text binary payload.
 // Uses h2non/filetype magic byte inspection alongside manual null-byte scanning.
 func IsBinary(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	if knownTextExts[ext] {
+		return false
+	}
+
 	f, err := os.Open(path)
 	if err != nil {
 		return true // Assumed unreadable/binary if missing access

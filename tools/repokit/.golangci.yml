@@ -17,7 +17,9 @@ linters-settings:
     disable:
       - fieldalignment
   gocyclo:
-    min-complexity: 15
+    min-complexity: 10
+  cyclop:
+    max-complexity: 15
   gocritic:
     enabled-tags:
       - diagnostic
@@ -74,6 +76,9 @@ linters:
     - promlinter
     - revive
     - tparallel
+    - cyclop
+    - funlen
+    - nestif
     - unconvert
     - unparam
     - whitespace

@@ -81,51 +81,46 @@ func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveC
 	fmt.Printf("%s %s\n", badgePart, contentPart)
 }
 
-func Info(msg string) {
+func Info(format string, args ...any) {
+	msg := format
+	if len(args) > 0 {
+		msg = fmt.Sprintf(format, args...)
+	}
 	renderEntry(infoBadge, "INFO", msg, primaryColor)
 }
 
-func Infof(format string, args ...any) {
-	Info(fmt.Sprintf(format, args...))
+func Success(format string, args ...any) {
+	msg := format
+	if len(args) > 0 {
+		msg = fmt.Sprintf(format, args...)
+	}
+	renderEntry(successBadge, "DONE", msg, primaryColor)
 }
 
-func Success(msg string) {
-	renderEntry(successBadge, "DONE", msg, lipgloss.AdaptiveColor{Light: "#10b981", Dark: "#10b981"})
-}
-
-func Successf(format string, args ...any) {
-	Success(fmt.Sprintf(format, args...))
-}
-
-func Warning(msg string) {
+func Warning(format string, args ...any) {
+	msg := format
+	if len(args) > 0 {
+		msg = fmt.Sprintf(format, args...)
+	}
 	renderEntry(warningBadge, "WARN", msg, amberColor)
 }
 
-func Warningf(format string, args ...any) {
-	Warning(fmt.Sprintf(format, args...))
-}
-
-func Error(msg string) {
-	if !Quiet {
-		badgePart := errorBadge.Render("FAIL")
-		contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
-		fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
+func Error(format string, args ...any) {
+	if Quiet {
+		return
 	}
-}
-
-func Errorf(format string, args ...any) {
-	Error(fmt.Sprintf(format, args...))
-}
-
-func Fatal(msg string) {
-	if !Quiet {
-		Error(msg)
+	msg := format
+	if len(args) > 0 {
+		msg = fmt.Sprintf(format, args...)
 	}
+	badgePart := errorBadge.Render("FAIL")
+	contentPart := spineStyle.BorderForeground(destructiveColor).Render(msg)
+	fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
+}
+
+func Fatal(format string, args ...any) {
+	Error(format, args...)
 	osExit(1)
-}
-
-func Fatalf(format string, args ...any) {
-	Fatal(fmt.Sprintf(format, args...))
 }
 
 // ─── Advanced UI Components ──────────────────────────────────────────────────

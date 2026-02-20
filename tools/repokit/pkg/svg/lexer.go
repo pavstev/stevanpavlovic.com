@@ -1,3 +1,4 @@
+//nolint:nestif
 package svg
 
 import (

@@ -20,7 +20,7 @@ func Execute() {
 	// are already registered, preventing duplicates and initialization race conditions.
 	config, err := cli.GetConfig()
 	if err != nil {
-		cli.Fatal(err.Error())
+		cli.Fatal("%v", err)
 	}
 	for id := range config.Tasks {
 		taskID := id

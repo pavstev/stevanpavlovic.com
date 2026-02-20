@@ -76,7 +76,7 @@ func RunTask(id string, data any, visited map[string]bool) {
 
 // RunBatch executes a set of tasks based on BatchConfig.
 func RunBatch(id string, config BatchConfig) {
-	Step(fmt.Sprintf("Batch Pipeline: %s", config.Name))
+	Info(fmt.Sprintf("Batch Pipeline: %s", config.Name))
 
 	if config.Parallel {
 		workers := config.Workers
@@ -156,17 +156,17 @@ func runCommand(name, command, cwd string) {
 				mu.Unlock()
 
 				if !firstRender {
-					fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
+					Print(strings.Repeat("\033[A\033[2K", lineCount))
 				}
 				firstRender, lineCount = false, 1
 
 				// UI rendering with the new theme
 				statusText := Yellow.Bold(true).Render("🚀 RUNNING")
-				fmt.Printf("  %-25s %s (%.1fs)\n", name, statusText, time.Since(start).Seconds())
+				Println(fmt.Sprintf("  %-25s %s (%.1fs)", name, statusText, time.Since(start).Seconds()))
 
 				if !Quiet {
 					for _, l := range currentTail {
-						fmt.Println(formatTailLine(l))
+						Println(formatTailLine(l))
 						lineCount++
 					}
 				}
@@ -178,7 +178,7 @@ func runCommand(name, command, cwd string) {
 	close(done)
 
 	if err != nil && ctx.Err() != nil {
-		fmt.Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
+		Println("\n" + Yellow.Render(fmt.Sprintf("⏹️  %s cancelled.", name)))
 		os.Exit(1)
 	}
 
@@ -192,7 +192,7 @@ func runCommand(name, command, cwd string) {
 }
 
 func RunInteractive(name, command, cwd string) {
-	Step("Interactive Session: " + name)
+	Info("Interactive Session: " + name)
 	cmd := exec.Command("bash", "-c", command)
 	if cwd != "" && cwd != "." {
 		cmd.Dir = cwd
@@ -300,7 +300,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 		mu.Lock()
 		defer mu.Unlock()
 		if !firstRender {
-			fmt.Print(strings.Repeat("\033[A\033[2K", lineCount))
+			Print(strings.Repeat("\033[A\033[2K", lineCount))
 		}
 		firstRender, lineCount = false, 0
 		for _, s := range states {
@@ -317,7 +317,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 			default:
 				status = subtleStyle.Render("⏳ QUEUED")
 			}
-			fmt.Printf("  %-25s %s\n", s.name, status)
+			Println(fmt.Sprintf("  %-25s %s", s.name, status))
 			lineCount++
 		}
 	}
@@ -340,7 +340,7 @@ func RunQueue(ids []string, workers int, continueOnError bool) {
 	render()
 
 	if failed {
-		fmt.Println("\n" + Bold.Render("PIPELINE FAILED"))
+		Println("\n" + Bold.Render("PIPELINE FAILED"))
 		os.Exit(1)
 	}
 	Success("Pipeline finished.")

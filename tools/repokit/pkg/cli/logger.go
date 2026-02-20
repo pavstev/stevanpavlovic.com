@@ -43,17 +43,6 @@ var (
 			PaddingLeft(1).
 			MarginLeft(1)
 
-	// Step Header Components
-	stepGlyphStyle = lipgloss.NewStyle().
-			Foreground(primaryColor).
-			PaddingRight(1).
-			Bold(true)
-
-	stepTextStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.AdaptiveColor{Light: "#0f172a", Dark: "#f8fafc"}).
-			Bold(true).
-			Underline(true)
-
 	// Box / Container Styles (The "Glass" effect)
 	glassStyle = lipgloss.NewStyle().
 			Border(lipgloss.ThickBorder()).
@@ -80,6 +69,27 @@ var osExitFunc = os.Exit
 
 // ─── Core Logging Interface ──────────────────────────────────────────────────
 
+// Print provides raw output that respects the Quiet flag.
+func Print(msg string) {
+	if !Quiet {
+		fmt.Print(msg)
+	}
+}
+
+// Println provides raw output with a newline that respects the Quiet flag.
+func Println(msg string) {
+	if !Quiet {
+		fmt.Println(msg)
+	}
+}
+
+// Printf provides formatted raw output that respects the Quiet flag.
+func Printf(format string, a ...any) {
+	if !Quiet {
+		fmt.Printf(format, a...)
+	}
+}
+
 // renderEntry creates the "Spine" layout for log messages
 func renderEntry(badge lipgloss.Style, tag, msg string, color lipgloss.AdaptiveColor) {
 	badgePart := badge.Render(tag)
@@ -105,21 +115,6 @@ func Error(msg string) {
 		contentPart := spineStyle.Copy().BorderForeground(destructiveColor).Render(msg)
 		fmt.Fprintf(os.Stderr, "%s %s\n", badgePart, contentPart)
 	}
-}
-
-// Step renders an architectural header with a horizontal structural element
-func Step(msg string) {
-	glyph := stepGlyphStyle.Render("◆")
-	text := stepTextStyle.Render(strings.ToUpper(msg))
-
-	// Create a structural bracket line
-	lineLen := lipgloss.Width(text) + 4
-	bracket := subtleStyle.Render("└" + strings.Repeat("─", lineLen) + "╴")
-
-	fmt.Println("\n" + lipgloss.JoinVertical(lipgloss.Left,
-		lipgloss.JoinHorizontal(lipgloss.Center, glyph, text),
-		bracket,
-	))
 }
 
 func Fatal(msg string) {

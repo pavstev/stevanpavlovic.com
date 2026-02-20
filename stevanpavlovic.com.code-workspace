@@ -1,17 +1,15 @@
 {
   "extensions": {
     "recommendations": [
-      "ms-vscode.vscode-typescript-next",
       "dbaeumer.vscode-eslint",
-      "christian-kohler.path-intellisense",
-      "ms-vscode.vscode-json",
-      "bradlc.vscode-tailwindcss",
-      "formulahendry.auto-rename-tag",
-      "ms-vscode.vscode-css-formatter",
-      "ms-playwright.playwright",
-      "astro-build.astro-vscode",
-      "unifiedjs.vscode-mdx",
       "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "astro-build.astro-vscode",
+      "ms-vscode.vscode-typescript-next",
+      "christian-kohler.path-intellisense",
+      "formulahendry.auto-rename-tag",
+      "ms-playwright.playwright",
+      "unifiedjs.vscode-mdx",
       "charliermarsh.ruff",
       "streetsidesoftware.code-spell-checker",
       "antfu.iconify"
@@ -19,8 +17,8 @@
   },
   "folders": [
     {
-      "path": ".",
-      "name": "stevanpavlovic.com"
+      "name": "stevanpavlovic.com",
+      "path": "."
     },
     {
       "name": "tools/repokit",
@@ -33,31 +31,61 @@
   ],
   "settings": {
     "terminal.integrated.env.linux": {
-      "PATH": "${workspaceFolder}/tools/repokit/dist:${env:PATH}"
+      "PATH": "${workspaceFolder:stevanpavlovic.com}/tools/repokit/dist:${env:PATH}"
     },
     "terminal.integrated.env.osx": {
-      "PATH": "${workspaceFolder}/tools/repokit/dist:${env:PATH}"
+      "PATH": "${workspaceFolder:stevanpavlovic.com}/tools/repokit/dist:${env:PATH}"
     },
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit" // Updated from deprecated "always"
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "astro",
+      "typescript",
+      "typescriptreact"
+    ],
+    "prettier.configPath": "./.prettierrc.json",
+    "[astro]": {
+      "editor.defaultFormatter": "astro-build.astro-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.experimental.useTsgo": true,
     "typescript.preferences.importModuleSpecifier": "relative",
     "typescript.suggest.autoImports": true,
-    "explorer.fileNesting.enabled": true,
-    "iconify.color": "#39FF14",
-    "iconify.inplace": true,
-    "iconify.position": "after",
-    "cSpell.ignorePaths": [
-      "package-lock.json",
-      "node_modules",
-      "vscode-extension",
-      ".git/{info,lfs,logs,refs,objects}/**",
-      ".git/{index,*refs,*HEAD}",
-      ".vscode",
-      ".vscode-insiders",
-      "**/*.svg"
+    "go.useLanguageServer": true,
+    "go.alternateTools": {
+      "go": "go"
+    },
+    "go.toolsEnvVars": {
+      "GO111MODULE": "on"
+    },
+    "gopls": {
+      "ui.semanticTokens": true,
+      "formatting.gofumpt": true,
+      "build.experimentalWorkspaceModule": true
+    },
+    "tailwindCSS.includeLanguages": {
+      "typescript": "javascript",
+      "typescriptreact": "html"
+    },
+    "tailwindCSS.experimental.classRegex": [
+      ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+      ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+      ["clsx\\(([^)]*)\\)", "'([^']*)'"],
+      ["clsx\\(([^)]*)\\)", "\"([^\"]*)\""],
+      ["clsx\\(([^)]*)\\)", "`([^`]*)`"]
     ],
-    "iconify.delimiters": [":"],
+    "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
       ".env": ".env.local, .env.production, .env.development, .env.test, .env.example",
       ".gitignore": ".gitattributes, .gitmodules, .prettierignore",
@@ -74,15 +102,6 @@
       "*.py": "test_${capture}.py, ${capture}.py",
       "*.go": "${capture}.go, ${capture}_test.go"
     },
-    "workbench.editorAssociations": {
-      "*.svg": "vscode.markdown.preview.editor"
-    },
-    "yaml.schemas": {
-      "tools/eslint/schemas/tasks.schema.json": "config/my-specific-file.yml"
-    },
-    "yaml.hover": true,
-    "yaml.completion": true,
-    "yaml.validate": true,
     "files.associations": {
       "*.svg": "html",
       "*.html.template": "html",
@@ -91,24 +110,33 @@
       "rs": "shellscript",
       "wrangler.json": "jsonc"
     },
-    "go.toolsEnvVars": {
-      "GO111MODULE": "on"
+    "workbench.editorAssociations": {
+      "*.svg": "vscode.markdown.preview.editor"
     },
-    "go.useLanguageServer": true,
-    "gopls": {
-      "ui.semanticTokens": true,
-      "formatting.gofumpt": true, // Stricter, prettier formatting
-      "build.experimentalWorkspaceModule": true // Helps gopls find modules in subfolders
+    "iconify.color": "#39FF14",
+    "iconify.inplace": true,
+    "iconify.position": "after",
+    "iconify.delimiters": [":"],
+    "iconify.annotations": true,
+    "yaml.hover": true,
+    "yaml.completion": true,
+    "yaml.validate": true,
+    "yaml.schemas": {
+      "tools/eslint/schemas/tasks.schema.json": "tools/repokit/pkg/cli/tasks.yaml"
     },
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "always"
-    },
-    // Tells VS Code where to find your tool if it's not at the root
-    "go.alternateTools": {
-      "go": "go"
-    },
+    "cSpell.words": ["command"],
+    "cSpell.ignorePaths": [
+      "package-lock.json",
+      "node_modules",
+      "vscode-extension",
+      ".git/{info,lfs,logs,refs,objects}/**",
+      ".git/{index,*refs,*HEAD}",
+      ".vscode",
+      ".vscode-insiders",
+      "**/*.svg"
+    ],
     "files.exclude": {
-      "**/tools/": true,
+      "**/tools/": true, // Note: This hides the tools folder from the root view, making your multi-root setup necessary
       "**/go.sum": true,
       "**/pnpm-lock.yaml": true,
       "**/.git": true,
@@ -149,41 +177,6 @@
       "src/routeTree.gen.ts": true,
       ".tanstack/": true,
       "src/content": true
-    },
-    "tailwindCSS.includeLanguages": {
-      "typescript": "javascript",
-      "typescriptreact": "html"
-    },
-    "tailwindCSS.experimental.classRegex": [
-      ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-      ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-      ["clsx\\(([^)]*)\\)", "'([^']*)'"],
-      ["clsx\\(([^)]*)\\)", "\"([^\"]*)\""],
-      ["clsx\\(([^)]*)\\)", "`([^`]*)`"]
-    ],
-    "eslint.validate": [
-      "javascript",
-      "javascriptreact",
-      "astro",
-      "typescript",
-      "typescriptreact"
-    ],
-    "emmet.includeLanguages": {
-      "typescript": "html",
-      "typescriptreact": "html"
-    },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "[astro]": {
-      "editor.defaultFormatter": "astro-build.astro-vscode"
-    },
-    "prettier.configPath": "./.prettierrc.json",
-    "[yaml]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "iconify.annotations": true,
-    "cSpell.words": ["command"],
-    "[json]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
   }
 }

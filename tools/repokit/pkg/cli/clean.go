@@ -11,8 +11,7 @@ import (
 // RunClean executes the project clean process with safety checks.
 // This is moved here to resolve the cmd -> pkg/clean -> pkg/cli import cycle.
 func RunClean(force bool) {
-	// Replaced missing "Lifecycle" with "Step"
-	Step("Checking clean preconditions")
+	Info("Checking clean preconditions")
 
 	if !force {
 		statusOut, _ := exec.Command("git", "status", "--porcelain").Output()
@@ -30,13 +29,12 @@ func RunClean(force bool) {
 		}
 
 		Warning("The following ignored files will be PERMANENTLY deleted:")
-		fmt.Println()
+		Println("")
 		for _, line := range strings.Split(fileList, "\n") {
-			// Used the correct internal 'subtleStyle' variable
-			fmt.Println("  " + subtleStyle.Render(line))
+			Println("  " + subtleStyle.Render(line))
 		}
 
-		fmt.Printf("\n%s Proceed with project reset? [y/N]: ", Bold.Render("?"))
+		Print(fmt.Sprintf("\n%s Proceed with project reset? [y/N]: ", Bold.Render("?")))
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		if ans := strings.ToLower(strings.TrimSpace(scanner.Text())); ans != "y" && ans != "yes" {
